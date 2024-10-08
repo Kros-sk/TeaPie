@@ -5,7 +5,7 @@ internal class ApplicationPipeline : IPipeline
 {
     private readonly List<IPipelineStep> _pipelineSteps = [];
 
-    public async Task<ApplicationContext> RunAsync(ApplicationContext context, CancellationToken cancellationToken)
+    public async Task<ApplicationContext> RunAsync(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var enumerator = new ApplicationPipelineEnumerator(_pipelineSteps);
 
