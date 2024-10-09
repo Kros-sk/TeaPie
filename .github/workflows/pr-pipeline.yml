@@ -34,13 +34,3 @@ jobs:
     # Run unit tests
     - name: Run Unit tests
       run: dotnet test --no-build --verbosity normal --configuration Release
-
-    - name: Upload test results to GitHub
-      uses: dorny/test-reporter@v1
-      if: always()
-      with:
-        path: '**/TestResults/*.trx'
-        name: 'Unit Tests'
-        reporter: 'dotnet-trx'
-        fail-on-error: true
-        token: ${{ secrets.GITHUB_TOKEN }}
