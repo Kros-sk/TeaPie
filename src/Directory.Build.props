@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Authors>Matej Grochal (KROS a.s.)</Authors>
+        <Company>KROS a.s.</Company>
+        <Description>CLI tool for API testing.</Description>
+        <Copyright>Copyright © KROS a.s.</Copyright>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+</Project>
