@@ -1,0 +1,46 @@
+name: Build and Test PR
+
+# Trigger
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Setup .NET environment
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.x'
+
+    # Install dependencies
+    - name: Install dependencies
+      run: dotnet restore
+
+    # Build the project
+    - name: Build project
+      run: dotnet build --configuration Release --no-restore
+
+    # Run unit tests
+    - name: Run Unit tests
+      run: dotnet test --no-build --verbosity normal --configuration Release
+
+    - name: Upload test results to GitHub
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        path: '**/TestResults/*.trx'
+        name: 'Unit Tests'
+        reporter: 'dotnet-trx'
+        fail-on-error: true
+        token: ${{ secrets.GITHUB_TOKEN }}
