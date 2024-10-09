@@ -30,6 +30,8 @@ public class ApplicationPipelineShould
         {
             await steps[i].Received(1).ExecuteAsync(context, cancellationToken);
         }
+
+        Assert.Equal(1, 2);
     }
 
     [Fact]
