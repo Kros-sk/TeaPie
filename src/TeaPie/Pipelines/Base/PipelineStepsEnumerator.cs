@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using TeaPie.Pipelines.Base;
 
-namespace TeaPie.Pipelines.Application;
-internal class ApplicationPipelineEnumerator : IEnumerator<IPipelineStep>
+namespace TeaPie.Pipelines.Base;
+internal class PipelineStepsEnumerator : IEnumerator<IPipelineStep>
 {
     private readonly List<IPipelineStep> _steps;
     private int _currentIndex;
 
-    internal ApplicationPipelineEnumerator(List<IPipelineStep> steps)
+    internal PipelineStepsEnumerator(List<IPipelineStep> steps)
     {
         _steps = steps;
         _currentIndex = -1;
