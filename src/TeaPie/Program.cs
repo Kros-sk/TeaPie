@@ -1,7 +1,13 @@
-﻿using TeaPie.StructureExploration;
+﻿using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines.StructureExploration;
 
-Console.WriteLine();
+if (args.Length > 0)
+{
+    var pipeline = new ApplicationPipeline();
+    var context = new ApplicationContext(args[0]);
+    pipeline.AddStep(new StructureExplorationStep());
 
-var explorer = new StructureExplorer();
-var testCases = explorer.ExploreFileSystem("C:\\Projects\\Topics\\Diploma thesis\\Draft\\TeaPieDraft\\TeaPieDraft\\Scripts");
-Console.WriteLine(testCases);
+    await pipeline.RunAsync(context);
+}
+
+
