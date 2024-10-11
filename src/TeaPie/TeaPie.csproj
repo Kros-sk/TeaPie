@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿namespace TeaPie.StructureExploration;
-internal static class StructureExplorer
+internal class StructureExplorer : IStructureExplorer
 {
-    public static Dictionary<string, TestCase> ExploreFileSystem(string rootPath)
+    public Dictionary<string, TestCase> ExploreFileSystem(string rootPath)
     {
         if (string.IsNullOrEmpty(rootPath) || !Directory.Exists(rootPath))
         {
@@ -25,7 +25,7 @@ internal static class StructureExplorer
     /// <param name="currentFolder">Folder that should be examined.</param>
     /// <param name="parentFolder">Parent folder of currently processed folder.</param>
     /// <param name="testCases">Depth-first order of test cases.</param>
-    private static void ExploreFolder(Folder currentFolder, Folder? parentFolder, Dictionary<string, TestCase> testCases)
+    private void ExploreFolder(Folder currentFolder, Folder? parentFolder, Dictionary<string, TestCase> testCases)
     {
         var subFolderPaths = Directory.GetDirectories(currentFolder.Path);
         var files = Directory.GetFiles(currentFolder.Path);
@@ -45,7 +45,7 @@ internal static class StructureExplorer
         ExploreTestCases(testCases, currentFolder, files);
     }
 
-    private static void ExploreTestCases(
+    private void ExploreTestCases(
         Dictionary<string, TestCase> testCases,
         Folder currentFolder,
         IEnumerable<string> files)
@@ -75,7 +75,7 @@ internal static class StructureExplorer
         }
     }
 
-    private static IEnumerable<Script> GetScripts(
+    private IEnumerable<Script> GetScripts(
         Folder folder,
         string requestFileName,
         string desiredSuffix,
@@ -94,6 +94,6 @@ internal static class StructureExplorer
                         folder));
                 });
 
-    private static string GetRelativePath(Folder parentFolder, string folderName)
+    private string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
 }
