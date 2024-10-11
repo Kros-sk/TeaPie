@@ -1,7 +1,7 @@
 ﻿using TeaPie.Pipelines.Base;
 
 namespace TeaPie.Pipelines.Application;
-internal class ApplicationPipeline
+internal class ApplicationPipeline : IPipeline
 {
     protected readonly List<IPipelineStep> _pipelineSteps = [];
 
