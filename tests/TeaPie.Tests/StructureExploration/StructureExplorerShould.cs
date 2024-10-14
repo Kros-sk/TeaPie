@@ -3,7 +3,25 @@ using File = System.IO.File;
 namespace TeaPie.Tests.StructureExploration;
 public class StructureExplorerShould
 {
-    private readonly string[] _directoriesPaths = [
+    //Testing file structure:
+    //root/
+    // ├── FirstFolder /
+    // │   ├── FirstFolderInFirtFolder /
+    // │   │   ├── Seed.http
+    // │   │   └── Test1.1.1.http
+    // │   ├── SecondFolderInFirtFolder /
+    // │   │   ├── FFinSFinFF /
+    // │   │   │   └── Test1.2.1.1.http
+    // │   │   ├── Test1.2.1.http
+    // │   │   └── Test1.2.2.http
+    // ├── SecondFolder /
+    // │   └── FirstFolderInSecondFolder /
+    // │       └── ATest.http
+    // ├── ThirdFolder /
+    // ├── AZeroLevelTest.http
+    // └── ZeroLevelTest.http
+
+    private readonly string[] _foldersPaths = [
         "FirstFolder",
         "SecondFolder",
         "ThirdFolder",
@@ -25,10 +43,48 @@ public class StructureExplorerShould
         Path.Combine($"ZeroLevelTest{Constants.RequestFileExtension}")
     ];
 
-    [Fact]
-    public void TestCasesShouldBeInCorrectOrder()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void InvalidPathShouldThrowException(bool emptyPath)
     {
-        var tempDirectory = CreateTestDirectory();
+        var tempDirectory = CreateTestDirectory(false, false);
+        IStructureExplorer structureExplorer = new StructureExplorer();
+
+        var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
+
+        Assert.Empty(testCases);
+
+        if (emptyPath)
+        {
+            Assert.Throws<ArgumentException>(() => structureExplorer.ExploreFileSystem(string.Empty));
+        }
+        else
+        {
+            Assert.Throws<DirectoryNotFoundException>(
+                () => structureExplorer.ExploreFileSystem($"C:\\{Guid.NewGuid()}-Invalid-{Guid.NewGuid()}"));
+        }
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void FoldersWithoutTestCaseShouldReturnEmptyListOfTestCases(bool wholeStructure)
+    {
+        var tempDirectory = CreateTestDirectory(wholeStructure, false);
+        IStructureExplorer structureExplorer = new StructureExplorer();
+
+        var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
+
+        Assert.Empty(testCases);
+
+        Directory.Delete(tempDirectory, true);
+    }
+
+    [Fact]
+    public void FoundTestCasesShouldBeInCorrectOrder()
+    {
+        var tempDirectory = CreateTestDirectory(true, true);
         IStructureExplorer structureExplorer = new StructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectory).Keys.ToList();
@@ -43,38 +99,36 @@ public class StructureExplorerShould
         Directory.Delete(tempDirectory, true);
     }
 
-    private string CreateTestDirectory()
+    private string CreateTestDirectory(bool withFolders, bool withTestCases)
     {
         var rootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(rootPath);
 
-        foreach (var directory in _directoriesPaths)
+        if (withFolders)
         {
-            Directory.CreateDirectory(Path.Combine(rootPath, directory));
+            CreateFolders(rootPath);
         }
 
+        if (withTestCases)
+        {
+            CreateTestCases(rootPath);
+        }
+
+        return rootPath;
+    }
+
+    private void CreateTestCases(string rootPath)
+    {
         foreach (var testCase in _testCasesPaths)
         {
             File.Create(Path.Combine(rootPath, testCase)).Dispose();
         }
-
-        //Created file structure:
-        //root/
-        // ├── FirstFolder /
-        // │   ├── FirstFolderInFirtFolder /
-        // │   │   ├── Seed.http
-        // │   │   └── Test1.1.1.http
-        // │   ├── SecondFolderInFirtFolder /
-        // │   │   ├── FFinSFinFF /
-        // │   │   │   └── Test1.2.1.1.http
-        // │   │   ├── Test1.2.1.http
-        // │   │   └── Test1.2.2.http
-        // ├── SecondFolder /
-        // │   └── FirstFolderInSecondFolder /
-        // │       └── ATest.http
-        // ├── ThirdFolder /
-        // ├── AZeroLevelTest.http
-        // └── ZeroLevelTest.http
-
-        return rootPath;
+    }
+    private void CreateFolders(string rootPath)
+    {
+        foreach (var directory in _foldersPaths)
+        {
+            Directory.CreateDirectory(Path.Combine(rootPath, directory));
+        }
     }
 }

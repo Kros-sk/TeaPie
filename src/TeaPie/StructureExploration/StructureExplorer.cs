@@ -3,9 +3,14 @@ internal class StructureExplorer : IStructureExplorer
 {
     public Dictionary<string, TestCase> ExploreFileSystem(string rootPath)
     {
-        if (string.IsNullOrEmpty(rootPath) || !Directory.Exists(rootPath))
+        if (string.IsNullOrEmpty(rootPath))
         {
-            throw new ArgumentException("The provided folder path is invalid or the file does not exist.");
+            throw new ArgumentException("The provided folder path is null or empty");
+        }
+
+        if (!Directory.Exists(rootPath))
+        {
+            throw new DirectoryNotFoundException("Provided folder doesn't exist.");
         }
 
         var testCases = new Dictionary<string, TestCase>();
