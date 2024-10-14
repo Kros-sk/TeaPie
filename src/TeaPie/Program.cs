@@ -1,2 +1,1 @@
 ﻿Console.WriteLine();
-Console.WriteLine();
