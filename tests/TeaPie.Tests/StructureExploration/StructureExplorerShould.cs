@@ -3,6 +3,28 @@ using File = System.IO.File;
 namespace TeaPie.Tests.StructureExploration;
 public class StructureExplorerShould
 {
+    private readonly string[] _directoriesPaths = [
+        "FirstFolder",
+        "SecondFolder",
+        "ThirdFolder",
+        Path.Combine("FirstFolder", "FirstFolderInFirtFolder"),
+        Path.Combine("FirstFolder", "SecondFolderInFirtFolder"),
+        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF"),
+        Path.Combine("SecondFolder", "FirstFolderInSecondFolder")
+    ];
+
+    private readonly string[] _testCasesPaths = [
+        Path.Combine("FirstFolder", "FirstFolderInFirtFolder", $"Seed{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "FirstFolderInFirtFolder", $"Test1.1.1{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF",
+            $"Test1.2.1.1{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.1{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.2{Constants.RequestFileExtension}"),
+        Path.Combine("SecondFolder", "FirstFolderInSecondFolder", $"ATest{Constants.RequestFileExtension}"),
+        Path.Combine($"AZeroLevelTest{Constants.RequestFileExtension}"),
+        Path.Combine($"ZeroLevelTest{Constants.RequestFileExtension}")
+    ];
+
     [Fact]
     public void TestCasesShouldBeInCorrectOrder()
     {
@@ -11,24 +33,11 @@ public class StructureExplorerShould
 
         var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectory).Keys.ToList();
 
-        List<string> expectedOrder =
-        [
-            Path.Combine(tempDirectory, "FirstFolder", "FirstFolderInFirtFolder", $"Seed{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, "FirstFolder", "FirstFolderInFirtFolder", $"Test1.1.1{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, "FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF",
-                $"Test1.2.1.1{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, "FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.1{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, "FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.2{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, "SecondFolder", "FirstFolderInSecondFolder", $"ATest{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, $"AZeroLevelTest{Constants.RequestFileExtension}"),
-            Path.Combine(tempDirectory, $"ZeroLevelTest{Constants.RequestFileExtension}")
-        ];
+        Assert.Equal(_testCasesPaths.Length, testCasesOrder.Count);
 
-        Assert.Equal(expectedOrder.Count, testCasesOrder.Count);
-
-        for (var i = 0; i < expectedOrder.Count; i++)
+        for (var i = 0; i < _testCasesPaths.Length; i++)
         {
-            Assert.Equal(expectedOrder[i], testCasesOrder[i]);
+            Assert.Equal(Path.Combine(tempDirectory, _testCasesPaths[i]), testCasesOrder[i]);
         }
 
         Directory.Delete(tempDirectory, true);
@@ -36,9 +45,19 @@ public class StructureExplorerShould
 
     private string CreateTestDirectory()
     {
-        string rootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        var rootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
 
-        //Testing structure:
+        foreach (var directory in _directoriesPaths)
+        {
+            Directory.CreateDirectory(Path.Combine(rootPath, directory));
+        }
+
+        foreach (var testCase in _testCasesPaths)
+        {
+            File.Create(Path.Combine(rootPath, testCase)).Dispose();
+        }
+
+        //Created file structure:
         //root/
         // ├── FirstFolder /
         // │   ├── FirstFolderInFirtFolder /
@@ -55,43 +74,6 @@ public class StructureExplorerShould
         // ├── ThirdFolder /
         // ├── AZeroLevelTest.http
         // └── ZeroLevelTest.http
-
-        Directory.CreateDirectory(Path.Combine(rootPath, "FirstFolder"));
-        Directory.CreateDirectory(Path.Combine(rootPath, "SecondFolder"));
-        Directory.CreateDirectory(Path.Combine(rootPath, "ThirdFolder"));
-
-        Directory.CreateDirectory(Path.Combine(rootPath, "FirstFolder", "FirstFolderInFirtFolder"));
-        Directory.CreateDirectory(Path.Combine(rootPath, "FirstFolder", "SecondFolderInFirtFolder"));
-
-        Directory.CreateDirectory(Path.Combine(rootPath, "FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF"));
-
-        Directory.CreateDirectory(Path.Combine(rootPath, "SecondFolder", "FirstFolderInSecondFolder"));
-
-        File.Create(
-            Path.Combine(rootPath, "FirstFolder", "FirstFolderInFirtFolder", $"Seed{Constants.RequestFileExtension}"))
-            .Dispose();
-        File.Create(
-            Path.Combine(rootPath, "FirstFolder", "FirstFolderInFirtFolder", $"Test1.1.1{Constants.RequestFileExtension}"))
-            .Dispose();
-
-        File.Create(
-            Path.Combine(rootPath, "FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF",
-            $"Test1.2.1.1{Constants.RequestFileExtension}"))
-            .Dispose();
-
-        File.Create(
-            Path.Combine(rootPath, "FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.1{Constants.RequestFileExtension}"))
-            .Dispose();
-        File.Create(
-            Path.Combine(rootPath, "FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.2{Constants.RequestFileExtension}"))
-            .Dispose();
-
-        File.Create(
-            Path.Combine(rootPath, "SecondFolder", "FirstFolderInSecondFolder", $"ATest{Constants.RequestFileExtension}"))
-            .Dispose();
-
-        File.Create(Path.Combine(rootPath, $"AZeroLevelTest{Constants.RequestFileExtension}")).Dispose();
-        File.Create(Path.Combine(rootPath, $"ZeroLevelTest{Constants.RequestFileExtension}")).Dispose();
 
         return rootPath;
     }
