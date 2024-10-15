@@ -60,12 +60,7 @@ internal class StructureExplorer : IStructureExplorer
         File requestFileObj;
         TestCase testCase;
 
-        var requestFiles = files.Where(f =>
-            f.EndsWith(Constants.RequestSuffix + Constants.RequestFileExtension) ||
-            f.EndsWith(Constants.RequestFileExtension))
-            .Order().ToList();
-
-        foreach (var reqFile in requestFiles)
+        foreach (var reqFile in files.Where(f => f.EndsWith(Constants.RequestFileExtension)).Order().ToList())
         {
             fileName = Path.GetFileName(reqFile);
             relativePath = $"{currentFolder.RelativePath}{Path.DirectorySeparatorChar}{fileName}";
