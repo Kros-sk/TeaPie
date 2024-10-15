@@ -1,25 +1,24 @@
-﻿using TeaPie.Pipelines.Base;
+﻿namespace TeaPie.Pipelines.Application;
 
-namespace TeaPie.Pipelines.Application;
 internal class ApplicationPipeline : IPipeline
 {
-    protected readonly List<IPipelineStep> _pipelineSteps = [];
+    protected readonly StepsCollection _pipelineSteps = new();
 
-    public virtual async Task<ApplicationContext> RunAsync(ApplicationContext context, CancellationToken cancellationToken = default)
+    public async Task Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var enumerator = new PipelineStepsEnumerator(_pipelineSteps);
+        var enumerator = _pipelineSteps.GetEnumerator();
 
         IPipelineStep step;
-        ApplicationContext input, result = context;
         while (enumerator.MoveNext())
         {
-            step = enumerator.Current;
-            input = result;
-            result = await step.ExecuteAsync(input, cancellationToken);
+            step = enumerator.Current!; // Current can not be null, if MoveNext() was successfull
+            await step.Execute(context, cancellationToken);
         }
-
-        return result;
     }
 
-    public void AddStep(IPipelineStep step) => _pipelineSteps.Add(step);
+    public bool InsertStep(IPipelineStep step, IPipelineStep? predecessor = null)
+        => _pipelineSteps.Insert(step, predecessor);
+
+    public bool InsertSteps(IEnumerable<IPipelineStep> steps, IPipelineStep? predecessor = null)
+        => _pipelineSteps.InsertRange(steps, predecessor);
 }
