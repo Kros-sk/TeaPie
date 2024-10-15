@@ -1,5 +1,6 @@
 ﻿namespace TeaPie.StructureExploration;
-internal class Folder(string path, string relativePath, string name, Folder? parentFolder = null) : IFileSystemEntity
+
+internal class Folder(string path, string relativePath, string name, Folder? parentFolder = null)
 {
     public string Path { get; set; } = path;
     public string RelativePath { get; set; } = relativePath;

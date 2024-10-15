@@ -1,4 +1,5 @@
 ﻿namespace TeaPie.StructureExploration;
+
 internal class StructureExplorer : IStructureExplorer
 {
     public Dictionary<string, TestCase> ExploreFileSystem(string rootPath)
@@ -23,9 +24,9 @@ internal class StructureExplorer : IStructureExplorer
     }
 
     /// <summary>
-    /// Recursive Depth-first algorithm, which examines file system tree. Traversal path is saved in <param cref="currentFolder">
-    /// parameter in form of test cases. Each folder can have sub-folders and test cases. Test case is represented by '.http'
-    /// file and possibly by other (e.g. '.csx') files.
+    /// Recursive Depth-first algorithm, which examines file system tree. Traversal path is saved in <param cref="testCases">
+    /// parameter in form of test cases. Each folder can have sub-folders and/or test cases. Test case is represented by '.http'
+    /// file and possibly by other (e.g. script files with '.csx' extension) files.
     /// </summary>
     /// <param name="currentFolder">Folder that should be examined.</param>
     /// <param name="parentFolder">Parent folder of currently processed folder.</param>
@@ -50,7 +51,7 @@ internal class StructureExplorer : IStructureExplorer
         ExploreTestCases(testCases, currentFolder, files);
     }
 
-    private void ExploreTestCases(
+    private static void ExploreTestCases(
         Dictionary<string, TestCase> testCases,
         Folder currentFolder,
         IEnumerable<string> files)
@@ -60,9 +61,9 @@ internal class StructureExplorer : IStructureExplorer
         TestCase testCase;
 
         var requestFiles = files.Where(f =>
-            f.EndsWith($"{Constants.RequestSuffix}{Constants.RequestFileExtension}") ||
+            f.EndsWith(Constants.RequestSuffix + Constants.RequestFileExtension) ||
             f.EndsWith(Constants.RequestFileExtension))
-            .OrderBy(f => f).ToList();
+            .Order().ToList();
 
         foreach (var reqFile in requestFiles)
         {
@@ -80,7 +81,7 @@ internal class StructureExplorer : IStructureExplorer
         }
     }
 
-    private IEnumerable<Script> GetScripts(
+    private static IEnumerable<Script> GetScripts(
         Folder folder,
         string requestFileName,
         string desiredSuffix,
@@ -99,6 +100,6 @@ internal class StructureExplorer : IStructureExplorer
                         folder));
                 });
 
-    private string GetRelativePath(Folder parentFolder, string folderName)
+    private static string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
 }

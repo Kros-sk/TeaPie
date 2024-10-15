@@ -1,4 +1,5 @@
 ﻿namespace TeaPie.StructureExploration;
+
 internal class TestCase(File requestFile)
 {
     public IEnumerable<Script> PreRequestScripts = [];

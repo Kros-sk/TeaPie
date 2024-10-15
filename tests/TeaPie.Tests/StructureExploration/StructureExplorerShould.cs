@@ -1,6 +1,8 @@
 ﻿using TeaPie.StructureExploration;
 using File = System.IO.File;
+
 namespace TeaPie.Tests.StructureExploration;
+
 public class StructureExplorerShould
 {
     //Testing file structure:
@@ -49,7 +51,7 @@ public class StructureExplorerShould
     public void InvalidPathShouldThrowException(bool emptyPath)
     {
         var tempDirectory = CreateTestDirectory(false, false);
-        IStructureExplorer structureExplorer = new StructureExplorer();
+        var structureExplorer = new StructureExplorer();
 
         var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
 
@@ -72,7 +74,7 @@ public class StructureExplorerShould
     public void FoldersWithoutTestCaseShouldReturnEmptyListOfTestCases(bool wholeStructure)
     {
         var tempDirectory = CreateTestDirectory(wholeStructure, false);
-        IStructureExplorer structureExplorer = new StructureExplorer();
+        var structureExplorer = new StructureExplorer();
 
         var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
 
@@ -85,7 +87,7 @@ public class StructureExplorerShould
     public void FoundTestCasesShouldBeInCorrectOrder()
     {
         var tempDirectory = CreateTestDirectory(true, true);
-        IStructureExplorer structureExplorer = new StructureExplorer();
+        var structureExplorer = new StructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectory).Keys.ToList();
 

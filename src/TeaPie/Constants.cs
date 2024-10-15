@@ -1,5 +1,6 @@
 ﻿namespace TeaPie;
-internal class Constants
+
+internal static class Constants
 {
     public const string RequestFileExtension = ".http";
     public const string ScriptFileExtension = ".csx";
