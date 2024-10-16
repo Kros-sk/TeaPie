@@ -1,9 +1,10 @@
-﻿using TeaPie.StructureExploration;
+﻿using FluentAssertions;
+using TeaPie.StructureExploration;
 using File = System.IO.File;
 
 namespace TeaPie.Tests.StructureExploration;
 
-public class StructureExplorerShould
+public class StructureExplorerShould : IDisposable
 {
     //Testing file structure:
     //root/
@@ -22,6 +23,8 @@ public class StructureExplorerShould
     // ├── ThirdFolder /
     // ├── AZeroLevelTest.http
     // └── ZeroLevelTest.http
+
+    private string _tempDirectoryPath = string.Empty;
 
     private readonly string[] _foldersPaths = [
         "FirstFolder",
@@ -50,21 +53,18 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void InvalidPathShouldThrowException(bool emptyPath)
     {
-        var tempDirectory = CreateTestDirectory(false, false);
+        CreateTestDirectory(false, false);
         var structureExplorer = new StructureExplorer();
-
-        var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
-
-        Assert.Empty(testCases);
 
         if (emptyPath)
         {
-            Assert.Throws<ArgumentException>(() => structureExplorer.ExploreFileSystem(string.Empty));
+            structureExplorer.Invoking(se => se.ExploreFileSystem(string.Empty))
+                .Should().Throw<ArgumentException>();
         }
         else
         {
-            Assert.Throws<DirectoryNotFoundException>(
-                () => structureExplorer.ExploreFileSystem($"C:\\{Guid.NewGuid()}-Invalid-{Guid.NewGuid()}"));
+            structureExplorer.Invoking(se => se.ExploreFileSystem($"C:\\{Guid.NewGuid()}-Invalid-{Guid.NewGuid()}"))
+                .Should().Throw<DirectoryNotFoundException>();
         }
     }
 
@@ -73,64 +73,69 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void FoldersWithoutTestCaseShouldReturnEmptyListOfTestCases(bool wholeStructure)
     {
-        var tempDirectory = CreateTestDirectory(wholeStructure, false);
+        CreateTestDirectory(wholeStructure, false);
         var structureExplorer = new StructureExplorer();
 
-        var testCases = structureExplorer.ExploreFileSystem(tempDirectory);
+        var testCases = structureExplorer.ExploreFileSystem(_tempDirectoryPath);
 
-        Assert.Empty(testCases);
-
-        Directory.Delete(tempDirectory, true);
+        testCases.Should().BeEmpty();
     }
 
     [Fact]
     public void FoundTestCasesShouldBeInCorrectOrder()
     {
-        var tempDirectory = CreateTestDirectory(true, true);
+        CreateTestDirectory(true, true);
         var structureExplorer = new StructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectory).Keys.ToList();
+        var testCasesOrder = structureExplorer.ExploreFileSystem(_tempDirectoryPath).Keys.ToList();
 
-        Assert.Equal(_testCasesPaths.Length, testCasesOrder.Count);
+        testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
         for (var i = 0; i < _testCasesPaths.Length; i++)
         {
-            Assert.Equal(Path.Combine(tempDirectory, _testCasesPaths[i]), testCasesOrder[i]);
+            testCasesOrder[i].Should().BeEquivalentTo(Path.Combine(_tempDirectoryPath, _testCasesPaths[i]));
         }
-
-        Directory.Delete(tempDirectory, true);
     }
 
-    private string CreateTestDirectory(bool withFolders, bool withTestCases)
+    private void CreateTestDirectory(bool withFolders, bool withTestCases)
     {
-        var rootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-        Directory.CreateDirectory(rootPath);
+        _tempDirectoryPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(_tempDirectoryPath);
 
         if (withFolders)
         {
-            CreateFolders(rootPath);
+            CreateFolders();
         }
 
         if (withTestCases)
         {
-            CreateTestCases(rootPath);
+            CreateTestCases();
         }
-
-        return rootPath;
     }
 
-    private void CreateTestCases(string rootPath)
+    private void CreateTestCases()
     {
         foreach (var testCase in _testCasesPaths)
         {
-            File.Create(Path.Combine(rootPath, testCase)).Dispose();
+            File.Create(Path.Combine(_tempDirectoryPath, testCase)).Dispose();
         }
     }
-    private void CreateFolders(string rootPath)
+    private void CreateFolders()
     {
         foreach (var directory in _foldersPaths)
         {
-            Directory.CreateDirectory(Path.Combine(rootPath, directory));
+            Directory.CreateDirectory(Path.Combine(_tempDirectoryPath, directory));
+        }
+    }
+
+    /// <summary>
+    /// This method is called after each test execution. So, this serves as tear-down method, which clears residual items.
+    /// </summary>
+    public void Dispose()
+    {
+        if (!string.IsNullOrEmpty(_tempDirectoryPath) && Directory.Exists(_tempDirectoryPath))
+        {
+            Directory.Delete(_tempDirectoryPath, true);
         }
     }
 }

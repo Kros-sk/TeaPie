@@ -33,8 +33,8 @@ internal class StructureExplorer : IStructureExplorer
     /// <param name="testCases">Depth-first order of test cases.</param>
     private void ExploreFolder(Folder currentFolder, Folder? parentFolder, Dictionary<string, TestCase> testCases)
     {
-        var subFolderPaths = Directory.GetDirectories(currentFolder.Path);
-        var files = Directory.GetFiles(currentFolder.Path);
+        var subFolderPaths = Directory.GetDirectories(currentFolder.Path).Order();
+        var files = Directory.GetFiles(currentFolder.Path).Order();
 
         currentFolder.ParentFolder = parentFolder;
 
@@ -83,7 +83,7 @@ internal class StructureExplorer : IStructureExplorer
         IEnumerable<string> files)
             => files
                 .Where(f =>
-                    Path.GetFileName(f).EndsWith($"{desiredSuffix}{Constants.RequestFileExtension}") &&
+                    Path.GetFileName(f).EndsWith(desiredSuffix + Constants.RequestFileExtension) &&
                     Path.GetFileNameWithoutExtension(f).StartsWith(Path.GetFileNameWithoutExtension(requestFileName)))
                 .Select(file =>
                 {
@@ -93,7 +93,8 @@ internal class StructureExplorer : IStructureExplorer
                         $"{folder.RelativePath}{Path.DirectorySeparatorChar}{fileName}",
                         fileName,
                         folder));
-                });
+                })
+                .Order();
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
