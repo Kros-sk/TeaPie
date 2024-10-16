@@ -2,9 +2,18 @@
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
-internal class ReadScriptStep(ScriptExecution scriptExecution) : IPipelineStep
+
+internal sealed class ReadScriptStep : IPipelineStep
 {
-    private readonly ScriptExecution _scriptExecution = scriptExecution;
+    private readonly ScriptExecutionContext _scriptExecution;
+
+    private ReadScriptStep(ScriptExecutionContext scriptExecution)
+    {
+        _scriptExecution = scriptExecution;
+    }
+
+    public static ReadScriptStep Create(ScriptExecutionContext scriptExecution)
+        => new(scriptExecution);
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {

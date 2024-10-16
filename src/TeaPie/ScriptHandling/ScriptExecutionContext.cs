@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.Scripting;
 
 namespace TeaPie.ScriptHandling;
 
-internal class ScriptExecution(StructureExploration.Script script)
+internal class ScriptExecutionContext(StructureExploration.Script script)
 {
     public StructureExploration.Script Script { get; set; } = script;
     internal string? RawContent { get; set; }
