@@ -8,10 +8,10 @@ public class StructureExplorerShould
     //Testing file structure:
     //root/
     // ├── FirstFolder /
-    // │   ├── FirstFolderInFirtFolder /
+    // │   ├── FirstFolderInFirstFolder /
     // │   │   ├── Seed.http
     // │   │   └── Test1.1.1.http
-    // │   ├── SecondFolderInFirtFolder /
+    // │   ├── SecondFolderInFirstFolder /
     // │   │   ├── FFinSFinFF /
     // │   │   │   └── Test1.2.1.1.http
     // │   │   ├── Test1.2.1.http
@@ -27,19 +27,19 @@ public class StructureExplorerShould
         "FirstFolder",
         "SecondFolder",
         "ThirdFolder",
-        Path.Combine("FirstFolder", "FirstFolderInFirtFolder"),
-        Path.Combine("FirstFolder", "SecondFolderInFirtFolder"),
-        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF"),
+        Path.Combine("FirstFolder", "FirstFolderInFirstFolder"),
+        Path.Combine("FirstFolder", "SecondFolderInFirstFolder"),
+        Path.Combine("FirstFolder", "SecondFolderInFirstFolder", "FFinSFinFF"),
         Path.Combine("SecondFolder", "FirstFolderInSecondFolder")
     ];
 
     private readonly string[] _testCasesPaths = [
-        Path.Combine("FirstFolder", "FirstFolderInFirtFolder", $"Seed{Constants.RequestFileExtension}"),
-        Path.Combine("FirstFolder", "FirstFolderInFirtFolder", $"Test1.1.1{Constants.RequestFileExtension}"),
-        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", "FFinSFinFF",
+        Path.Combine("FirstFolder", "FirstFolderInFirstFolder", $"Seed{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "FirstFolderInFirstFolder", $"Test1.1.1{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirstFolder", "FFinSFinFF",
             $"Test1.2.1.1{Constants.RequestFileExtension}"),
-        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.1{Constants.RequestFileExtension}"),
-        Path.Combine("FirstFolder", "SecondFolderInFirtFolder", $"Test1.2.2{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirstFolder", $"Test1.2.1{Constants.RequestFileExtension}"),
+        Path.Combine("FirstFolder", "SecondFolderInFirstFolder", $"Test1.2.2{Constants.RequestFileExtension}"),
         Path.Combine("SecondFolder", "FirstFolderInSecondFolder", $"ATest{Constants.RequestFileExtension}"),
         Path.Combine($"AZeroLevelTest{Constants.RequestFileExtension}"),
         Path.Combine($"ZeroLevelTest{Constants.RequestFileExtension}")
