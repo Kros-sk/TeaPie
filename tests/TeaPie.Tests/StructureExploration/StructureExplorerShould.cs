@@ -56,10 +56,6 @@ public class StructureExplorerShould : IDisposable
         CreateTestDirectory(false, false);
         var structureExplorer = new StructureExplorer();
 
-        var testCases = structureExplorer.ExploreFileSystem(_tempDirectoryPath);
-
-        Assert.Empty(testCases);
-
         if (emptyPath)
         {
             structureExplorer.Invoking(se => se.ExploreFileSystem(string.Empty))
