@@ -1,4 +1,6 @@
-﻿namespace TeaPie.StructureExploration;
+﻿using TeaPie.Helpers;
+
+namespace TeaPie.StructureExploration;
 
 internal class StructureExplorer : IStructureExplorer
 {
@@ -68,8 +70,8 @@ internal class StructureExplorer : IStructureExplorer
 
             testCase = new TestCase(requestFileObj)
             {
-                PreRequestScripts = GetScripts(currentFolder, reqFile, Constants.PreRequestSuffix, files),
-                PostResponseScripts = GetScripts(currentFolder, reqFile, Constants.PostResponseSuffix, files)
+                PreRequestScripts = GetScripts(currentFolder, reqFile, Constants.PreRequestSuffix, files).ToList(),
+                PostResponseScripts = GetScripts(currentFolder, reqFile, Constants.PostResponseSuffix, files).ToList()
             };
 
             testCases[reqFile] = testCase;
@@ -83,13 +85,14 @@ internal class StructureExplorer : IStructureExplorer
         IEnumerable<string> files)
             => files
                 .Where(f =>
-                    Path.GetFileName(f).EndsWith($"{desiredSuffix}{Constants.RequestFileExtension}") &&
-                    Path.GetFileNameWithoutExtension(f).StartsWith(Path.GetFileNameWithoutExtension(requestFileName)))
+                    Path.GetFileName(f).EndsWith(desiredSuffix + Constants.ScriptFileExtension) &&
+                    Path.GetFileNameWithoutExtension(f)
+                        .StartsWith(Path.GetFileNameWithoutExtension(requestFileName).TrimSuffix(Constants.RequestSuffix)))
                 .Select(file =>
                 {
                     var fileName = Path.GetFileName(file);
                     return new Script(new File(
-                        Path.GetFileName(file),
+                        file,
                         $"{folder.RelativePath}{Path.DirectorySeparatorChar}{fileName}",
                         fileName,
                         folder));
