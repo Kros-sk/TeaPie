@@ -16,4 +16,6 @@ internal static class Constants
     public const string NugetDirectivePrefix = "#nuget";
 
     public const string NugetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
+
+    public const string ApplicationName = "TeaPie";
 }

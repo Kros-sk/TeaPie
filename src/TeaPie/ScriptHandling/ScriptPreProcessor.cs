@@ -9,12 +9,12 @@ namespace TeaPie.ScriptHandling;
 
 internal interface IScriptPreProcessor
 {
-    public Task<string> PrepareScript(string path, string scriptContent);
+    public Task<string> PrepareScript(string path, string scriptContent, List<string> referencedScripts);
 }
 
 internal class ScriptPreProcessor : IScriptPreProcessor
 {
-    public async Task<string> PrepareScript(string path, string scriptContent)
+    public async Task<string> PrepareScript(string path, string scriptContent, List<string> referencedScripts)
     {
         IEnumerable<string> lines;
         var hasLoadDirectives = scriptContent.Contains(Constants.ReferenceScriptDirective);
@@ -26,7 +26,7 @@ internal class ScriptPreProcessor : IScriptPreProcessor
 
             if (hasLoadDirectives)
             {
-                lines = ResolveLoadDirectives(path, lines);
+                lines = ResolveLoadDirectives(path, lines, referencedScripts);
             }
 
             if (hasNugetDirectives)
@@ -43,13 +43,16 @@ internal class ScriptPreProcessor : IScriptPreProcessor
         return scriptContent;
     }
 
-    private static IEnumerable<string> ResolveLoadDirectives(string path, IEnumerable<string> lines)
+    private static IEnumerable<string> ResolveLoadDirectives(
+        string path,
+        IEnumerable<string> lines,
+        List<string> referencedScripts)
     {
         var currentDirectory = Path.GetDirectoryName(path);
-        return lines.Select(line => ResolveLoadDirective(currentDirectory!, line!));
+        return lines.Select(line => ResolveLoadDirective(currentDirectory!, line!, referencedScripts));
     }
 
-    private static string ResolveLoadDirective(string currentDirectory, string line)
+    private static string ResolveLoadDirective(string currentDirectory, string line, List<string> referencedScripts)
     {
         if (line.TrimStart().StartsWith(Constants.ReferenceScriptDirective))
         {
@@ -57,6 +60,8 @@ internal class ScriptPreProcessor : IScriptPreProcessor
             var loadPath = segments[1].Trim();
             loadPath = loadPath.Replace("\"", string.Empty);
             loadPath = ResolvePath(currentDirectory!, loadPath);
+
+            referencedScripts.Add(loadPath);
 
             return $"{Constants.ReferenceScriptDirective} \"{loadPath}\"";
         }

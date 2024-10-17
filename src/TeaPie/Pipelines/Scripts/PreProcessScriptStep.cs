@@ -24,7 +24,14 @@ internal sealed class PreProcessScriptStep : IPipelineStep
             throw new InvalidOperationException("Pre-processing of the script can not be done with null content.");
         }
 
+        var referencedScriptsPaths = new List<string>();
+
         _scriptExecution.ProcessedContent =
-            await _scriptPreProcessor.PrepareScript(_scriptExecution.Script.File.Path, _scriptExecution.RawContent);
+            await _scriptPreProcessor.PrepareScript(
+                _scriptExecution.Script.File.Path,
+                _scriptExecution.RawContent,
+                referencedScriptsPaths);
+
+        // TODO: Handle referenced scripts
     }
 }

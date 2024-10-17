@@ -46,6 +46,7 @@ internal sealed class StepsGenerationStep : IPipelineStep
         newSteps.Add(ReadScriptStep.Create(scriptExecutionContext));
         newSteps.Add(
             PreProcessScriptStep.Create(scriptExecutionContext, _serviceProvider.GetRequiredService<IScriptPreProcessor>()));
-        newSteps.Add(CompileScriptStep.Create(scriptExecutionContext, _serviceProvider.GetRequiredService<IScriptCompiler>()));
+        newSteps.Add(StoreScriptStep.Create(scriptExecutionContext));
+        // newSteps.Add(CompileScriptStep.Create(scriptExecutionContext, _serviceProvider.GetRequiredService<IScriptCompiler>()));
     }
 }
