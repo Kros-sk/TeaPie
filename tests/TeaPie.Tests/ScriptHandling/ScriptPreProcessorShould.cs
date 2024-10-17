@@ -23,7 +23,7 @@ public sealed class ScriptPreProcessorShould : IDisposable
     public async Task ScriptWithoutAnyDirectivesShouldRemainTheSame()
     {
         var processor = new ScriptPreProcessor();
-        const string code = "Console.Writeline(\"Hello World!\");";
+        const string code = @"Console.Writeline(""Hello World!"");";
         await CreateScriptFile(code);
         var processedContent = await processor.PrepareScript(_scriptPath, await File.ReadAllTextAsync(_scriptPath));
 
