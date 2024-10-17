@@ -1,4 +1,5 @@
-﻿namespace TeaPie.Pipelines.Application;
+﻿
+namespace TeaPie.Pipelines.Application;
 
 internal class ApplicationPipeline : IPipeline
 {
@@ -21,4 +22,7 @@ internal class ApplicationPipeline : IPipeline
 
     public bool InsertSteps(IEnumerable<IPipelineStep> steps, IPipelineStep? predecessor = null)
         => _pipelineSteps.InsertRange(steps, predecessor);
+
+    public bool InsertStep(Func<ApplicationContext, Task> lambdaFunction, IPipelineStep? predecessor = null)
+        => _pipelineSteps.Insert(new InlineStep(lambdaFunction), predecessor);
 }
