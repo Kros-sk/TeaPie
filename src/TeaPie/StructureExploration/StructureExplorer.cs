@@ -35,8 +35,8 @@ internal class StructureExplorer : IStructureExplorer
     /// <param name="testCases">Depth-first order of test cases.</param>
     private void ExploreFolder(Folder currentFolder, Folder? parentFolder, Dictionary<string, TestCase> testCases)
     {
-        var subFolderPaths = Directory.GetDirectories(currentFolder.Path);
-        var files = Directory.GetFiles(currentFolder.Path);
+        var subFolderPaths = Directory.GetDirectories(currentFolder.Path).Order();
+        var files = Directory.GetFiles(currentFolder.Path).Order();
 
         currentFolder.ParentFolder = parentFolder;
 
@@ -70,8 +70,8 @@ internal class StructureExplorer : IStructureExplorer
 
             testCase = new TestCase(requestFileObj)
             {
-                PreRequestScripts = GetScripts(currentFolder, reqFile, Constants.PreRequestSuffix, files).ToList(),
-                PostResponseScripts = GetScripts(currentFolder, reqFile, Constants.PostResponseSuffix, files).ToList()
+                PreRequestScripts = GetScripts(currentFolder, reqFile, Constants.PreRequestSuffix, files),
+                PostResponseScripts = GetScripts(currentFolder, reqFile, Constants.PostResponseSuffix, files)
             };
 
             testCases[reqFile] = testCase;
@@ -96,7 +96,8 @@ internal class StructureExplorer : IStructureExplorer
                         $"{folder.RelativePath}{Path.DirectorySeparatorChar}{fileName}",
                         fileName,
                         folder));
-                });
+                })
+                .Order();
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
