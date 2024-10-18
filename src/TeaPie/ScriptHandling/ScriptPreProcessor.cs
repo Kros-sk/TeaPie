@@ -4,19 +4,38 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using TeaPie.Helpers;
 
 namespace TeaPie.ScriptHandling;
 
 internal interface IScriptPreProcessor
 {
-    public Task<string> PrepareScript(string path, string scriptContent, List<string> referencedScripts);
+    public Task<string> PrepareScript(
+        string path,
+        string scriptContent,
+        string rootPath,
+        string tempFolderPath,
+        List<string> referencedScripts);
 }
 
 internal class ScriptPreProcessor : IScriptPreProcessor
 {
-    public async Task<string> PrepareScript(string path, string scriptContent, List<string> referencedScripts)
+    private List<string> _referencedScripts = [];
+    private string _rootPath = string.Empty;
+    private string _tempFolderPath = string.Empty;
+
+    public async Task<string> PrepareScript(
+        string path,
+        string scriptContent,
+        string rootPath,
+        string tempFolderPath,
+        List<string> referencedScripts)
     {
         IEnumerable<string> lines;
+        _rootPath = rootPath;
+        _tempFolderPath = tempFolderPath;
+        _referencedScripts = referencedScripts;
+
         var hasLoadDirectives = scriptContent.Contains(Constants.ReferenceScriptDirective);
         var hasNugetDirectives = scriptContent.Contains(Constants.NugetDirectivePrefix);
 
@@ -26,7 +45,7 @@ internal class ScriptPreProcessor : IScriptPreProcessor
 
             if (hasLoadDirectives)
             {
-                lines = ResolveLoadDirectives(path, lines, referencedScripts);
+                lines = ResolveLoadDirectives(path, lines);
             }
 
             if (hasNugetDirectives)
@@ -38,33 +57,29 @@ internal class ScriptPreProcessor : IScriptPreProcessor
             scriptContent = string.Join(Environment.NewLine, lines);
         }
 
-        // TODO: Add global script reference, if specified by user
-
         return scriptContent;
     }
 
-    private static IEnumerable<string> ResolveLoadDirectives(
-        string path,
-        IEnumerable<string> lines,
-        List<string> referencedScripts)
-    {
-        var currentDirectory = Path.GetDirectoryName(path);
-        return lines.Select(line => ResolveLoadDirective(currentDirectory!, line!, referencedScripts));
-    }
+    private IEnumerable<string> ResolveLoadDirectives(string path, IEnumerable<string> lines)
+        => lines.Select(line => ResolveLoadDirective(path, line));
 
-    private static string ResolveLoadDirective(string currentDirectory, string line, List<string> referencedScripts)
+    private string ResolveLoadDirective(string path, string line)
     {
         if (line.TrimStart().StartsWith(Constants.ReferenceScriptDirective))
         {
             var segments = line.Split(new[] { Constants.ReferenceScriptDirective }, 2, StringSplitOptions.None);
-            var loadPath = segments[1].Trim();
-            loadPath = loadPath.Replace("\"", string.Empty);
-            loadPath = ResolvePath(currentDirectory!, loadPath);
+            var realPath = segments[1].Trim();
+            realPath = realPath.Replace("\"", string.Empty);
+            realPath = ResolvePath(path!, realPath);
 
-            referencedScripts.Add(loadPath);
+            var relativePath = realPath.TrimRootPath(_rootPath, true);
+            var tempPath = Path.Combine(_tempFolderPath, relativePath);
 
-            return $"{Constants.ReferenceScriptDirective} \"{loadPath}\"";
+            _referencedScripts?.Add(realPath);
+
+            return $"{Constants.ReferenceScriptDirective} \"{tempPath}\"";
         }
+
         return line;
     }
 

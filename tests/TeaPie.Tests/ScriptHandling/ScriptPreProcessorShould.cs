@@ -14,7 +14,13 @@ public sealed class ScriptPreProcessorShould : IDisposable
     {
         var processor = new ScriptPreProcessor();
         await CreateScriptFile(string.Empty);
-        var processedContent = await processor.PrepareScript(_scriptPath, await File.ReadAllTextAsync(_scriptPath));
+        List<string> referencedScripts = [];
+        var processedContent = await processor.PrepareScript(
+            _scriptPath,
+            await File.ReadAllTextAsync(_scriptPath),
+            _tempDirectoryPath,
+            _tempDirectoryPath,
+            referencedScripts);
 
         processedContent.Should().BeEquivalentTo(string.Empty);
     }
@@ -25,12 +31,19 @@ public sealed class ScriptPreProcessorShould : IDisposable
         var processor = new ScriptPreProcessor();
         const string code = @"Console.Writeline(""Hello World!"");";
         await CreateScriptFile(code);
-        var processedContent = await processor.PrepareScript(_scriptPath, await File.ReadAllTextAsync(_scriptPath));
+        List<string> referencedScripts = [];
+        var processedContent = await processor.PrepareScript(
+            _scriptPath,
+            await File.ReadAllTextAsync(_scriptPath),
+            _tempDirectoryPath,
+            _tempDirectoryPath,
+            referencedScripts);
 
         processedContent.Should().BeEquivalentTo(code);
     }
 
     [MemberNotNull(nameof(_scriptPath))]
+    [MemberNotNull(nameof(_tempDirectoryPath))]
     private async Task CreateScriptFile(string content, string fileName = "")
     {
         if (_tempDirectoryPath is null || _tempDirectoryPath.Equals(string.Empty))

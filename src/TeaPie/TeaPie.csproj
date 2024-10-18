@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="NuGet.Protocol" />
   </ItemGroup>
 

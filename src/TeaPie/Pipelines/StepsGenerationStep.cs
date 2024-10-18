@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using TeaPie.Pipelines.Application;
+﻿using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration;
@@ -8,15 +7,15 @@ namespace TeaPie.Pipelines;
 
 internal sealed class StepsGenerationStep : IPipelineStep
 {
-    private readonly ApplicationPipeline _pipeline;
+    private readonly IPipeline _pipeline;
     private readonly IServiceProvider _serviceProvider;
-    private StepsGenerationStep(ApplicationPipeline pipeline, IServiceProvider serviceProvider)
+    private StepsGenerationStep(IPipeline pipeline, IServiceProvider serviceProvider)
     {
         _pipeline = pipeline;
         _serviceProvider = serviceProvider;
     }
 
-    public static StepsGenerationStep Create(ApplicationPipeline pipeline, IServiceProvider serviceProvider)
+    public static StepsGenerationStep Create(IPipeline pipeline, IServiceProvider serviceProvider)
         => new(pipeline, serviceProvider);
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
@@ -45,8 +44,7 @@ internal sealed class StepsGenerationStep : IPipelineStep
         var scriptExecutionContext = new ScriptExecutionContext(preReqScript);
         newSteps.Add(ReadScriptStep.Create(scriptExecutionContext));
         newSteps.Add(
-            PreProcessScriptStep.Create(scriptExecutionContext, _serviceProvider.GetRequiredService<IScriptPreProcessor>()));
-        newSteps.Add(StoreScriptStep.Create(scriptExecutionContext));
-        // newSteps.Add(CompileScriptStep.Create(scriptExecutionContext, _serviceProvider.GetRequiredService<IScriptCompiler>()));
+            PreProcessScriptStep.Create(_pipeline, scriptExecutionContext, _serviceProvider));
+        newSteps.Add(SaveTempScriptStep.Create(scriptExecutionContext));
     }
 }

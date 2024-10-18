@@ -3,16 +3,16 @@ using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
 
-internal sealed class StoreScriptStep : IPipelineStep
+internal sealed class SaveTempScriptStep : IPipelineStep
 {
     private readonly ScriptExecutionContext _script;
 
-    private StoreScriptStep(ScriptExecutionContext script)
+    private SaveTempScriptStep(ScriptExecutionContext script)
     {
         _script = script;
     }
 
-    public static StoreScriptStep Create(ScriptExecutionContext script) => new(script);
+    public static SaveTempScriptStep Create(ScriptExecutionContext script) => new(script);
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -33,5 +33,6 @@ internal sealed class StoreScriptStep : IPipelineStep
         }
 
         await File.WriteAllTextAsync(tmpPath, _script.ProcessedContent, cancellationToken);
+        _script.TemporaryPath = tmpPath;
     }
 }

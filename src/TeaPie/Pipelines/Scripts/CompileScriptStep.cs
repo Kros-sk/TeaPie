@@ -1,4 +1,5 @@
-﻿using TeaPie.Pipelines.Application;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
@@ -14,8 +15,8 @@ internal sealed class CompileScriptStep : IPipelineStep
         _compiler = scriptCompiler;
     }
 
-    public static CompileScriptStep Create(ScriptExecutionContext scriptExecution, IScriptCompiler scriptCompiler)
-        => new(scriptExecution, scriptCompiler);
+    public static CompileScriptStep Create(ScriptExecutionContext scriptExecution, IServiceProvider serviceProvider)
+        => new(scriptExecution, serviceProvider.GetRequiredService<IScriptCompiler>());
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {

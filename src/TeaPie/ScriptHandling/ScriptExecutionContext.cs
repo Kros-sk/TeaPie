@@ -6,8 +6,9 @@ namespace TeaPie.ScriptHandling;
 internal class ScriptExecutionContext(StructureExploration.Script script)
 {
     public StructureExploration.Script Script { get; set; } = script;
-    internal string? RawContent { get; set; }
-    internal string? ProcessedContent { get; set; }
-    internal Script<object>? ScriptObject { get; set; }
-    internal Compilation? Compilation { get; set; }
+    public string? TemporaryPath { get; set; }
+    public string? RawContent { get; set; }
+    public string? ProcessedContent { get; set; }
+    public Script<object>? ScriptObject { get; set; }
+    public Compilation? Compilation { get; set; }
 }
