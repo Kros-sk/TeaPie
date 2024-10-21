@@ -1,4 +1,6 @@
-﻿using TeaPie.Helpers;
+﻿using System.Text.RegularExpressions;
+using TeaPie.Helpers;
+using TeaPie.Parsing;
 
 namespace TeaPie.ScriptHandling;
 
@@ -12,7 +14,7 @@ internal interface IScriptPreProcessor
         List<string> referencedScripts);
 }
 
-internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : IScriptPreProcessor
+internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : IScriptPreProcessor
 {
     private List<string> _referencedScripts = [];
     private string _rootPath = string.Empty;
@@ -31,8 +33,8 @@ internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : I
         _tempFolderPath = tempFolderPath;
         _referencedScripts = referencedScripts;
 
-        var hasLoadDirectives = scriptContent.Contains(Constants.ReferenceScriptDirective);
-        var hasNugetDirectives = scriptContent.Contains(Constants.NugetDirectivePrefix);
+        var hasLoadDirectives = scriptContent.Contains(ParsingConstants.ReferenceScriptDirective);
+        var hasNugetDirectives = scriptContent.Contains(ParsingConstants.NugetDirective);
 
         if (hasLoadDirectives || hasNugetDirectives)
         {
@@ -46,7 +48,7 @@ internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : I
             if (hasNugetDirectives)
             {
                 await ResolveNugetDirectives(lines);
-                lines = lines.Where(x => x.Contains(Constants.NugetDirectivePrefix));
+                lines = lines.Where(x => x.Contains(ParsingConstants.NugetDirective));
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);
@@ -59,24 +61,7 @@ internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : I
         => lines.Select(line => ResolveLoadDirective(path, line));
 
     private string ResolveLoadDirective(string path, string line)
-    {
-        if (line.TrimStart().StartsWith(Constants.ReferenceScriptDirective))
-        {
-            var segments = line.Split(new[] { Constants.ReferenceScriptDirective }, 2, StringSplitOptions.None);
-            var realPath = segments[1].Trim();
-            realPath = realPath.Replace("\"", string.Empty);
-            realPath = ResolvePath(path, realPath);
-
-            var relativePath = realPath.TrimRootPath(_rootPath, true);
-            var tempPath = Path.Combine(_tempFolderPath, relativePath);
-
-            _referencedScripts?.Add(realPath);
-
-            return $"{Constants.ReferenceScriptDirective} \"{tempPath}\"";
-        }
-
-        return line;
-    }
+        => LoadReferenceRegex().IsMatch(line) ? ProcessLoadDirective(line, path) : line;
 
     private static string ResolvePath(string basePath, string relativePath)
     {
@@ -93,18 +78,46 @@ internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : I
 
         foreach (var line in lines)
         {
-            if (line.TrimStart().StartsWith(Constants.NugetDirectivePrefix))
+            if (NugetPackageRegex().IsMatch(line.Trim()))
             {
-                var packageInfo = line[Constants.NugetDirectivePrefix.Length..].Trim();
-                packageInfo = packageInfo.Replace("\"", string.Empty);
-                var parts = packageInfo.Split(',');
-                if (parts.Length == 2)
-                {
-                    nugetPackages.Add(new(parts[0].Trim(), parts[1].Trim()));
-                }
+                ProcessNugetPackage(line, nugetPackages);
             }
         }
 
         return nugetPackages;
     }
+
+    private string ProcessLoadDirective(string directive, string path)
+    {
+        var segments = directive.Split(new[] { ParsingConstants.ReferenceScriptDirective }, 2, StringSplitOptions.None);
+        var realPath = segments[1].Trim();
+        realPath = realPath.Replace("\"", string.Empty);
+        realPath = ResolvePath(path, realPath);
+
+        var relativePath = realPath.TrimRootPath(_rootPath, true);
+        var tempPath = Path.Combine(_tempFolderPath, relativePath);
+
+        _referencedScripts?.Add(realPath);
+
+        return $"{ParsingConstants.ReferenceScriptDirective} \"{tempPath}\"";
+    }
+
+    private static string ProcessNugetPackage(string directive, List<NugetPackageDescription> listOfNugetPackages)
+    {
+        var packageInfo = directive[ParsingConstants.NugetDirective.Length..].Trim();
+        packageInfo = packageInfo.Replace("\"", string.Empty);
+        var parts = packageInfo.Split(',');
+        if (parts.Length == 2)
+        {
+            listOfNugetPackages.Add(new(parts[0].Trim(), parts[1].Trim()));
+        }
+
+        return directive;
+    }
+
+    [GeneratedRegex(ParsingConstants.NugetDirectivePattern)]
+    private static partial Regex NugetPackageRegex();
+
+    [GeneratedRegex(ParsingConstants.ReferenceScriptDirective)]
+    private static partial Regex LoadReferenceRegex();
 }

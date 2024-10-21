@@ -12,9 +12,6 @@ internal static class Constants
     public const string RequestSuffix = "-req";
     public const string PostResponseSuffix = "-test";
 
-    public const string ReferenceScriptDirective = "#load";
-    public const string NugetDirectivePrefix = "#nuget";
-
     public const string NugetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
 
     public const string ApplicationName = "TeaPie";

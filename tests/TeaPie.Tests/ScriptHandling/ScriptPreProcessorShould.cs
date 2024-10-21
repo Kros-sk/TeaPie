@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
+using TeaPie.Exceptions;
+using TeaPie.Parsing;
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Tests.ScriptHandling;
@@ -9,14 +11,15 @@ public sealed class ScriptPreProcessorShould
 {
     private const string ScriptCode = "Console.WriteLine(\"Script executed!\");";
 
-    private const string ReferencedScriptLoadDirective = "#load \"..\\referencedScript.csx\"";
+    private const string ReferencedScriptLoadDirective =
+        ParsingConstants.ReferenceScriptDirective + "\"..\\" + ReferencedScriptRelativePath + "\"";
 
-    private const string NugetPackageDirective = "#nuget \"Newtonsoft.Json, 13.0.3\"";
+    private const string NugetPackageDirective = $"{ParsingConstants.NugetDirective} \"Newtonsoft.Json, 13.0.3\"";
 
     private const string RootFolderName = "root";
 
-    private const string ScriptRelativePath = "script.csx";
-    private const string ReferencedScriptRelativePath = "referencedScript.csx";
+    private const string ScriptRelativePath = "script" + Constants.ScriptFileExtension;
+    private const string ReferencedScriptRelativePath = "referencedScript" + Constants.ScriptFileExtension;
 
     private readonly string _tempDestinationFolderPath = Path.Combine(Path.GetTempPath(), "destination");
     private string? _tempSourceFolderPath;
@@ -77,7 +80,7 @@ public sealed class ScriptPreProcessorShould
             _tempDestinationFolderPath,
             referencedScripts);
 
-        var expectedDirective = $"{Constants.ReferenceScriptDirective} " +
+        var expectedDirective = $"{ParsingConstants.ReferenceScriptDirective} " +
             $"\"{Path.Combine(_tempDestinationFolderPath, RootFolderName, ReferencedScriptRelativePath)}\"" +
             $"{Environment.NewLine}";
 
@@ -98,7 +101,7 @@ public sealed class ScriptPreProcessorShould
         for (var i = 0; i < loadDirectives.Length; i++)
         {
             fileNames[i] = Path.GetRandomFileName() + Constants.ScriptFileExtension;
-            loadDirectives[i] = $"{Constants.ReferenceScriptDirective} \"..\\{fileNames[i]}\"";
+            loadDirectives[i] = $"{ParsingConstants.ReferenceScriptDirective} \"..\\{fileNames[i]}\"";
             loadDirectivesCode += loadDirectives[i] + Environment.NewLine;
         }
 
@@ -118,7 +121,7 @@ public sealed class ScriptPreProcessorShould
 
         for (var i = 0; i < loadDirectives.Length; i++)
         {
-            expectedLoadDirectives[i] = $"{Constants.ReferenceScriptDirective} " +
+            expectedLoadDirectives[i] = $"{ParsingConstants.ReferenceScriptDirective} " +
                 $"\"{Path.Combine(_tempDestinationFolderPath, RootFolderName, fileNames[i])}\"";
             expectedLoadDirectivesCode += expectedLoadDirectives[i] + Environment.NewLine;
         }
@@ -130,8 +133,20 @@ public sealed class ScriptPreProcessorShould
     [Fact]
     public async Task ScriptWithInvalidNugetDirectiveShouldBeHandledProperly()
     {
-        // TODO: Implement
-        await Task.CompletedTask;
+        var nugetHandler = new NugetPackageHandler();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        var code = $"{ParsingConstants.NugetDirective} \"{Guid.NewGuid()}, 22.0.2\"";
+
+        SetPaths();
+        List<string> referencedScripts = [];
+
+        await processor.Invoking(async processor => await processor.PrepareScript(
+            _scriptPath,
+            code,
+            _tempSourceFolderPath,
+            _tempDestinationFolderPath,
+            referencedScripts))
+            .Should().ThrowAsync<NugetPackageNotFoundException>();
     }
 
     [Fact]

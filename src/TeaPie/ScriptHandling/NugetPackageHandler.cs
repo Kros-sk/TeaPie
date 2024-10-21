@@ -4,6 +4,7 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using TeaPie.Exceptions;
 
 namespace TeaPie.ScriptHandling;
 
@@ -29,7 +30,7 @@ internal class NugetPackageHandler : INugetPackageHandler
         var cache = new SourceCacheContext();
         var repositories = Repository.Factory.GetCoreV3(Constants.NugetApiResourcesUrl);
 
-        var resource = await repositories.GetResourceAsync<FindPackageByIdResource>();
+        await repositories.GetResourceAsync<FindPackageByIdResource>();
         var packageVersion = new NuGetVersion(version);
         var dependencyInfoResource = await repositories.GetResourceAsync<DependencyInfoResource>();
         var dependencyInfo = await dependencyInfoResource.ResolvePackage(
@@ -37,14 +38,13 @@ internal class NugetPackageHandler : INugetPackageHandler
             FrameworkConstants.CommonFrameworks.NetStandard20,
             cache,
             logger,
-            CancellationToken.None);
+            CancellationToken.None)
+            ?? throw new NugetPackageNotFoundException(packageID, version);
 
         foreach (var dependency in dependencyInfo.Dependencies)
         {
-            // Get the dependency information
             var dependencyPackage = new PackageIdentity(dependency.Id, dependency.VersionRange.MinVersion);
 
-            // Resolve the package
             var resolvedDependency = await dependencyInfoResource.ResolvePackage(
                 dependencyPackage,
                 FrameworkConstants.CommonFrameworks.NetStandard20,
@@ -52,7 +52,6 @@ internal class NugetPackageHandler : INugetPackageHandler
                 logger,
                 CancellationToken.None);
 
-            // Download the resolved dependency
             await DownloadPackage(resolvedDependency, repositories, packagePath, cache, logger);
         }
 
@@ -64,6 +63,11 @@ internal class NugetPackageHandler : INugetPackageHandler
             packagePath,
             logger,
             CancellationToken.None);
+
+        if (downloadResult.Status == DownloadResourceResultStatus.NotFound)
+        {
+            throw new NugetPackageNotFoundException(packageID, version);
+        }
     }
 
     private async Task DownloadPackage(
@@ -82,7 +86,6 @@ internal class NugetPackageHandler : INugetPackageHandler
             logger,
             CancellationToken.None);
 
-        // Ensure the package is saved
         if (downloadResult.Status == DownloadResourceResultStatus.Available)
         {
             await using var packageStream = downloadResult.PackageStream;
