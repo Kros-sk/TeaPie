@@ -6,7 +6,7 @@ namespace TeaPie.Tests.StructureExploration;
 
 public class StructureExplorerShould : IDisposable
 {
-    //Testing file structure:
+    //Testing folder structure:
     //root/
     // ├── FirstFolder /
     // │   ├── FirstFolderInFirstFolder /
