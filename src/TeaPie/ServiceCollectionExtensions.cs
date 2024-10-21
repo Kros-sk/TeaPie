@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
         services.AddSingleton<IScriptPreProcessor, ScriptPreProcessor>();
         services.AddSingleton<IScriptCompiler, ScriptCompiler>();
+        services.AddSingleton<INugetPackageHandler, NugetPackageHandler>();
         return services;
     }
 }

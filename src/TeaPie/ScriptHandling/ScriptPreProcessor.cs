@@ -1,10 +1,4 @@
-﻿using NuGet.Common;
-using NuGet.Frameworks;
-using NuGet.Packaging.Core;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
-using TeaPie.Helpers;
+﻿using TeaPie.Helpers;
 
 namespace TeaPie.ScriptHandling;
 
@@ -18,11 +12,12 @@ internal interface IScriptPreProcessor
         List<string> referencedScripts);
 }
 
-internal class ScriptPreProcessor : IScriptPreProcessor
+internal class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : IScriptPreProcessor
 {
     private List<string> _referencedScripts = [];
     private string _rootPath = string.Empty;
     private string _tempFolderPath = string.Empty;
+    private readonly INugetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
 
     public async Task<string> PrepareScript(
         string path,
@@ -51,7 +46,7 @@ internal class ScriptPreProcessor : IScriptPreProcessor
             if (hasNugetDirectives)
             {
                 await ResolveNugetDirectives(lines);
-                lines = lines.Where(x => !x.Contains(Constants.NugetDirectivePrefix));
+                lines = lines.Where(x => x.Contains(Constants.NugetDirectivePrefix));
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);
@@ -70,7 +65,7 @@ internal class ScriptPreProcessor : IScriptPreProcessor
             var segments = line.Split(new[] { Constants.ReferenceScriptDirective }, 2, StringSplitOptions.None);
             var realPath = segments[1].Trim();
             realPath = realPath.Replace("\"", string.Empty);
-            realPath = ResolvePath(path!, realPath);
+            realPath = ResolvePath(path, realPath);
 
             var relativePath = realPath.TrimRootPath(_rootPath, true);
             var tempPath = Path.Combine(_tempFolderPath, relativePath);
@@ -90,16 +85,9 @@ internal class ScriptPreProcessor : IScriptPreProcessor
     }
 
     private async Task ResolveNugetDirectives(IEnumerable<string> lines)
-    {
-        var packagePath = $"{Environment.CurrentDirectory}/{Constants.DefaultNugetPackageFolderName}";
-        var nugetPackages = ProcessNugetPackages(lines!);
-        foreach (var package in nugetPackages)
-        {
-            await DownloadNuget(packagePath, package.PackageName!, package.Version!);
-        }
-    }
+        => await _nugetPackagesHandler.HandleNugetPackages(ProcessNugetPackagesDirectives(lines));
 
-    private static List<NugetPackageDescription> ProcessNugetPackages(IEnumerable<string> lines)
+    private static List<NugetPackageDescription> ProcessNugetPackagesDirectives(IEnumerable<string> lines)
     {
         var nugetPackages = new List<NugetPackageDescription>();
 
@@ -118,81 +106,5 @@ internal class ScriptPreProcessor : IScriptPreProcessor
         }
 
         return nugetPackages;
-    }
-
-    private async Task DownloadNuget(string packagePath, string packageID, string version)
-    {
-        var logger = NullLogger.Instance;
-        var cache = new SourceCacheContext();
-        var repositories = Repository.Factory.GetCoreV3(Constants.NugetApiResourcesUrl);
-
-        var resource = await repositories.GetResourceAsync<FindPackageByIdResource>();
-        var packageVersion = new NuGetVersion(version);
-        var dependencyInfoResource = await repositories.GetResourceAsync<DependencyInfoResource>();
-        var dependencyInfo = await dependencyInfoResource.ResolvePackage(
-            new PackageIdentity(packageID, packageVersion),
-            FrameworkConstants.CommonFrameworks.NetStandard20,
-            cache,
-            logger,
-            CancellationToken.None);
-
-        foreach (var dependency in dependencyInfo.Dependencies)
-        {
-            // Get the dependency information
-            var dependencyPackage = new PackageIdentity(dependency.Id, dependency.VersionRange.MinVersion);
-
-            // Resolve the package
-            var resolvedDependency = await dependencyInfoResource.ResolvePackage(
-                dependencyPackage,
-                FrameworkConstants.CommonFrameworks.NetStandard20,
-                cache,
-                logger,
-                CancellationToken.None);
-
-            // Download the resolved dependency
-            await DownloadPackage(resolvedDependency, repositories, packagePath, cache, logger);
-        }
-
-        var packageDownloadContext = new PackageDownloadContext(cache);
-        var downloadResource = await repositories.GetResourceAsync<DownloadResource>();
-        var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
-            new PackageIdentity(packageID, packageVersion),
-            packageDownloadContext,
-            packagePath,
-            logger,
-            CancellationToken.None);
-    }
-
-    private async Task DownloadPackage(
-        PackageDependencyInfo dependencyInfo,
-        SourceRepository repositories,
-        string packagePath,
-        SourceCacheContext cache,
-        ILogger logger)
-    {
-        var packageDownloadContext = new PackageDownloadContext(cache);
-        var downloadResource = await repositories.GetResourceAsync<DownloadResource>();
-        var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
-            new PackageIdentity(dependencyInfo.Id, dependencyInfo.Version),
-            packageDownloadContext,
-            packagePath,
-            logger,
-            CancellationToken.None);
-
-        // Ensure the package is saved
-        if (downloadResult.Status == DownloadResourceResultStatus.Available)
-        {
-            await using var packageStream = downloadResult.PackageStream;
-            var packageFilePath = Path.Combine(packagePath,
-                $"{dependencyInfo.Id}.{dependencyInfo.Version}{Constants.NugetPackageFileExtension}");
-            await using var fileStream = new FileStream(packageFilePath, FileMode.Create, FileAccess.Write);
-            await packageStream.CopyToAsync(fileStream);
-        }
-    }
-
-    private class NugetPackageDescription(string packageName, string version)
-    {
-        public string PackageName { get; set; } = packageName;
-        public string Version { get; set; } = version;
     }
 }

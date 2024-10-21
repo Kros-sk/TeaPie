@@ -1,18 +1,17 @@
 ﻿using FluentAssertions;
+using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Tests.ScriptHandling;
 
-public sealed class ScriptPreProcessorShould : IDisposable
+public sealed class ScriptPreProcessorShould
 {
-    private const string ScriptCode = """
-Console.WriteLine("Script executed!");
-""";
+    private const string ScriptCode = "Console.WriteLine(\"Script executed!\");";
 
-    private const string ReferencedScriptLoadDirective = """
-#load "..\referencedScript.csx"
-""";
+    private const string ReferencedScriptLoadDirective = "#load \"..\\referencedScript.csx\"";
+
+    private const string NugetPackageDirective = "#nuget \"Newtonsoft.Json, 13.0.3\"";
 
     private const string RootFolderName = "root";
 
@@ -26,12 +25,12 @@ Console.WriteLine("Script executed!");
     [Fact]
     public async Task EmptyScriptFileShouldNotCauseProblem()
     {
-        var processor = new ScriptPreProcessor();
-        await CreateScriptFile(string.Empty);
+        var processor = CreateScriptPreProcessor();
+        SetPaths();
         List<string> referencedScripts = [];
         var processedContent = await processor.PrepareScript(
             _scriptPath,
-            await File.ReadAllTextAsync(_scriptPath),
+            string.Empty,
             _tempSourceFolderPath,
             _tempDestinationFolderPath,
             referencedScripts);
@@ -39,15 +38,20 @@ Console.WriteLine("Script executed!");
         processedContent.Should().BeEquivalentTo(string.Empty);
     }
 
+    private static ScriptPreProcessor CreateScriptPreProcessor(INugetPackageHandler? nugetPackageHandler = null)
+        => nugetPackageHandler is null
+            ? new(Substitute.For<INugetPackageHandler>())
+            : new(nugetPackageHandler);
+
     [Fact]
     public async Task ScriptWithoutAnyDirectivesShouldRemainTheSame()
     {
-        var processor = new ScriptPreProcessor();
-        await CreateScriptFile(ScriptCode);
+        var processor = CreateScriptPreProcessor();
+        SetPaths();
         List<string> referencedScripts = [];
         var processedContent = await processor.PrepareScript(
             _scriptPath,
-            await File.ReadAllTextAsync(_scriptPath),
+            ScriptCode,
             _tempSourceFolderPath,
             _tempDestinationFolderPath,
             referencedScripts);
@@ -56,19 +60,19 @@ Console.WriteLine("Script executed!");
     }
 
     [Fact]
-    public async Task ScriptWithOneDirectiveShouldBeResolvedCorrectly()
+    public async Task ScriptWithOneLoadDirectiveShouldBeResolvedCorrectly()
     {
-        var processor = new ScriptPreProcessor();
+        var processor = CreateScriptPreProcessor();
         var directive = ReferencedScriptLoadDirective + Environment.NewLine;
         var codeWithoutDirective = ScriptCode + Environment.NewLine;
 
         var code = directive + codeWithoutDirective;
 
-        await CreateScriptFile(code);
+        SetPaths();
         List<string> referencedScripts = [];
         var processedContent = await processor.PrepareScript(
             _scriptPath,
-            await File.ReadAllTextAsync(_scriptPath),
+            code,
             _tempSourceFolderPath,
             _tempDestinationFolderPath,
             referencedScripts);
@@ -83,9 +87,9 @@ Console.WriteLine("Script executed!");
     }
 
     [Fact]
-    public async Task ScriptWithMultipleDirectivesShouldBeResolvedCorrectly()
+    public async Task ScriptWithMultipleLoadDirectivesShouldBeResolvedCorrectly()
     {
-        var processor = new ScriptPreProcessor();
+        var processor = CreateScriptPreProcessor();
         const int numberOfDirectives = 10;
         var loadDirectives = new string[numberOfDirectives];
         var fileNames = new string[numberOfDirectives];
@@ -100,11 +104,11 @@ Console.WriteLine("Script executed!");
 
         var code = loadDirectivesCode + ScriptCode;
 
-        await CreateScriptFile(code);
+        SetPaths();
         List<string> referencedScripts = [];
         var processedContent = await processor.PrepareScript(
             _scriptPath,
-            await File.ReadAllTextAsync(_scriptPath),
+            code,
             _tempSourceFolderPath,
             _tempDestinationFolderPath,
             referencedScripts);
@@ -120,36 +124,46 @@ Console.WriteLine("Script executed!");
         }
 
         referencedScripts.Should().HaveCount(numberOfDirectives);
-
         processedContent.Should().BeEquivalentTo(expectedLoadDirectivesCode + ScriptCode);
     }
 
-    /// <summary>
-    /// If doesn't exist, creates temporary folder with randomly generated name, to which root folder is placed. The script
-    /// with the specified name is then created within root folder.
-    /// </summary>
-    /// <param name="content">Content of the script file.</param>
-    /// <returns>Task - asynchronous method.</returns>
+    [Fact]
+    public async Task ScriptWithInvalidNugetDirectiveShouldBeHandledProperly()
+    {
+        // TODO: Implement
+        await Task.CompletedTask;
+    }
+
+    [Fact]
+    public async Task ScriptWithOneNugetDirectiveShouldBeHandledProperly()
+    {
+        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        var code = NugetPackageDirective + Environment.NewLine + ScriptCode;
+        List<string> referencedScripts = [];
+
+        SetPaths();
+
+        await processor.PrepareScript(
+            _scriptPath,
+            code,
+            _tempSourceFolderPath,
+            _tempDestinationFolderPath,
+            referencedScripts);
+
+        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+    }
+
     [MemberNotNull(nameof(_scriptPath))]
     [MemberNotNull(nameof(_tempSourceFolderPath))]
-    private async Task CreateScriptFile(string content)
+    private void SetPaths()
     {
         if (_tempSourceFolderPath?.Equals(string.Empty) != false)
         {
-            var tmpFolder = Directory.CreateTempSubdirectory().FullName;
-            _tempSourceFolderPath = Path.Combine(tmpFolder, RootFolderName);
-            Directory.CreateDirectory(_tempSourceFolderPath);
+            var tmpFolder = Path.GetRandomFileName();
+            _tempSourceFolderPath = Path.Combine(Path.GetTempFileName(), tmpFolder, RootFolderName);
         }
 
         _scriptPath = Path.Combine(_tempSourceFolderPath, ScriptRelativePath);
-        await File.WriteAllTextAsync(_scriptPath, content);
-    }
-
-    public void Dispose()
-    {
-        if (!string.IsNullOrEmpty(_tempSourceFolderPath) && Directory.Exists(_tempSourceFolderPath))
-        {
-            Directory.Delete(_tempSourceFolderPath, true);
-        }
     }
 }
