@@ -12,4 +12,106 @@
     <ProjectReference Include="..\..\src\TeaPie\TeaPie.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Demo\AZeroLevelTest-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\AZeroLevelTest-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\AZeroLevelTest-test.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\EmptyFolder\.placeholder">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Seed.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\Test1.2.1-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\Test1.2.2-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\plainScript.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\emptyScript.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\Nested\first.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\Nested\second.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithMultipleLoadAndNugetDirectives.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithMultipleNugetDirectives.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithNonExistingScriptLoadDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithMultipleLoadDirectives.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithOneLoadDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithInvalidNugetDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithOneNugetDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\TheZeroLevelTest-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\TheZeroLevelTest-test.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\ThirdFolder\FirstFolderInThirdFolder\FFinFFinTF\.placeholder">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\ThirdFolder\SecondFolderInThirdFolder\.placeholder">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\TheZeroLevelTest-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\ZeroLevelTest-init.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\ZeroLevelTest-req.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\ZeroLevelTest-test.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

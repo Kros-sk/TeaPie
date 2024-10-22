@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NSubstitute;
-using System.Diagnostics.CodeAnalysis;
 using TeaPie.Exceptions;
 using TeaPie.Parsing;
 using TeaPie.ScriptHandling;
@@ -9,142 +8,149 @@ namespace TeaPie.Tests.ScriptHandling;
 
 public sealed class ScriptPreProcessorShould
 {
-    private const string ScriptCode = "Console.WriteLine(\"Script executed!\");";
+    private const string RootFolderName = "Demo";
+    private const string RootSubFolder = "Scripts";
+    private static readonly string _rootFolderPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
 
-    private const string ReferencedScriptLoadDirective =
-        ParsingConstants.ReferenceScriptDirective + "\"..\\" + ReferencedScriptRelativePath + "\"";
+    private static readonly string _rootSubFolderPath =
+        Path.Combine(Environment.CurrentDirectory, RootFolderName, RootSubFolder);
 
-    private const string NugetPackageDirective = $"{ParsingConstants.NugetDirective} \"Newtonsoft.Json, 13.0.3\"";
+    private readonly string _emptyScriptPath =
+        Path.Combine(_rootSubFolderPath, $"emptyScript{Constants.ScriptFileExtension}");
 
-    private const string RootFolderName = "root";
+    private readonly string _plainScriptPath =
+        Path.Combine(_rootSubFolderPath, $"plainScript{Constants.ScriptFileExtension}");
 
-    private const string ScriptRelativePath = "script" + Constants.ScriptFileExtension;
-    private const string ReferencedScriptRelativePath = "referencedScript" + Constants.ScriptFileExtension;
+    private readonly string _scriptWithNonExistingScriptLoadDirectivePath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithNonExistingScriptLoadDirective{Constants.ScriptFileExtension}");
 
-    private readonly string _tempDestinationFolderPath = Path.Combine(Path.GetTempPath(), "destination");
-    private string? _tempSourceFolderPath;
-    private string? _scriptPath;
+    private readonly string _scriptWithOneLoadDirectivePath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithOneLoadDirective{Constants.ScriptFileExtension}");
+
+    private readonly string _scriptWithMultipleLoadDirectives =
+        Path.Combine(_rootSubFolderPath, $"scriptWithMultipleLoadDirectives{Constants.ScriptFileExtension}");
+
+    private readonly string _scriptWithInvalidNugetDirectivePath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithInvalidNugetDirective{Constants.ScriptFileExtension}");
+
+    private readonly string _scriptWithOneNugetDirectivePath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithOneNugetDirective{Constants.ScriptFileExtension}");
+
+    private readonly string _scriptWithMultipleNugetDirectivesPath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithMultipleNugetDirectives{Constants.ScriptFileExtension}");
+
+    private readonly string _scriptWithMultipleLoadAndNugetDirectivesPath =
+        Path.Combine(_rootSubFolderPath, $"scriptWithMultipleLoadAndNugetDirectives{Constants.ScriptFileExtension}");
+
+    private readonly string _tempFolderPath = Path.Combine(Path.GetTempPath(), Constants.ApplicationName);
 
     [Fact]
     public async Task EmptyScriptFileShouldNotCauseProblem()
     {
         var processor = CreateScriptPreProcessor();
-        SetPaths();
         List<string> referencedScripts = [];
-        var processedContent = await processor.PrepareScript(
-            _scriptPath,
-            string.Empty,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+        var processedContent = await processor.ProcessScript(
+            _emptyScriptPath,
+            await File.ReadAllTextAsync(_emptyScriptPath),
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts);
 
         processedContent.Should().BeEquivalentTo(string.Empty);
     }
 
-    private static ScriptPreProcessor CreateScriptPreProcessor(INugetPackageHandler? nugetPackageHandler = null)
-        => nugetPackageHandler is null
-            ? new(Substitute.For<INugetPackageHandler>())
-            : new(nugetPackageHandler);
-
     [Fact]
     public async Task ScriptWithoutAnyDirectivesShouldRemainTheSame()
     {
         var processor = CreateScriptPreProcessor();
-        SetPaths();
         List<string> referencedScripts = [];
-        var processedContent = await processor.PrepareScript(
-            _scriptPath,
-            ScriptCode,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+        var content = await File.ReadAllTextAsync(_plainScriptPath);
+
+        var processedContent = await processor.ProcessScript(
+            _plainScriptPath,
+            content,
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts);
 
-        processedContent.Should().BeEquivalentTo(ScriptCode);
+        processedContent.Should().BeEquivalentTo(content);
+    }
+
+    [Fact]
+    public async Task ScriptWithNonExistingScriptReferenceShouldThrowException()
+    {
+        var processor = CreateScriptPreProcessor();
+        List<string> referencedScripts = [];
+
+        await processor.Invoking(async processor => await processor.ProcessScript(
+            _scriptWithNonExistingScriptLoadDirectivePath,
+            await File.ReadAllTextAsync(_scriptWithNonExistingScriptLoadDirectivePath),
+            _rootFolderPath,
+            _tempFolderPath,
+            referencedScripts))
+            .Should().ThrowAsync<FileNotFoundException>();
     }
 
     [Fact]
     public async Task ScriptWithOneLoadDirectiveShouldBeResolvedCorrectly()
     {
         var processor = CreateScriptPreProcessor();
-        var directive = ReferencedScriptLoadDirective + Environment.NewLine;
-        var codeWithoutDirective = ScriptCode + Environment.NewLine;
 
-        var code = directive + codeWithoutDirective;
-
-        SetPaths();
         List<string> referencedScripts = [];
-        var processedContent = await processor.PrepareScript(
-            _scriptPath,
-            code,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+
+        var content = await File.ReadAllLinesAsync(_scriptWithOneLoadDirectivePath);
+
+        var processedContent = await processor.ProcessScript(
+            _scriptWithOneLoadDirectivePath,
+            string.Join(Environment.NewLine, content),
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts);
 
-        var expectedDirective = $"{ParsingConstants.ReferenceScriptDirective} " +
-            $"\"{Path.Combine(_tempDestinationFolderPath, RootFolderName, ReferencedScriptRelativePath)}\"" +
-            $"{Environment.NewLine}";
+        var contentWithoutDirective = string.Join(Environment.NewLine, content[1..]);
 
         referencedScripts.Should().HaveCount(1);
 
-        processedContent.Should().BeEquivalentTo(expectedDirective + codeWithoutDirective);
+        var expectedDirective = GetExpectedDirectives("init")[0];
+
+        processedContent.Should().Contain(expectedDirective + Environment.NewLine + contentWithoutDirective);
     }
 
     [Fact]
     public async Task ScriptWithMultipleLoadDirectivesShouldBeResolvedCorrectly()
     {
         var processor = CreateScriptPreProcessor();
-        const int numberOfDirectives = 10;
-        var loadDirectives = new string[numberOfDirectives];
-        var fileNames = new string[numberOfDirectives];
-        var loadDirectivesCode = string.Empty;
+        const int numberOfDirectives = 3;
 
-        for (var i = 0; i < loadDirectives.Length; i++)
-        {
-            fileNames[i] = Path.GetRandomFileName() + Constants.ScriptFileExtension;
-            loadDirectives[i] = $"{ParsingConstants.ReferenceScriptDirective} \"..\\{fileNames[i]}\"";
-            loadDirectivesCode += loadDirectives[i] + Environment.NewLine;
-        }
-
-        var code = loadDirectivesCode + ScriptCode;
-
-        SetPaths();
         List<string> referencedScripts = [];
-        var processedContent = await processor.PrepareScript(
-            _scriptPath,
-            code,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+        var processedContent = await processor.ProcessScript(
+            _scriptWithMultipleLoadDirectives,
+            await File.ReadAllTextAsync(_scriptWithMultipleLoadDirectives),
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts);
 
-        var expectedLoadDirectives = new string[numberOfDirectives];
-        var expectedLoadDirectivesCode = string.Empty;
-
-        for (var i = 0; i < loadDirectives.Length; i++)
-        {
-            expectedLoadDirectives[i] = $"{ParsingConstants.ReferenceScriptDirective} " +
-                $"\"{Path.Combine(_tempDestinationFolderPath, RootFolderName, fileNames[i])}\"";
-            expectedLoadDirectivesCode += expectedLoadDirectives[i] + Environment.NewLine;
-        }
+        var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
+        var expectedDirectives = string.Join(Environment.NewLine,
+            GetExpectedDirectives("init", "Nested\\first", "Nested\\second"));
 
         referencedScripts.Should().HaveCount(numberOfDirectives);
-        processedContent.Should().BeEquivalentTo(expectedLoadDirectivesCode + ScriptCode);
+        processedContent.Should().Contain(expectedDirectives);
     }
 
     [Fact]
-    public async Task ScriptWithInvalidNugetDirectiveShouldBeHandledProperly()
+    public async Task ScriptWithInvalidNugetDirectiveShouldThrowException()
     {
         var nugetHandler = new NugetPackageHandler();
         var processor = CreateScriptPreProcessor(nugetHandler);
-        var code = $"{ParsingConstants.NugetDirective} \"{Guid.NewGuid()}, 22.0.2\"";
 
-        SetPaths();
         List<string> referencedScripts = [];
 
-        await processor.Invoking(async processor => await processor.PrepareScript(
-            _scriptPath,
-            code,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+        await processor.Invoking(async processor => await processor.ProcessScript(
+            _scriptWithInvalidNugetDirectivePath,
+            await File.ReadAllTextAsync(_scriptWithInvalidNugetDirectivePath),
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts))
             .Should().ThrowAsync<NugetPackageNotFoundException>();
     }
@@ -154,31 +160,77 @@ public sealed class ScriptPreProcessorShould
     {
         var nugetHandler = Substitute.For<INugetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
-        var code = NugetPackageDirective + Environment.NewLine + ScriptCode;
         List<string> referencedScripts = [];
 
-        SetPaths();
-
-        await processor.PrepareScript(
-            _scriptPath,
-            code,
-            _tempSourceFolderPath,
-            _tempDestinationFolderPath,
+        var processedContent = await processor.ProcessScript(
+            _scriptWithOneNugetDirectivePath,
+            await File.ReadAllTextAsync(_scriptWithOneNugetDirectivePath),
+            _rootFolderPath,
+            _tempFolderPath,
             referencedScripts);
 
         await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
     }
 
-    [MemberNotNull(nameof(_scriptPath))]
-    [MemberNotNull(nameof(_tempSourceFolderPath))]
-    private void SetPaths()
+    [Fact]
+    public async Task ScriptWithMultipleNugetDirectivesShouldBeHandledProperly()
     {
-        if (_tempSourceFolderPath?.Equals(string.Empty) != false)
+        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        List<string> referencedScripts = [];
+
+        var processedContent = await processor.ProcessScript(
+            _scriptWithMultipleNugetDirectivesPath,
+            await File.ReadAllTextAsync(_scriptWithMultipleNugetDirectivesPath),
+            _rootFolderPath,
+            _tempFolderPath,
+            referencedScripts);
+
+        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+    }
+
+    [Fact]
+    public async Task ScriptWithMultipleLoadAndNugetDirectivesShouldBeHandledProperly()
+    {
+        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        const int numberOfLoadDirectives = 3;
+        List<string> referencedScripts = [];
+
+        var processedContent = await processor.ProcessScript(
+            _scriptWithMultipleLoadAndNugetDirectivesPath,
+            await File.ReadAllTextAsync(_scriptWithMultipleLoadAndNugetDirectivesPath),
+            _rootFolderPath,
+            _tempFolderPath,
+            referencedScripts);
+
+        var expectedLoadDirectives = string.Join(Environment.NewLine,
+            GetExpectedDirectives("init", "Nested\\first", "Nested\\second"));
+
+        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+
+        referencedScripts.Should().HaveCount(numberOfLoadDirectives);
+        processedContent.Should().Contain(expectedLoadDirectives);
+    }
+
+    private List<string> GetExpectedDirectives(params string[] names)
+    {
+        List<string> list = [];
+        var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
+
+        for (var i = 0; i < names.Length; i++)
         {
-            var tmpFolder = Path.GetRandomFileName();
-            _tempSourceFolderPath = Path.Combine(Path.GetTempFileName(), tmpFolder, RootFolderName);
+            list.Add($"{ParsingConstants.ReferenceScriptDirective} \"{tmpBasePath}\\{names[i]}{Constants.ScriptFileExtension}\"");
         }
 
-        _scriptPath = Path.Combine(_tempSourceFolderPath, ScriptRelativePath);
+        return list;
     }
+
+    private static ScriptPreProcessor CreateScriptPreProcessor(INugetPackageHandler? nugetPackageHandler = null)
+    => nugetPackageHandler is null
+        ? new(Substitute.For<INugetPackageHandler>())
+        : new(nugetPackageHandler);
 }

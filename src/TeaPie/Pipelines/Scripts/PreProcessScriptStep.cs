@@ -41,7 +41,7 @@ internal sealed class PreProcessScriptStep : IPipelineStep
         var referencedScriptsPaths = new List<string>();
 
         _scriptExecution.ProcessedContent =
-            await _scriptPreProcessor.PrepareScript(
+            await _scriptPreProcessor.ProcessScript(
                 _scriptExecution.Script.File.Path,
                 _scriptExecution.RawContent,
                 context.Path,

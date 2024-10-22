@@ -6,7 +6,7 @@ namespace TeaPie.ScriptHandling;
 
 internal interface IScriptPreProcessor
 {
-    public Task<string> PrepareScript(
+    public Task<string> ProcessScript(
         string path,
         string scriptContent,
         string rootPath,
@@ -21,7 +21,7 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
     private string _tempFolderPath = string.Empty;
     private readonly INugetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
 
-    public async Task<string> PrepareScript(
+    public async Task<string> ProcessScript(
         string path,
         string scriptContent,
         string rootPath,
@@ -48,7 +48,7 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
             if (hasNugetDirectives)
             {
                 await ResolveNugetDirectives(lines);
-                lines = lines.Where(x => x.Contains(ParsingConstants.NugetDirective));
+                lines = lines.Where(x => !x.Contains(ParsingConstants.NugetDirective));
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);
@@ -93,6 +93,11 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         var realPath = segments[1].Trim();
         realPath = realPath.Replace("\"", string.Empty);
         realPath = ResolvePath(path, realPath);
+
+        if (!File.Exists(realPath))
+        {
+            throw new FileNotFoundException($"Referenced script on path '{realPath}' was not found");
+        }
 
         var relativePath = realPath.TrimRootPath(_rootPath, true);
         var tempPath = Path.Combine(_tempFolderPath, relativePath);
