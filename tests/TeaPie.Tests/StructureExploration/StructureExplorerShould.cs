@@ -52,7 +52,9 @@ public class StructureExplorerShould
         }
         else
         {
-            structureExplorer.Invoking(se => se.ExploreFileSystem($"C:\\{Guid.NewGuid()}-Invalid-{Guid.NewGuid()}"))
+            structureExplorer.Invoking(se =>
+                se.ExploreFileSystem(
+                    $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}"))
                 .Should().Throw<DirectoryNotFoundException>();
         }
     }

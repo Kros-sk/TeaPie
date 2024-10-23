@@ -106,7 +106,12 @@ public sealed class ScriptPreProcessorShould
     {
         var processor = CreateScriptPreProcessor();
         const int numberOfDirectives = 3;
-        var scriptRelativePathsWithoutFileExtensions = new string[] { "init", "Nested\\first", "Nested\\second" };
+        var scriptRelativePathsWithoutFileExtensions = new string[]
+        {
+            "init",
+            $"Nested{Path.DirectorySeparatorChar}first",
+            $"Nested{Path.DirectorySeparatorChar}second"
+        };
 
         List<string> referencedScripts = [];
         var processedContent = await PreProcessScript(processor, _scriptWithMultipleLoadDirectives, referencedScripts);
@@ -172,7 +177,12 @@ public sealed class ScriptPreProcessorShould
     {
         var nugetHandler = Substitute.For<INugetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
-        var scriptRelativePathsWithoutFileExtensions = new string[] { "init", "Nested\\first", "Nested\\second" };
+        var scriptRelativePathsWithoutFileExtensions = new string[]
+        {
+            "init",
+            $"Nested{Path.DirectorySeparatorChar}first",
+            $"Nested{Path.DirectorySeparatorChar}second"
+        };
         const int numberOfLoadDirectives = 3;
         List<string> referencedScripts = [];
 
@@ -211,7 +221,8 @@ public sealed class ScriptPreProcessorShould
 
         for (var i = 0; i < names.Length; i++)
         {
-            list.Add($"{ParsingConstants.LoadScriptDirective} \"{tmpBasePath}\\{names[i]}{Constants.ScriptFileExtension}\"");
+            list.Add($"{ParsingConstants.LoadScriptDirective} " +
+                $"\"{tmpBasePath}{Path.DirectorySeparatorChar}{names[i]}{Constants.ScriptFileExtension}\"");
         }
 
         return list;
