@@ -62,11 +62,16 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
 
     private void CheckAndRegisterReferencedScripts(IEnumerable<string> referencedScriptsDirectives)
     {
-        foreach (var directive in referencedScriptsDirectives)
+        foreach (var scriptPath in referencedScriptsDirectives)
         {
-            var tempPath = GetPathFromLoadDirective(directive);
+            var tempPath = GetPathFromLoadDirective(scriptPath);
+            Console.WriteLine("Temporary path: " + tempPath);
+
             var realPath = tempPath.TrimRootPath(_tempFolderPath, false);
+            Console.WriteLine("Relative path: " + realPath);
             realPath = _rootPath.MergeWith(realPath);
+
+            Console.WriteLine("Real path: " + realPath);
 
             if (!File.Exists(realPath))
             {
