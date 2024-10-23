@@ -45,9 +45,9 @@ internal static class PathHelper
         if (overlapIndex >= 0)
         {
             var mergedSegments = path1Segments.Concat(path2Segments.Skip(overlapIndex + 1));
-            return Path.Combine(mergedSegments.ToArray());
+            return Path.GetFullPath(Path.Combine(mergedSegments.ToArray()));
         }
 
-        return Path.Combine(path1, path2);
+        return Path.GetFullPath(Path.Combine(path1, path2));
     }
 }

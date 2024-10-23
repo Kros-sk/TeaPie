@@ -33,8 +33,6 @@ jobs:
 
     - name: List Files
       run: ls -R
-    - name: Check Specific File
-      run: ls <path-to-file>
 
     # Run unit tests
     - name: Run Unit tests
