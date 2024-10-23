@@ -114,13 +114,11 @@ public sealed class ScriptPreProcessorShould
         var expectedDirectives =
             string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
 
-        var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
-
         referencedScripts.Should().HaveCount(numberOfDirectives);
 
         foreach (var path in scriptRelativePathsWithoutFileExtensions)
         {
-            referencedScripts.Should().Contain(Path.Join(tmpBasePath, path + Constants.ScriptFileExtension));
+            referencedScripts.Should().Contain(Path.Join(_rootSubFolderPath, path + Constants.ScriptFileExtension));
         }
 
         processedContent.Should().Contain(expectedDirectives);
@@ -187,13 +185,11 @@ public sealed class ScriptPreProcessorShould
         referencedScripts.Should().HaveCount(numberOfLoadDirectives);
         processedContent.Should().Contain(expectedLoadDirectives);
 
-        var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
-
         referencedScripts.Should().HaveCount(numberOfLoadDirectives);
 
         foreach (var path in scriptRelativePathsWithoutFileExtensions)
         {
-            referencedScripts.Should().Contain(Path.Join(tmpBasePath, path + Constants.ScriptFileExtension));
+            referencedScripts.Should().Contain(Path.Combine(_rootSubFolderPath, path + Constants.ScriptFileExtension));
         }
 
         await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
@@ -222,7 +218,7 @@ public sealed class ScriptPreProcessorShould
     }
 
     private static ScriptPreProcessor CreateScriptPreProcessor(INugetPackageHandler? nugetPackageHandler = null)
-    => nugetPackageHandler is null
-        ? new(Substitute.For<INugetPackageHandler>())
-        : new(nugetPackageHandler);
+        => nugetPackageHandler is null
+            ? new(Substitute.For<INugetPackageHandler>())
+            : new(nugetPackageHandler);
 }

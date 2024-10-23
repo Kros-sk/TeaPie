@@ -61,7 +61,8 @@ internal sealed class PreProcessScriptStep : IPipelineStep
 
                 var folder = context.TestCases.Values
                     .Select(x => x.Request.ParentFolder)
-                    .First(x => x.Path == Directory.GetParent(scriptPath)?.FullName);
+                    .FirstOrDefault(x => x.Path == Directory.GetParent(scriptPath)?.FullName)
+                    ?? throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
 
                 var script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
 

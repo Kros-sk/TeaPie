@@ -45,10 +45,7 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
             {
                 lines = ResolveLoadDirectives(path, lines);
                 referencedScriptsDirectives = lines.Where(x => x.Contains(ParsingConstants.LoadScriptDirective));
-                foreach (var directive in referencedScriptsDirectives)
-                {
-                    _referencedScripts.Add(GetPathFromLoadDirective(directive));
-                }
+                CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
             }
 
             if (hasNugetDirectives)
@@ -61,6 +58,23 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         }
 
         return scriptContent;
+    }
+
+    private void CheckAndRegisterReferencedScripts(IEnumerable<string> referencedScriptsDirectives)
+    {
+        foreach (var directive in referencedScriptsDirectives)
+        {
+            var tempPath = GetPathFromLoadDirective(directive);
+            var realPath = tempPath.TrimRootPath(_tempFolderPath, false);
+            realPath = _rootPath.MergeWith(realPath);
+
+            if (!File.Exists(realPath))
+            {
+                throw new FileNotFoundException($"Referenced script on path '{realPath}' was not found");
+            }
+
+            _referencedScripts.Add(realPath);
+        }
     }
 
     private IEnumerable<string> ResolveLoadDirectives(string path, IEnumerable<string> lines)
@@ -98,11 +112,6 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         var realPath = GetPathFromLoadDirective(directive);
         realPath = realPath.Replace("\"", string.Empty);
         realPath = ResolvePath(path, realPath);
-
-        if (!File.Exists(realPath))
-        {
-            throw new FileNotFoundException($"Referenced script on path '{realPath}' was not found");
-        }
 
         var relativePath = realPath.TrimRootPath(_rootPath, true);
         var tempPath = Path.Combine(_tempFolderPath, relativePath);
