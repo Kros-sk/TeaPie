@@ -121,6 +121,7 @@ public sealed class ScriptPreProcessorShould
     {
         var processor = CreateScriptPreProcessor();
         const int numberOfDirectives = 3;
+        var scriptRelativePathsWithoutFileExtensions = new string[] { "init", "Nested\\first", "Nested\\second" };
 
         List<string> referencedScripts = [];
         var processedContent = await processor.ProcessScript(
@@ -130,11 +131,18 @@ public sealed class ScriptPreProcessorShould
             _tempFolderPath,
             referencedScripts);
 
+        var expectedDirectives =
+            string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
+
         var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
-        var expectedDirectives = string.Join(Environment.NewLine,
-            GetExpectedDirectives("init", "Nested\\first", "Nested\\second"));
 
         referencedScripts.Should().HaveCount(numberOfDirectives);
+
+        foreach (var path in scriptRelativePathsWithoutFileExtensions)
+        {
+            referencedScripts.Should().Contain(Path.Join(tmpBasePath, path + Constants.ScriptFileExtension));
+        }
+
         processedContent.Should().Contain(expectedDirectives);
     }
 
@@ -196,6 +204,7 @@ public sealed class ScriptPreProcessorShould
     {
         var nugetHandler = Substitute.For<INugetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
+        var scriptRelativePathsWithoutFileExtensions = new string[] { "init", "Nested\\first", "Nested\\second" };
         const int numberOfLoadDirectives = 3;
         List<string> referencedScripts = [];
 
@@ -206,14 +215,23 @@ public sealed class ScriptPreProcessorShould
             _tempFolderPath,
             referencedScripts);
 
-        var expectedLoadDirectives = string.Join(Environment.NewLine,
-            GetExpectedDirectives("init", "Nested\\first", "Nested\\second"));
-
-        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+        var expectedLoadDirectives =
+            string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
 
         referencedScripts.Should().HaveCount(numberOfLoadDirectives);
         processedContent.Should().Contain(expectedLoadDirectives);
+
+        var tmpBasePath = Path.Combine(_tempFolderPath, RootFolderName, RootSubFolder);
+
+        referencedScripts.Should().HaveCount(numberOfLoadDirectives);
+
+        foreach (var path in scriptRelativePathsWithoutFileExtensions)
+        {
+            referencedScripts.Should().Contain(Path.Join(tmpBasePath, path + Constants.ScriptFileExtension));
+        }
+
+        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
     }
 
     private List<string> GetExpectedDirectives(params string[] names)
@@ -223,7 +241,7 @@ public sealed class ScriptPreProcessorShould
 
         for (var i = 0; i < names.Length; i++)
         {
-            list.Add($"{ParsingConstants.ReferenceScriptDirective} \"{tmpBasePath}\\{names[i]}{Constants.ScriptFileExtension}\"");
+            list.Add($"{ParsingConstants.LoadScriptDirective} \"{tmpBasePath}\\{names[i]}{Constants.ScriptFileExtension}\"");
         }
 
         return list;

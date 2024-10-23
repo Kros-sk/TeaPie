@@ -28,12 +28,13 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         string tempFolderPath,
         List<string> referencedScripts)
     {
-        IEnumerable<string> lines;
+        IEnumerable<string> lines, referencedScriptsDirectives;
+
         _rootPath = rootPath;
         _tempFolderPath = tempFolderPath;
         _referencedScripts = referencedScripts;
 
-        var hasLoadDirectives = scriptContent.Contains(ParsingConstants.ReferenceScriptDirective);
+        var hasLoadDirectives = scriptContent.Contains(ParsingConstants.LoadScriptDirective);
         var hasNugetDirectives = scriptContent.Contains(ParsingConstants.NugetDirective);
 
         if (hasLoadDirectives || hasNugetDirectives)
@@ -43,6 +44,11 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
             if (hasLoadDirectives)
             {
                 lines = ResolveLoadDirectives(path, lines);
+                referencedScriptsDirectives = lines.Where(x => x.Contains(ParsingConstants.LoadScriptDirective));
+                foreach (var directive in referencedScriptsDirectives)
+                {
+                    _referencedScripts.Add(GetPathFromLoadDirective(directive));
+                }
             }
 
             if (hasNugetDirectives)
@@ -89,8 +95,7 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
 
     private string ProcessLoadDirective(string directive, string path)
     {
-        var segments = directive.Split(new[] { ParsingConstants.ReferenceScriptDirective }, 2, StringSplitOptions.None);
-        var realPath = segments[1].Trim();
+        var realPath = GetPathFromLoadDirective(directive);
         realPath = realPath.Replace("\"", string.Empty);
         realPath = ResolvePath(path, realPath);
 
@@ -102,9 +107,14 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         var relativePath = realPath.TrimRootPath(_rootPath, true);
         var tempPath = Path.Combine(_tempFolderPath, relativePath);
 
-        _referencedScripts?.Add(realPath);
+        return $"{ParsingConstants.LoadScriptDirective} \"{tempPath}\"";
+    }
 
-        return $"{ParsingConstants.ReferenceScriptDirective} \"{tempPath}\"";
+    private static string GetPathFromLoadDirective(string directive)
+    {
+        var segments = directive.Split(new[] { ParsingConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
+        var path = segments[1].Trim();
+        return path.Replace("\"", string.Empty);
     }
 
     private static string ProcessNugetPackage(string directive, List<NugetPackageDescription> listOfNugetPackages)
@@ -123,6 +133,6 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
     [GeneratedRegex(ParsingConstants.NugetDirectivePattern)]
     private static partial Regex NugetPackageRegex();
 
-    [GeneratedRegex(ParsingConstants.ReferenceScriptDirective)]
+    [GeneratedRegex(ParsingConstants.LoadScriptDirective)]
     private static partial Regex LoadReferenceRegex();
 }
