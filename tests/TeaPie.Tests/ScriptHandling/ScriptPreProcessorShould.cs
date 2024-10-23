@@ -118,7 +118,7 @@ public sealed class ScriptPreProcessorShould
 
         foreach (var path in scriptRelativePathsWithoutFileExtensions)
         {
-            referencedScripts.Should().Contain(Path.Join(_rootSubFolderPath, path + Constants.ScriptFileExtension));
+            referencedScripts.Should().Contain(Path.Combine(_rootSubFolderPath, path + Constants.ScriptFileExtension));
         }
 
         processedContent.Should().Contain(expectedDirectives);
