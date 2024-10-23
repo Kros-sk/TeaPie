@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using TeaPie.Helpers;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -7,7 +8,7 @@ public class StructureExplorerShould
 {
     private const string RootFolderName = "Demo";
 
-    private readonly string[] _testCasesPaths = [
+    private static readonly string[] _testCasesPaths = [
         Path.Combine("FirstFolder", "FirstFolderInFirstFolder", $"Seed{Constants.RequestFileExtension}"),
         Path.Combine("FirstFolder", "FirstFolderInFirstFolder",
             $"Test1.1.1{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
@@ -23,6 +24,19 @@ public class StructureExplorerShould
         Path.Combine($"TheZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
         Path.Combine($"ZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}")
     ];
+
+    private static readonly Dictionary<string, (bool hasPreRequest, bool hasPostResponse)> _testCasesScriptsMap = new()
+    {
+        {_testCasesPaths[0], (false, false)},
+        {_testCasesPaths[1], (true, false)},
+        {_testCasesPaths[2], (true, false)},
+        {_testCasesPaths[3], (false, false)},
+        {_testCasesPaths[4], (false, false)},
+        {_testCasesPaths[5], (false, true)},
+        {_testCasesPaths[6], (true, true)},
+        {_testCasesPaths[7], (true, true)},
+        {_testCasesPaths[8], (true, true)}
+    };
 
     [Theory]
     [InlineData(true)]
@@ -78,6 +92,32 @@ public class StructureExplorerShould
         for (var i = 0; i < _testCasesPaths.Length; i++)
         {
             testCasesOrder[i].Should().BeEquivalentTo(Path.Combine(tempDirectoryPath, _testCasesPaths[i]));
+        }
+    }
+
+    [Fact]
+    public void FoundTestCasesShouldContainCorrectNumberOfPreRequestAndPostResponseScripts()
+    {
+        var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
+        var structureExplorer = new StructureExplorer();
+
+        var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectoryPath).Values.ToList();
+
+        testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
+
+        bool hasPreRequest, hasPostResponse;
+        string path;
+        TestCase testCase;
+        for (var i = 0; i < _testCasesPaths.Length; i++)
+        {
+            testCase = testCasesOrder[i];
+            hasPreRequest = testCase.PreRequestScripts.Any();
+            hasPostResponse = testCase.PostResponseScripts.Any();
+
+            path = testCase.Request.RelativePath.TrimRootPath(RootFolderName);
+
+            hasPreRequest.Should().Be(_testCasesScriptsMap[path].hasPreRequest);
+            hasPostResponse.Should().Be(_testCasesScriptsMap[path].hasPostResponse);
         }
     }
 }

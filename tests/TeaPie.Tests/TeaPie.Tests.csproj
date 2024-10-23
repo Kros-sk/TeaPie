@@ -82,7 +82,7 @@
     <None Update="Demo\Scripts\scriptWithOneNugetDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-init.csx">
+    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-req.http">
