@@ -37,7 +37,7 @@ internal class ScriptCompiler : IScriptCompiler
     public class Globals
     {
 #pragma warning disable IDE1006 // Naming Styles
-        public TeaPie? tp { get; set; } = TeaPie.GetInstance(); //Public instance of context available for user
+        public TeaPie? tp { get; set; } = TeaPie.GetInstance();
 #pragma warning restore IDE1006
     }
 }

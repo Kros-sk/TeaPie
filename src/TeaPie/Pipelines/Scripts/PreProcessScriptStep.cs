@@ -55,7 +55,6 @@ internal sealed class PreProcessScriptStep : IPipelineStep
     {
         foreach (var scriptPath in referencedScriptsPaths)
         {
-            // If this script is already registered (therefore pre-processed), there is no need to pre-process and save it again.
             if (!context.UserDefinedScripts.ContainsKey(scriptPath))
             {
                 var relativePath = scriptPath.TrimRootPath(context.Path, true);

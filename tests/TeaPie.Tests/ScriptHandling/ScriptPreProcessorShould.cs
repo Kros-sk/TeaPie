@@ -49,12 +49,7 @@ public sealed class ScriptPreProcessorShould
     {
         var processor = CreateScriptPreProcessor();
         List<string> referencedScripts = [];
-        var processedContent = await processor.ProcessScript(
-            _emptyScriptPath,
-            await File.ReadAllTextAsync(_emptyScriptPath),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _emptyScriptPath, referencedScripts);
 
         processedContent.Should().BeEquivalentTo(string.Empty);
     }
@@ -66,12 +61,7 @@ public sealed class ScriptPreProcessorShould
         List<string> referencedScripts = [];
         var content = await File.ReadAllTextAsync(_plainScriptPath);
 
-        var processedContent = await processor.ProcessScript(
-            _plainScriptPath,
-            content,
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _plainScriptPath, referencedScripts);
 
         processedContent.Should().BeEquivalentTo(content);
     }
@@ -100,12 +90,7 @@ public sealed class ScriptPreProcessorShould
 
         var content = await File.ReadAllLinesAsync(_scriptWithOneLoadDirectivePath);
 
-        var processedContent = await processor.ProcessScript(
-            _scriptWithOneLoadDirectivePath,
-            string.Join(Environment.NewLine, content),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _scriptWithOneLoadDirectivePath, referencedScripts);
 
         var contentWithoutDirective = string.Join(Environment.NewLine, content[1..]);
 
@@ -124,12 +109,7 @@ public sealed class ScriptPreProcessorShould
         var scriptRelativePathsWithoutFileExtensions = new string[] { "init", "Nested\\first", "Nested\\second" };
 
         List<string> referencedScripts = [];
-        var processedContent = await processor.ProcessScript(
-            _scriptWithMultipleLoadDirectives,
-            await File.ReadAllTextAsync(_scriptWithMultipleLoadDirectives),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _scriptWithMultipleLoadDirectives, referencedScripts);
 
         var expectedDirectives =
             string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
@@ -170,12 +150,7 @@ public sealed class ScriptPreProcessorShould
         var processor = CreateScriptPreProcessor(nugetHandler);
         List<string> referencedScripts = [];
 
-        var processedContent = await processor.ProcessScript(
-            _scriptWithOneNugetDirectivePath,
-            await File.ReadAllTextAsync(_scriptWithOneNugetDirectivePath),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _scriptWithOneNugetDirectivePath, referencedScripts);
 
         await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
         processedContent.Should().NotContain(ParsingConstants.NugetDirective);
@@ -188,12 +163,7 @@ public sealed class ScriptPreProcessorShould
         var processor = CreateScriptPreProcessor(nugetHandler);
         List<string> referencedScripts = [];
 
-        var processedContent = await processor.ProcessScript(
-            _scriptWithMultipleNugetDirectivesPath,
-            await File.ReadAllTextAsync(_scriptWithMultipleNugetDirectivesPath),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent = await PreProcessScript(processor, _scriptWithMultipleNugetDirectivesPath, referencedScripts);
 
         await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
         processedContent.Should().NotContain(ParsingConstants.NugetDirective);
@@ -208,12 +178,8 @@ public sealed class ScriptPreProcessorShould
         const int numberOfLoadDirectives = 3;
         List<string> referencedScripts = [];
 
-        var processedContent = await processor.ProcessScript(
-            _scriptWithMultipleLoadAndNugetDirectivesPath,
-            await File.ReadAllTextAsync(_scriptWithMultipleLoadAndNugetDirectivesPath),
-            _rootFolderPath,
-            _tempFolderPath,
-            referencedScripts);
+        var processedContent =
+            await PreProcessScript(processor, _scriptWithMultipleLoadAndNugetDirectivesPath, referencedScripts);
 
         var expectedLoadDirectives =
             string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
@@ -233,6 +199,14 @@ public sealed class ScriptPreProcessorShould
         await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
         processedContent.Should().NotContain(ParsingConstants.NugetDirective);
     }
+
+    private async Task<string> PreProcessScript(ScriptPreProcessor processor, string scriptPath, List<string> referencedScripts)
+        => await processor.ProcessScript(
+            scriptPath,
+            await File.ReadAllTextAsync(scriptPath),
+            _rootFolderPath,
+            _tempFolderPath,
+            referencedScripts);
 
     private List<string> GetExpectedDirectives(params string[] names)
     {

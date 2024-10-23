@@ -40,7 +40,6 @@ internal class StructureExplorer : IStructureExplorer
 
         currentFolder.ParentFolder = parentFolder;
 
-        // Depth-first examination of folders
         foreach (var subFolderPath in subFolderPaths)
         {
             var subFolderName = Path.GetFileName(subFolderPath.TrimEnd(Path.DirectorySeparatorChar));
@@ -49,7 +48,6 @@ internal class StructureExplorer : IStructureExplorer
             ExploreFolder(subFolder, currentFolder, testCases);
         }
 
-        // Then, process the current folder's test cases
         ExploreTestCases(testCases, currentFolder, files);
     }
 
