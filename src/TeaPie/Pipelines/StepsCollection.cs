@@ -2,7 +2,7 @@
 
 namespace TeaPie.Pipelines;
 
-internal class StepsCollection
+internal class StepsCollection : IEnumerable<IPipelineStep>
 {
     private readonly LinkedList<IPipelineStep> _steps = [];
     private readonly Dictionary<IPipelineStep, LinkedListNode<IPipelineStep>> _index = [];
@@ -67,22 +67,28 @@ internal class StepsCollection
 
     private LinkedListNode<IPipelineStep>? First() => _steps.First;
 
-    public IEnumerator<IPipelineStep?> GetEnumerator() => new StepsCollectionEnumerator(this);
+    public IEnumerator<IPipelineStep> GetEnumerator() => new StepsCollectionEnumerator(this);
+    IEnumerator IEnumerable.GetEnumerator() => new StepsCollectionEnumerator(this);
 
     /// <summary>
-    /// Steps collection modification-resilient enumerator. After creation, 'Current' is null,
-    /// the first call of MoveNext() will advance first element to 'Current' (if the collection isn't empty).
+    /// Steps collection modification-resilient enumerator.
+    /// In order to retrieve 'Current', call of 'MoveNext()' has to be done first.
     /// </summary>
     /// <param name="steps">Collection of the steps, which should be enumerated.</param>
-    private class StepsCollectionEnumerator(StepsCollection steps) : IEnumerator<IPipelineStep?>
+    private class StepsCollectionEnumerator(StepsCollection steps) : IEnumerator<IPipelineStep>
     {
         private readonly StepsCollection _steps = steps;
         private LinkedListNode<IPipelineStep>? _currentNode;
         private bool _started;
 
-        public IPipelineStep? Current => _currentNode?.Value;
+        public IPipelineStep Current => GetCurrent();
 
-        object? IEnumerator.Current => _currentNode?.Value;
+        object IEnumerator.Current => GetCurrent();
+
+        private IPipelineStep GetCurrent() => _currentNode is null
+            ? throw new InvalidOperationException($"It is forbidden to access '{nameof(Current)}' before calling '" +
+                $"{nameof(MoveNext)}()'")
+            : _currentNode.Value;
 
         public bool MoveNext()
         {
@@ -100,12 +106,13 @@ internal class StepsCollection
 
             return false;
         }
+
         public void Reset()
         {
             _currentNode = null;
             _started = false;
         }
 
-        public void Dispose() => throw new NotImplementedException();
+        public void Dispose() { }
     }
 }

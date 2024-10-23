@@ -12,7 +12,7 @@ internal class ApplicationPipeline : IPipeline
         IPipelineStep step;
         while (enumerator.MoveNext())
         {
-            step = enumerator.Current!; // Current can not be null, if MoveNext() was successfull
+            step = enumerator.Current;
             await step.Execute(context, cancellationToken);
         }
     }
