@@ -98,7 +98,7 @@ public class StructureExplorerShould
     }
 
     [Fact]
-    public void FoundTestCasesShouldContainCorrectNumberOfPreRequestAndPostResponseScripts()
+    public void FoundPreRequestAndPostResponseScriptsOfTestCasesShouldReflectReality()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
         var structureExplorer = new StructureExplorer();
