@@ -31,6 +31,11 @@ jobs:
     - name: Build project
       run: dotnet build --configuration Release --no-restore
 
+    - name: List Files
+      run: ls -R
+    - name: Check Specific File
+      run: ls <path-to-file>
+
     # Run unit tests
     - name: Run Unit tests
       run: dotnet test --no-build --verbosity normal --configuration Release
