@@ -1,4 +1,4 @@
-﻿#load "../FirstFolder/first.csx"
+﻿#load "../Nested/first.csx"
 
 FirstMethod();
 
