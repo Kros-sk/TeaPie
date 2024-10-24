@@ -1,4 +1,7 @@
-﻿namespace TeaPie.StructureExploration;
+﻿using TeaPie.StructureExploration.Records;
+using File = TeaPie.StructureExploration.Records.File;
+
+namespace TeaPie.StructureExploration;
 
 internal class TestCase(File requestFile)
 {

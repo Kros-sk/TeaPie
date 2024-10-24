@@ -1,4 +1,6 @@
 ﻿using TeaPie.Helpers;
+using TeaPie.StructureExploration.Records;
+using File = TeaPie.StructureExploration.Records.File;
 
 namespace TeaPie.StructureExploration;
 

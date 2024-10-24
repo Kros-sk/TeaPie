@@ -2,7 +2,7 @@
 using TeaPie.Helpers;
 using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
-using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Records;
 
 namespace TeaPie.Pipelines.Scripts;
 

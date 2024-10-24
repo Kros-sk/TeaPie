@@ -1,11 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
+using Script = TeaPie.StructureExploration.Records.Script;
 
 namespace TeaPie.ScriptHandling;
 
-internal class ScriptExecutionContext(StructureExploration.Script script)
+internal class ScriptExecutionContext(Script script)
 {
-    public StructureExploration.Script Script { get; set; } = script;
+    public Script Script { get; set; } = script;
     public string? TemporaryPath { get; set; }
     public string? RawContent { get; set; }
     public string? ProcessedContent { get; set; }

@@ -1,4 +1,5 @@
 ﻿using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Records;
 
 namespace TeaPie.Pipelines.Application;
 
