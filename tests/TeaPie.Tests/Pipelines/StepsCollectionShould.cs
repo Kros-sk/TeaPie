@@ -86,7 +86,7 @@ public class StepsCollectionShould
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
 
-        collection.Invoking(coll => coll.InsertRange(firstStep, [null!, null!, null!]))
+        collection.Invoking(coll => coll.InsertRange(firstStep, [new DummyStep(), new DummyStep(), new DummyStep()]))
             .Should().Throw<InvalidOperationException>();
     }
 
@@ -119,7 +119,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void EnumeratorShouldBeCollectionModificationResilient()
+    public void EnumeratorShouldBeCollectionModificationResistant()
     {
         var collection = new StepsCollection();
         var enumerator = collection.GetEnumerator();
