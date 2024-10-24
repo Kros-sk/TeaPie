@@ -10,7 +10,7 @@ insert_final_newline = true
 
 # Markdown files
 [*.md]
-trim_trailing_whitespace = false
+trim_trailing_whitespace = true
 
 # YAML files
 [*.yml]
@@ -417,6 +417,8 @@ csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
 csharp_style_prefer_primary_constructors = true:suggestion
 
+# CA2016: Forward the CancellationToken parameter to methods that take one
+dotnet_diagnostic.CA2016.severity = error
 
 ## Analyzers by file
 

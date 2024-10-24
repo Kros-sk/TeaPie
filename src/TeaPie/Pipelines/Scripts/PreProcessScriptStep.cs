@@ -68,11 +68,10 @@ internal sealed class PreProcessScriptStep : IPipelineStep
 
                 var scriptContext = new ScriptExecutionContext(script);
 
-                _pipeline.InsertSteps([
+                _pipeline.InsertSteps(this,
                     ReadScriptStep.Create(scriptContext),
                     Create(_pipeline, scriptContext, _serviceProvider),
-                    SaveTempScriptStep.Create(scriptContext)
-                    ], this);
+                    SaveTempScriptStep.Create(scriptContext));
 
                 context.UserDefinedScripts.Add(scriptPath, script);
             }

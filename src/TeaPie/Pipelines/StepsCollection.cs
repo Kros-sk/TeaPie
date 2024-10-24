@@ -7,50 +7,36 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
     private readonly LinkedList<IPipelineStep> _steps = [];
     private readonly Dictionary<IPipelineStep, LinkedListNode<IPipelineStep>> _index = [];
 
-    /// <summary>
-    /// Insert <param cref="step"> just right after <param cref="predecessor">. If no predecessor is passed, step is
-    /// added at the end of the colllection.
-    /// </summary>
-    /// <param name="step">Pipeline step to be added.</param>
-    /// <param name="predecessor">Predecessor of the step. If null, the last element is considered as predecessor.</param>
-    /// <returns>Returns whether step was successfully inserted.</returns>
-    public bool Insert(IPipelineStep step, IPipelineStep? predecessor = null)
+    public void Insert(IPipelineStep predecessor, IPipelineStep step)
     {
-        if (predecessor is null)
-        {
-            var node = _steps.AddLast(step);
-            _index.Add(step, node);
-            return true;
-        }
-        else if (_index.TryGetValue(predecessor, out var referenceNode))
+        ArgumentNullException.ThrowIfNull(nameof(predecessor));
+        ArgumentNullException.ThrowIfNull(nameof(step));
+
+        if (_index.TryGetValue(predecessor, out var referenceNode))
         {
             var newNode = _steps.AddAfter(referenceNode, step);
             _index.Add(step, newNode);
-            return true;
         }
-
-        return false;
+        else
+        {
+            throw new InvalidOperationException("Predecessor node could not be found.");
+        }
     }
 
-    /// <summary>
-    /// Insert collection of <param cref="steps"> just right after <param cref="predecessor">. If no predecessor is passed,
-    /// steps are added at the end of the colllection.
-    /// </summary>
-    /// <param name="steps">Collection of pipeline steps to be added.</param>
-    /// <param name="predecessor">Predecessor of the steps. If null, the last element is considered as predecessor.</param>
-    /// <returns>Returns whether steps were successfully inserted.</returns>
-    public bool InsertRange(IEnumerable<IPipelineStep> steps, IPipelineStep? predecessor = null)
+    public void Add(IPipelineStep step)
     {
-        if (predecessor is null)
-        {
-            foreach (var step in steps)
-            {
-                Insert(step);
-            }
+        ArgumentNullException.ThrowIfNull(nameof(step));
 
-            return true;
-        }
-        else if (_index.TryGetValue(predecessor, out var referenceNode))
+        var node = _steps.AddLast(step);
+        _index.Add(step, node);
+    }
+
+    public void InsertRange(IPipelineStep predecessor, IEnumerable<IPipelineStep> steps)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(predecessor));
+        ArgumentNullException.ThrowIfNull(nameof(steps));
+
+        if (_index.TryGetValue(predecessor, out var referenceNode))
         {
             foreach (var step in steps)
             {
@@ -58,11 +44,21 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
                 _index.Add(step, newNode);
                 referenceNode = newNode;
             }
-
-            return true;
         }
+        else
+        {
+            throw new InvalidOperationException("Predecessor node could not be found.");
+        }
+    }
 
-        return false;
+    public void AddRange(IEnumerable<IPipelineStep> steps)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(steps));
+
+        foreach (var step in steps)
+        {
+            Add(step);
+        }
     }
 
     private LinkedListNode<IPipelineStep>? First() => _steps.First;

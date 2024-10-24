@@ -24,7 +24,7 @@ internal sealed class PrepareTemporaryFolderStep : IPipelineStep
                 await CleanUpTemporaryFolderStep.Create().Execute(context, cancellationToken);
             }
 
-            _pipeline.InsertStep(CleanUpTemporaryFolderStep.Create());
+            _pipeline.AddSteps(CleanUpTemporaryFolderStep.Create());
         }
 
         Directory.CreateDirectory(context.TempFolderPath);

@@ -19,7 +19,7 @@ public class ApplicationPipelineShould
         {
             step = Substitute.For<IPipelineStep>();
 
-            pipeline.InsertStep(step);
+            pipeline.AddSteps(step);
             steps[i] = step;
         }
 
@@ -44,11 +44,11 @@ public class ApplicationPipelineShould
             steps[i] = new(registerOfSteps, i);
         }
 
-        pipeline.InsertStep(steps[0]);
-        pipeline.InsertStep(steps[2]);
-        pipeline.InsertStep(steps[1], steps[0]);
-        pipeline.InsertStep(steps[4]);
-        pipeline.InsertStep(steps[3], steps[2]);
+        pipeline.AddSteps(steps[0]);
+        pipeline.AddSteps(steps[2]);
+        pipeline.InsertSteps(steps[0], steps[1]);
+        pipeline.AddSteps(steps[4]);
+        pipeline.InsertSteps(steps[2], steps[3]);
 
         await pipeline.Run(context);
 
@@ -71,20 +71,10 @@ public class ApplicationPipelineShould
             steps[i] = new(registerOfSteps, i);
         }
 
-        pipeline.InsertStep(steps[0]);
-        pipeline.InsertStep(steps[4]);
-        pipeline.InsertSteps(new List<IdentifyingStep>()
-        {
-            steps[1],
-            steps[2],
-            steps[3]
-        },
-        steps[0]);
-        pipeline.InsertSteps(new List<IdentifyingStep>()
-        {
-            steps[5],
-            steps[6]
-        });
+        pipeline.AddSteps(steps[0]);
+        pipeline.AddSteps(steps[4]);
+        pipeline.InsertSteps(steps[0], steps[1], steps[2], steps[3]);
+        pipeline.InsertSteps(steps[4], steps[5], steps[6]);
 
         await pipeline.Run(context);
 
@@ -98,7 +88,7 @@ public class ApplicationPipelineShould
     public async void AddingStepsDuringPipelineRunShouldNotThrowException()
     {
         var pipeline = new ApplicationPipeline();
-        pipeline.InsertStep(new GenerativeStep(pipeline));
+        pipeline.AddSteps(new GenerativeStep(pipeline));
 
         var context = new ApplicationContext(string.Empty);
 
@@ -113,32 +103,10 @@ public class ApplicationPipelineShould
             ApplicationContext context,
             CancellationToken cancellationToken = default)
         {
-            _pipeline.InsertStep(new DummyStep());
-            _pipeline.InsertStep(new DummyStep());
-            _pipeline.InsertStep(new DummyStep());
+            _pipeline.AddSteps(new DummyStep());
+            _pipeline.AddSteps(new DummyStep());
+            _pipeline.AddSteps(new DummyStep());
 
-            await Task.CompletedTask;
-        }
-    }
-
-    private class DummyStep : IPipelineStep
-    {
-        public async Task Execute(
-            ApplicationContext context,
-            CancellationToken cancellationToken = default)
-            => await Task.CompletedTask;
-    }
-
-    private class IdentifyingStep(List<int> register, int id) : IPipelineStep
-    {
-        public int Id { get; } = id;
-        private readonly List<int> _register = register;
-
-        public async Task Execute(
-            ApplicationContext context,
-            CancellationToken cancellationToken = default)
-        {
-            _register.Add(Id);
             await Task.CompletedTask;
         }
     }

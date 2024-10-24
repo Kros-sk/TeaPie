@@ -34,7 +34,7 @@ internal sealed class StepsGenerationStep : IPipelineStep
             }
         }
 
-        _pipeline.InsertSteps(newSteps, this);
+        _pipeline.InsertSteps(this, [.. newSteps]);
 
         await Task.CompletedTask;
     }
