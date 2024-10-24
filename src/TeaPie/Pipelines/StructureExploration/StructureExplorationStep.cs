@@ -18,14 +18,7 @@ internal sealed class StructureExplorationStep : IPipelineStep
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            context.TestCases = _structureExplorer.ExploreFileSystem(context.Path);
-            await Task.CompletedTask;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Structure exploration failed. Cause: {ex.Message}");
-        }
+        context.TestCases = _structureExplorer.ExploreFileSystem(context.Path);
+        await Task.CompletedTask;
     }
 }

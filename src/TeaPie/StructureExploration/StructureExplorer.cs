@@ -2,14 +2,16 @@
 
 namespace TeaPie.StructureExploration;
 
+internal interface IStructureExplorer
+{
+    IReadOnlyDictionary<string, TestCase> ExploreFileSystem(string rootPath);
+}
+
 internal class StructureExplorer : IStructureExplorer
 {
-    public Dictionary<string, TestCase> ExploreFileSystem(string rootPath)
+    public IReadOnlyDictionary<string, TestCase> ExploreFileSystem(string rootPath)
     {
-        if (string.IsNullOrEmpty(rootPath))
-        {
-            throw new ArgumentException("The provided folder path is null or empty");
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(rootPath);
 
         if (!Directory.Exists(rootPath))
         {
@@ -20,7 +22,7 @@ internal class StructureExplorer : IStructureExplorer
         var folderName = Path.GetFileName(rootPath.TrimEnd(Path.DirectorySeparatorChar));
 
         Folder rootFolder = new(rootPath, folderName, folderName, null);
-        ExploreFolder(rootFolder, null, testCases);
+        ExploreFolder(rootFolder, testCases);
 
         return testCases;
     }
@@ -31,21 +33,21 @@ internal class StructureExplorer : IStructureExplorer
     /// file and possibly by other (e.g. script files with '.csx' extension) files.
     /// </summary>
     /// <param name="currentFolder">Folder that should be examined.</param>
-    /// <param name="parentFolder">Parent folder of currently processed folder.</param>
     /// <param name="testCases">Depth-first order of test cases.</param>
-    private void ExploreFolder(Folder currentFolder, Folder? parentFolder, Dictionary<string, TestCase> testCases)
+    private static void ExploreFolder(Folder currentFolder, Dictionary<string, TestCase> testCases)
     {
-        var subFolderPaths = Directory.GetDirectories(currentFolder.Path).Order();
-        var files = Directory.GetFiles(currentFolder.Path).Order();
+        var subFolderPaths = Directory.GetDirectories(currentFolder.Path)
+            .OrderBy(path => path, StringComparer.OrdinalIgnoreCase);
 
-        currentFolder.ParentFolder = parentFolder;
+        var files = Directory.GetFiles(currentFolder.Path).Order()
+            .OrderBy(path => path, StringComparer.OrdinalIgnoreCase);
 
         foreach (var subFolderPath in subFolderPaths)
         {
             var subFolderName = Path.GetFileName(subFolderPath.TrimEnd(Path.DirectorySeparatorChar));
             Folder subFolder = new(subFolderPath, GetRelativePath(currentFolder, subFolderName), subFolderName, currentFolder);
 
-            ExploreFolder(subFolder, currentFolder, testCases);
+            ExploreFolder(subFolder, testCases);
         }
 
         ExploreTestCases(testCases, currentFolder, files);

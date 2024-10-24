@@ -1,9 +1,4 @@
-﻿namespace TeaPie.StructureExploration;
+﻿
+namespace TeaPie.StructureExploration;
 
-internal class Folder(string path, string relativePath, string name, Folder? parentFolder = null)
-{
-    public string Path { get; set; } = path;
-    public string RelativePath { get; set; } = relativePath;
-    public string Name { get; set; } = name;
-    public Folder? ParentFolder { get; set; } = parentFolder;
-}
+internal record Folder(string Path, string RelativePath, string Name, Folder? ParentFolder = null);
