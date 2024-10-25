@@ -7,6 +7,8 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
     private readonly LinkedList<IPipelineStep> _steps = [];
     private readonly Dictionary<IPipelineStep, LinkedListNode<IPipelineStep>> _index = [];
 
+    public int Count => _steps.Count;
+
     public void Insert(IPipelineStep predecessor, IPipelineStep step)
     {
         ArgumentNullException.ThrowIfNull(nameof(predecessor));

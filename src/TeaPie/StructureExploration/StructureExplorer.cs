@@ -1,4 +1,5 @@
-﻿using TeaPie.Helpers;
+﻿using Microsoft.Extensions.Logging;
+using TeaPie.Helpers;
 using TeaPie.StructureExploration.Records;
 using File = TeaPie.StructureExploration.Records.File;
 
@@ -6,25 +7,31 @@ namespace TeaPie.StructureExploration;
 
 internal interface IStructureExplorer
 {
-    IReadOnlyDictionary<string, TestCase> ExploreFileSystem(string rootPath);
+    IReadOnlyDictionary<string, TestCase> ExploreCollectionStructure(string rootPath);
 }
 
-internal class StructureExplorer : IStructureExplorer
+internal class StructureExplorer(ILogger logger) : IStructureExplorer
 {
-    public IReadOnlyDictionary<string, TestCase> ExploreFileSystem(string rootPath)
+    private readonly ILogger _logger = logger;
+
+    public IReadOnlyDictionary<string, TestCase> ExploreCollectionStructure(string rootPath)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(rootPath);
+        ArgumentException.ThrowIfNullOrWhiteSpace(rootPath, "Collection path");
 
         if (!Directory.Exists(rootPath))
         {
             throw new DirectoryNotFoundException("Provided folder doesn't exist.");
         }
 
+        _logger.LogInformation("Exploration of the collection started on path: '{path}'.", rootPath);
+
         var testCases = new Dictionary<string, TestCase>();
         var folderName = Path.GetFileName(rootPath.TrimEnd(Path.DirectorySeparatorChar));
 
         Folder rootFolder = new(rootPath, folderName, folderName, null);
         ExploreFolder(rootFolder, testCases);
+
+        _logger.LogInformation("Collection explored, found {count} test cases.", testCases.Count);
 
         return testCases;
     }

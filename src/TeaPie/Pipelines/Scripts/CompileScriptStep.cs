@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
 
@@ -25,9 +26,13 @@ internal sealed class CompileScriptStep : IPipelineStep
             throw new InvalidOperationException("Script can not be compiled, when pre-processed content is null.");
         }
 
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.", _script.Script.File.RelativePath);
+
         var (script, compilation) = _compiler.CompileScript(_script.ProcessedContent);
         _script.ScriptObject = script;
         _script.Compilation = compilation;
+
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished.", _script.Script.File.RelativePath);
 
         await Task.CompletedTask;
     }

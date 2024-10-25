@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 using TeaPie.Helpers;
 using TeaPie.Parsing;
 
@@ -6,7 +7,7 @@ namespace TeaPie.ScriptHandling;
 
 internal interface IScriptPreProcessor
 {
-    public Task<string> ProcessScript(
+    Task<string> ProcessScript(
         string path,
         string scriptContent,
         string rootPath,
@@ -14,12 +15,14 @@ internal interface IScriptPreProcessor
         List<string> referencedScripts);
 }
 
-internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler) : IScriptPreProcessor
+internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler, ILogger logger) : IScriptPreProcessor
 {
     private List<string> _referencedScripts = [];
     private string _rootPath = string.Empty;
     private string _tempFolderPath = string.Empty;
+
     private readonly INugetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
+    private readonly ILogger _logger = logger;
 
     public async Task<string> ProcessScript(
         string path,
@@ -46,12 +49,15 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
                 lines = ResolveLoadDirectives(path, lines);
                 referencedScriptsDirectives = lines.Where(x => x.Contains(ParsingConstants.LoadScriptDirective));
                 CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
+
+                _logger.LogTrace("Load-script directives were resolved for the script on path '{ScriptPath}'.", path);
             }
 
             if (hasNugetDirectives)
             {
                 await ResolveNugetDirectives(lines);
                 lines = lines.Where(x => !x.Contains(ParsingConstants.NugetDirective));
+                _logger.LogTrace("NuGet package directives were resolved for the script on path '{ScriptPath}'.", path);
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);

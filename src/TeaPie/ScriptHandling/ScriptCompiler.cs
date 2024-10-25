@@ -6,7 +6,7 @@ namespace TeaPie.ScriptHandling;
 
 internal interface IScriptCompiler
 {
-    public (Script<object> script, Compilation compilation) CompileScript(string scriptContent);
+    (Script<object> script, Compilation compilation) CompileScript(string scriptContent);
 }
 
 internal class ScriptCompiler : IScriptCompiler

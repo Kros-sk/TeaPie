@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
-using Serilog.Core;
+using Microsoft.Extensions.Logging.Abstractions;
 using TeaPie.Helpers;
-using TeaPie.Logging;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -45,17 +44,17 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void InvalidPathShouldThrowException(bool emptyPath)
     {
-        var structureExplorer = CreateStructureExplorer();
+        var structureExplorer = new StructureExplorer(NullLogger.Instance);
 
         if (emptyPath)
         {
-            structureExplorer.Invoking(se => se.ExploreFileSystem(string.Empty))
+            structureExplorer.Invoking(se => se.ExploreCollectionStructure(string.Empty))
                 .Should().Throw<ArgumentException>();
         }
         else
         {
             structureExplorer.Invoking(se =>
-                se.ExploreFileSystem(
+                se.ExploreCollectionStructure(
                     $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}"))
                 .Should().Throw<DirectoryNotFoundException>();
         }
@@ -76,9 +75,9 @@ public class StructureExplorerShould
             tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName, "EmptyFolder");
         }
 
-        var structureExplorer = CreateStructureExplorer();
+        var structureExplorer = new StructureExplorer(NullLogger.Instance);
 
-        var testCases = structureExplorer.ExploreFileSystem(tempDirectoryPath);
+        var testCases = structureExplorer.ExploreCollectionStructure(tempDirectoryPath);
 
         testCases.Should().BeEmpty();
     }
@@ -87,9 +86,9 @@ public class StructureExplorerShould
     public void FoundTestCasesShouldBeInCorrectOrder()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = CreateStructureExplorer();
+        var structureExplorer = new StructureExplorer(NullLogger.Instance);
 
-        var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectoryPath).Keys.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Keys.ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
@@ -103,9 +102,9 @@ public class StructureExplorerShould
     public void FoundPreRequestAndPostResponseScriptsOfTestCasesShouldReflectReality()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = CreateStructureExplorer();
+        var structureExplorer = new StructureExplorer(NullLogger.Instance);
 
-        var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectoryPath).Values.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Values.ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
@@ -123,12 +122,5 @@ public class StructureExplorerShould
             hasPreRequest.Should().Be(_testCasesScriptsMap[path].hasPreRequest);
             hasPostResponse.Should().Be(_testCasesScriptsMap[path].hasPostResponse);
         }
-    }
-
-    private static StructureExplorer CreateStructureExplorer()
-    {
-        var serilogLogger = Logger.None;
-        var logger = new SerilogLoggerAdapter(serilogLogger);
-        return new StructureExplorer(logger);
     }
 }

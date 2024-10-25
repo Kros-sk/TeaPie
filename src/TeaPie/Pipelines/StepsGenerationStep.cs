@@ -1,4 +1,5 @@
-﻿using TeaPie.Pipelines.Application;
+﻿using Microsoft.Extensions.Logging;
+using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration.Records;
@@ -36,15 +37,17 @@ internal sealed class StepsGenerationStep : IPipelineStep
 
         _pipeline.InsertSteps(this, [.. newSteps]);
 
+        context.Logger.LogDebug("Multiple steps for all test cases ({Count}) were scheduled in the pipeline.",
+            context.TestCases.Count);
+
         await Task.CompletedTask;
     }
 
     private void AddStepsForScript(Script preReqScript, List<IPipelineStep> newSteps)
     {
         var scriptExecutionContext = new ScriptExecutionContext(preReqScript);
-        newSteps.Add(ReadScriptStep.Create(scriptExecutionContext));
-        newSteps.Add(
-            PreProcessScriptStep.Create(_pipeline, scriptExecutionContext, _serviceProvider));
+        newSteps.Add(ReadFileStep.Create(scriptExecutionContext));
+        newSteps.Add(PreProcessScriptStep.Create(_pipeline, scriptExecutionContext, _serviceProvider));
         newSteps.Add(SaveTempScriptStep.Create(scriptExecutionContext));
     }
 }

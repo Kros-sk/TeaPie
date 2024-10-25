@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
 
     private static Serilog.Core.Logger CreateSerilogLogger()
         => new LoggerConfiguration()
+            .MinimumLevel.Debug()
             .WriteTo.Console()
             .CreateLogger();
 }

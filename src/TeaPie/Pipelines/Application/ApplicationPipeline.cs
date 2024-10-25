@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Extensions.Logging;
+
 namespace TeaPie.Pipelines.Application;
 
 internal class ApplicationPipeline : IPipeline
@@ -7,6 +9,8 @@ internal class ApplicationPipeline : IPipeline
 
     public async Task Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
+        context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
+
         var enumerator = _pipelineSteps.GetEnumerator();
 
         IPipelineStep step;
@@ -15,6 +19,8 @@ internal class ApplicationPipeline : IPipeline
             step = enumerator.Current;
             await step.Execute(context, cancellationToken);
         }
+
+        context.Logger.LogDebug("Application pipeline finished. Number of executed steps: {Count}.", _pipelineSteps.Count);
     }
 
     public void AddSteps(params IPipelineStep[] steps)

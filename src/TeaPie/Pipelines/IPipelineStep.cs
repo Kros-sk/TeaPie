@@ -4,5 +4,5 @@ namespace TeaPie.Pipelines;
 
 internal interface IPipelineStep
 {
-    public Task Execute(ApplicationContext context, CancellationToken cancellationToken = default);
+    Task Execute(ApplicationContext context, CancellationToken cancellationToken = default);
 }

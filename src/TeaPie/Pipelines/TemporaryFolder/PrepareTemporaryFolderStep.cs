@@ -1,4 +1,5 @@
-﻿using TeaPie.Pipelines.Application;
+﻿using Microsoft.Extensions.Logging;
+using TeaPie.Pipelines.Application;
 
 namespace TeaPie.Pipelines.TemporaryFolder;
 
@@ -22,11 +23,20 @@ internal sealed class PrepareTemporaryFolderStep : IPipelineStep
             if (Directory.Exists(context.TempFolderPath))
             {
                 await CleanUpTemporaryFolderStep.Create().Execute(context, cancellationToken);
+                context.Logger.LogTrace(
+                    "Since temporary folder structure on path '{TempPath}' already existed, it was deleted to prevent " +
+                    "incorrect structure of folders.",
+                    context.TempFolderPath);
             }
 
             _pipeline.AddSteps(CleanUpTemporaryFolderStep.Create());
+            context.Logger.LogDebug("Temporary folder clean-up step was scheduled at the end of the pipeline.");
         }
 
-        Directory.CreateDirectory(context.TempFolderPath);
+        if (!Directory.Exists(context.TempFolderPath))
+        {
+            Directory.CreateDirectory(context.TempFolderPath);
+            context.Logger.LogTrace("Temporary folder on path '{TempFolderPath}' was created.", context.TempFolderPath);
+        }
     }
 }

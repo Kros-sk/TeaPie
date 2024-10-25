@@ -1,4 +1,5 @@
-﻿using TeaPie.Pipelines.Application;
+﻿using Microsoft.Extensions.Logging;
+using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
@@ -19,7 +20,7 @@ internal sealed class SaveTempScriptStep : IPipelineStep
         if (_script.ProcessedContent is null)
         {
             throw new InvalidOperationException(
-                "Processed content of the script can't be null when storing to temporary script file.");
+                "Processed content of the script can not be null when storing to temporary script file.");
         }
 
         var tmpPath = Path.Combine(context.TempFolderPath, _script.Script.File.RelativePath);
@@ -33,6 +34,12 @@ internal sealed class SaveTempScriptStep : IPipelineStep
         }
 
         await File.WriteAllTextAsync(tmpPath, _script.ProcessedContent, cancellationToken);
+
         _script.TemporaryPath = tmpPath;
+
+        context.Logger.LogTrace("Pre-processed script from path '{ScriptPath}' was saved to temporary folder," +
+            " on path '{TempPath}'",
+            _script.Script.File.RelativePath,
+            tmpPath);
     }
 }

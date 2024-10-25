@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TeaPie.Helpers;
 using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
@@ -38,6 +39,9 @@ internal sealed class PreProcessScriptStep : IPipelineStep
             throw new InvalidOperationException("Pre-processing of the script can not be done with null content.");
         }
 
+        context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' started.",
+            _scriptExecution.Script.File.RelativePath);
+
         var referencedScriptsPaths = new List<string>();
 
         _scriptExecution.ProcessedContent =
@@ -49,6 +53,9 @@ internal sealed class PreProcessScriptStep : IPipelineStep
                 referencedScriptsPaths);
 
         HandleReferencedScripts(context, referencedScriptsPaths);
+
+        context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' finished.",
+            _scriptExecution.Script.File.RelativePath);
     }
 
     private void HandleReferencedScripts(ApplicationContext context, List<string> referencedScriptsPaths)
@@ -68,13 +75,22 @@ internal sealed class PreProcessScriptStep : IPipelineStep
 
                 var scriptContext = new ScriptExecutionContext(script);
 
-                _pipeline.InsertSteps(this,
-                    ReadScriptStep.Create(scriptContext),
-                    Create(_pipeline, scriptContext, _serviceProvider),
-                    SaveTempScriptStep.Create(scriptContext));
+                var steps = PrepareSteps(scriptContext);
+
+                _pipeline.InsertSteps(this, steps);
+
+                context.Logger.LogDebug(
+                    "For the referenced script '{RefScriptPath}', {Count} steps of pre-process were scheduled in the pipeline.",
+                    relativePath,
+                    steps.Length);
 
                 context.UserDefinedScripts.Add(scriptPath, script);
             }
         }
     }
+
+    private IPipelineStep[] PrepareSteps(ScriptExecutionContext scriptContext)
+        => [ReadFileStep.Create(scriptContext),
+            Create(_pipeline, scriptContext, _serviceProvider),
+            SaveTempScriptStep.Create(scriptContext)];
 }
