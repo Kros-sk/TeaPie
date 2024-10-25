@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Serilog.Core;
 using TeaPie.Helpers;
+using TeaPie.Logging;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -43,7 +45,7 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void InvalidPathShouldThrowException(bool emptyPath)
     {
-        var structureExplorer = new StructureExplorer();
+        var structureExplorer = CreateStructureExplorer();
 
         if (emptyPath)
         {
@@ -74,7 +76,7 @@ public class StructureExplorerShould
             tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName, "EmptyFolder");
         }
 
-        var structureExplorer = new StructureExplorer();
+        var structureExplorer = CreateStructureExplorer();
 
         var testCases = structureExplorer.ExploreFileSystem(tempDirectoryPath);
 
@@ -85,7 +87,7 @@ public class StructureExplorerShould
     public void FoundTestCasesShouldBeInCorrectOrder()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = new StructureExplorer();
+        var structureExplorer = CreateStructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectoryPath).Keys.ToList();
 
@@ -101,7 +103,7 @@ public class StructureExplorerShould
     public void FoundPreRequestAndPostResponseScriptsOfTestCasesShouldReflectReality()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = new StructureExplorer();
+        var structureExplorer = CreateStructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreFileSystem(tempDirectoryPath).Values.ToList();
 
@@ -121,5 +123,12 @@ public class StructureExplorerShould
             hasPreRequest.Should().Be(_testCasesScriptsMap[path].hasPreRequest);
             hasPostResponse.Should().Be(_testCasesScriptsMap[path].hasPostResponse);
         }
+    }
+
+    private static StructureExplorer CreateStructureExplorer()
+    {
+        var serilogLogger = Logger.None;
+        var logger = new SerilogLoggerAdapter(serilogLogger);
+        return new StructureExplorer(logger);
     }
 }

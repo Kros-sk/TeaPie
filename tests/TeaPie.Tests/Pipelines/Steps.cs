@@ -24,3 +24,19 @@ internal class IdentifyingStep(List<int> register, int id) : IPipelineStep
         await Task.CompletedTask;
     }
 }
+
+internal class GenerativeStep(IPipeline pipeline) : IPipelineStep
+{
+    private readonly IPipeline _pipeline = pipeline;
+
+    public async Task Execute(
+        ApplicationContext context,
+        CancellationToken cancellationToken = default)
+    {
+        _pipeline.AddSteps(new DummyStep());
+        _pipeline.AddSteps(new DummyStep());
+        _pipeline.AddSteps(new DummyStep());
+
+        await Task.CompletedTask;
+    }
+}
