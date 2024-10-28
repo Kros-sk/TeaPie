@@ -10,9 +10,9 @@ internal interface IStructureExplorer
     IReadOnlyDictionary<string, TestCase> ExploreCollectionStructure(string rootPath);
 }
 
-internal class StructureExplorer(ILogger logger) : IStructureExplorer
+internal class StructureExplorer(ILogger<StructureExplorer> logger) : IStructureExplorer
 {
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<StructureExplorer> _logger = logger;
 
     public IReadOnlyDictionary<string, TestCase> ExploreCollectionStructure(string rootPath)
     {

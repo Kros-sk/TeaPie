@@ -15,14 +15,15 @@ internal interface IScriptPreProcessor
         List<string> referencedScripts);
 }
 
-internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler, ILogger logger) : IScriptPreProcessor
+internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler, ILogger<ScriptPreProcessor> logger)
+    : IScriptPreProcessor
 {
     private List<string> _referencedScripts = [];
     private string _rootPath = string.Empty;
     private string _tempFolderPath = string.Empty;
 
     private readonly INugetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<ScriptPreProcessor> _logger = logger;
 
     public async Task<string> ProcessScript(
         string path,

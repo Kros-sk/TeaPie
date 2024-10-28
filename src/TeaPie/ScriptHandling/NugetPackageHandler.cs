@@ -6,7 +6,6 @@ using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using TeaPie.Exceptions;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TeaPie.ScriptHandling;
 
@@ -15,9 +14,9 @@ internal interface INugetPackageHandler
     Task HandleNugetPackages(List<NugetPackageDescription> nugetPackages);
 }
 
-internal class NugetPackageHandler(ILogger logger) : INugetPackageHandler
+internal class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INugetPackageHandler
 {
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<NugetPackageHandler> _logger = logger;
 
     public async Task HandleNugetPackages(List<NugetPackageDescription> nugetPackages)
     {
@@ -78,7 +77,7 @@ internal class NugetPackageHandler(ILogger logger) : INugetPackageHandler
             dependencyInfo.Version.Version.ToString());
     }
 
-    private async Task DownloadPackage(
+    private static async Task DownloadPackage(
         PackageDependencyInfo dependencyInfo,
         SourceRepository repositories,
         string packagePath,
