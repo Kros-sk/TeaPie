@@ -1,9 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
+using System.Diagnostics;
 using Script = TeaPie.StructureExploration.Records.Script;
 
 namespace TeaPie.ScriptHandling;
 
+[DebuggerDisplay("{Script}")]
 internal class ScriptExecutionContext(Script script)
 {
     public Script Script { get; set; } = script;

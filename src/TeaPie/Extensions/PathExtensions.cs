@@ -1,6 +1,6 @@
-﻿namespace TeaPie.Helpers;
+﻿namespace TeaPie.Extensions;
 
-internal static class PathHelper
+internal static class PathExtensions
 {
     public static string TrimRootPath(this string fullPath, string rootPath, bool keepRootFolder = false)
     {

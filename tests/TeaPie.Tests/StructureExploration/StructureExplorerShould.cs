@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Helpers;
+using TeaPie.Extensions;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Tests.StructureExploration;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Helpers;
+using TeaPie.Extensions;
 using TeaPie.StructureExploration.Records;
 using File = TeaPie.StructureExploration.Records.File;
 

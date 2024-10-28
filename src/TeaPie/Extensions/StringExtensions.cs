@@ -1,6 +1,6 @@
-﻿namespace TeaPie.Helpers;
+﻿namespace TeaPie.Extensions;
 
-internal static class StringHelper
+internal static class StringExtensions
 {
     public static string TrimSuffix(this string text, string suffix)
     {

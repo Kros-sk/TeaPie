@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Reflection;
+using TeaPie.Pipelines;
+using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration;
 
-namespace TeaPie;
+namespace TeaPie.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -30,4 +33,26 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection RegisterSteps(this IServiceCollection services)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+
+        foreach (var implementation in FindImplementations<IPipelineStep>(assembly))
+        {
+            services.AddTransient(implementation);
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureAccessors(this IServiceCollection services)
+    {
+        services.AddScoped<IScriptExecutionContextAccessor, ScriptExecutionContextAccessor>();
+        return services;
+    }
+
+    private static IEnumerable<Type> FindImplementations<TInterface>(Assembly assembly)
+        => assembly.GetTypes()
+            .Where(t => typeof(TInterface).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
 }

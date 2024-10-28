@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using TeaPie.Helpers;
+using TeaPie.Extensions;
 using TeaPie.Parsing;
 
 namespace TeaPie.ScriptHandling;
