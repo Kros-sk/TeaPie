@@ -1,21 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Pipelines.StructureExploration;
 
-internal sealed class StructureExplorationStep : IPipelineStep
+internal sealed class StructureExplorationStep(IStructureExplorer structureExplorer) : IPipelineStep
 {
-    private readonly IStructureExplorer _structureExplorer;
-
-    private StructureExplorationStep(IStructureExplorer structureExplorer)
-    {
-        _structureExplorer = structureExplorer;
-    }
-
-    public static StructureExplorationStep Create(IServiceProvider serviceProvider)
-        => new(serviceProvider.GetRequiredService<IStructureExplorer>());
+    private readonly IStructureExplorer _structureExplorer = structureExplorer;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {

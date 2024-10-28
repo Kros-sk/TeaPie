@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TeaPie.Extensions;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
@@ -6,18 +8,9 @@ using TeaPie.StructureExploration.Records;
 
 namespace TeaPie.Pipelines;
 
-internal sealed class StepsGenerationStep : IPipelineStep
+internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
 {
-    private readonly IPipeline _pipeline;
-    private readonly IServiceProvider _serviceProvider;
-    private StepsGenerationStep(IPipeline pipeline, IServiceProvider serviceProvider)
-    {
-        _pipeline = pipeline;
-        _serviceProvider = serviceProvider;
-    }
-
-    public static StepsGenerationStep Create(IPipeline pipeline, IServiceProvider serviceProvider)
-        => new(pipeline, serviceProvider);
+    private readonly IPipeline _pipeline = pipeline;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -26,12 +19,12 @@ internal sealed class StepsGenerationStep : IPipelineStep
         {
             foreach (var preReqScript in testCase.PreRequestScripts)
             {
-                AddStepsForScript(preReqScript, newSteps);
+                AddStepsForScript(context, preReqScript, newSteps);
             }
 
             foreach (var postResScript in testCase.PostResponseScripts)
             {
-                AddStepsForScript(postResScript, newSteps);
+                AddStepsForScript(context, postResScript, newSteps);
             }
         }
 
@@ -43,11 +36,18 @@ internal sealed class StepsGenerationStep : IPipelineStep
         await Task.CompletedTask;
     }
 
-    private void AddStepsForScript(Script preReqScript, List<IPipelineStep> newSteps)
+    private static void AddStepsForScript(ApplicationContext context, Script preReqScript, List<IPipelineStep> newSteps)
     {
         var scriptExecutionContext = new ScriptExecutionContext(preReqScript);
-        newSteps.Add(ReadFileStep.Create(scriptExecutionContext));
-        newSteps.Add(PreProcessScriptStep.Create(_pipeline, scriptExecutionContext, _serviceProvider));
-        newSteps.Add(SaveTempScriptStep.Create(scriptExecutionContext));
+
+        using var scope = context.ServiceProvider.CreateScope();
+        var provider = scope.ServiceProvider;
+
+        var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
+        accessor.ScriptExecutionContext = scriptExecutionContext;
+
+        newSteps.Add(provider.GetStep<ReadFileStep>());
+        newSteps.Add(provider.GetStep<PreProcessScriptStep>());
+        newSteps.Add(provider.GetStep<SaveTempScriptStep>());
     }
 }

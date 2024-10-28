@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection RegisterSteps(this IServiceCollection services)
+    public static IServiceCollection ConfigureSteps(this IServiceCollection services)
     {
         var assembly = Assembly.GetExecutingAssembly();
 

@@ -1,38 +1,36 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
 
-internal sealed class CompileScriptStep : IPipelineStep
+internal sealed class CompileScriptStep(
+    IScriptExecutionContextAccessor scriptExecutionContextAccessor,
+    IScriptCompiler scriptCompiler)
+    : IPipelineStep
 {
-    private readonly ScriptExecutionContext _script;
-    private readonly IScriptCompiler _compiler;
-
-    private CompileScriptStep(ScriptExecutionContext scriptExecution, IScriptCompiler scriptCompiler)
-    {
-        _script = scriptExecution;
-        _compiler = scriptCompiler;
-    }
-
-    public static CompileScriptStep Create(ScriptExecutionContext scriptExecution, IServiceProvider serviceProvider)
-        => new(scriptExecution, serviceProvider.GetRequiredService<IScriptCompiler>());
+    private readonly IScriptExecutionContextAccessor _scriptContextAccessor = scriptExecutionContextAccessor;
+    private readonly IScriptCompiler _compiler = scriptCompiler;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (_script.ProcessedContent is null)
+        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new ArgumentNullException(nameof(_scriptContextAccessor.ScriptExecutionContext));
+
+        if (scriptExecutionContext.ProcessedContent is null)
         {
             throw new InvalidOperationException("Script can not be compiled, when pre-processed content is null.");
         }
 
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.", _script.Script.File.RelativePath);
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
+            scriptExecutionContext.Script.File.RelativePath);
 
-        var (script, compilation) = _compiler.CompileScript(_script.ProcessedContent);
-        _script.ScriptObject = script;
-        _script.Compilation = compilation;
+        var (script, compilation) = _compiler.CompileScript(scriptExecutionContext.ProcessedContent);
+        scriptExecutionContext.ScriptObject = script;
+        scriptExecutionContext.Compilation = compilation;
 
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished.", _script.Script.File.RelativePath);
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished.",
+            scriptExecutionContext.Script.File.RelativePath);
 
         await Task.CompletedTask;
     }

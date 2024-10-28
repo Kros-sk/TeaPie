@@ -1,33 +1,29 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
-using TeaPie.ScriptHandling;
 
 namespace TeaPie.Pipelines.Scripts;
 
-internal sealed class ReadFileStep : IPipelineStep
+internal sealed class ReadFileStep(IScriptExecutionContextAccessor scriptExecutionContextAccessor) : IPipelineStep
 {
-    private readonly ScriptExecutionContext _scriptExecution;
-
-    private ReadFileStep(ScriptExecutionContext scriptExecution)
-    {
-        _scriptExecution = scriptExecution;
-    }
-
-    public static ReadFileStep Create(ScriptExecutionContext scriptExecution)
-        => new(scriptExecution);
+    private readonly IScriptExecutionContextAccessor _scriptContextAccessor = scriptExecutionContextAccessor;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
+        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new ArgumentNullException(nameof(_scriptContextAccessor.ScriptExecutionContext));
+
         try
         {
-            _scriptExecution.RawContent = await File.ReadAllTextAsync(_scriptExecution.Script.File.Path, cancellationToken);
+            scriptExecutionContext.RawContent =
+                await File.ReadAllTextAsync(scriptExecutionContext.Script.File.Path, cancellationToken);
+
             context.Logger.LogTrace("Content of the file on path '{ScriptPath}' was read.",
-                _scriptExecution.Script.File.RelativePath);
+                scriptExecutionContext.Script.File.RelativePath);
         }
         catch (Exception ex)
         {
             context.Logger.LogError("Reading of the script on path '{ScriptPath}' failed, because of '{ErrorMessage}'.",
-                _scriptExecution.Script.File.RelativePath,
+                scriptExecutionContext.Script.File.RelativePath,
                 ex.Message);
 
             throw;

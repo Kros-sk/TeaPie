@@ -1,53 +1,40 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Helpers;
+using TeaPie.Extensions;
 using TeaPie.Pipelines.Application;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration.Records;
 
 namespace TeaPie.Pipelines.Scripts;
 
-internal sealed class PreProcessScriptStep : IPipelineStep
+internal sealed class PreProcessScriptStep(
+    IPipeline pipeline,
+    IScriptExecutionContextAccessor scriptExecutionContextAccessor,
+    IScriptPreProcessor scriptPreProcessor) : IPipelineStep
 {
-    private readonly ScriptExecutionContext _scriptExecution;
-    private readonly IPipeline _pipeline;
-    private readonly IScriptPreProcessor _scriptPreProcessor;
-    private readonly IServiceProvider _serviceProvider;
-
-    private PreProcessScriptStep(
-        IPipeline pipeline,
-        ScriptExecutionContext scriptExecution,
-        IScriptPreProcessor scriptPreProcessor,
-        IServiceProvider serviceProvider)
-    {
-        _pipeline = pipeline;
-        _scriptExecution = scriptExecution;
-        _scriptPreProcessor = scriptPreProcessor;
-        _serviceProvider = serviceProvider;
-    }
-
-    public static PreProcessScriptStep Create(
-        IPipeline pipeline,
-        ScriptExecutionContext scriptExecution,
-        IServiceProvider serviceProvider)
-        => new(pipeline, scriptExecution, serviceProvider.GetRequiredService<IScriptPreProcessor>(), serviceProvider);
+    private readonly IScriptExecutionContextAccessor _scriptContextAccessor = scriptExecutionContextAccessor;
+    private readonly IPipeline _pipeline = pipeline;
+    private readonly IScriptPreProcessor _scriptPreProcessor = scriptPreProcessor;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (_scriptExecution.RawContent is null)
+        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new ArgumentNullException(nameof(_scriptContextAccessor.ScriptExecutionContext));
+
+        if (scriptExecutionContext.RawContent is null)
         {
             throw new InvalidOperationException("Pre-processing of the script can not be done with null content.");
         }
 
         context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' started.",
-            _scriptExecution.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.RelativePath);
 
         var referencedScriptsPaths = new List<string>();
 
-        _scriptExecution.ProcessedContent =
+        scriptExecutionContext.ProcessedContent =
             await _scriptPreProcessor.ProcessScript(
-                _scriptExecution.Script.File.Path,
-                _scriptExecution.RawContent,
+                scriptExecutionContext.Script.File.Path,
+                scriptExecutionContext.RawContent,
                 context.Path,
                 context.TempFolderPath,
                 referencedScriptsPaths);
@@ -55,7 +42,7 @@ internal sealed class PreProcessScriptStep : IPipelineStep
         HandleReferencedScripts(context, referencedScriptsPaths);
 
         context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' finished.",
-            _scriptExecution.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.RelativePath);
     }
 
     private void HandleReferencedScripts(ApplicationContext context, List<string> referencedScriptsPaths)
@@ -75,7 +62,7 @@ internal sealed class PreProcessScriptStep : IPipelineStep
 
                 var scriptContext = new ScriptExecutionContext(script);
 
-                var steps = PrepareSteps(scriptContext);
+                var steps = PrepareSteps(context, scriptContext);
 
                 _pipeline.InsertSteps(this, steps);
 
@@ -89,8 +76,16 @@ internal sealed class PreProcessScriptStep : IPipelineStep
         }
     }
 
-    private IPipelineStep[] PrepareSteps(ScriptExecutionContext scriptContext)
-        => [ReadFileStep.Create(scriptContext),
-            Create(_pipeline, scriptContext, _serviceProvider),
-            SaveTempScriptStep.Create(scriptContext)];
+    private static IPipelineStep[] PrepareSteps(ApplicationContext context, ScriptExecutionContext scriptContext)
+    {
+        using var scope = context.ServiceProvider.CreateScope();
+        var provider = scope.ServiceProvider;
+
+        var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
+        accessor.ScriptExecutionContext = scriptContext;
+
+        return [provider.GetStep<ReadFileStep>(),
+            provider.GetStep<PreProcessScriptStep>(),
+            provider.GetStep<SaveTempScriptStep>()];
+    }
 }
