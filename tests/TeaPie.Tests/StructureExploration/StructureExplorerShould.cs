@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using TeaPie.Helpers;
 using TeaPie.StructureExploration;
 
@@ -44,7 +45,7 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void InvalidPathShouldThrowException(bool emptyPath)
     {
-        var structureExplorer = new StructureExplorer(NullLogger.Instance);
+        var structureExplorer = GetStructureExplorer();
 
         if (emptyPath)
         {
@@ -75,7 +76,7 @@ public class StructureExplorerShould
             tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName, "EmptyFolder");
         }
 
-        var structureExplorer = new StructureExplorer(NullLogger.Instance);
+        var structureExplorer = GetStructureExplorer();
 
         var testCases = structureExplorer.ExploreCollectionStructure(tempDirectoryPath);
 
@@ -86,7 +87,7 @@ public class StructureExplorerShould
     public void FoundTestCasesShouldBeInCorrectOrder()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = new StructureExplorer(NullLogger.Instance);
+        var structureExplorer = GetStructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Keys.ToList();
 
@@ -102,7 +103,7 @@ public class StructureExplorerShould
     public void FoundPreRequestAndPostResponseScriptsOfTestCasesShouldReflectReality()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-        var structureExplorer = new StructureExplorer(NullLogger.Instance);
+        var structureExplorer = GetStructureExplorer();
 
         var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Values.ToList();
 
@@ -123,4 +124,7 @@ public class StructureExplorerShould
             hasPostResponse.Should().Be(_testCasesScriptsMap[path].hasPostResponse);
         }
     }
+
+    private static IStructureExplorer GetStructureExplorer()
+     => new StructureExplorer(Substitute.For<ILogger<StructureExplorer>>());
 }

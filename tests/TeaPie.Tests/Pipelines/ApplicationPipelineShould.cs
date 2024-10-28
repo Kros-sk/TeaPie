@@ -1,6 +1,5 @@
-﻿using NSubstitute;
-using Serilog.Core;
-using TeaPie.Logging;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
 using TeaPie.Pipelines;
 using TeaPie.Pipelines.Application;
 
@@ -98,9 +97,5 @@ public class ApplicationPipelineShould
     }
 
     private static ApplicationContext CreateApplicationContext(string path)
-    {
-        var serilogLogger = Logger.None;
-        var logger = new SerilogLoggerAdapter(serilogLogger);
-        return new ApplicationContext(path, logger);
-    }
+        => new(path, Substitute.For<ILogger>());
 }
