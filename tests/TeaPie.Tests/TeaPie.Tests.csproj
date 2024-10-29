@@ -61,6 +61,9 @@
     <None Update="Demo\Scripts\Nested\second.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Demo\Scripts\scriptAccessingTeaPieInstance.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Demo\Scripts\scriptWithMultipleLoadAndNugetDirectives.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

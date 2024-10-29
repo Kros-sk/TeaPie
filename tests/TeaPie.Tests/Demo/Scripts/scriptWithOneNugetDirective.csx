@@ -2,8 +2,6 @@
 
 using Newtonsoft.Json;
 
-tp.Logger.LogInformation("I am script with one Nuget Package and I am about to run (marathon)...");
-
 public class Person
 {
     public string Name { get; set; }
