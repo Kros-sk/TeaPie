@@ -2,19 +2,17 @@
 
 namespace TeaPie;
 
-internal class TeaPie
+public sealed class TeaPie
 {
-    private static TeaPie? _instance;
+    // The way of TeaPie instance retrieval will be different in final version, this is just to make some functionality work
+    public static TeaPie Create(ILogger logger) => Instance ??= new(logger);
 
-    //The way of TeaPie instance retrieval will be different in final version, this is just to make some functionality work
-    internal static TeaPie Create(ILogger logger) => _instance ??= new(logger);
+    public static TeaPie? Instance { get; private set; }
 
-    internal static TeaPie? Instance => _instance;
-
-    public TeaPie(ILogger logger)
+    private TeaPie(ILogger logger)
     {
         Logger = logger;
     }
 
-    public ILogger Logger { get; private set; }
+    public ILogger Logger { get; }
 }

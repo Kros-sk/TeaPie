@@ -49,5 +49,7 @@ internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
         newSteps.Add(provider.GetStep<ReadFileStep>());
         newSteps.Add(provider.GetStep<PreProcessScriptStep>());
         newSteps.Add(provider.GetStep<SaveTempScriptStep>());
+        newSteps.Add(provider.GetStep<CompileScriptStep>());
+        newSteps.Add(provider.GetStep<ExecuteScriptStep>());
     }
 }
