@@ -13,5 +13,4 @@ internal class ScriptExecutionContext(Script script)
     public string? RawContent { get; set; }
     public string? ProcessedContent { get; set; }
     public Script<object>? ScriptObject { get; set; }
-    public Compilation? Compilation { get; set; }
 }

@@ -144,6 +144,20 @@ public sealed class ScriptPreProcessorShould
     }
 
     [Fact]
+    public async Task ScriptWithDuplicatedNugetDirectivesShouldBeHandledProperly()
+    {
+        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        List<string> referencedScripts = [];
+
+        var processedContent =
+            await PreProcessScript(processor, ScriptIndex.ScriptWithDuplicatedNugetDirectivePath, referencedScripts);
+
+        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+    }
+
+    [Fact]
     public async Task ScriptWithMultipleLoadAndNugetDirectivesShouldBeHandledProperly()
     {
         var nugetHandler = Substitute.For<INugetPackageHandler>();

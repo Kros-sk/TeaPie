@@ -82,7 +82,13 @@
     <None Update="Demo\Scripts\scriptWithInvalidNugetDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Demo\Scripts\scriptWithDuplicatedNugetDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Demo\Scripts\scriptWithOneNugetDirective.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Scripts\scriptWithSyntaxError.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-test.csx">

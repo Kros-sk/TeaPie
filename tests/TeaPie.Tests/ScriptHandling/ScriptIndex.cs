@@ -17,6 +17,9 @@ internal static class ScriptIndex
     public static readonly string ScriptAccessingTeaPieInstance =
         Path.Combine(RootSubFolderPath, $"scriptAccessingTeaPieInstance{Constants.ScriptFileExtension}");
 
+    public static readonly string ScriptWithDuplicatedNugetDirectivePath =
+        Path.Combine(RootSubFolderPath, $"scriptWithDuplicatedNugetDirective{Constants.ScriptFileExtension}");
+
     public static readonly string ScriptWithNonExistingScriptLoadDirectivePath =
         Path.Combine(RootSubFolderPath, $"scriptWithNonExistingScriptLoadDirective{Constants.ScriptFileExtension}");
 
@@ -37,4 +40,7 @@ internal static class ScriptIndex
 
     public static readonly string ScriptWithMultipleLoadAndNugetDirectivesPath =
         Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadAndNugetDirectives{Constants.ScriptFileExtension}");
+
+    public static readonly string ScriptWithSyntaxErrorPath =
+    Path.Combine(RootSubFolderPath, $"scriptWithSyntaxError{Constants.ScriptFileExtension}");
 }

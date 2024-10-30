@@ -1,51 +1,34 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using TeaPie.Extensions;
-using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration.IO;
-using TeaPie.Tests.ScriptHandling;
 using File = TeaPie.StructureExploration.IO.File;
 
-namespace TeaPie.Tests.Pipelines.Scripts;
-public class ExecuteScriptStepShould
+namespace TeaPie.Tests.ScriptHandling;
+
+public class ScriptCompilerShould
 {
     [Fact]
-    public async void ScriptShouldAccessTeaPieInstanceWithoutAnyProblem()
+    public async void ScriptWithSyntaxErrorShouldThrowException()
     {
         var logger = NullLogger.Instance;
-        var context = GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieInstance);
+        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        TeaPie.Create(logger);
-        await PrepareScriptForExecution(context);
+        await PrepareScriptForCompilation(context);
 
-        var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContext(string.Empty, logger, Substitute.For<IServiceProvider>());
+        var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        await step.Execute(appContext);
+        compiler.Invoking(c => c.CompileScript(context.ProcessedContent!)).Should().Throw<InvalidOperationException>();
     }
 
-    [Fact]
-    public async void ScriptWithNugetPackageShouldExecuteWithoutAnyProblem()
-    {
-        var logger = NullLogger.Instance;
-        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNugetDirectivePath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        await PrepareScriptForExecution(context);
-
-        var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContext(string.Empty, logger, Substitute.For<IServiceProvider>());
-
-        await step.Execute(appContext);
-    }
-
-    private static async Task PrepareScriptForExecution(ScriptExecutionContext context)
+    private static async Task PrepareScriptForCompilation(ScriptExecutionContext context)
     {
         context.RawContent = await System.IO.File.ReadAllTextAsync(context.Script.File.Path);
         await PreProccessScript(context);
-        CompileScriptAndSaveMetadata(context);
     }
 
     private static async Task PreProccessScript(ScriptExecutionContext context)
@@ -59,12 +42,6 @@ public class ExecuteScriptStepShould
             ScriptIndex.RootSubFolderPath,
             Path.GetTempPath(),
             referencedScripts);
-    }
-
-    private static void CompileScriptAndSaveMetadata(ScriptExecutionContext context)
-    {
-        var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
-        context.ScriptObject = compiler.CompileScript(context.ProcessedContent!);
     }
 
     private static ScriptExecutionContext GetScriptExecutionContext(string path)

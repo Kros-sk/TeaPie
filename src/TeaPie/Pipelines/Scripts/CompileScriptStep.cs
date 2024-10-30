@@ -22,15 +22,22 @@ internal sealed class CompileScriptStep(
             throw new InvalidOperationException("Script can not be compiled, when pre-processed content is null.");
         }
 
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
-            scriptExecutionContext.Script.File.RelativePath);
+        try
+        {
+            context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
+                scriptExecutionContext.Script.File.RelativePath);
 
-        var (script, compilation) = _compiler.CompileScript(scriptExecutionContext.ProcessedContent);
-        scriptExecutionContext.ScriptObject = script;
-        scriptExecutionContext.Compilation = compilation;
+            scriptExecutionContext.ScriptObject = _compiler.CompileScript(scriptExecutionContext.ProcessedContent);
 
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished.",
-            scriptExecutionContext.Script.File.RelativePath);
+            context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
+                scriptExecutionContext.Script.File.RelativePath);
+        }
+        catch (Exception ex)
+        {
+            context.Logger.LogError(message: ex.Message);
+
+            throw;
+        }
 
         await Task.CompletedTask;
     }
