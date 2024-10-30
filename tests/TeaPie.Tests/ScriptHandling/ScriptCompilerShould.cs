@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using System.Data;
 using TeaPie.Extensions;
-using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration.IO;
 using File = TeaPie.StructureExploration.IO.File;
@@ -17,12 +17,35 @@ public class ScriptCompilerShould
     {
         var logger = NullLogger.Instance;
         var context = GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         await PrepareScriptForCompilation(context);
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        compiler.Invoking(c => c.CompileScript(context.ProcessedContent!)).Should().Throw<InvalidOperationException>();
+        compiler.Invoking(c => c.CompileScript(context.ProcessedContent!)).Should().Throw<SyntaxErrorException>();
+    }
+
+    [Fact]
+    public async void PlainScriptShouldBeCompiledWithoutAnyProblem()
+    {
+        var context = GetScriptExecutionContext(ScriptIndex.PlainScriptPath);
+        await PrepareScriptForCompilation(context);
+
+        var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
+
+        var compiledScript = compiler.CompileScript(context.ProcessedContent!);
+        compiledScript.Should().NotBe(null);
+    }
+
+    [Fact]
+    public async void ScriptWithNugetPackageShouldBeCompiledWithoutAnyProblem()
+    {
+        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNugetDirectivePath);
+        await PrepareScriptForCompilation(context);
+
+        var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
+
+        var compiledScript = compiler.CompileScript(context.ProcessedContent!);
+        compiledScript.Should().NotBe(null);
     }
 
     private static async Task PrepareScriptForCompilation(ScriptExecutionContext context)

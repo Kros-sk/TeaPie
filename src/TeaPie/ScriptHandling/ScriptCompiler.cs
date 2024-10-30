@@ -2,6 +2,8 @@
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
+using System.Data;
 
 namespace TeaPie.ScriptHandling;
 
@@ -34,22 +36,44 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
         var script = CSharpScript.Create(scriptContent, scriptOptions, typeof(Globals));
 
         var compilationDiagnostics = script.Compile();
-        if (compilationDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
-        {
-            LogErrorsOccured(compilationDiagnostics.Length);
-
-            foreach (var diagnostic in compilationDiagnostics)
-            {
-                LogError(diagnostic.GetMessage());
-            }
-            throw new InvalidOperationException("Exception during compilation: Script contains syntax errors.");
-        }
+        ResolveCompilationDiagnostics(compilationDiagnostics);
 
         return script;
     }
 
+    private void ResolveCompilationDiagnostics(ImmutableArray<Diagnostic> compilationDiagnostics)
+    {
+        var errors = compilationDiagnostics.Where(d => d.Severity == DiagnosticSeverity.Error);
+        var hasErrors = false;
+        foreach (var diagnostic in compilationDiagnostics)
+        {
+            if (diagnostic.Severity == DiagnosticSeverity.Warning)
+            {
+                LogWarning(diagnostic.GetMessage());
+            }
+            else if (diagnostic.Severity == DiagnosticSeverity.Error)
+            {
+                if (!hasErrors)
+                {
+                    LogErrorsOccured(compilationDiagnostics.Length);
+                }
+
+                hasErrors = true;
+                LogError(diagnostic.GetMessage());
+            }
+        }
+
+        if (hasErrors)
+        {
+            throw new SyntaxErrorException("Exception thrown during compilation: Script contains syntax errors.");
+        }
+    }
+
     [LoggerMessage("Script has {count} syntax errors.", Level = LogLevel.Error)]
     partial void LogErrorsOccured(int count);
+
+    [LoggerMessage("{warningMessage}", Level = LogLevel.Warning)]
+    partial void LogWarning(string warningMessage);
 
     [LoggerMessage("{errorMessage}", Level = LogLevel.Error)]
     partial void LogError(string errorMessage);

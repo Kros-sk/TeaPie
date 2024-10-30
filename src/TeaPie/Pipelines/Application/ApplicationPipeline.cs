@@ -19,7 +19,8 @@ internal class ApplicationPipeline : IPipeline
             await step.Execute(context, cancellationToken);
         }
 
-        context.Logger.LogDebug("Application pipeline finished. Number of executed steps: {Count}.", _pipelineSteps.Count);
+        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
+            _pipelineSteps.Count);
     }
 
     public void AddSteps(params IPipelineStep[] steps)
