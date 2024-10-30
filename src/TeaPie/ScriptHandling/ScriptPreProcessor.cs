@@ -51,14 +51,15 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
                 referencedScriptsDirectives = lines.Where(x => x.Contains(ParsingConstants.LoadScriptDirective));
                 CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
 
-                _logger.LogTrace("Load-script directives were resolved for the script on path '{ScriptPath}'.", path);
+                LogResolvedLoadDirectives(path);
             }
 
             if (hasNugetDirectives)
             {
                 await ResolveNugetDirectives(lines);
                 lines = lines.Where(x => !x.Contains(ParsingConstants.NugetDirective));
-                _logger.LogTrace("NuGet package directives were resolved for the script on path '{ScriptPath}'.", path);
+
+                LogResolvedNuGetDirectives(path);
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);
@@ -151,4 +152,10 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
 
     [GeneratedRegex(ParsingConstants.LoadScriptDirective)]
     private static partial Regex LoadReferenceRegex();
+
+    [LoggerMessage("Load-script directives were resolved for the script on path '{scriptPath}'.", Level = LogLevel.Trace)]
+    partial void LogResolvedLoadDirectives(string scriptPath);
+
+    [LoggerMessage("NuGet package directives were resolved for the script on path '{scriptPath}'.", Level = LogLevel.Trace)]
+    partial void LogResolvedNuGetDirectives(string scriptPath);
 }

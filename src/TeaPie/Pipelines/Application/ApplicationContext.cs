@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration;
-using TeaPie.StructureExploration.Records;
+using TeaPie.StructureExploration.IO;
 
 namespace TeaPie.Pipelines.Application;
 

@@ -14,7 +14,7 @@ internal interface INugetPackageHandler
     Task HandleNugetPackages(List<NugetPackageDescription> nugetPackages);
 }
 
-internal class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INugetPackageHandler
+internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INugetPackageHandler
 {
     private readonly ILogger<NugetPackageHandler> _logger = logger;
 
@@ -72,9 +72,7 @@ internal class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INuget
             throw new NugetPackageNotFoundException(packageID, version);
         }
 
-        _logger.LogTrace("NuGet Package {Name}, {Version} was successfully downloaded.",
-            dependencyInfo.Id,
-            dependencyInfo.Version.Version.ToString());
+        LogSuccessfullNuGetDownload(packageID, version);
     }
 
     private static async Task DownloadPackage(
@@ -106,6 +104,10 @@ internal class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INuget
             throw new NugetPackageNotFoundException(dependencyInfo.Id, dependencyInfo.Version.Version.ToString());
         }
     }
+
+    [LoggerMessage("NuGet Package {name}, {version} was successfully downloaded.",
+        Level = Microsoft.Extensions.Logging.LogLevel.Trace)]
+    partial void LogSuccessfullNuGetDownload(string name, string version);
 }
 
 internal class NugetPackageDescription(string packageName, string version)

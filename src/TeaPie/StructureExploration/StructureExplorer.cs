@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Extensions;
-using TeaPie.StructureExploration.Records;
-using File = TeaPie.StructureExploration.Records.File;
+using TeaPie.StructureExploration.IO;
+using File = TeaPie.StructureExploration.IO.File;
 
 namespace TeaPie.StructureExploration;
 
@@ -10,7 +10,7 @@ internal interface IStructureExplorer
     IReadOnlyDictionary<string, TestCase> ExploreCollectionStructure(string rootPath);
 }
 
-internal class StructureExplorer(ILogger<StructureExplorer> logger) : IStructureExplorer
+internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IStructureExplorer
 {
     private readonly ILogger<StructureExplorer> _logger = logger;
 
@@ -23,7 +23,7 @@ internal class StructureExplorer(ILogger<StructureExplorer> logger) : IStructure
             throw new DirectoryNotFoundException("Provided folder doesn't exist.");
         }
 
-        _logger.LogInformation("Exploration of the collection started on path: '{path}'.", rootPath);
+        LogStartOfCollectionExploration(rootPath);
 
         var testCases = new Dictionary<string, TestCase>();
         var folderName = Path.GetFileName(rootPath.TrimEnd(Path.DirectorySeparatorChar));
@@ -31,7 +31,7 @@ internal class StructureExplorer(ILogger<StructureExplorer> logger) : IStructure
         Folder rootFolder = new(rootPath, folderName, folderName, null);
         ExploreFolder(rootFolder, testCases);
 
-        _logger.LogInformation("Collection explored, found {count} test cases.", testCases.Count);
+        LogEndOfCollectionExploration(testCases.Count);
 
         return testCases;
     }
@@ -110,4 +110,10 @@ internal class StructureExplorer(ILogger<StructureExplorer> logger) : IStructure
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
+
+    [LoggerMessage("Exploration of the collection started on path: '{path}'.", Level = LogLevel.Information)]
+    partial void LogStartOfCollectionExploration(string path);
+
+    [LoggerMessage("Collection explored, found {countOfTestCases} test cases.", Level = LogLevel.Information)]
+    partial void LogEndOfCollectionExploration(int countOfTestCases);
 }
