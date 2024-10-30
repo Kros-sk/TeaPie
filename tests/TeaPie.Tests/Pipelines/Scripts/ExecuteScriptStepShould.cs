@@ -5,9 +5,9 @@ using TeaPie.Extensions;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
-using TeaPie.StructureExploration.Records;
+using TeaPie.StructureExploration.IO;
 using TeaPie.Tests.ScriptHandling;
-using File = TeaPie.StructureExploration.Records.File;
+using File = TeaPie.StructureExploration.IO.File;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 public class ExecuteScriptStepShould
