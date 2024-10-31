@@ -43,7 +43,6 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
 
     private void ResolveCompilationDiagnostics(ImmutableArray<Diagnostic> compilationDiagnostics)
     {
-        var errors = compilationDiagnostics.Where(d => d.Severity == DiagnosticSeverity.Error);
         var hasErrors = false;
         foreach (var diagnostic in compilationDiagnostics)
         {
