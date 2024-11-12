@@ -129,7 +129,7 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
     }
 
     private static string GetPackageLocation(NugetPackageDescription nugetPackage)
-        => Path.Combine(_packagesPath, nugetPackage.PackageName, nugetPackage.Version);
+        => Path.Combine(_packagesPath, nugetPackage.PackageName.ToLower(), nugetPackage.Version);
 
     private static string FindCompatibleFrameworkPath(string packagePath)
     {
