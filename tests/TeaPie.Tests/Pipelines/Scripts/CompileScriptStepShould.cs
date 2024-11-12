@@ -56,7 +56,7 @@ public class CompileScriptStepShould
 
     private static async Task PreProccessScript(ScriptExecutionContext context)
     {
-        var nugetHandler = new NugetPackageHandler(Substitute.For<ILogger<NugetPackageHandler>>());
+        var nugetHandler = new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
         var processor = new ScriptPreProcessor(nugetHandler, Substitute.For<ILogger<ScriptPreProcessor>>());
         var referencedScripts = new List<string>();
         context.ProcessedContent = await processor.ProcessScript(

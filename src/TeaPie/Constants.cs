@@ -4,17 +4,17 @@ internal static class Constants
 {
     public const string RequestFileExtension = ".http";
     public const string ScriptFileExtension = ".csx";
-    public const string NugetPackageFileExtension = ".nupkg";
+    public const string NuGetPackageFileExtension = ".nupkg";
     public const string LibraryFileExtension = ".dll";
 
-    public const string DefaultNugetPackagesFolderName = "packages";
-    public const string DefaultNugetLibraryFolderName = "lib";
+    public const string DefaultNuGetPackagesFolderName = "packages";
+    public const string DefaultNuGetLibraryFolderName = "lib";
 
     public const string PreRequestSuffix = "-init";
     public const string RequestSuffix = "-req";
     public const string PostResponseSuffix = "-test";
 
-    public const string NugetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
+    public const string NuGetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
 
     public const string ApplicationName = "TeaPie";
 

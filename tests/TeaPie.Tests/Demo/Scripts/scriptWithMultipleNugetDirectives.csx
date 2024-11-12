@@ -35,4 +35,7 @@ if (!fileSystem.File.Exists(filePath))
 string content = fileSystem.File.ReadAllText(filePath);
 Console.WriteLine("File content: " + content);
 
-fileSystem.File.Delete(filePath);
+if (fileSystem.File.Existis(filePath))
+{
+    fileSystem.File.Delete(filePath);
+}

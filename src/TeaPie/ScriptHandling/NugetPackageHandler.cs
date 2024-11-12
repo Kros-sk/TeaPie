@@ -10,38 +10,38 @@ using TeaPie.Exceptions;
 
 namespace TeaPie.ScriptHandling;
 
-internal interface INugetPackageHandler
+internal interface INuGetPackageHandler
 {
-    Task HandleNugetPackages(List<NugetPackageDescription> nugetPackages);
+    Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages);
 }
 
-internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) : INugetPackageHandler
+internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) : INuGetPackageHandler
 {
-    private readonly ILogger<NugetPackageHandler> _logger = logger;
+    private readonly ILogger<NuGetPackageHandler> _logger = logger;
 
-    private readonly HashSet<NugetPackageDescription> _downloadedNugetPackages = [];
-    private readonly HashSet<NugetPackageDescription> _nugetPackagesInAssembly = [];
+    private readonly HashSet<NuGetPackageDescription> _downloadedNuGetPackages = [];
+    private readonly HashSet<NuGetPackageDescription> _nugetPackagesInAssembly = [];
 
     private static readonly string _packagesPath =
-        Path.Combine(Environment.CurrentDirectory, Constants.DefaultNugetPackagesFolderName);
+        Path.Combine(Environment.CurrentDirectory, Constants.DefaultNuGetPackagesFolderName);
 
-    public async Task HandleNugetPackages(List<NugetPackageDescription> nugetPackages)
+    public async Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages)
     {
         foreach (var package in nugetPackages)
         {
-            await HandleNugetPackage(package);
+            await HandleNuGetPackage(package);
         }
     }
 
-    private async Task HandleNugetPackage(NugetPackageDescription nugetPackage)
+    private async Task HandleNuGetPackage(NuGetPackageDescription nugetPackage)
     {
-        await DownloadNuget(nugetPackage);
-        CopyNuGetDllToAssembly(nugetPackage);
+        await DownloadNuGet(nugetPackage);
+        AddNuGetDllToAssembly(nugetPackage);
     }
 
-    private async Task DownloadNuget(NugetPackageDescription nugetPackage)
+    private async Task DownloadNuGet(NuGetPackageDescription nugetPackage)
     {
-        if (_downloadedNugetPackages.Contains(nugetPackage))
+        if (_downloadedNuGetPackages.Contains(nugetPackage))
         {
             return;
         }
@@ -50,7 +50,7 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
         var version = nugetPackage.Version;
         var logger = NullLogger.Instance;
         var cache = new SourceCacheContext();
-        var repositories = Repository.Factory.GetCoreV3(Constants.NugetApiResourcesUrl);
+        var repositories = Repository.Factory.GetCoreV3(Constants.NuGetApiResourcesUrl);
 
         await repositories.GetResourceAsync<FindPackageByIdResource>();
         var packageVersion = new NuGetVersion(version);
@@ -61,7 +61,7 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
             cache,
             logger,
             CancellationToken.None)
-            ?? throw new NugetPackageNotFoundException(packageId, version);
+            ?? throw new NuGetPackageNotFoundException(packageId, version);
 
         foreach (var dependency in dependencyInfo.Dependencies)
         {
@@ -88,19 +88,19 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
 
         if (downloadResult.Status == DownloadResourceResultStatus.NotFound)
         {
-            throw new NugetPackageNotFoundException(packageId, version);
+            throw new NuGetPackageNotFoundException(packageId, version);
         }
 
-        _downloadedNugetPackages.Add(nugetPackage);
+        _downloadedNuGetPackages.Add(nugetPackage);
 
         LogSuccessfullNuGetDownload(packageId, version);
     }
 
-    private void CopyNuGetDllToAssembly(NugetPackageDescription nugetPackage)
+    private void AddNuGetDllToAssembly(NuGetPackageDescription nugetPackage)
     {
         if (!_nugetPackagesInAssembly.Contains(nugetPackage))
         {
-            var path = FindCompatibleFrameworkPath(GetPackageLocation(nugetPackage));
+            var path = FindCompatibleFrameworkPath(GetNuGetPackageLocation(nugetPackage));
             var dllPath = Directory.GetFiles(path, $"*{Constants.LibraryFileExtension}").FirstOrDefault()
                 ?? throw new InvalidOperationException($"No NuGet library for '{Path.GetFileName(path)}' framework found.");
 
@@ -111,12 +111,12 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
         }
     }
 
-    private static string GetPackageLocation(NugetPackageDescription nugetPackage)
+    private static string GetNuGetPackageLocation(NuGetPackageDescription nugetPackage)
         => Path.Combine(_packagesPath, nugetPackage.PackageName.ToLower(), nugetPackage.Version);
 
     private static string FindCompatibleFrameworkPath(string packagePath)
     {
-        var libPath = Path.Combine(packagePath, Constants.DefaultNugetLibraryFolderName);
+        var libPath = Path.Combine(packagePath, Constants.DefaultNuGetLibraryFolderName);
         foreach (var framework in Constants.CompatibleFrameworks)
         {
             var frameworkPath = Path.Combine(libPath, framework);
@@ -126,12 +126,7 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
             }
         }
 
-        var found = string.Join(Environment.NewLine, Directory.GetFiles(libPath));
-
-        throw new InvalidOperationException(
-            "No NuGet package version with compatible framework found. " +
-            "Does lib folder exist: " + Directory.Exists(libPath) +
-            "Found frameworks: " + found);
+        throw new InvalidOperationException("No NuGet package version with compatible framework found.");
     }
 
     private static async Task DownloadPackage(
@@ -153,13 +148,13 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
         {
             await using var packageStream = downloadResult.PackageStream;
             var packageFilePath = Path.Combine(_packagesPath,
-                $"{dependencyInfo.Id}.{dependencyInfo.Version}{Constants.NugetPackageFileExtension}");
+                $"{dependencyInfo.Id}.{dependencyInfo.Version}{Constants.NuGetPackageFileExtension}");
             await using var fileStream = new FileStream(packageFilePath, FileMode.Create, FileAccess.Write);
             await packageStream.CopyToAsync(fileStream);
         }
         else if (downloadResult.Status == DownloadResourceResultStatus.NotFound)
         {
-            throw new NugetPackageNotFoundException(dependencyInfo.Id, dependencyInfo.Version.Version.ToString());
+            throw new NuGetPackageNotFoundException(dependencyInfo.Id, dependencyInfo.Version.Version.ToString());
         }
     }
 
@@ -167,12 +162,12 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
         Level = Microsoft.Extensions.Logging.LogLevel.Trace)]
     partial void LogSuccessfullNuGetDownload(string name, string version);
 
-    [LoggerMessage("NuGet Package {name}, {version} was successfully registered to assembly.",
+    [LoggerMessage("NuGet Package {name}, {version} was successfully addded to execution assembly.",
         Level = Microsoft.Extensions.Logging.LogLevel.Trace)]
     partial void LogSuccessfullNuGetAdditionToAssembly(string name, string version);
 }
 
-internal class NugetPackageDescription(string packageName, string version)
+internal class NuGetPackageDescription(string packageName, string version)
 {
     public string PackageName { get; set; } = packageName;
     public string Version { get; set; } = version;
@@ -180,7 +175,7 @@ internal class NugetPackageDescription(string packageName, string version)
     public override string ToString() => $"{PackageName}, {Version}";
 
     public override bool Equals(object? obj)
-        => obj is not null && obj is NugetPackageDescription other
+        => obj is not null && obj is NuGetPackageDescription other
             && PackageName.Equals(other.PackageName) && Version.Equals(other.Version);
 
     public override int GetHashCode() => HashCode.Combine(PackageName, Version);

@@ -99,68 +99,68 @@ public sealed class ScriptPreProcessorShould
     }
 
     [Fact]
-    public async Task ScriptWithInvalidNugetDirectiveShouldThrowException()
+    public async Task ScriptWithInvalidNuGetDirectiveShouldThrowException()
     {
-        var nugetHandler = GetNugetHandler();
+        var nugetHandler = GetNuGetHandler();
 
         var processor = CreateScriptPreProcessor(nugetHandler);
 
         List<string> referencedScripts = [];
 
         await processor.Invoking(async processor => await processor.ProcessScript(
-            ScriptIndex.ScriptWithInvalidNugetDirectivePath,
-            await File.ReadAllTextAsync(ScriptIndex.ScriptWithInvalidNugetDirectivePath),
+            ScriptIndex.ScriptWithInvalidNuGetDirectivePath,
+            await File.ReadAllTextAsync(ScriptIndex.ScriptWithInvalidNuGetDirectivePath),
             ScriptIndex.RootFolderPath,
             _tempFolderPath,
             referencedScripts))
-            .Should().ThrowAsync<NugetPackageNotFoundException>();
+            .Should().ThrowAsync<NuGetPackageNotFoundException>();
     }
 
     [Fact]
-    public async Task ScriptWithOneNugetDirectiveShouldBeHandledProperly()
+    public async Task ScriptWithOneNuGetDirectiveShouldBeHandledProperly()
     {
-        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var nugetHandler = Substitute.For<INuGetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
         List<string> referencedScripts = [];
 
-        var processedContent = await PreProcessScript(processor, ScriptIndex.ScriptWithOneNugetDirectivePath, referencedScripts);
+        var processedContent = await PreProcessScript(processor, ScriptIndex.ScriptWithOneNuGetDirectivePath, referencedScripts);
 
-        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+        await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
     }
 
     [Fact]
-    public async Task ScriptWithMultipleNugetDirectivesShouldBeHandledProperly()
+    public async Task ScriptWithMultipleNuGetDirectivesShouldBeHandledProperly()
     {
-        var nugetHandler = Substitute.For<INugetPackageHandler>();
-        var processor = CreateScriptPreProcessor(nugetHandler);
-        List<string> referencedScripts = [];
-
-        var processedContent =
-            await PreProcessScript(processor, ScriptIndex.ScriptWithMultipleNugetDirectivesPath, referencedScripts);
-
-        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
-    }
-
-    [Fact]
-    public async Task ScriptWithDuplicatedNugetDirectivesShouldBeHandledProperly()
-    {
-        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var nugetHandler = Substitute.For<INuGetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
         List<string> referencedScripts = [];
 
         var processedContent =
-            await PreProcessScript(processor, ScriptIndex.ScriptWithDuplicatedNugetDirectivePath, referencedScripts);
+            await PreProcessScript(processor, ScriptIndex.ScriptWithMultipleNuGetDirectivesPath, referencedScripts);
 
-        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+        await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
     }
 
     [Fact]
-    public async Task ScriptWithMultipleLoadAndNugetDirectivesShouldBeHandledProperly()
+    public async Task ScriptWithDuplicatedNuGetDirectivesShouldBeHandledProperly()
     {
-        var nugetHandler = Substitute.For<INugetPackageHandler>();
+        var nugetHandler = Substitute.For<INuGetPackageHandler>();
+        var processor = CreateScriptPreProcessor(nugetHandler);
+        List<string> referencedScripts = [];
+
+        var processedContent =
+            await PreProcessScript(processor, ScriptIndex.ScriptWithDuplicatedNuGetDirectivePath, referencedScripts);
+
+        await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
+    }
+
+    [Fact]
+    public async Task ScriptWithMultipleLoadAndNuGetDirectivesShouldBeHandledProperly()
+    {
+        var nugetHandler = Substitute.For<INuGetPackageHandler>();
         var processor = CreateScriptPreProcessor(nugetHandler);
         var scriptRelativePathsWithoutFileExtensions = new string[]
         {
@@ -172,7 +172,7 @@ public sealed class ScriptPreProcessorShould
         List<string> referencedScripts = [];
 
         var processedContent =
-            await PreProcessScript(processor, ScriptIndex.ScriptWithMultipleLoadAndNugetDirectivesPath, referencedScripts);
+            await PreProcessScript(processor, ScriptIndex.ScriptWithMultipleLoadAndNuGetDirectivesPath, referencedScripts);
 
         var expectedLoadDirectives =
             string.Join(Environment.NewLine, GetExpectedDirectives(scriptRelativePathsWithoutFileExtensions));
@@ -188,8 +188,8 @@ public sealed class ScriptPreProcessorShould
                 .Contain(Path.Combine(ScriptIndex.RootSubFolderPath, path + Constants.ScriptFileExtension));
         }
 
-        await nugetHandler.Received(1).HandleNugetPackages(Arg.Any<List<NugetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NugetDirective);
+        await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
+        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
     }
 
     private async Task<string> PreProcessScript(ScriptPreProcessor processor, string scriptPath, List<string> referencedScripts)
@@ -214,16 +214,16 @@ public sealed class ScriptPreProcessorShould
         return list;
     }
 
-    private static INugetPackageHandler GetNugetHandler()
-        => new NugetPackageHandler(Substitute.For<ILogger<NugetPackageHandler>>());
+    private static INuGetPackageHandler GetNuGetHandler()
+        => new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
 
-    private static ScriptPreProcessor CreateScriptPreProcessor(INugetPackageHandler? nugetPackageHandler = null)
+    private static ScriptPreProcessor CreateScriptPreProcessor(INuGetPackageHandler? nugetPackageHandler = null)
     {
         var logger = Substitute.For<ILogger<ScriptPreProcessor>>();
 
         if (nugetPackageHandler is null)
         {
-            return new(GetNugetHandler(), logger);
+            return new(GetNuGetHandler(), logger);
         }
         else
         {

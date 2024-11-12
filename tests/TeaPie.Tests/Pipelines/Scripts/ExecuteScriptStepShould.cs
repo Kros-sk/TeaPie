@@ -28,10 +28,10 @@ public class ExecuteScriptStepShould
     }
 
     [Fact]
-    public async void ScriptWithNugetPackageShouldExecuteWithoutAnyProblem()
+    public async void ScriptWithNuGetPackageShouldExecuteWithoutAnyProblem()
     {
         var logger = NullLogger.Instance;
-        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNugetDirectivePath);
+        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         await PrepareScriptForExecution(context);
 
@@ -50,7 +50,7 @@ public class ExecuteScriptStepShould
 
     private static async Task PreProccessScript(ScriptExecutionContext context)
     {
-        var nugetHandler = new NugetPackageHandler(Substitute.For<ILogger<NugetPackageHandler>>());
+        var nugetHandler = new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
         var processor = new ScriptPreProcessor(nugetHandler, Substitute.For<ILogger<ScriptPreProcessor>>());
         var referencedScripts = new List<string>();
         context.ProcessedContent = await processor.ProcessScript(

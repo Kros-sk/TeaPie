@@ -15,14 +15,14 @@ internal interface IScriptPreProcessor
         List<string> referencedScripts);
 }
 
-internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHandler, ILogger<ScriptPreProcessor> logger)
+internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHandler, ILogger<ScriptPreProcessor> logger)
     : IScriptPreProcessor
 {
     private List<string> _referencedScripts = [];
     private string _rootPath = string.Empty;
     private string _tempFolderPath = string.Empty;
 
-    private readonly INugetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
+    private readonly INuGetPackageHandler _nugetPackagesHandler = nugetPackagesHandler;
     private readonly ILogger<ScriptPreProcessor> _logger = logger;
 
     public async Task<string> ProcessScript(
@@ -39,9 +39,9 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         _referencedScripts = referencedScripts;
 
         var hasLoadDirectives = scriptContent.Contains(ParsingConstants.LoadScriptDirective);
-        var hasNugetDirectives = scriptContent.Contains(ParsingConstants.NugetDirective);
+        var hasNuGetDirectives = scriptContent.Contains(ParsingConstants.NuGetDirective);
 
-        if (hasLoadDirectives || hasNugetDirectives)
+        if (hasLoadDirectives || hasNuGetDirectives)
         {
             lines = scriptContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
@@ -54,10 +54,10 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
                 LogResolvedLoadDirectives(path);
             }
 
-            if (hasNugetDirectives)
+            if (hasNuGetDirectives)
             {
-                await ResolveNugetDirectives(lines);
-                lines = lines.Where(x => !x.Contains(ParsingConstants.NugetDirective));
+                await ResolveNuGetDirectives(lines);
+                lines = lines.Where(x => !x.Contains(ParsingConstants.NuGetDirective));
 
                 LogResolvedNuGetDirectives(path);
             }
@@ -97,18 +97,18 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         return Path.GetFullPath(combinedPath);
     }
 
-    private async Task ResolveNugetDirectives(IEnumerable<string> lines)
-        => await _nugetPackagesHandler.HandleNugetPackages(ProcessNugetPackagesDirectives(lines));
+    private async Task ResolveNuGetDirectives(IEnumerable<string> lines)
+        => await _nugetPackagesHandler.HandleNuGetPackages(ProcessNuGetPackagesDirectives(lines));
 
-    private static List<NugetPackageDescription> ProcessNugetPackagesDirectives(IEnumerable<string> lines)
+    private static List<NuGetPackageDescription> ProcessNuGetPackagesDirectives(IEnumerable<string> lines)
     {
-        var nugetPackages = new List<NugetPackageDescription>();
+        var nugetPackages = new List<NuGetPackageDescription>();
 
         foreach (var line in lines)
         {
-            if (NugetPackageRegex().IsMatch(line.Trim()))
+            if (NuGetPackageRegex().IsMatch(line.Trim()))
             {
-                ProcessNugetPackage(line, nugetPackages);
+                ProcessNuGetPackage(line, nugetPackages);
             }
         }
 
@@ -134,21 +134,21 @@ internal partial class ScriptPreProcessor(INugetPackageHandler nugetPackagesHand
         return path.Replace("\"", string.Empty);
     }
 
-    private static string ProcessNugetPackage(string directive, List<NugetPackageDescription> listOfNugetPackages)
+    private static string ProcessNuGetPackage(string directive, List<NuGetPackageDescription> listOfNuGetPackages)
     {
-        var packageInfo = directive[ParsingConstants.NugetDirective.Length..].Trim();
+        var packageInfo = directive[ParsingConstants.NuGetDirective.Length..].Trim();
         packageInfo = packageInfo.Replace("\"", string.Empty);
         var parts = packageInfo.Split(',');
         if (parts.Length == 2)
         {
-            listOfNugetPackages.Add(new(parts[0].Trim(), parts[1].Trim()));
+            listOfNuGetPackages.Add(new(parts[0].Trim(), parts[1].Trim()));
         }
 
         return directive;
     }
 
-    [GeneratedRegex(ParsingConstants.NugetDirectivePattern)]
-    private static partial Regex NugetPackageRegex();
+    [GeneratedRegex(ParsingConstants.NuGetDirectivePattern)]
+    private static partial Regex NuGetPackageRegex();
 
     [GeneratedRegex(ParsingConstants.LoadScriptDirective)]
     private static partial Regex LoadReferenceRegex();

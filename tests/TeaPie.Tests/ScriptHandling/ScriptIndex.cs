@@ -18,8 +18,8 @@ internal static class ScriptIndex
     public static readonly string ScriptAccessingTeaPieInstance =
         Path.Combine(RootSubFolderPath, $"scriptAccessingTeaPieInstance{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptWithDuplicatedNugetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithDuplicatedNugetDirective{Constants.ScriptFileExtension}");
+    public static readonly string ScriptWithDuplicatedNuGetDirectivePath =
+        Path.Combine(RootSubFolderPath, $"scriptWithDuplicatedNuGetDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithNonExistingScriptLoadDirectivePath =
         Path.Combine(RootSubFolderPath, $"scriptWithNonExistingScriptLoadDirective{Constants.ScriptFileExtension}");
@@ -30,17 +30,17 @@ internal static class ScriptIndex
     public static readonly string ScriptWithMultipleLoadDirectives =
         Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadDirectives{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptWithInvalidNugetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithInvalidNugetDirective{Constants.ScriptFileExtension}");
+    public static readonly string ScriptWithInvalidNuGetDirectivePath =
+        Path.Combine(RootSubFolderPath, $"scriptWithInvalidNuGetDirective{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptWithOneNugetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithOneNugetDirective{Constants.ScriptFileExtension}");
+    public static readonly string ScriptWithOneNuGetDirectivePath =
+        Path.Combine(RootSubFolderPath, $"scriptWithOneNuGetDirective{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptWithMultipleNugetDirectivesPath =
-        Path.Combine(RootSubFolderPath, $"scriptWithMultipleNugetDirectives{Constants.ScriptFileExtension}");
+    public static readonly string ScriptWithMultipleNuGetDirectivesPath =
+        Path.Combine(RootSubFolderPath, $"scriptWithMultipleNuGetDirectives{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptWithMultipleLoadAndNugetDirectivesPath =
-        Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadAndNugetDirectives{Constants.ScriptFileExtension}");
+    public static readonly string ScriptWithMultipleLoadAndNuGetDirectivesPath =
+        Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadAndNuGetDirectives{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithSyntaxErrorPath =
     Path.Combine(RootSubFolderPath, $"scriptWithSyntaxError{Constants.ScriptFileExtension}");

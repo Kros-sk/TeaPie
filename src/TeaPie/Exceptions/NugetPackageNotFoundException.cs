@@ -1,21 +1,21 @@
 ﻿namespace TeaPie.Exceptions;
 
-internal class NugetPackageNotFoundException : Exception
+internal class NuGetPackageNotFoundException : Exception
 {
-    public NugetPackageNotFoundException(string packageName, string version)
+    public NuGetPackageNotFoundException(string packageName, string version)
         : base($"The NuGet package '{packageName}' version '{version}' could not be found.")
     {
     }
 
-    public NugetPackageNotFoundException()
+    public NuGetPackageNotFoundException()
     {
     }
 
-    public NugetPackageNotFoundException(string? message) : base(message)
+    public NuGetPackageNotFoundException(string? message) : base(message)
     {
     }
 
-    public NugetPackageNotFoundException(string? message, Exception? innerException) : base(message, innerException)
+    public NuGetPackageNotFoundException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
 }

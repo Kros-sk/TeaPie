@@ -13,7 +13,7 @@ Initialization();
 FirstMethod();
 SecondMethod();
 
-tp.Logger.LogInformation("I am script with more load and Nuget Package directives and I am about to run (marathon)...");
+tp.Logger.LogInformation("I am script with more load and NuGet Package directives and I am about to run (marathon)...");
 
 public class Person
 {

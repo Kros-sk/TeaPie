@@ -37,9 +37,9 @@ public class ScriptCompilerShould
     }
 
     [Fact]
-    public async void ScriptWithNugetPackageShouldBeCompiledWithoutAnyProblem()
+    public async void ScriptWithNuGetPackageShouldBeCompiledWithoutAnyProblem()
     {
-        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNugetDirectivePath);
+        var context = GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
         await PrepareScriptForCompilation(context);
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
@@ -56,7 +56,7 @@ public class ScriptCompilerShould
 
     private static async Task PreProccessScript(ScriptExecutionContext context)
     {
-        var nugetHandler = new NugetPackageHandler(Substitute.For<ILogger<NugetPackageHandler>>());
+        var nugetHandler = new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
         var processor = new ScriptPreProcessor(nugetHandler, Substitute.For<ILogger<ScriptPreProcessor>>());
         var referencedScripts = new List<string>();
         context.ProcessedContent = await processor.ProcessScript(
