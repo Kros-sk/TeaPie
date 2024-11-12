@@ -116,16 +116,22 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
 
     private static string FindCompatibleFrameworkPath(string packagePath)
     {
+        var libPath = Path.Combine(packagePath, Constants.DefaultNugetLibraryFolderName);
         foreach (var framework in Constants.CompatibleFrameworks)
         {
-            var frameworkPath = Path.Combine(packagePath, Constants.DefaultNugetLibraryFolderName, framework);
+            var frameworkPath = Path.Combine(libPath, framework);
             if (Directory.Exists(frameworkPath))
             {
                 return frameworkPath;
             }
         }
 
-        throw new InvalidOperationException("No NuGet package version with compatible framework found.");
+        var found = string.Join(Environment.NewLine, Directory.GetFiles(libPath));
+
+        throw new InvalidOperationException(
+            "No NuGet package version with compatible framework found. " +
+            "Does lib folder exist: " + Directory.Exists(libPath) +
+            "Found frameworks: " + found);
     }
 
     private static async Task DownloadPackage(
