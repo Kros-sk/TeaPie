@@ -1,4 +1,5 @@
 ﻿namespace TeaPie.Tests.ScriptHandling;
+
 internal static class ScriptIndex
 {
     public const string RootFolderName = "Demo";

@@ -14,24 +14,13 @@ internal interface IScriptCompiler
 
 internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptCompiler
 {
-    public static IEnumerable<string> _defaultImports = [
-        "System",
-        "System.Collections.Generic",
-        "System.IO",
-        "System.Linq",
-        "System.Net.Http",
-        "System.Threading",
-        "System.Threading.Tasks",
-        "Microsoft.Extensions.Logging"
-    ];
-
     private readonly ILogger<ScriptCompiler> _logger = logger;
 
     public Script<object> CompileScript(string scriptContent)
     {
         var scriptOptions = ScriptOptions.Default
             .AddReferences(AppDomain.CurrentDomain.GetAssemblies().Where(x => !string.IsNullOrEmpty(x.Location)))
-            .WithImports(_defaultImports);
+            .WithImports(Constants.DefaultImports);
 
         var script = CSharpScript.Create(scriptContent, scriptOptions, typeof(Globals));
 
@@ -64,7 +53,7 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
 
         if (hasErrors)
         {
-            throw new SyntaxErrorException("Exception thrown during compilation: Script contains syntax errors.");
+            throw new SyntaxErrorException("Exception thrown during script compilation: Script contains syntax errors.");
         }
     }
 
