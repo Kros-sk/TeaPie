@@ -100,6 +100,23 @@ internal partial class NugetPackageHandler(ILogger<NugetPackageHandler> logger) 
     {
         if (!_nugetPackagesInAssembly.Contains(nugetPackage))
         {
+            if (!Directory.Exists(_packagesPath))
+            {
+                throw new DirectoryNotFoundException($"Not found {_packagesPath}");
+            }
+
+            var pckgName = Path.Combine(_packagesPath, nugetPackage.PackageName);
+            if (!Directory.Exists(pckgName))
+            {
+                throw new DirectoryNotFoundException($"Not found {pckgName}");
+            }
+
+            var packageLocation = GetPackageLocation(nugetPackage);
+            if (!Directory.Exists(packageLocation))
+            {
+                throw new DirectoryNotFoundException($"Not found {packageLocation}");
+            }
+
             var path = FindCompatibleFrameworkPath(GetPackageLocation(nugetPackage));
             var dllPath = Directory.GetFiles(path, $"*{Constants.LibraryFileExtension}").FirstOrDefault()
                 ?? throw new InvalidOperationException($"No NuGet library for '{Path.GetFileName(path)}' framework found.");
