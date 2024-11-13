@@ -3,6 +3,7 @@ using Serilog;
 using System.Reflection;
 using TeaPie.Pipelines;
 using TeaPie.Pipelines.Scripts;
+using TeaPie.Requests;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration;
 
@@ -42,6 +43,18 @@ public static class ServiceCollectionExtensions
         {
             services.AddTransient(implementation);
         }
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
+    {
+        services.AddHttpClient<Client>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.example.com");
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
 
         return services;
     }
