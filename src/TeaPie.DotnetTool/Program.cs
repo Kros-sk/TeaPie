@@ -10,7 +10,7 @@ var services = new ServiceCollection();
 services.ConfigureServices();
 services.ConfigureLogging();
 services.ConfigureAccessors();
-services.ConfigureSteps();
+services.AddSteps();
 services.AddSingleton<IPipeline, ApplicationPipeline>();
 
 var provider = services.BuildServiceProvider();

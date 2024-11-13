@@ -10,7 +10,7 @@ internal class ApplicationContext(
     IServiceProvider serviceProvider,
     string tempFolder = "")
 {
-    public string Path { get; set; } = path;
+    public string Path { get; } = path;
     public string TempFolderPath { get; set; } = tempFolder;
 
     public IReadOnlyDictionary<string, TestCase> TestCases { get; set; } = new Dictionary<string, TestCase>();
@@ -18,5 +18,5 @@ internal class ApplicationContext(
 
     public ILogger Logger { get; set; } = logger;
 
-    public IServiceProvider ServiceProvider { get; set; } = serviceProvider;
+    public IServiceProvider ServiceProvider { get; } = serviceProvider;
 }

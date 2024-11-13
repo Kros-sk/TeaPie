@@ -37,12 +37,12 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     }
 
     /// <summary>
-    /// Recursive Depth-first algorithm, which examines file system tree. Traversal path is saved in <param cref="testCases">
+    /// Recursive Depth-first algorithm, which examines file system tree. Traversal path is saved in <paramref name="testCases"/>
     /// parameter in form of test cases. Each folder can have sub-folders and/or test cases. Test case is represented by '.http'
     /// file and possibly by other (e.g. script files with '.csx' extension) files.
     /// </summary>
-    /// <param name="currentFolder">Folder that should be examined.</param>
-    /// <param name="testCases">Depth-first order of test cases.</param>
+    /// <param name="currentFolder">Folder to be explored.</param>
+    /// <param name="testCases">List of explored test cases.</param>
     private static void ExploreFolder(Folder currentFolder, Dictionary<string, TestCase> testCases)
     {
         var subFolderPaths = Directory.GetDirectories(currentFolder.Path)

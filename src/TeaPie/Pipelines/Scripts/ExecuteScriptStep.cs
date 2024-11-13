@@ -25,8 +25,7 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
             await script.RunAsync(
                 globals: new Globals() { tp = TeaPie.Instance },
-                cancellationToken: cancellationToken
-            );
+                cancellationToken: cancellationToken);
 
             context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' finished.",
                 GetTypeOfScript(scriptExecutionContext),
@@ -43,25 +42,17 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
     private static string GetTypeOfScript(ScriptExecutionContext scriptExecutionContext)
     {
-        var path = scriptExecutionContext.Script.File.Path;
-        if (!string.IsNullOrEmpty(path))
-        {
-            if (path.EndsWith($"{Constants.PreRequestSuffix}{Constants.ScriptFileExtension}"))
-            {
-                return "Pre-Request script";
-            }
-            else if (path.EndsWith($"{Constants.PostResponseSuffix}{Constants.ScriptFileExtension}"))
-            {
-                return "Post-Response script";
-            }
-            else
-            {
-                return "User-defined script";
-            }
-        }
-        else
+        if (string.IsNullOrEmpty(scriptExecutionContext.Script.File.Path))
         {
             return "Unknown script";
         }
+
+        var path = scriptExecutionContext.Script.File.Path;
+        return path switch
+        {
+            var p when p.EndsWith($"{Constants.PreRequestSuffix}{Constants.ScriptFileExtension}") => "Pre-Request script",
+            var p when p.EndsWith($"{Constants.PostResponseSuffix}{Constants.ScriptFileExtension}") => "Post-Response script",
+            _ => "User-defined script"
+        };
     }
 }

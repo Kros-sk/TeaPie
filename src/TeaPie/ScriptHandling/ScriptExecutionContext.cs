@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Scripting;
+﻿using Microsoft.CodeAnalysis.Scripting;
 using System.Diagnostics;
 using Script = TeaPie.StructureExploration.IO.Script;
 

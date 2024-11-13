@@ -418,7 +418,14 @@ csharp_style_prefer_top_level_statements = true:silent
 csharp_style_prefer_primary_constructors = true:suggestion
 
 # CA2016: Forward the CancellationToken parameter to methods that take one
-dotnet_diagnostic.CA2016.severity = error
+dotnet_diagnostic.CA2016.severity = warning
+
+# IDE0005: Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = warning
+
+# Suppresion of documentation generation warnings
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
 
 ## Analyzers by file
 
