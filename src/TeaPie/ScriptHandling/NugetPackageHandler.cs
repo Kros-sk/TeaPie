@@ -112,12 +112,12 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
     }
 
     private static string GetNuGetPackageLocation(NuGetPackageDescription nugetPackage)
-        => Path.Combine(_packagesPath, nugetPackage.PackageName.ToLower(), nugetPackage.Version);
+        => Path.Combine(_packagesPath, nugetPackage.PackageName.ToLower(), nugetPackage.Version.ToLower());
 
     private static string FindCompatibleFrameworkPath(string packagePath)
     {
         var libPath = Path.Combine(packagePath, Constants.DefaultNuGetLibraryFolderName);
-        foreach (var framework in Constants.CompatibleFrameworks)
+        foreach (var framework in Constants.FrameworksPriorityList)
         {
             var frameworkPath = Path.Combine(libPath, framework);
             if (Directory.Exists(frameworkPath))

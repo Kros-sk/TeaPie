@@ -15,6 +15,7 @@ services.AddSingleton<IPipeline, ApplicationPipeline>();
 
 var provider = services.BuildServiceProvider();
 
+// This section will be part of different class, now it is here just for testing purposes
 if (args.Length > 0)
 {
     TeaPie.TeaPie.Create(provider.GetRequiredService<ILogger<TeaPie.TeaPie>>());

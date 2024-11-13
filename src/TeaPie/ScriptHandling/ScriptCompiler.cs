@@ -43,10 +43,10 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
             {
                 if (!hasErrors)
                 {
-                    LogErrorsOccured(compilationDiagnostics.Length);
+                    LogErrorsOccured(compilationDiagnostics.Count(x => x.Severity == DiagnosticSeverity.Error));
+                    hasErrors = true;
                 }
 
-                hasErrors = true;
                 LogError(diagnostic.GetMessage());
             }
         }
