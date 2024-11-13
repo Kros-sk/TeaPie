@@ -64,10 +64,10 @@
     <None Update="Demo\Scripts\scriptAccessingTeaPieInstance.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptWithMultipleLoadAndNuGetDirectives.csx">
+    <None Update="Demo\Scripts\scriptWithMultipleLoadAndNuGetsDirectives.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptWithMultipleNuGetDirectives.csx">
+    <None Update="Demo\Scripts\scriptWithMultipleNuGetsDirectives.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\Scripts\scriptWithNonExistingScriptLoadDirective.csx">
@@ -79,13 +79,13 @@
     <None Update="Demo\Scripts\scriptWithOneLoadDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptWithInvalidNuGetDirective.csx">
+    <None Update="Demo\Scripts\scriptWithInvalidNuGetsDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptWithDuplicatedNuGetDirective.csx">
+    <None Update="Demo\Scripts\scriptWithDuplicatedNuGetsDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptWithOneNuGetDirective.csx">
+    <None Update="Demo\Scripts\scriptWithOneNuGetsDirective.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\Scripts\scriptWithSyntaxError.csx">
