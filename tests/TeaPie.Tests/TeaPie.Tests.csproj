@@ -13,37 +13,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Demo\AZeroLevelTest-init.csx">
+    <None Update="Demo\Structure\AZeroLevelTest-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\AZeroLevelTest-req.http">
+    <None Update="Demo\Structure\AZeroLevelTest-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\AZeroLevelTest-test.csx">
+    <None Update="Demo\Structure\AZeroLevelTest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\EmptyFolder\.placeholder">
+    <None Update="Demo\Structure\EmptyFolder\.placeholder">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Seed.http">
+    <None Update="Demo\Structure\FirstFolder\FirstFolderInFirstFolder\Seed.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-req.http">
+    <None Update="Demo\Structure\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-init.csx">
+    <None Update="Demo\Structure\FirstFolder\FirstFolderInFirstFolder\Test1.1.1-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-req.http">
+    <None Update="Demo\Structure\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\Test1.2.1-req.http">
+    <None Update="Demo\Structure\FirstFolder\SecondFolderInFirstFolder\Test1.2.1-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\Test1.2.2-req.http">
+    <None Update="Demo\Structure\FirstFolder\SecondFolderInFirstFolder\Test1.2.2-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-init.csx">
+    <None Update="Demo\Structure\FirstFolder\SecondFolderInFirstFolder\FFinSFinFF\Test1.2.1.1-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\Scripts\plainScript.csx">
@@ -91,34 +91,34 @@
     <None Update="Demo\Scripts\scriptWithSyntaxError.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-test.csx">
+    <None Update="Demo\Structure\SecondFolder\FirstFolderInSecondFolder\ATest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\SecondFolder\FirstFolderInSecondFolder\ATest-req.http">
+    <None Update="Demo\Structure\SecondFolder\FirstFolderInSecondFolder\ATest-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\TheZeroLevelTest-init.csx">
+    <None Update="Demo\Structure\TheZeroLevelTest-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\TheZeroLevelTest-test.csx">
+    <None Update="Demo\Structure\TheZeroLevelTest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\ThirdFolder\FirstFolderInThirdFolder\FFinFFinTF\.placeholder">
+    <None Update="Demo\Structure\ThirdFolder\FirstFolderInThirdFolder\FFinFFinTF\.placeholder">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\ThirdFolder\SecondFolderInThirdFolder\.placeholder">
+    <None Update="Demo\Structure\ThirdFolder\SecondFolderInThirdFolder\.placeholder">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\TheZeroLevelTest-req.http">
+    <None Update="Demo\Structure\TheZeroLevelTest-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\ZeroLevelTest-init.csx">
+    <None Update="Demo\Structure\ZeroLevelTest-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\ZeroLevelTest-req.http">
+    <None Update="Demo\Structure\ZeroLevelTest-req.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\ZeroLevelTest-test.csx">
+    <None Update="Demo\Structure\ZeroLevelTest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
