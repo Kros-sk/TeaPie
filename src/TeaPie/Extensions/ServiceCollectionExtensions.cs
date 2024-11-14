@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Events;
 using System.Reflection;
 using TeaPie.Pipelines;
+using TeaPie.Pipelines.Requests;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Requests;
 using TeaPie.ScriptHandling;
@@ -19,21 +22,44 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IScriptCompiler, ScriptCompiler>();
         services.AddSingleton<INuGetPackageHandler, NuGetPackageHandler>();
 
+        services.AddSingleton<IRequestSender, RequestSender>();
+
         return services;
     }
 
-    public static IServiceCollection ConfigureLogging(this IServiceCollection services)
+    public static IServiceCollection ConfigureLogging(this IServiceCollection services, LogLevel minimumLevel)
     {
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
+            .MinimumLevel.Is(ConvertToSerilogLevel(minimumLevel))
             .WriteTo.Console()
             .CreateLogger();
 
         services.AddLogging(loggingBuilder =>
-            loggingBuilder.AddSerilog(dispose: true));
+        {
+            loggingBuilder.AddSerilog(dispose: true);
+
+            if (minimumLevel == LogLevel.Information || minimumLevel == LogLevel.Warning || minimumLevel == LogLevel.Error ||
+                minimumLevel == LogLevel.Critical)
+            {
+                loggingBuilder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
+            }
+        });
 
         return services;
     }
+
+    private static LogEventLevel ConvertToSerilogLevel(LogLevel minimumLevel)
+        => minimumLevel switch
+        {
+            LogLevel.Trace => LogEventLevel.Verbose,
+            LogLevel.Debug => LogEventLevel.Debug,
+            LogLevel.Information => LogEventLevel.Information,
+            LogLevel.Warning => LogEventLevel.Warning,
+            LogLevel.Error => LogEventLevel.Error,
+            LogLevel.Critical => LogEventLevel.Fatal,
+            LogLevel.None => LogEventLevel.Fatal,
+            _ => LogEventLevel.Information,
+        };
 
     public static IServiceCollection AddSteps(this IServiceCollection services)
     {
@@ -49,12 +75,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
     {
-        services.AddHttpClient<Client>(client =>
-        {
-            client.BaseAddress = new Uri("https://api.example.com");
-            client.Timeout = TimeSpan.FromSeconds(30);
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
+        services.AddHttpClient<IRequestSender, RequestSender>();
 
         return services;
     }
@@ -62,6 +83,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection ConfigureAccessors(this IServiceCollection services)
     {
         services.AddScoped<IScriptExecutionContextAccessor, ScriptExecutionContextAccessor>();
+        services.AddScoped<IRequestExecutionContextAccessor, RequestExecutionContextAccessor>();
+
         return services;
     }
 

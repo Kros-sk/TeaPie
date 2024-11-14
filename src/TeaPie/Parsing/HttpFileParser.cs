@@ -5,7 +5,7 @@ namespace TeaPie.Parsing;
 
 internal static class HttpFileParser
 {
-    internal static HttpRequestStructure ParseHttpFile(string fileContent)
+    internal static HttpRequestMessage Parse(string fileContent)
     {
         IEnumerable<string?> lines = fileContent.Split(Environment.NewLine);
 
@@ -66,7 +66,14 @@ internal static class HttpFileParser
             content = new StringContent(contentBuilder.ToString().Trim(), Encoding.UTF8);
             if (headers.TryGetValues("Content-Type", out var contentType))
             {
-                content.Headers.ContentType = new MediaTypeHeaderValue(contentType.ToString());
+                if (contentType?.Count() == 1)
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue(contentType.ToString()!);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Unable to resolve Content-Type of the request.");
+                }
             }
         }
 
@@ -84,16 +91,6 @@ internal static class HttpFileParser
             requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
 
-        return new()
-        {
-            Uri = new(requestUri),
-            Message = requestMessage
-        };
+        return requestMessage;
     }
-}
-
-internal class HttpRequestStructure
-{
-    public Uri Uri { get; set; }
-    public HttpRequestMessage Message { get; set; }
 }

@@ -84,7 +84,7 @@ internal sealed class PreProcessScriptStep(
         var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
         accessor.ScriptExecutionContext = scriptContext;
 
-        return [provider.GetStep<ReadFileStep>(),
+        return [provider.GetStep<ReadScriptFileStep>(),
             provider.GetStep<PreProcessScriptStep>(),
             provider.GetStep<SaveTempScriptStep>()];
     }

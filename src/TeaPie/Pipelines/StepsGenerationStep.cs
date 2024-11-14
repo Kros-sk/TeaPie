@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.Extensions;
 using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines.Requests;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.ScriptHandling;
 using TeaPie.StructureExploration.IO;
+using File = TeaPie.StructureExploration.IO.File;
 
 namespace TeaPie.Pipelines;
 
@@ -22,6 +24,8 @@ internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
                 AddStepsForScript(context, preReqScript, newSteps);
             }
 
+            AddStepsForRequest(context, testCase.Request, newSteps);
+
             foreach (var postResScript in testCase.PostResponseScripts)
             {
                 AddStepsForScript(context, postResScript, newSteps);
@@ -36,9 +40,24 @@ internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
         await Task.CompletedTask;
     }
 
-    private static void AddStepsForScript(ApplicationContext context, Script preReqScript, List<IPipelineStep> newSteps)
+    private static void AddStepsForRequest(ApplicationContext context, File request, List<IPipelineStep> newSteps)
     {
-        var scriptExecutionContext = new ScriptExecutionContext(preReqScript);
+        var requestExecutionContext = new RequestExecutionContext(request);
+
+        using var scope = context.ServiceProvider.CreateScope();
+        var provider = scope.ServiceProvider;
+
+        var accessor = provider.GetRequiredService<IRequestExecutionContextAccessor>();
+        accessor.RequestExecutionContext = requestExecutionContext;
+
+        newSteps.Add(provider.GetStep<ReadRequestFileStep>());
+        newSteps.Add(provider.GetStep<ParseRequestFileStep>());
+        newSteps.Add(provider.GetStep<ExecuteRequestStep>());
+    }
+
+    private static void AddStepsForScript(ApplicationContext context, Script script, List<IPipelineStep> newSteps)
+    {
+        var scriptExecutionContext = new ScriptExecutionContext(script);
 
         using var scope = context.ServiceProvider.CreateScope();
         var provider = scope.ServiceProvider;
@@ -46,7 +65,7 @@ internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
         var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
         accessor.ScriptExecutionContext = scriptExecutionContext;
 
-        newSteps.Add(provider.GetStep<ReadFileStep>());
+        newSteps.Add(provider.GetStep<ReadScriptFileStep>());
         newSteps.Add(provider.GetStep<PreProcessScriptStep>());
         newSteps.Add(provider.GetStep<SaveTempScriptStep>());
         newSteps.Add(provider.GetStep<CompileScriptStep>());

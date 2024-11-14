@@ -3,7 +3,7 @@ using TeaPie.Pipelines.Application;
 
 namespace TeaPie.Pipelines.Scripts;
 
-internal sealed class ReadFileStep(IScriptExecutionContextAccessor scriptExecutionContextAccessor) : IPipelineStep
+internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptExecutionContextAccessor) : IPipelineStep
 {
     private readonly IScriptExecutionContextAccessor _scriptContextAccessor = scriptExecutionContextAccessor;
 
@@ -17,7 +17,7 @@ internal sealed class ReadFileStep(IScriptExecutionContextAccessor scriptExecuti
             scriptExecutionContext.RawContent =
                 await File.ReadAllTextAsync(scriptExecutionContext.Script.File.Path, cancellationToken);
 
-            context.Logger.LogTrace("Content of the file on path '{ScriptPath}' was read.",
+            context.Logger.LogTrace("Content of the script file on path '{ScriptPath}' was read.",
                 scriptExecutionContext.Script.File.RelativePath);
         }
         catch (Exception ex)
