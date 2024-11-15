@@ -1,0 +1,6 @@
+﻿PATCH https://jsonplaceholder.typicode.com/posts/1
+Content-Type: application/json
+
+{
+  "title": "patched title"
+}

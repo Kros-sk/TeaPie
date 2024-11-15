@@ -1,0 +1,10 @@
+﻿POST https://jsonplaceholder.typicode.com/posts
+Content-Type: application/json
+User-Agent: UnitTest/1.0
+X-Test-Case: RequestWithBodyAndHeaders
+
+{
+  "title": "foo",
+  "body": "bar",
+  "userId": 1
+}

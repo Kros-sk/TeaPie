@@ -1,0 +1,12 @@
+﻿# This is a comment explaining the request
+# Another comment for additional context
+POST https://jsonplaceholder.typicode.com/posts
+Content-Type: application/json
+User-Agent: UnitTest/1.0
+X-Test-Case: RequestWithCommentsBodyAndHeaders
+
+{
+  "title": "foo",
+  "body": "bar",
+  "userId": 1
+}

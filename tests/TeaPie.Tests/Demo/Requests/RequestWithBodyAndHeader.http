@@ -1,0 +1,6 @@
+﻿POST https://jsonplaceholder.typicode.com/posts
+Content-Type: application/json
+
+{
+  "title": "foo"
+}

@@ -16,6 +16,7 @@ internal static class HttpFileParser
         var content = new StringContent(string.Empty);
         var contentBuilder = new StringBuilder();
         var isBody = false;
+        var isMethodAndUriResolved = false;
 
         foreach (var line in lines)
         {
@@ -27,32 +28,21 @@ internal static class HttpFileParser
 
             if (!isBody)
             {
-                if (line.StartsWith(ParsingConstants.HttpGetMethodDirective, StringComparison.OrdinalIgnoreCase))
+                if (!line.TrimStart().StartsWith(ParsingConstants.HttpCommentPrefix))
                 {
-                    method = HttpMethod.Get;
-                    requestUri = line[(ParsingConstants.HttpGetMethodDirective.Length + 1)..].Trim();
-                }
-                else if (line.StartsWith(ParsingConstants.HttpPostMethodDirective, StringComparison.OrdinalIgnoreCase))
-                {
-                    method = HttpMethod.Post;
-                    requestUri = line[(ParsingConstants.HttpPostMethodDirective.Length + 1)..].Trim();
-                }
-                else if (line.StartsWith(ParsingConstants.HttpPutMethodDirective, StringComparison.OrdinalIgnoreCase))
-                {
-                    method = HttpMethod.Put;
-                    requestUri = line[(ParsingConstants.HttpPutMethodDirective.Length + 1)..].Trim();
-                }
-                else if (line.StartsWith(ParsingConstants.HttpDeleteMethodDirective, StringComparison.OrdinalIgnoreCase))
-                {
-                    method = HttpMethod.Delete;
-                    requestUri = line[(ParsingConstants.HttpDeleteMethodDirective.Length + 1)..].Trim();
-                }
-                else if (line.Contains(':'))
-                {
-                    var headerParts = line.Split(':', 2);
-                    var headerName = headerParts[0].Trim();
-                    var headerValue = headerParts[1].Trim();
-                    headers.TryAddWithoutValidation(headerName, headerValue);
+                    if (line.Contains(ParsingConstants.HttpDirectivePrefix))
+                    {
+                        // TODO: Handle directives
+                    }
+                    else if (!isMethodAndUriResolved)
+                    {
+                        (method, requestUri) = ResolveMethodAndUri(line);
+                        isMethodAndUriResolved = true;
+                    }
+                    else if (line.Contains(ParsingConstants.HttpHeaderSeparator))
+                    {
+                        ResolveHeader(line, headers);
+                    }
                 }
             }
             else
@@ -61,7 +51,8 @@ internal static class HttpFileParser
             }
         }
 
-        if (contentBuilder.Length > 0)
+        var bodyContent = contentBuilder.ToString().Trim();
+        if (!string.IsNullOrEmpty(bodyContent))
         {
             content = new StringContent(contentBuilder.ToString().Trim(), Encoding.UTF8);
             if (headers.TryGetValues("Content-Type", out var contentType))
@@ -77,10 +68,11 @@ internal static class HttpFileParser
             }
         }
 
-        var requestMessage = new HttpRequestMessage(method, requestUri)
+        var requestMessage = new HttpRequestMessage(method, requestUri);
+        if (!string.IsNullOrEmpty(bodyContent))
         {
-            Content = method != HttpMethod.Get ? content : null
-        };
+            requestMessage.Content = content;
+        }
 
         foreach (var header in headers)
         {
@@ -92,5 +84,36 @@ internal static class HttpFileParser
         }
 
         return requestMessage;
+    }
+
+    private static (HttpMethod, string) ResolveMethodAndUri(string line)
+    {
+        var httpMethod = HttpMethod.Get;
+        var requestUri = string.Empty;
+
+        var splitted = line.TrimStart().Split(' ');
+        if (splitted.Length > 0)
+        {
+            var keyWord = splitted[0].TrimEnd();
+            if (ParsingConstants.HttpMethodsMap.TryGetValue(keyWord, out var method))
+            {
+                httpMethod = method;
+                requestUri = line[(keyWord.Length + 1)..].Trim();
+            }
+            else
+            {
+                throw new InvalidOperationException("Error while parsing HTTP method and Uri line.");
+            }
+        }
+
+        return (httpMethod, requestUri);
+    }
+
+    private static void ResolveHeader(string line, HttpRequestHeaders headers)
+    {
+        var headerParts = line.Split(ParsingConstants.HttpHeaderSeparator, 2);
+        var headerName = headerParts[0].Trim();
+        var headerValue = headerParts[1].Trim();
+        headers.TryAddWithoutValidation(headerName, headerValue);
     }
 }
