@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Parsing;
+using TeaPie.Requests;
 using TeaPie.Tests.Requests;
 
 namespace TeaPie.Tests.Parsing;
@@ -152,7 +154,15 @@ public class HttpFileParserShould
 
     private static async Task<HttpRequestMessage> GetParsedFile(string path)
     {
-        var parser = new HttpFileParser();
+        var services = new ServiceCollection();
+        services.AddHttpClient();
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+        var headersProvider = new HttpRequestHeadersProvider(clientFactory);
+
+        var parser = new HttpFileParser(headersProvider);
         return parser.Parse(await File.ReadAllTextAsync(path));
     }
 
