@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<INuGetPackageHandler, NuGetPackageHandler>();
 
         services.AddSingleton<IHttpFileParser, HttpFileParser>();
-        services.AddSingleton<IRequestSender, RequestSender>();
+        services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
 
         return services;
     }
@@ -71,7 +71,8 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection ConfigureHttpClient(this IServiceCollection services)
     {
-        services.AddHttpClient<IRequestSender, RequestSender>();
+        services.AddHttpClient<HttpRequestHeadersProvider>();
+        services.AddHttpClient<ExecuteScriptStep>();
 
         return services;
     }

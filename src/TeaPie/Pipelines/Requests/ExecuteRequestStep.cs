@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
-using TeaPie.Requests;
 
 namespace TeaPie.Pipelines.Requests;
 
-internal class ExecuteRequestStep(IRequestSender client, IRequestExecutionContextAccessor contextAccessor) : IPipelineStep
+internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExecutionContextAccessor contextAccessor)
+    : IPipelineStep
 {
-    private readonly IRequestSender _client = client;
+    private readonly IHttpClientFactory _clientFactory = clientFactory;
     private readonly IRequestExecutionContextAccessor _requestExecutionContextAccessor = contextAccessor;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
@@ -23,7 +23,9 @@ internal class ExecuteRequestStep(IRequestSender client, IRequestExecutionContex
 
         context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request.RequestUri);
 
-        var response = await _client.SendRequest(request, cancellationToken);
+        using var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
+
+        var response = await client.SendAsync(request, cancellationToken);
 
         context.Logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);

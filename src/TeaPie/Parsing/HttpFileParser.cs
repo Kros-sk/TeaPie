@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using TeaPie.Requests;
 
 namespace TeaPie.Parsing;
 
@@ -8,16 +9,17 @@ internal interface IHttpFileParser
     HttpRequestMessage Parse(string fileContent);
 }
 
-internal class HttpFileParser() : IHttpFileParser
+internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHttpFileParser
 {
+    private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
+
     public HttpRequestMessage Parse(string fileContent)
     {
         IEnumerable<string?> lines = fileContent.Split(Environment.NewLine);
 
         var method = HttpMethod.Get;
         var requestUri = string.Empty;
-        var httpClient = new HttpClient();
-        var headers = httpClient.DefaultRequestHeaders;
+        var headers = _headersProvider.GetDefaultHeaders();
         var content = new StringContent(string.Empty);
         var contentBuilder = new StringBuilder();
         var isBody = false;
