@@ -46,7 +46,7 @@ public class HttpFileParserShould
     [Fact]
     public async Task RequestWithHeadersShouldBeParsedCorrectly()
     {
-        var parsed = await GetParsedFile(RequestsIndex.RequestWithBodyAndHeadersPath);
+        var parsed = await GetParsedFile(RequestsIndex.RequestWithHeadersPath);
 
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
 
@@ -151,7 +151,10 @@ public class HttpFileParserShould
     }
 
     private static async Task<HttpRequestMessage> GetParsedFile(string path)
-        => HttpFileParser.Parse(await File.ReadAllTextAsync(path));
+    {
+        var parser = new HttpFileParser();
+        return parser.Parse(await File.ReadAllTextAsync(path));
+    }
 
     private static void CheckMethodUriAndExistenceOfContent(
         HttpRequestMessage parsed,

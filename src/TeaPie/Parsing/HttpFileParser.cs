@@ -3,9 +3,14 @@ using System.Text;
 
 namespace TeaPie.Parsing;
 
-internal static class HttpFileParser
+internal interface IHttpFileParser
 {
-    internal static HttpRequestMessage Parse(string fileContent)
+    HttpRequestMessage Parse(string fileContent);
+}
+
+internal class HttpFileParser() : IHttpFileParser
+{
+    public HttpRequestMessage Parse(string fileContent)
     {
         IEnumerable<string?> lines = fileContent.Split(Environment.NewLine);
 

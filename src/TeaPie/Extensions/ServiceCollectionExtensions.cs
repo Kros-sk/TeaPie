@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
+using TeaPie.Parsing;
 using TeaPie.Pipelines;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Pipelines.Scripts;
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IScriptCompiler, ScriptCompiler>();
         services.AddSingleton<INuGetPackageHandler, NuGetPackageHandler>();
 
+        services.AddSingleton<IHttpFileParser, HttpFileParser>();
         services.AddSingleton<IRequestSender, RequestSender>();
 
         return services;
@@ -31,19 +33,13 @@ public static class ServiceCollectionExtensions
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Is(ConvertToSerilogLevel(minimumLevel))
+            .MinimumLevel.Override(
+                "System.Net.Http",
+                minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug)
             .WriteTo.Console()
             .CreateLogger();
 
-        services.AddLogging(loggingBuilder =>
-        {
-            loggingBuilder.AddSerilog(dispose: true);
-
-            if (minimumLevel == LogLevel.Information || minimumLevel == LogLevel.Warning || minimumLevel == LogLevel.Error ||
-                minimumLevel == LogLevel.Critical)
-            {
-                loggingBuilder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
-            }
-        });
+        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
         return services;
     }

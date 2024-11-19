@@ -4,9 +4,10 @@ using TeaPie.Pipelines.Application;
 
 namespace TeaPie.Pipelines.Requests;
 
-internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAccessor) : IPipelineStep
+internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAccessor, IHttpFileParser parser) : IPipelineStep
 {
     private readonly IRequestExecutionContextAccessor _requestExecutionContextAccessor = contextAccessor;
+    private readonly IHttpFileParser _parser = parser;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -21,7 +22,7 @@ internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAcce
         context.Logger.LogTrace("Parsing of the request on path '{Path}' started.",
             requestExecutionContext.Request.RelativePath);
 
-        requestExecutionContext.RequestMessage = HttpFileParser.Parse(requestExecutionContext.RawContent);
+        requestExecutionContext.RequestMessage = _parser.Parse(requestExecutionContext.RawContent);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
             requestExecutionContext.Request.RelativePath);

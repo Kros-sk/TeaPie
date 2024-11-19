@@ -25,7 +25,7 @@ internal class ExecuteRequestStep(IRequestSender client, IRequestExecutionContex
 
         var response = await _client.SendRequest(request, cancellationToken);
 
-        context.Logger.LogInformation("HTTP Response was received from '{Uri}' with response: {StatusCode} ({ReasonPhrase}).",
-            response.RequestMessage?.RequestUri, (int)response.StatusCode, response.ReasonPhrase);
+        context.Logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
+            (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
     }
 }
