@@ -15,15 +15,15 @@ internal sealed class ReadRequestFileStep(IRequestExecutionContextAccessor reque
         try
         {
             requestExecutionContext.RawContent =
-                await File.ReadAllTextAsync(requestExecutionContext.Request.Path, cancellationToken);
+                await File.ReadAllTextAsync(requestExecutionContext.RequestFile.Path, cancellationToken);
 
             context.Logger.LogTrace("Content of the request file on path '{RequestPath}' was read.",
-                requestExecutionContext.Request.RelativePath);
+                requestExecutionContext.RequestFile.RelativePath);
         }
         catch (Exception ex)
         {
             context.Logger.LogError("Reading of the request on path '{RequestPath}' failed, because of '{ErrorMessage}'.",
-                requestExecutionContext.Request.RelativePath,
+                requestExecutionContext.RequestFile.RelativePath,
                 ex.Message);
 
             throw;

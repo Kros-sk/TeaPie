@@ -20,12 +20,12 @@ internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAcce
         }
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' started.",
-            requestExecutionContext.Request.RelativePath);
+            requestExecutionContext.RequestFile.RelativePath);
 
-        requestExecutionContext.RequestMessage = _parser.Parse(requestExecutionContext.RawContent);
+        requestExecutionContext.Request = _parser.Parse(requestExecutionContext.RawContent);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
-            requestExecutionContext.Request.RelativePath);
+            requestExecutionContext.RequestFile.RelativePath);
 
         await Task.CompletedTask;
     }

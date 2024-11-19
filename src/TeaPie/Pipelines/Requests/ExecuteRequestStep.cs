@@ -14,18 +14,19 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
         var requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
             ?? throw new NullReferenceException("Request's execution context is null.");
 
-        if (requestExecutionContext.RequestMessage is null)
+        if (requestExecutionContext.Request is null)
         {
             throw new InvalidOperationException("Request message is null.");
         }
 
-        var request = requestExecutionContext.RequestMessage;
+        var request = requestExecutionContext.Request;
 
         context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request.RequestUri);
 
         using var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-
         var response = await client.SendAsync(request, cancellationToken);
+
+        requestExecutionContext.Response = response;
 
         context.Logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);

@@ -4,7 +4,8 @@ namespace TeaPie.Pipelines.Requests;
 
 internal class RequestExecutionContext(File request)
 {
-    public File Request { get; set; } = request;
-    public HttpRequestMessage? RequestMessage { get; set; }
+    public File RequestFile { get; set; } = request;
+    public HttpRequestMessage? Request { get; set; }
+    public HttpResponseMessage? Response { get; set; }
     public string? RawContent { get; set; }
 }
