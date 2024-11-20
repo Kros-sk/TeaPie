@@ -3,14 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Net;
-using TeaPie.Extensions;
 using TeaPie.Parsing;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Requests;
-using TeaPie.StructureExploration.IO;
 using TeaPie.Tests.Requests;
-using File = TeaPie.StructureExploration.IO.File;
 
 namespace TeaPie.Tests.Pipelines.Requests;
 
@@ -23,13 +20,36 @@ public class ExecuteRequestStepShould
     private const string MediaType = "application/json";
 
     [Fact]
+    public async Task RequestContextWithoutRequestMessageShouldThrowProperException()
+    {
+        var serviceProvider = ConfigureServicesAndGetProvider();
+
+        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+
+        var appContext = new ApplicationContext(
+            RequestsIndex.RootFolderFullPath,
+            Substitute.For<ILogger>(),
+            Substitute.For<IServiceProvider>());
+
+        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+
+        var step = new ExecuteRequestStep(serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor);
+
+        await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
     public async Task ResponseAfterRequestExecutionHasToBeCorrect()
     {
         var serviceProvider = ConfigureServicesAndGetProvider();
 
-        var context = PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
-        var appContext = new ApplicationContext(RequestsIndex.RootFolderFullPath, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContext(
+            RequestsIndex.RootFolderFullPath,
+            Substitute.For<ILogger>(),
+            Substitute.For<IServiceProvider>());
+
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = CreateParser(serviceProvider);
@@ -87,29 +107,9 @@ public class ExecuteRequestStepShould
         return new HttpFileParser(headersProvider);
     }
 
-    private static RequestExecutionContext PrepareContext(string path)
+    private class FakeHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler
     {
-        var folder = new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderRelativePath, RequestsIndex.RootFolderName, null);
-        var file = new File(
-            path,
-            RequestsIndex.RootFolderFullPath.TrimRootPath(Environment.CurrentDirectory),
-            System.IO.Path.GetFileName(path),
-            folder);
-
-        return new RequestExecutionContext(file)
-        {
-            RawContent = System.IO.File.ReadAllText(path)
-        };
-    }
-
-    private class FakeHttpMessageHandler : HttpMessageHandler
-    {
-        private readonly Func<HttpRequestMessage, HttpResponseMessage> _responseGenerator;
-
-        public FakeHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator)
-        {
-            _responseGenerator = responseGenerator;
-        }
+        private readonly Func<HttpRequestMessage, HttpResponseMessage> _responseGenerator = responseGenerator;
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
