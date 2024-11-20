@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Exceptions;
 using TeaPie.Parsing;
-using TeaPie.ScriptHandling;
+using TeaPie.Scripts;
 
 namespace TeaPie.Tests.ScriptHandling;
 

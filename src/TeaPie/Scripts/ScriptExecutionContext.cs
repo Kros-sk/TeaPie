@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Script = TeaPie.StructureExploration.IO.Script;
 
-namespace TeaPie.ScriptHandling;
+namespace TeaPie.Scripts;
 
 [DebuggerDisplay("{Script}")]
 internal class ScriptExecutionContext(Script script)

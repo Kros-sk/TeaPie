@@ -2,7 +2,7 @@
 using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
-using TeaPie.ScriptHandling;
+using TeaPie.Scripts;
 using TeaPie.Tests.ScriptHandling;
 
 namespace TeaPie.Tests.Pipelines.Scripts;

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using TeaPie.Extensions;
 using TeaPie.Parsing;
 
-namespace TeaPie.ScriptHandling;
+namespace TeaPie.Scripts;
 
 internal interface IScriptPreProcessor
 {

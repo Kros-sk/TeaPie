@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines.Application;
-using TeaPie.ScriptHandling;
+using TeaPie.Scripts;
 
 namespace TeaPie.Pipelines.Scripts;
 
@@ -15,7 +15,7 @@ internal sealed class CompileScriptStep(
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new ArgumentNullException(nameof(_scriptContextAccessor.ScriptExecutionContext));
+            ?? throw new NullReferenceException("Script's execution context is null.");
 
         if (scriptExecutionContext.ProcessedContent is null)
         {

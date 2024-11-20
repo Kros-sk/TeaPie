@@ -8,7 +8,7 @@ using NuGet.Versioning;
 using System.Reflection;
 using TeaPie.Exceptions;
 
-namespace TeaPie.ScriptHandling;
+namespace TeaPie.Scripts;
 
 internal interface INuGetPackageHandler
 {

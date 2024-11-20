@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Data;
 
-namespace TeaPie.ScriptHandling;
+namespace TeaPie.Scripts;
 
 internal interface IScriptCompiler
 {

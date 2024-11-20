@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.Extensions;
 using TeaPie.Pipelines.Application;
-using TeaPie.ScriptHandling;
+using TeaPie.Scripts;
 using TeaPie.StructureExploration.IO;
 
 namespace TeaPie.Pipelines.Scripts;
@@ -19,7 +19,7 @@ internal sealed class PreProcessScriptStep(
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new ArgumentNullException(nameof(_scriptContextAccessor.ScriptExecutionContext));
+            ?? throw new NullReferenceException("Script's execution context is null.");
 
         if (scriptExecutionContext.RawContent is null)
         {

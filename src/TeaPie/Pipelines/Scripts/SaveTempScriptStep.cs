@@ -9,7 +9,8 @@ internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accesso
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecution = _accessor.ScriptExecutionContext ?? throw new ArgumentNullException("Script execution context");
+        var scriptExecution = _accessor.ScriptExecutionContext ??
+            throw new NullReferenceException("Script's execution context is null.");
 
         if (scriptExecution.ProcessedContent is null)
         {

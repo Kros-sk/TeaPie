@@ -8,7 +8,7 @@ using TeaPie.Pipelines;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Requests;
-using TeaPie.ScriptHandling;
+using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 
 namespace TeaPie.Extensions;

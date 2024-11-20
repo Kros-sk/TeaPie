@@ -1,4 +1,4 @@
-﻿namespace TeaPie.ScriptHandling;
+﻿namespace TeaPie.Scripts;
 
 public class Globals
 {
