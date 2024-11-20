@@ -109,7 +109,11 @@ public class HttpFileParserShould
         var parsed = await GetParsedFile(RequestsIndex.PlainPostRequestPath);
 
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
-        await CheckBody(parsed, "{\r\n  \"title\": \"foo\",\r\n  \"body\": \"bar\",\r\n  \"userId\": 1\r\n}");
+        await CheckBody(parsed, "{" + Environment.NewLine +
+            "  \"title\": \"foo\"," + Environment.NewLine +
+            "  \"body\": \"bar\"," + Environment.NewLine +
+            "  \"userId\": 1" + Environment.NewLine +
+            "}");
     }
 
     [Fact]
@@ -118,8 +122,12 @@ public class HttpFileParserShould
         var parsed = await GetParsedFile(RequestsIndex.PlainPutRequestPath);
 
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Put, _specificRequestUri, true);
-        await CheckBody(parsed, "{\r\n  \"id\": 1,\r\n  \"title\": \"updated title\",\r\n  \"body\": \"updated body\",\r\n " +
-            " \"userId\": 1\r\n}");
+        await CheckBody(parsed, "{" + Environment.NewLine +
+            "  \"id\": 1," + Environment.NewLine +
+            "  \"title\": \"updated title\"," + Environment.NewLine +
+            "  \"body\": \"updated body\"," + Environment.NewLine +
+            "  \"userId\": 1" + Environment.NewLine +
+            "}");
     }
 
     [Fact]
