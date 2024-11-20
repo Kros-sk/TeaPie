@@ -16,21 +16,21 @@ public class HttpFileParserShould
     public async Task SimpleRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.SimpleRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
     public async Task RequestWithCommentShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
     public async Task RequestWithCommentshouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentsPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithJsonBodyPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
         await CheckBody(parsed, "\"title\": \"foo\"", "\"body\": \"bar\"", "\"userId\": 1");
     }
 
@@ -47,7 +47,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithHeaderPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
 
         parsed.Headers.UserAgent.ToString().Should().Be("UnitTest/1.0");
     }
@@ -57,7 +57,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithHeadersPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
 
         parsed.Headers.UserAgent.ToString().Should().Be("UnitTest/1.0");
         parsed.Headers.Accept.ToString().Should().Contain("application/json");
@@ -68,7 +68,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithBodyAndHeadersPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
         await CheckBody(parsed, "\"title\": \"foo\"");
     }
 
@@ -77,7 +77,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithBodyAndHeadersPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
         await CheckBody(parsed, "\"title\": \"foo\"", "\"body\": \"bar\"", "\"userId\": 1");
 
         parsed.Headers.UserAgent.ToString().Should().Be("UnitTest/1.0");
@@ -89,7 +89,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
         await CheckBody(parsed, "\"title\": \"foo\"", "\"body\": \"bar\"", "\"userId\": 1");
 
         parsed.Headers.UserAgent.ToString().Should().Be("UnitTest/1.0");
@@ -100,7 +100,7 @@ public class HttpFileParserShould
     public async Task GetRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainGetRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _baseRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _baseRequestUri, false);
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPostRequestPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
         await CheckBody(parsed, "{\r\n  \"title\": \"foo\",\r\n  \"body\": \"bar\",\r\n  \"userId\": 1\r\n}");
     }
 
@@ -117,7 +117,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPutRequestPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Put, _specificRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Put, _specificRequestUri, true);
         await CheckBody(parsed, "{\r\n  \"id\": 1,\r\n  \"title\": \"updated title\",\r\n  \"body\": \"updated body\",\r\n " +
             " \"userId\": 1\r\n}");
     }
@@ -127,7 +127,7 @@ public class HttpFileParserShould
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPatchRequestPath);
 
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Patch, _specificRequestUri, false);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Patch, _specificRequestUri, true);
         await CheckBody(parsed, "\"title\": \"patched title\"");
     }
 
@@ -135,28 +135,28 @@ public class HttpFileParserShould
     public async Task DeleteRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainDeleteRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Delete, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Delete, _specificRequestUri, false);
     }
 
     [Fact]
     public async Task HeadRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainHeadRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Head, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Head, _specificRequestUri, false);
     }
 
     [Fact]
     public async Task OptionsRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainOptionsRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Options, _specificRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Options, _specificRequestUri, false);
     }
 
     [Fact]
     public async Task TraceRequestShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainTraceRequestPath);
-        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Trace, _traceRequestUri, true);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Trace, _traceRequestUri, false);
     }
 
     private static async Task<HttpRequestMessage> GetParsedFile(string path)
@@ -183,11 +183,11 @@ public class HttpFileParserShould
         parsed.RequestUri.Should().BeEquivalentTo(uri);
         if (shouldHaveContent)
         {
-            parsed.Content.Should().BeNull();
+            parsed.Content.Should().NotBeNull();
         }
         else
         {
-            parsed.Content.Should().NotBeNull();
+            parsed.Content.Should().BeNull();
         }
     }
 
