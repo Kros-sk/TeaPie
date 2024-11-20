@@ -61,7 +61,7 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHt
         var bodyContent = contentBuilder.ToString().Trim();
         if (!string.IsNullOrEmpty(bodyContent))
         {
-            content = new StringContent(contentBuilder.ToString().Trim(), Encoding.UTF8);
+            content = new StringContent(bodyContent, Encoding.UTF8);
             if (headers.TryGetValues("Content-Type", out var contentType))
             {
                 if (contentType?.Count() == 1)
@@ -109,7 +109,7 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHt
             }
             else
             {
-                throw new InvalidOperationException("Error while parsing HTTP method and Uri line.");
+                throw new InvalidOperationException($"Unsupported HTTP method '{keyWord}'.");
             }
         }
 
@@ -119,8 +119,6 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHt
     private static void ResolveHeader(string line, HttpRequestHeaders headers)
     {
         var headerParts = line.Split(ParsingConstants.HttpHeaderSeparator, 2);
-        var headerName = headerParts[0].Trim();
-        var headerValue = headerParts[1].Trim();
-        headers.TryAddWithoutValidation(headerName, headerValue);
+        headers.TryAddWithoutValidation(headerParts[0].Trim(), headerParts[1].Trim());
     }
 }

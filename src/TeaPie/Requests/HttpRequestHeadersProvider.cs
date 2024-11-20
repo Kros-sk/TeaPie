@@ -16,7 +16,7 @@ internal class HttpRequestHeadersProvider(IHttpClientFactory clientFactory) : IH
     {
         if (_defaultHeaders is null)
         {
-            using var client = _clientFactory.CreateClient();
+            using var client = _clientFactory.CreateClient(nameof(HttpRequestHeadersProvider));
             _defaultHeaders = client.DefaultRequestHeaders;
         }
 

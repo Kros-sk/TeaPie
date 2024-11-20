@@ -36,6 +36,9 @@ internal static class RequestsIndex
     public static readonly string RequestWithCommentPath =
         Path.Combine(RootFolderFullPath, $"RequestWithComment{Constants.RequestFileExtension}");
 
+    public static readonly string RequestWithCommentsPath =
+        Path.Combine(RootFolderFullPath, $"RequestWithComments{Constants.RequestFileExtension}");
+
     public static readonly string RequestWithJsonBodyPath =
         Path.Combine(RootFolderFullPath, $"RequestWithJsonBody{Constants.RequestFileExtension}");
 

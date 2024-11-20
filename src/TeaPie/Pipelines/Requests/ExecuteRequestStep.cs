@@ -16,7 +16,7 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
 
         if (requestExecutionContext.Request is null)
         {
-            throw new InvalidOperationException("Request message is null.");
+            throw new InvalidOperationException("Unable to execute request if request message is null.");
         }
 
         var request = requestExecutionContext.Request;

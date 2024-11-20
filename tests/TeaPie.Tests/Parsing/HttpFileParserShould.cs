@@ -27,6 +27,13 @@ public class HttpFileParserShould
     }
 
     [Fact]
+    public async Task RequestWithCommentshouldBeParsedCorrectly()
+    {
+        var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentsPath);
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, true);
+    }
+
+    [Fact]
     public async Task RequestWithJsonBodyShouldBeParsedCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithJsonBodyPath);

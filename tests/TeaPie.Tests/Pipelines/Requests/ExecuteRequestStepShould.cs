@@ -72,7 +72,7 @@ public class ExecuteRequestStepShould
     }
 
     private static HttpMessageHandler CreateAndConfigureMessageHandler()
-        => new FakeHttpMessageHandler(request =>
+        => new CustomHttpMessageHandler(request =>
         {
             if (request.Method == _method && request.RequestUri?.Equals(Path) is not null)
             {
@@ -87,7 +87,7 @@ public class ExecuteRequestStepShould
                 return response;
             }
 
-            throw new InvalidOperationException("Unacceptable request.");
+            throw new InvalidOperationException("Unsupported request.");
         });
 
     private static IServiceProvider ConfigureServicesAndGetProvider()
@@ -107,7 +107,7 @@ public class ExecuteRequestStepShould
         return new HttpFileParser(headersProvider);
     }
 
-    private class FakeHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler
+    private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler
     {
         private readonly Func<HttpRequestMessage, HttpResponseMessage> _responseGenerator = responseGenerator;
 

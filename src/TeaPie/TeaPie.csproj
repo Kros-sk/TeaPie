@@ -14,12 +14,4 @@
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Serilog.Sinks.Console" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Roslynator.Analyzers">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>

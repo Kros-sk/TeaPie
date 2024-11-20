@@ -31,31 +31,25 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection ConfigureLogging(this IServiceCollection services, LogLevel minimumLevel)
     {
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Is(ConvertToSerilogLevel(minimumLevel))
-            .MinimumLevel.Override(
-                "System.Net.Http",
-                minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug)
-            .WriteTo.Console()
-            .CreateLogger();
+        if (minimumLevel == LogLevel.None)
+        {
+            Log.Logger = Serilog.Core.Logger.None;
+        }
+        else
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Is(minimumLevel.ToSerilogLevel())
+                .MinimumLevel.Override(
+                    "System.Net.Http",
+                    minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug)
+                .WriteTo.Console()
+                .CreateLogger();
+        }
 
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
         return services;
     }
-
-    private static LogEventLevel ConvertToSerilogLevel(LogLevel minimumLevel)
-        => minimumLevel switch
-        {
-            LogLevel.Trace => LogEventLevel.Verbose,
-            LogLevel.Debug => LogEventLevel.Debug,
-            LogLevel.Information => LogEventLevel.Information,
-            LogLevel.Warning => LogEventLevel.Warning,
-            LogLevel.Error => LogEventLevel.Error,
-            LogLevel.Critical => LogEventLevel.Fatal,
-            LogLevel.None => LogEventLevel.Fatal,
-            _ => LogEventLevel.Information,
-        };
 
     public static IServiceCollection AddSteps(this IServiceCollection services)
     {

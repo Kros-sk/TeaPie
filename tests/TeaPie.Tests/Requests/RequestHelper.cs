@@ -18,7 +18,7 @@ internal static class RequestHelper
         var file = new File(
             path,
             RequestsIndex.RootFolderFullPath.TrimRootPath(Environment.CurrentDirectory),
-            System.IO.Path.GetFileName(path),
+            Path.GetFileName(path),
             folder);
 
         return new RequestExecutionContext(file)
