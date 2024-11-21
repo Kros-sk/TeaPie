@@ -3,45 +3,44 @@
 internal static class ScriptIndex
 {
     public const string RootFolderName = "Demo";
-    public const string RootSubFolder = "Scripts";
-    public static readonly string RootFolderPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
-
-    public static readonly string RootSubFolderPath =
-        Path.Combine(Environment.CurrentDirectory, RootFolderName, RootSubFolder);
+    public const string RootSubFolderName = "Scripts";
+    public static readonly string RootSubFolderRelativePath = Path.Combine(RootFolderName, RootSubFolderName);
+    public static readonly string RootSubFolderFullPath = Path.Combine(Environment.CurrentDirectory, RootSubFolderRelativePath);
+    public static readonly string RootFolderFullPath = Path.Combine(Environment.CurrentDirectory, RootFolderName);
 
     public static readonly string EmptyScriptPath =
-        Path.Combine(RootSubFolderPath, $"emptyScript{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"emptyScript{Constants.ScriptFileExtension}");
 
     public static readonly string PlainScriptPath =
-        Path.Combine(RootSubFolderPath, $"plainScript{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"plainScript{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptAccessingTeaPieInstance =
-        Path.Combine(RootSubFolderPath, $"scriptAccessingTeaPieInstance{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptAccessingTeaPieInstance{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithDuplicatedNuGetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithDuplicatedNuGetDirective{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithDuplicatedNuGetDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithNonExistingScriptLoadDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithNonExistingScriptLoadDirective{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithNonExistingScriptLoadDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithOneLoadDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithOneLoadDirective{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithOneLoadDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithMultipleLoadDirectives =
-        Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadDirectives{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithMultipleLoadDirectives{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithInvalidNuGetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithInvalidNuGetDirective{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithInvalidNuGetDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithOneNuGetDirectivePath =
-        Path.Combine(RootSubFolderPath, $"scriptWithOneNuGetDirective{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithOneNuGetDirective{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithMultipleNuGetDirectivesPath =
-        Path.Combine(RootSubFolderPath, $"scriptWithMultipleNuGetDirectives{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithMultipleNuGetDirectives{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithMultipleLoadAndNuGetDirectivesPath =
-        Path.Combine(RootSubFolderPath, $"scriptWithMultipleLoadAndNuGetDirectives{Constants.ScriptFileExtension}");
+        Path.Combine(RootSubFolderFullPath, $"scriptWithMultipleLoadAndNuGetDirectives{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithSyntaxErrorPath =
-    Path.Combine(RootSubFolderPath, $"scriptWithSyntaxError{Constants.ScriptFileExtension}");
+    Path.Combine(RootSubFolderFullPath, $"scriptWithSyntaxError{Constants.ScriptFileExtension}");
 }

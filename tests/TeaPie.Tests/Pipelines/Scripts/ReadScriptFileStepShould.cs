@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
-using TeaPie.Tests.Requests;
 using TeaPie.Tests.Scripts;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
@@ -11,12 +10,12 @@ namespace TeaPie.Tests.Pipelines.Scripts;
 public class ReadScriptFileStepShould
 {
     [Fact]
-    public async Task RequestContextWithInvalidPathShouldThrowProperException()
+    public async Task ScriptContextWithInvalidPathShouldThrowProperException()
     {
         var context = ScriptHelper.GetScriptExecutionContext($"{Guid.NewGuid()}{Constants.ScriptFileExtension}");
 
         var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
+            ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
             Substitute.For<IServiceProvider>());
 
@@ -27,12 +26,12 @@ public class ReadScriptFileStepShould
     }
 
     [Fact]
-    public async Task RawContentOfRequestFileShouldBeAssignedCorrectly()
+    public async Task RawContentOfScriptFileShouldBeAssignedCorrectly()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithMultipleLoadAndNuGetDirectivesPath);
 
         var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
+            ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
             Substitute.For<IServiceProvider>());
 

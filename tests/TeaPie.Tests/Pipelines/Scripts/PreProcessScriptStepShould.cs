@@ -19,7 +19,7 @@ public class PreProcessScriptStepShould
 
         var processor = Substitute.For<IScriptPreProcessor>();
 
-        var rootPath = ScriptIndex.RootSubFolderPath;
+        var rootPath = ScriptIndex.RootSubFolderFullPath;
         var tempPath = Path.GetTempPath();
 
         var pipeline = new ApplicationPipeline();

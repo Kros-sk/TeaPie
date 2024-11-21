@@ -11,10 +11,15 @@ internal static class ScriptHelper
 {
     public static ScriptExecutionContext GetScriptExecutionContext(string path)
     {
-        var folder = new Folder(ScriptIndex.RootSubFolderPath, ScriptIndex.RootSubFolder, ScriptIndex.RootSubFolder, null);
+        var folder = new Folder(
+            ScriptIndex.RootSubFolderFullPath,
+            ScriptIndex.RootSubFolderRelativePath,
+            ScriptIndex.RootFolderName,
+            null);
+
         var file = new File(
             path,
-            path.TrimRootPath(ScriptIndex.RootFolderPath),
+            path.TrimRootPath(ScriptIndex.RootFolderFullPath),
             Path.GetFileName(path),
             folder);
 
@@ -39,7 +44,7 @@ internal static class ScriptHelper
         context.ProcessedContent = await processor.ProcessScript(
             context.Script.File.Path,
             context.RawContent!,
-            ScriptIndex.RootSubFolderPath,
+            ScriptIndex.RootSubFolderFullPath,
             Path.GetTempPath(),
             referencedScripts);
     }
