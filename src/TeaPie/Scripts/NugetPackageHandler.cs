@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using NuGet.Common;
 using NuGet.Frameworks;
 using NuGet.Packaging.Core;
 using NuGet.Protocol;
@@ -15,9 +14,11 @@ internal interface INuGetPackageHandler
     Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages);
 }
 
-internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) : INuGetPackageHandler
+internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, NuGet.Common.ILogger nugetLogger)
+    : INuGetPackageHandler
 {
     private readonly ILogger<NuGetPackageHandler> _logger = logger;
+    private readonly NuGet.Common.ILogger _nugetLogger = nugetLogger;
 
     private readonly HashSet<NuGetPackageDescription> _downloadedNuGetPackages = [];
     private readonly HashSet<NuGetPackageDescription> _nugetPackagesInAssembly = [];
@@ -48,7 +49,6 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
 
         var packageId = nugetPackage.PackageName;
         var version = nugetPackage.Version;
-        var logger = NullLogger.Instance;
         var cache = new SourceCacheContext();
         var repositories = Repository.Factory.GetCoreV3(Constants.NuGetApiResourcesUrl);
 
@@ -59,7 +59,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
             new PackageIdentity(packageId, packageVersion),
             FrameworkConstants.CommonFrameworks.NetStandard20,
             cache,
-            logger,
+            _nugetLogger,
             CancellationToken.None)
             ?? throw new NuGetPackageNotFoundException(packageId, version);
 
@@ -71,10 +71,10 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
                 dependencyPackage,
                 FrameworkConstants.CommonFrameworks.NetStandard20,
                 cache,
-                logger,
+                _nugetLogger,
                 CancellationToken.None);
 
-            await DownloadPackage(resolvedDependency, repositories, cache, logger);
+            await DownloadPackage(resolvedDependency, repositories, cache);
         }
 
         var packageDownloadContext = new PackageDownloadContext(cache);
@@ -83,7 +83,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
             new PackageIdentity(packageId, packageVersion),
             packageDownloadContext,
             _packagesPath,
-            logger,
+            _nugetLogger,
             CancellationToken.None);
 
         if (downloadResult.Status == DownloadResourceResultStatus.NotFound)
@@ -129,11 +129,10 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
         throw new InvalidOperationException("No NuGet package version with compatible framework found.");
     }
 
-    private static async Task DownloadPackage(
+    private async Task DownloadPackage(
         PackageDependencyInfo dependencyInfo,
         SourceRepository repositories,
-        SourceCacheContext cache,
-        NuGet.Common.ILogger logger)
+        SourceCacheContext cache)
     {
         var packageDownloadContext = new PackageDownloadContext(cache);
         var downloadResource = await repositories.GetResourceAsync<DownloadResource>();
@@ -141,7 +140,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
             new PackageIdentity(dependencyInfo.Id, dependencyInfo.Version),
             packageDownloadContext,
             _packagesPath,
-            logger,
+            _nugetLogger,
             CancellationToken.None);
 
         if (downloadResult.Status == DownloadResourceResultStatus.Available)
@@ -159,11 +158,11 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger) 
     }
 
     [LoggerMessage("NuGet Package {name}, {version} was successfully downloaded.",
-        Level = Microsoft.Extensions.Logging.LogLevel.Trace)]
+        Level = LogLevel.Trace)]
     partial void LogSuccessfullNuGetDownload(string name, string version);
 
     [LoggerMessage("NuGet Package {name}, {version} was successfully addded to execution assembly.",
-        Level = Microsoft.Extensions.Logging.LogLevel.Trace)]
+        Level = LogLevel.Trace)]
     partial void LogSuccessfullNuGetAdditionToAssembly(string name, string version);
 }
 

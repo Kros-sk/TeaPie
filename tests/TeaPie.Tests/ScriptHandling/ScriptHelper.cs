@@ -30,7 +30,10 @@ internal static class ScriptHelper
 
     public static async Task PreProccessScript(ScriptExecutionContext context)
     {
-        var nugetHandler = new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
+        var nugetHandler = new NuGetPackageHandler(
+            Substitute.For<ILogger<NuGetPackageHandler>>(),
+            NuGet.Common.NullLogger.Instance);
+
         var processor = new ScriptPreProcessor(nugetHandler, Substitute.For<ILogger<ScriptPreProcessor>>());
         var referencedScripts = new List<string>();
         context.ProcessedContent = await processor.ProcessScript(

@@ -215,7 +215,7 @@ public sealed class ScriptPreProcessorShould
     }
 
     private static INuGetPackageHandler GetNuGetHandler()
-        => new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>());
+        => new NuGetPackageHandler(Substitute.For<ILogger<NuGetPackageHandler>>(), NuGet.Common.NullLogger.Instance);
 
     private static ScriptPreProcessor CreateScriptPreProcessor(INuGetPackageHandler? nugetPackageHandler = null)
     {
