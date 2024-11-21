@@ -7,6 +7,7 @@ using TeaPie.Tests.Requests;
 using TeaPie.Tests.Scripts;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
+
 public class ReadScriptFileStepShould
 {
     [Fact]
