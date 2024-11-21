@@ -5,7 +5,7 @@ using NSubstitute;
 using System.Data;
 using TeaPie.Scripts;
 
-namespace TeaPie.Tests.ScriptHandling;
+namespace TeaPie.Tests.Scripts;
 
 public class ScriptCompilerShould
 {

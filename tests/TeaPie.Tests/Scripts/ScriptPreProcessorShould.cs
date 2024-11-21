@@ -5,7 +5,7 @@ using TeaPie.Exceptions;
 using TeaPie.Parsing;
 using TeaPie.Scripts;
 
-namespace TeaPie.Tests.ScriptHandling;
+namespace TeaPie.Tests.Scripts;
 
 public sealed class ScriptPreProcessorShould
 {

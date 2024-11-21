@@ -6,7 +6,7 @@ using System.Data;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Scripts;
-using TeaPie.Tests.ScriptHandling;
+using TeaPie.Tests.Scripts;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 

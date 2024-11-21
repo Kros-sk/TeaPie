@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
-using TeaPie.Tests.ScriptHandling;
+using TeaPie.Tests.Scripts;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 public class ExecuteScriptStepShould

@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Tests.ScriptHandling;
+﻿namespace TeaPie.Tests.Scripts;
 
 internal static class ScriptIndex
 {
