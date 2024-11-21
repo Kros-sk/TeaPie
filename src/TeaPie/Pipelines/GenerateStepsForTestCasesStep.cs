@@ -8,7 +8,7 @@ using TeaPie.StructureExploration.IO;
 
 namespace TeaPie.Pipelines;
 
-internal sealed class StepsGenerationStep(IPipeline pipeline) : IPipelineStep
+internal sealed class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
 {
     private readonly IPipeline _pipeline = pipeline;
 

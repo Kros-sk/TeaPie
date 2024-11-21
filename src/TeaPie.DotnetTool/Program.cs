@@ -16,7 +16,7 @@ services.AddSingleton<IPipeline, ApplicationPipeline>();
 
 var provider = services.BuildServiceProvider();
 
-// This section will be part of different class, now it is here just for testing purposes
+// TODO: Move this part to class encapsulating logic of the application.
 if (args.Length > 0)
 {
     TeaPie.TeaPie.Create(provider.GetRequiredService<ILogger<TeaPie.TeaPie>>());
@@ -24,7 +24,7 @@ if (args.Length > 0)
     var pipeline = provider.GetRequiredService<IPipeline>();
     pipeline.AddSteps(provider.GetStep<StructureExplorationStep>());
     pipeline.AddSteps(provider.GetStep<PrepareTemporaryFolderStep>());
-    pipeline.AddSteps(provider.GetStep<StepsGenerationStep>());
+    pipeline.AddSteps(provider.GetStep<GenerateStepsForTestCasesStep>());
 
     var context = new ApplicationContext(args[0], provider.GetRequiredService<ILogger<ApplicationContext>>(), provider);
 
