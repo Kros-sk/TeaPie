@@ -71,42 +71,53 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         File requestFileObj;
         TestCase testCase;
 
-        foreach (var reqFile in files.Where(f => f.EndsWith(Constants.RequestFileExtension)).Order().ToList())
+        var preRequestScripts = GetScripts(currentFolder, Constants.PreRequestSuffix, files);
+        var postResponseScripts = GetScripts(currentFolder, Constants.PostResponseSuffix, files);
+
+        foreach (var reqFile in files.Where(f => f.EndsWith(Constants.RequestFileExtension)).Order())
         {
             fileName = Path.GetFileName(reqFile);
             relativePath = $"{currentFolder.RelativePath}{Path.DirectorySeparatorChar}{fileName}";
             requestFileObj = new(reqFile, relativePath, fileName, currentFolder);
 
-            testCase = new TestCase(requestFileObj)
+            testCase = new TestCase(requestFileObj);
+
+            if (preRequestScripts.TryGetValue(GetRelatedScriptFileName(fileName, Constants.PreRequestSuffix), out var preReqScript))
             {
-                PreRequestScripts = GetScripts(currentFolder, reqFile, Constants.PreRequestSuffix, files),
-                PostResponseScripts = GetScripts(currentFolder, reqFile, Constants.PostResponseSuffix, files)
-            };
+                testCase.PreRequestScripts = [preReqScript];
+            }
+
+            if (postResponseScripts.TryGetValue(GetRelatedScriptFileName(fileName, Constants.PostResponseSuffix), out var postResScript))
+            {
+                testCase.PostResponseScripts = [postResScript];
+            }
 
             testCases[reqFile] = testCase;
         }
     }
 
-    private static IEnumerable<Script> GetScripts(
+    private static Dictionary<string, Script> GetScripts(
         Folder folder,
-        string requestFileName,
         string desiredSuffix,
         IEnumerable<string> files)
             => files
-                .Where(f =>
-                    Path.GetFileName(f).EndsWith(desiredSuffix + Constants.ScriptFileExtension) &&
-                    Path.GetFileNameWithoutExtension(f)
-                        .StartsWith(Path.GetFileNameWithoutExtension(requestFileName).TrimSuffix(Constants.RequestSuffix)))
+                .Where(f => Path.GetFileName(f).EndsWith(desiredSuffix + Constants.ScriptFileExtension))
                 .Select(file =>
                 {
                     var fileName = Path.GetFileName(file);
-                    return new Script(new File(
+                    var script = new Script(new File(
                         file,
                         $"{folder.RelativePath}{Path.DirectorySeparatorChar}{fileName}",
                         fileName,
                         folder));
+
+                    return new KeyValuePair<string, Script>(fileName, script);
                 })
-                .Order();
+                .ToDictionary();
+
+    private static string GetRelatedScriptFileName(string requestFileName, string desiredSuffix)
+        => Path.GetFileNameWithoutExtension(requestFileName).TrimSuffix(Constants.RequestSuffix) +
+            desiredSuffix + Constants.ScriptFileExtension;
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
         => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
