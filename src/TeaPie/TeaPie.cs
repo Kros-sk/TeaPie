@@ -4,8 +4,7 @@ namespace TeaPie;
 
 public sealed class TeaPie
 {
-    // TODO: Change the way of instance retrieval.
-    public static TeaPie Create(ILogger logger) => Instance ??= new(logger);
+    internal static TeaPie Create(ILogger logger) => Instance ??= new(logger);
 
     public static TeaPie? Instance { get; private set; }
 

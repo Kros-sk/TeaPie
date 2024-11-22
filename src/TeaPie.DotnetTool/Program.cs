@@ -1,32 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using TeaPie.Extensions;
-using TeaPie.Pipelines;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.StructureExploration;
-using TeaPie.Pipelines.TemporaryFolder;
+﻿using TeaPie;
 
-var services = new ServiceCollection();
-services.ConfigureServices();
-services.ConfigureLogging(LogLevel.Information);
-services.ConfigureAccessors();
-services.ConfigureHttpClient();
-services.AddSteps();
-services.AddSingleton<IPipeline, ApplicationPipeline>();
+var builder = ApplicationBuilder.Create()
+    .WithPath(args[0])
+    .AddLogging();
 
-var provider = services.BuildServiceProvider();
-
-// TODO: Move this part to class encapsulating logic of the application.
-if (args.Length > 0)
-{
-    TeaPie.TeaPie.Create(provider.GetRequiredService<ILogger<TeaPie.TeaPie>>());
-
-    var pipeline = provider.GetRequiredService<IPipeline>();
-    pipeline.AddSteps(provider.GetStep<StructureExplorationStep>());
-    pipeline.AddSteps(provider.GetStep<PrepareTemporaryFolderStep>());
-    pipeline.AddSteps(provider.GetStep<GenerateStepsForTestCasesStep>());
-
-    var context = new ApplicationContext(args[0], provider.GetRequiredService<ILogger<ApplicationContext>>(), provider);
-
-    await pipeline.Run(context, CancellationToken.None);
-}
+var app = builder.Build();
+await app.Run(new CancellationToken());
