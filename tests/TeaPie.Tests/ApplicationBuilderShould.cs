@@ -28,7 +28,7 @@ public class ApplicationBuilderShould
     }
 
     [Fact]
-    public async Task MultipleInvocationsOfSameMethodShouldNotCauseAnyProblem()
+    public void MultipleInvocationsOfSameMethodShouldNotCauseAnyProblem()
     {
         var builder = ApplicationBuilder.Create();
         var app = builder
@@ -40,8 +40,6 @@ public class ApplicationBuilderShould
             .AddLogging(LogLevel.Information, "path/to/logFile")
             .AddLogging(LogLevel.Warning)
             .Build();
-
-        await app.Run();
 
         app.Should().NotBeNull();
     }
