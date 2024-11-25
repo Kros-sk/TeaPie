@@ -11,6 +11,7 @@ using TeaPie.Pipelines.Scripts;
 using TeaPie.Requests;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Variables;
 
 namespace TeaPie.Extensions;
 
@@ -27,10 +28,15 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IHttpFileParser, HttpFileParser>();
         services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
 
+        services.AddSingleton<IVariables, Variables.Variables>();
+
         return services;
     }
 
-    public static IServiceCollection ConfigureLogging(this IServiceCollection services, LogLevel minimumLevel, string pathToLogFile = "")
+    public static IServiceCollection ConfigureLogging(
+        this IServiceCollection services,
+        LogLevel minimumLevel,
+        string pathToLogFile = "")
     {
         if (minimumLevel == LogLevel.None)
         {

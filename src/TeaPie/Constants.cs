@@ -26,7 +26,8 @@ internal static class Constants
         "System.Net.Http",
         "System.Threading",
         "System.Threading.Tasks",
-        "Microsoft.Extensions.Logging"
+        "Microsoft.Extensions.Logging",
+        "TeaPie.Variables"
     ];
 
     public static readonly string[] FrameworksPriorityList =

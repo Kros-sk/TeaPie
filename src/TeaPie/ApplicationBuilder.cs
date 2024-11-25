@@ -5,6 +5,7 @@ using TeaPie.Pipelines;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.StructureExploration;
 using TeaPie.Pipelines.TemporaryFolder;
+using TeaPie.Variables;
 
 namespace TeaPie;
 
@@ -53,6 +54,7 @@ public sealed class ApplicationBuilder
                 _path,
                 provider.GetRequiredService<ILogger<ApplicationContext>>(),
                 provider,
+                provider.GetRequiredService<IVariables>(),
                 _tempPath ?? string.Empty);
 
         var pipeline = BuildDefaultPipeline(provider);
@@ -71,7 +73,7 @@ public sealed class ApplicationBuilder
     private void RegisterPipeline() => _services.AddSingleton<IPipeline, ApplicationPipeline>();
 
     private static TeaPie CreateUserContext(IServiceProvider provider)
-        => TeaPie.Create(provider.GetRequiredService<ILogger<TeaPie>>());
+        => TeaPie.Create(provider.GetRequiredService<IVariables>(), provider.GetRequiredService<ILogger<TeaPie>>());
 
     // TODO: This should be part of some pipeline builder/factory class
     private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)

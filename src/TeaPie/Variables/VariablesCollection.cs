@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace TeaPie.Variables;
 
 [DebuggerDisplay("{_variables}")]
-internal class VariablesCollection : IEnumerable<Variable>
+public class VariablesCollection : IEnumerable<Variable>
 {
     private readonly Dictionary<string, Variable> _variables = [];
 
@@ -33,7 +33,7 @@ internal class VariablesCollection : IEnumerable<Variable>
 
     public bool Remove(string variableName) => _variables.Remove(variableName);
 
-    public bool RemoveVariables(string tag)
+    public bool RemoveVariablesWithTag(string tag)
     {
         var variablesToDelete = _variables.Where(x => x.Value.HasTag(tag));
         var deleted = variablesToDelete.Any();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.IO;
+using TeaPie.Variables;
 
 namespace TeaPie.Pipelines.Application;
 
@@ -8,6 +9,7 @@ internal class ApplicationContext(
     string path,
     ILogger logger,
     IServiceProvider serviceProvider,
+    IVariables variables,
     string tempFolder = "")
 {
     public string Path { get; } = path;
@@ -19,4 +21,6 @@ internal class ApplicationContext(
     public ILogger Logger { get; set; } = logger;
 
     public IServiceProvider ServiceProvider { get; } = serviceProvider;
+
+    public IVariables Variables { get; set; } = variables;
 }

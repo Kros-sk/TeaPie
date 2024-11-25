@@ -15,7 +15,7 @@ public class VariablesCollectionShould
     [InlineData("<", "name with forbidden character '<'")]
     [InlineData(">", "name with forbidden character '>'")]
     [InlineData(".$_<script>", "name with forbidden characters")]
-    public void SettingVariableWithInvalidNameShouldThrowProperException(string? name, string reason)
+    public void ThrowProperExceptionWhenSettingVariableWithInvalidName(string? name, string reason)
     {
         VariablesCollection collection = [];
 
@@ -25,7 +25,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void SettingSingleVariableWithNullValueShouldNotCauseAnyProblem()
+    public void SetSingleVariableWithNullValueWithoutAnyProblem()
     {
         VariablesCollection collection = [];
         const string name = "NullVariable";
@@ -39,7 +39,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void SettingOfSingleVariableShouldNotCauseProblem()
+    public void SetSingleVariableWithoutAnyProblem()
     {
         VariablesCollection collection = [];
         const string name = "MyAge";
@@ -53,7 +53,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void SettingAndThenGettingVariableShouldReturnTheSameVariable()
+    public void SetAndThenGetTheSameVariable()
     {
         VariablesCollection collection = [];
         const string name = "MyAge";
@@ -66,7 +66,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void SettingVariableTwiceWithTheSameNameButDifferentValueShouldOverwriteTheValue()
+    public void OverwriteVariableWhenSettingVariableWithSameNameTwice()
     {
         VariablesCollection collection = [];
         const string name = "MyAge";
@@ -82,7 +82,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void SettingMultipleVariablesShouldNotCauseAnyProblem()
+    public void SetMultipleVariablesWithoutAnyProblem()
     {
         VariablesCollection collection = [];
         const int numberOfVariables = 10;
@@ -109,7 +109,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void GettingVariableWithIncorrectTypeShouldReturnDefaultValueOfThatType()
+    public void ReturnDefaultValueWhenGettingVariableWithNotMatchingDataType()
     {
         VariablesCollection collection = [];
         const string name = "MyVariable";
@@ -123,7 +123,7 @@ public class VariablesCollectionShould
     [Theory]
     [InlineData("test")]
     [InlineData("user", "auth", "test")]
-    public void SettingVariableWithTagsShouldNotCauseAnyProblem(params string[] tags)
+    public void SetVariableWithTagsWithoutAnyProblem(params string[] tags)
     {
         VariablesCollection collection = [];
         const string name = "VariableWithTags";
@@ -144,7 +144,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void RemoveOfNonExistingVariableShouldBeIndicatedByFalseReturnValue()
+    public void IndicatedRemovalOfNonExistingByReturningFalse()
     {
         VariablesCollection collection = [];
         const string name = "MyVariable";
@@ -157,7 +157,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void RemoveOfVariableShouldNotCauseAnyProblem()
+    public void RemoveVariableWithoutAnyProblem()
     {
         VariablesCollection collection = [];
         const string name = "MyVariable";
@@ -173,7 +173,7 @@ public class VariablesCollectionShould
     [InlineData("auth", "test")]
     [InlineData("user", "auth", "test")]
     [InlineData("user")]
-    public void RemoveVariablesShouldRemoveOnlyVariablesWhichAreMarkedWithSuchATag(params string[] tagsToDelete)
+    public void RemoveAllVariablesWithGivenTag(params string[] tagsToDelete)
     {
         VariablesCollection collection = [];
 
@@ -182,7 +182,7 @@ public class VariablesCollectionShould
         IEnumerable<Variable>? variablesToRemain = null;
         foreach (var tag in tagsToDelete)
         {
-            collection.RemoveVariables(tag);
+            collection.RemoveVariablesWithTag(tag);
             if (variablesToRemain is null)
             {
                 variablesToRemain = collection.Where(var => !var.HasTag(tag));
