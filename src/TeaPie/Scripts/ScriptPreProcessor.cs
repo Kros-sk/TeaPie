@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using TeaPie.Extensions;
+using TeaPie.Http;
 using TeaPie.Parsing;
 
 namespace TeaPie.Scripts;
@@ -129,14 +130,14 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
 
     private static string GetPathFromLoadDirective(string directive)
     {
-        var segments = directive.Split(new[] { ParsingConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
+        var segments = directive.Split(new[] { HttpFileParserConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
         var path = segments[1].Trim();
         return path.Replace("\"", string.Empty);
     }
 
     private static string ProcessNuGetPackage(string directive, List<NuGetPackageDescription> listOfNuGetPackages)
     {
-        var packageInfo = directive[ParsingConstants.NuGetDirective.Length..].Trim();
+        var packageInfo = directive[HttpFileParserConstants.NuGetDirective.Length..].Trim();
         packageInfo = packageInfo.Replace("\"", string.Empty);
         var parts = packageInfo.Split(',');
         if (parts.Length == 2)
@@ -147,10 +148,10 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         return directive;
     }
 
-    [GeneratedRegex(ParsingConstants.NuGetDirectivePattern)]
+    [GeneratedRegex(HttpFileParserConstants.NuGetDirectivePattern)]
     private static partial Regex NuGetPackageRegex();
 
-    [GeneratedRegex(ParsingConstants.LoadScriptDirective)]
+    [GeneratedRegex(HttpFileParserConstants.LoadScriptDirective)]
     private static partial Regex LoadReferenceRegex();
 
     [LoggerMessage("Load-script directives were resolved for the script on path '{scriptPath}'.", Level = LogLevel.Trace)]

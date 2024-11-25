@@ -1,0 +1,14 @@
+﻿using System.Net.Http.Headers;
+using System.Text;
+
+namespace TeaPie.Http;
+
+internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
+{
+    public HttpMethod Method { get; set; } = HttpMethod.Get;
+    public string RequestUri { get; set; } = string.Empty;
+    public HttpRequestHeaders Headers { get; } = defaultHeaders;
+    public StringBuilder BodyBuilder { get; } = new();
+    public bool IsBody { get; set; }
+    public bool IsMethodAndUriResolved { get; set; }
+}

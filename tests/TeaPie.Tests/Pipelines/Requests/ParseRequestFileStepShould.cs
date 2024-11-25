@@ -2,11 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Parsing;
+using TeaPie.Http;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Requests;
 using TeaPie.Tests.Requests;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Requests;
 
@@ -20,7 +21,8 @@ public class ParseRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -38,7 +40,8 @@ public class ParseRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -57,11 +60,13 @@ public class ParseRequestFileStepShould
     public async Task ParseMethodOnParserShouldBeCalled()
     {
         var context = RequestHelper.PrepareContext(RequestsIndex.PlainGetRequestPath);
+        var variables = Substitute.For<IVariables>();
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            variables);
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -70,7 +75,7 @@ public class ParseRequestFileStepShould
 
         await step.Execute(appContext);
 
-        parser.Received(1).Parse(context.RawContent!);
+        parser.Received(1).Parse(context.RawContent!, variables);
     }
 
     private static HttpFileParser CreateParser()

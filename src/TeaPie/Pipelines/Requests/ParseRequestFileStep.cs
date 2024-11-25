@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Parsing;
+using TeaPie.Http;
 using TeaPie.Pipelines.Application;
 
 namespace TeaPie.Pipelines.Requests;
@@ -22,7 +22,7 @@ internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAcce
         context.Logger.LogTrace("Parsing of the request on path '{Path}' started.",
             requestExecutionContext.RequestFile.RelativePath);
 
-        requestExecutionContext.Request = _parser.Parse(requestExecutionContext.RawContent);
+        requestExecutionContext.Request = _parser.Parse(requestExecutionContext.RawContent, context.Variables);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
             requestExecutionContext.RequestFile.RelativePath);
