@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureLogging(this IServiceCollection services, LogLevel minimumLevel)
+    public static IServiceCollection ConfigureLogging(this IServiceCollection services, LogLevel minimumLevel, string pathToLogFile = "")
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -38,12 +38,18 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            Log.Logger = new LoggerConfiguration()
+            var config = new LoggerConfiguration()
                 .MinimumLevel.Is(minimumLevel.ToSerilogLogLevel())
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .WriteTo.Console()
-                .CreateLogger();
+                .WriteTo.Console();
+
+            if (!pathToLogFile.Equals(string.Empty))
+            {
+                config.WriteTo.File(pathToLogFile);
+            }
+
+            Log.Logger = config.CreateLogger();
         }
 
         services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
