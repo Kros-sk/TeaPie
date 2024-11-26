@@ -4,6 +4,7 @@ using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Scripts;
 using TeaPie.Tests.Scripts;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 
@@ -23,7 +24,12 @@ public class PreProcessScriptStepShould
         var tempPath = Path.GetTempPath();
 
         var pipeline = new ApplicationPipeline();
-        var appContext = new ApplicationContext(rootPath, logger, Substitute.For<IServiceProvider>(), tempPath);
+        var appContext = new ApplicationContext(
+            rootPath,
+            logger,
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>(),
+            tempPath);
 
         var step = new PreProcessScriptStep(pipeline, accessor, processor);
         await step.Execute(appContext);

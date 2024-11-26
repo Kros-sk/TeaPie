@@ -6,7 +6,10 @@ namespace TeaPie;
 public sealed class TeaPie : IVariablesAccessor
 {
     internal static TeaPie Create(IVariables variables, ILogger logger)
-        => Instance ??= new(variables, logger);
+    {
+        Instance = new(variables, logger);
+        return Instance;
+    }
 
     public static TeaPie? Instance { get; private set; }
 

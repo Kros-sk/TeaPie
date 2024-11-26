@@ -2,7 +2,8 @@
 
 internal class HeaderParser : ILineParser
 {
-    public bool CanParse(string line, bool isBody) => !isBody && line.Contains(HttpFileParserConstants.HttpHeaderSeparator);
+    public bool CanParse(string line, HttpParsingContext context)
+        => !context.IsBody && line.Contains(HttpFileParserConstants.HttpHeaderSeparator);
 
     public void Parse(string line, HttpParsingContext context)
     {

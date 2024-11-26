@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Exceptions;
-using TeaPie.Parsing;
 using TeaPie.Scripts;
 
 namespace TeaPie.Tests.Scripts;
@@ -126,7 +125,7 @@ public sealed class ScriptPreProcessorShould
         var processedContent = await PreProcessScript(processor, ScriptIndex.ScriptWithOneNuGetDirectivePath, referencedScripts);
 
         await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
+        processedContent.Should().NotContain(ScriptPreProcessorConstants.NuGetDirective);
     }
 
     [Fact]
@@ -140,7 +139,7 @@ public sealed class ScriptPreProcessorShould
             await PreProcessScript(processor, ScriptIndex.ScriptWithMultipleNuGetDirectivesPath, referencedScripts);
 
         await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
+        processedContent.Should().NotContain(ScriptPreProcessorConstants.NuGetDirective);
     }
 
     [Fact]
@@ -154,7 +153,7 @@ public sealed class ScriptPreProcessorShould
             await PreProcessScript(processor, ScriptIndex.ScriptWithDuplicatedNuGetDirectivePath, referencedScripts);
 
         await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
+        processedContent.Should().NotContain(ScriptPreProcessorConstants.NuGetDirective);
     }
 
     [Fact]
@@ -189,7 +188,7 @@ public sealed class ScriptPreProcessorShould
         }
 
         await nugetHandler.Received(1).HandleNuGetPackages(Arg.Any<List<NuGetPackageDescription>>());
-        processedContent.Should().NotContain(ParsingConstants.NuGetDirective);
+        processedContent.Should().NotContain(ScriptPreProcessorConstants.NuGetDirective);
     }
 
     private async Task<string> PreProcessScript(ScriptPreProcessor processor, string scriptPath, List<string> referencedScripts)
@@ -207,7 +206,7 @@ public sealed class ScriptPreProcessorShould
 
         for (var i = 0; i < names.Length; i++)
         {
-            list.Add($"{ParsingConstants.LoadScriptDirective} " +
+            list.Add($"{ScriptPreProcessorConstants.LoadScriptDirective} " +
                 $"\"{tmpBasePath}{Path.DirectorySeparatorChar}{names[i]}{Constants.ScriptFileExtension}\"");
         }
 

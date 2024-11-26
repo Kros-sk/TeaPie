@@ -2,6 +2,8 @@
 
 internal static class HttpFileParserConstants
 {
+    public const string VariableNamePattern = @"^[a-zA-Z0-9-]+$";
+
     public const string HttpHeaderSeparator = ":";
     public const string HttpCommentPrefix = "# ";
     public const string HttpDirectivePrefix = "## ";

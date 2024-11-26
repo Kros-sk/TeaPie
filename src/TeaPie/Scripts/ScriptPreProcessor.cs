@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using TeaPie.Extensions;
-using TeaPie.Http;
-using TeaPie.Parsing;
 
 namespace TeaPie.Scripts;
 
@@ -39,8 +37,8 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         _tempFolderPath = tempFolderPath;
         _referencedScripts = referencedScripts;
 
-        var hasLoadDirectives = scriptContent.Contains(ParsingConstants.LoadScriptDirective);
-        var hasNuGetDirectives = scriptContent.Contains(ParsingConstants.NuGetDirective);
+        var hasLoadDirectives = scriptContent.Contains(ScriptPreProcessorConstants.LoadScriptDirective);
+        var hasNuGetDirectives = scriptContent.Contains(ScriptPreProcessorConstants.NuGetDirective);
 
         if (hasLoadDirectives || hasNuGetDirectives)
         {
@@ -49,7 +47,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
             if (hasLoadDirectives)
             {
                 lines = ResolveLoadDirectives(path, lines);
-                referencedScriptsDirectives = lines.Where(x => x.Contains(ParsingConstants.LoadScriptDirective));
+                referencedScriptsDirectives = lines.Where(x => x.Contains(ScriptPreProcessorConstants.LoadScriptDirective));
                 CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
 
                 LogResolvedLoadDirectives(path);
@@ -58,7 +56,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
             if (hasNuGetDirectives)
             {
                 await ResolveNuGetDirectives(lines);
-                lines = lines.Where(x => !x.Contains(ParsingConstants.NuGetDirective));
+                lines = lines.Where(x => !x.Contains(ScriptPreProcessorConstants.NuGetDirective));
 
                 LogResolvedNuGetDirectives(path);
             }
@@ -125,19 +123,19 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         var relativePath = realPath.TrimRootPath(_rootPath, true);
         var tempPath = Path.Combine(_tempFolderPath, relativePath);
 
-        return $"{ParsingConstants.LoadScriptDirective} \"{tempPath}\"";
+        return $"{ScriptPreProcessorConstants.LoadScriptDirective} \"{tempPath}\"";
     }
 
     private static string GetPathFromLoadDirective(string directive)
     {
-        var segments = directive.Split(new[] { HttpFileParserConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
+        var segments = directive.Split(new[] { ScriptPreProcessorConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
         var path = segments[1].Trim();
         return path.Replace("\"", string.Empty);
     }
 
     private static string ProcessNuGetPackage(string directive, List<NuGetPackageDescription> listOfNuGetPackages)
     {
-        var packageInfo = directive[HttpFileParserConstants.NuGetDirective.Length..].Trim();
+        var packageInfo = directive[ScriptPreProcessorConstants.NuGetDirective.Length..].Trim();
         packageInfo = packageInfo.Replace("\"", string.Empty);
         var parts = packageInfo.Split(',');
         if (parts.Length == 2)
@@ -148,10 +146,10 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         return directive;
     }
 
-    [GeneratedRegex(HttpFileParserConstants.NuGetDirectivePattern)]
+    [GeneratedRegex(ScriptPreProcessorConstants.NuGetDirectivePattern)]
     private static partial Regex NuGetPackageRegex();
 
-    [GeneratedRegex(HttpFileParserConstants.LoadScriptDirective)]
+    [GeneratedRegex(ScriptPreProcessorConstants.LoadScriptDirective)]
     private static partial Regex LoadReferenceRegex();
 
     [LoggerMessage("Load-script directives were resolved for the script on path '{scriptPath}'.", Level = LogLevel.Trace)]

@@ -10,22 +10,18 @@ internal interface IHttpFileParser
     HttpRequestMessage Parse(string fileContent, IVariables variables);
 }
 
-internal class HttpFileParser : IHttpFileParser
+internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHttpFileParser
 {
-    private readonly IHttpRequestHeadersProvider _headersProvider;
-    private readonly IEnumerable<ILineParser> _lineParsers;
-
-    public HttpFileParser(IHttpRequestHeadersProvider headersProvider)
-    {
-        _headersProvider = headersProvider;
-        _lineParsers = new List<ILineParser>
-        {
+    private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
+    private readonly IEnumerable<ILineParser> _lineParsers =
+        [
+            new CommentLineParser(),
+            new RequestSeparatorParser(),
             new EmptyLineParser(),
             new MethodAndUriParser(),
             new HeaderParser(),
             new BodyParser()
-        };
-    }
+        ];
 
     public HttpRequestMessage Parse(string fileContent, IVariables variables)
     {
@@ -35,7 +31,7 @@ internal class HttpFileParser : IHttpFileParser
         {
             foreach (var parser in _lineParsers)
             {
-                if (parser.CanParse(line, context.IsBody))
+                if (parser.CanParse(line, context))
                 {
                     parser.Parse(line, context);
                     break;

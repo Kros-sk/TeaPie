@@ -4,6 +4,7 @@ using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Tests.Scripts;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 
@@ -17,7 +18,8 @@ public class ReadScriptFileStepShould
         var appContext = new ApplicationContext(
             ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);
@@ -33,7 +35,8 @@ public class ReadScriptFileStepShould
         var appContext = new ApplicationContext(
             ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);

@@ -7,6 +7,7 @@ using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Scripts;
 using TeaPie.Tests.Scripts;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 
@@ -22,7 +23,11 @@ public class CompileScriptStepShould
 
         var compiler = Substitute.For<IScriptCompiler>();
 
-        var appContext = new ApplicationContext(string.Empty, logger, Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContext(
+            string.Empty,
+            logger,
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
         var step = new CompileScriptStep(accessor, compiler);
 
         await step.Execute(appContext);
@@ -40,7 +45,11 @@ public class CompileScriptStepShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        var appContext = new ApplicationContext(string.Empty, logger, Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContext(
+            string.Empty,
+            logger,
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
         var step = new CompileScriptStep(accessor, compiler);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<SyntaxErrorException>();

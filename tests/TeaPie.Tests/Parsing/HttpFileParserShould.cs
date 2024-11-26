@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using TeaPie.Parsing;
+using NSubstitute;
+using TeaPie.Http;
 using TeaPie.Requests;
 using TeaPie.Tests.Requests;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Parsing;
 
@@ -178,7 +180,7 @@ public class HttpFileParserShould
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
         var parser = new HttpFileParser(headersProvider);
-        return parser.Parse(await File.ReadAllTextAsync(path));
+        return parser.Parse(await File.ReadAllTextAsync(path), Substitute.For<IVariables>());
     }
 
     private static void CheckMethodUriAndExistenceOfContent(

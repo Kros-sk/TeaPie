@@ -2,6 +2,6 @@
 
 internal interface ILineParser
 {
-    bool CanParse(string line, bool isBody);
+    bool CanParse(string line, HttpParsingContext context);
     void Parse(string line, HttpParsingContext context);
 }

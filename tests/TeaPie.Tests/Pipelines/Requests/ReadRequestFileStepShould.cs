@@ -4,6 +4,7 @@ using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Tests.Requests;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Requests;
 
@@ -17,7 +18,8 @@ public class ReadRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
         var step = new ReadRequestFileStep(accessor);
@@ -33,7 +35,8 @@ public class ReadRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+            Substitute.For<IServiceProvider>(),
+            Substitute.For<IVariables>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
         var step = new ReadRequestFileStep(accessor);

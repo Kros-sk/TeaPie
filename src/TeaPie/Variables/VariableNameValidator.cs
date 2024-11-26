@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using TeaPie.Exceptions;
-using TeaPie.Parsing;
+using TeaPie.Http;
 
 namespace TeaPie.Variables;
 
@@ -49,6 +49,6 @@ internal partial class VariableNameValidator
         }
     }
 
-    [GeneratedRegex(ParsingConstants.VariableNamePattern)]
+    [GeneratedRegex(HttpFileParserConstants.VariableNamePattern)]
     private static partial Regex VariableNameRegex();
 }

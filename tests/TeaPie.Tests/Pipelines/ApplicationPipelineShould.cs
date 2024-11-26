@@ -2,6 +2,7 @@
 using NSubstitute;
 using TeaPie.Pipelines;
 using TeaPie.Pipelines.Application;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines;
 
@@ -97,5 +98,5 @@ public class ApplicationPipelineShould
     }
 
     private static ApplicationContext CreateApplicationContext(string path)
-        => new(path, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>());
+        => new(path, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>(), Substitute.For<IVariables>());
 }
