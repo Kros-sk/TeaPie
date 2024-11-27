@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using TeaPie.Requests;
 using TeaPie.Variables;
 
@@ -7,12 +8,13 @@ namespace TeaPie.Http;
 
 internal interface IHttpFileParser
 {
-    HttpRequestMessage Parse(string fileContent, IVariables variables);
+    HttpRequestMessage Parse(string fileContent);
 }
 
-internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHttpFileParser
+internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariables variables) : IHttpFileParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
+    private readonly IVariables _variables = variables;
     private readonly IEnumerable<ILineParser> _lineParsers =
         [
             new CommentLineParser(),
@@ -23,23 +25,42 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHt
             new BodyParser()
         ];
 
-    public HttpRequestMessage Parse(string fileContent, IVariables variables)
+    public HttpRequestMessage Parse(string fileContent)
     {
         var context = new HttpParsingContext(_headersProvider.GetDefaultHeaders());
 
         foreach (var line in fileContent.Split(Environment.NewLine))
         {
-            foreach (var parser in _lineParsers)
-            {
-                if (parser.CanParse(line, context))
-                {
-                    parser.Parse(line, context);
-                    break;
-                }
-            }
+            var resolvedLine = ResolveVariables(line);
+            Parse(resolvedLine, context);
         }
 
         return CreateHttpRequestMessage(context);
+    }
+
+    private string ResolveVariables(string line)
+        => VariableNotationPatternRegex().Replace(line, match =>
+        {
+            var variableName = match.Groups[1].Value;
+            if (_variables.ContainsVariable(variableName))
+            {
+                var variableValue = _variables.GetVariable<object>(variableName, default);
+                return variableValue?.ToString() ?? "null";
+            }
+
+            throw new InvalidOperationException($"Variable '{{{variableName}}}' was not found.");
+        });
+
+    private void Parse(string line, HttpParsingContext context)
+    {
+        foreach (var parser in _lineParsers)
+        {
+            if (parser.CanParse(line, context))
+            {
+                parser.Parse(line, context);
+                break;
+            }
+        }
     }
 
     private static HttpRequestMessage CreateHttpRequestMessage(HttpParsingContext context)
@@ -66,4 +87,7 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider) : IHt
 
         return requestMessage;
     }
+
+    [GeneratedRegex(HttpFileParserConstants.VariableNotationPattern)]
+    private static partial Regex VariableNotationPatternRegex();
 }

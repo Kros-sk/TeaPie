@@ -21,8 +21,7 @@ public class ParseRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -40,8 +39,7 @@ public class ParseRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -60,13 +58,11 @@ public class ParseRequestFileStepShould
     public async Task ParseMethodOnParserShouldBeCalled()
     {
         var context = RequestHelper.PrepareContext(RequestsIndex.PlainGetRequestPath);
-        var variables = Substitute.For<IVariables>();
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            variables);
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -75,7 +71,7 @@ public class ParseRequestFileStepShould
 
         await step.Execute(appContext);
 
-        parser.Received(1).Parse(context.RawContent!, variables);
+        parser.Received(1).Parse(context.RawContent!);
     }
 
     private static HttpFileParser CreateParser()
@@ -88,6 +84,6 @@ public class ParseRequestFileStepShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
-        return new HttpFileParser(headersProvider);
+        return new HttpFileParser(headersProvider, Substitute.For<IVariables>());
     }
 }

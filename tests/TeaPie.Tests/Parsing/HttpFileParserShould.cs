@@ -179,8 +179,8 @@ public class HttpFileParserShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
-        var parser = new HttpFileParser(headersProvider);
-        return parser.Parse(await File.ReadAllTextAsync(path), Substitute.For<IVariables>());
+        var parser = new HttpFileParser(headersProvider, Substitute.For<IVariables>());
+        return parser.Parse(await File.ReadAllTextAsync(path));
     }
 
     private static void CheckMethodUriAndExistenceOfContent(

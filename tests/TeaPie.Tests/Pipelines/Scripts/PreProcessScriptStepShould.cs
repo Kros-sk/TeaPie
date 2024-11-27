@@ -28,7 +28,6 @@ public class PreProcessScriptStepShould
             rootPath,
             logger,
             Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>(),
             tempPath);
 
         var step = new PreProcessScriptStep(pipeline, accessor, processor);

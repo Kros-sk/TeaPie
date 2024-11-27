@@ -54,7 +54,6 @@ public sealed class ApplicationBuilder
                 _path,
                 provider.GetRequiredService<ILogger<ApplicationContext>>(),
                 provider,
-                provider.GetRequiredService<IVariables>(),
                 _tempPath ?? string.Empty);
 
         var pipeline = BuildDefaultPipeline(provider);

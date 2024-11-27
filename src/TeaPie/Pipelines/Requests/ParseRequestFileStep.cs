@@ -22,7 +22,7 @@ internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAcce
         context.Logger.LogTrace("Parsing of the request on path '{Path}' started.",
             requestExecutionContext.RequestFile.RelativePath);
 
-        requestExecutionContext.Request = _parser.Parse(requestExecutionContext.RawContent, context.Variables);
+        requestExecutionContext.Request = _parser.Parse(requestExecutionContext.RawContent);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
             requestExecutionContext.RequestFile.RelativePath);

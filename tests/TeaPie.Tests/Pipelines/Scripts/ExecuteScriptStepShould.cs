@@ -8,6 +8,7 @@ using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 
+[Collection(nameof(NonParallelCollection))]
 public class ExecuteScriptStepShould
 {
     [Fact]
@@ -16,16 +17,14 @@ public class ExecuteScriptStepShould
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieInstance);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        var variables = Substitute.For<IVariables>();
-        TeaPie.Create(variables, logger);
+        TeaPie.Create(Substitute.For<IVariables>(), logger);
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
         var appContext = new ApplicationContext(
             string.Empty,
             Substitute.For<ILogger<ApplicationContext>>(),
-            Substitute.For<IServiceProvider>(),
-            variables);
+            Substitute.For<IServiceProvider>());
 
         await step.Execute(appContext);
 
@@ -44,8 +43,7 @@ public class ExecuteScriptStepShould
         var appContext = new ApplicationContext(
             string.Empty,
             logger,
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         await step.Execute(appContext);
     }

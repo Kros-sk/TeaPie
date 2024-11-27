@@ -18,8 +18,7 @@ public class ReadScriptFileStepShould
         var appContext = new ApplicationContext(
             ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);
@@ -35,8 +34,7 @@ public class ReadScriptFileStepShould
         var appContext = new ApplicationContext(
             ScriptIndex.RootSubFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);

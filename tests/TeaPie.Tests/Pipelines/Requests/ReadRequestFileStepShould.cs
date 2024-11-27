@@ -18,8 +18,7 @@ public class ReadRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
         var step = new ReadRequestFileStep(accessor);
@@ -35,8 +34,7 @@ public class ReadRequestFileStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
         var step = new ReadRequestFileStep(accessor);

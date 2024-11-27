@@ -98,5 +98,5 @@ public class ApplicationPipelineShould
     }
 
     private static ApplicationContext CreateApplicationContext(string path)
-        => new(path, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>(), Substitute.For<IVariables>());
+        => new(path, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>());
 }

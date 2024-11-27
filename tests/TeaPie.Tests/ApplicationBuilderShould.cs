@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TeaPie.Tests;
 
+[Collection(nameof(NonParallelCollection))]
 public class ApplicationBuilderShould
 {
     [Fact]

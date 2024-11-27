@@ -30,8 +30,7 @@ public class ExecuteRequestStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -50,13 +49,12 @@ public class ExecuteRequestStepShould
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
             Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>(),
-            Substitute.For<IVariables>());
+            Substitute.For<IServiceProvider>());
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = CreateParser(serviceProvider);
-        context.Request = parser.Parse(context.RawContent!, Substitute.For<IVariables>());
+        context.Request = parser.Parse(context.RawContent!);
 
         var step = new ExecuteRequestStep(serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor);
 
@@ -107,7 +105,7 @@ public class ExecuteRequestStepShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
-        return new HttpFileParser(headersProvider);
+        return new HttpFileParser(headersProvider, Substitute.For<IVariables>());
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler
