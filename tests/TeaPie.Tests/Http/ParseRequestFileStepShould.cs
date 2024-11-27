@@ -9,7 +9,7 @@ using TeaPie.Requests;
 using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
-namespace TeaPie.Tests.Pipelines.Requests;
+namespace TeaPie.Tests.Http;
 
 public class ParseRequestFileStepShould
 {

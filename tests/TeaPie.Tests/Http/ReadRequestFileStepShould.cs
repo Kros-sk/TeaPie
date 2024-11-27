@@ -6,7 +6,7 @@ using TeaPie.Pipelines.Requests;
 using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
-namespace TeaPie.Tests.Pipelines.Requests;
+namespace TeaPie.Tests.Http;
 
 public class ReadRequestFileStepShould
 {
@@ -41,7 +41,7 @@ public class ReadRequestFileStepShould
 
         await step.Execute(appContext);
 
-        var expectedContent = await System.IO.File.ReadAllTextAsync(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var expectedContent = await File.ReadAllTextAsync(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
         context.RawContent.Should().Be(expectedContent);
     }
