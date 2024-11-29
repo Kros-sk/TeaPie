@@ -4,7 +4,6 @@ using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Requests;
 using TeaPie.Tests.Requests;
-using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;
 

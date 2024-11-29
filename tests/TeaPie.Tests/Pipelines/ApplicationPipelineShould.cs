@@ -2,7 +2,6 @@
 using NSubstitute;
 using TeaPie.Pipelines;
 using TeaPie.Pipelines.Application;
-using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines;
 

@@ -84,6 +84,9 @@ public class ParseRequestFileStepShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
-        return new HttpFileParser(headersProvider, Substitute.For<IVariables>());
+        var variables = new global::TeaPie.Variables.Variables();
+        var resolver = new VariablesResolver(variables);
+
+        return new HttpFileParser(headersProvider, resolver);
     }
 }

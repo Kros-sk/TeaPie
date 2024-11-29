@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using NSubstitute;
 using TeaPie.Http;
 using TeaPie.Requests;
 using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
-namespace TeaPie.Tests.Parsing;
+namespace TeaPie.Tests.Http;
 
 public class HttpFileParserShould
 {
@@ -15,28 +14,28 @@ public class HttpFileParserShould
     private readonly Uri _traceRequestUri = new("https://postman-echo.com/trace");
 
     [Fact]
-    public async Task SimpleRequestShouldBeParsedCorrectly()
+    public async Task ParseSimpleRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.SimpleRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task RequestWithCommentShouldBeParsedCorrectly()
+    public async Task ParseRequestWithCommentCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task RequestWithCommentshouldBeParsedCorrectly()
+    public async Task ParseRequestWithCommentsCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentsPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task RequestWithJsonBodyShouldBeParsedCorrectly()
+    public async Task ParseRequestWithJsonBodyCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithJsonBodyPath);
 
@@ -45,7 +44,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task RequestWithHeaderShouldBeParsedCorrectly()
+    public async Task ParseRequestWithHeaderCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithHeaderPath);
 
@@ -55,7 +54,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task RequestWithHeadersShouldBeParsedCorrectly()
+    public async Task ParseRequestWithHeadersCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithHeadersPath);
 
@@ -66,7 +65,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task RequestWithBodyAndHeaderShouldBeParsedCorrectly()
+    public async Task ParseRequestWithBodyAndHeaderCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithBodyAndHeadersPath);
 
@@ -75,7 +74,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task RequestWithBodyAndHeadersShouldBeParsedCorrectly()
+    public async Task ParseRequestWithBodyAndHeadersCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithBodyAndHeadersPath);
 
@@ -87,7 +86,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task RequestWithCommentsBodyAndHeadersShouldBeParsedCorrectly()
+    public async Task ParseRequestWithCommentsBodyAndHeadersCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
@@ -99,14 +98,14 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task GetRequestShouldBeParsedCorrectly()
+    public async Task ParseGetRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainGetRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Get, _baseRequestUri, false);
     }
 
     [Fact]
-    public async Task PostRequestShouldBeParsedCorrectly()
+    public async Task ParsePostRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPostRequestPath);
 
@@ -119,7 +118,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task PutRequestShouldBeParsedCorrectly()
+    public async Task ParsePutRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPutRequestPath);
 
@@ -133,7 +132,7 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task PatchRequestShouldBeParsedCorrectly()
+    public async Task ParsePatchRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainPatchRequestPath);
 
@@ -142,28 +141,28 @@ public class HttpFileParserShould
     }
 
     [Fact]
-    public async Task DeleteRequestShouldBeParsedCorrectly()
+    public async Task ParseDeleteRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainDeleteRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Delete, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task HeadRequestShouldBeParsedCorrectly()
+    public async Task ParseHeadRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainHeadRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Head, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task OptionsRequestShouldBeParsedCorrectly()
+    public async Task ParseOptionsRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainOptionsRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Options, _specificRequestUri, false);
     }
 
     [Fact]
-    public async Task TraceRequestShouldBeParsedCorrectly()
+    public async Task ParseTraceRequestCorrectly()
     {
         var parsed = await GetParsedFile(RequestsIndex.PlainTraceRequestPath);
         CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Trace, _traceRequestUri, false);
@@ -179,7 +178,10 @@ public class HttpFileParserShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
-        var parser = new HttpFileParser(headersProvider, Substitute.For<IVariables>());
+        var variables = new global::TeaPie.Variables.Variables();
+        var resolver = new VariablesResolver(variables);
+
+        var parser = new HttpFileParser(headersProvider, resolver);
         return parser.Parse(await File.ReadAllTextAsync(path));
     }
 

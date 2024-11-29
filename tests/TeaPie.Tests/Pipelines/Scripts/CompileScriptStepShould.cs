@@ -7,7 +7,6 @@ using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Scripts;
 using TeaPie.Tests.Scripts;
-using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 

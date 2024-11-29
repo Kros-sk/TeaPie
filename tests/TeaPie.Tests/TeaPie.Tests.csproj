@@ -91,6 +91,9 @@
     <None Update="Demo\Requests\PUT_Plain.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Demo\Scripts\scriptManipulatingWithVariables.csx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Demo\Structure\AZeroLevelTest-init.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -139,7 +142,7 @@
     <None Update="Demo\Scripts\Nested\second.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Demo\Scripts\scriptAccessingTeaPieInstance.csx">
+    <None Update="Demo\Scripts\scriptAccessingTeaPieLogger.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\Scripts\scriptWithMultipleLoadAndNuGetDirectives.csx">

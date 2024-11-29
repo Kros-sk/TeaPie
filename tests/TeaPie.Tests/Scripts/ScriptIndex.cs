@@ -14,8 +14,11 @@ internal static class ScriptIndex
     public static readonly string PlainScriptPath =
         Path.Combine(RootSubFolderFullPath, $"plainScript{Constants.ScriptFileExtension}");
 
-    public static readonly string ScriptAccessingTeaPieInstance =
-        Path.Combine(RootSubFolderFullPath, $"scriptAccessingTeaPieInstance{Constants.ScriptFileExtension}");
+    public static readonly string ScriptAccessingTeaPieLogger =
+        Path.Combine(RootSubFolderFullPath, $"scriptAccessingTeaPieLogger{Constants.ScriptFileExtension}");
+
+    public static readonly string ScriptManipulatingWithVariables =
+        Path.Combine(RootSubFolderFullPath, $"scriptManipulatingWithVariables{Constants.ScriptFileExtension}");
 
     public static readonly string ScriptWithDuplicatedNuGetDirectivePath =
         Path.Combine(RootSubFolderFullPath, $"scriptWithDuplicatedNuGetDirective{Constants.ScriptFileExtension}");

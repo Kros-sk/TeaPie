@@ -4,7 +4,6 @@ using NSubstitute;
 using TeaPie.Pipelines.Application;
 using TeaPie.Pipelines.Scripts;
 using TeaPie.Tests.Scripts;
-using TeaPie.Variables;
 
 namespace TeaPie.Tests.Pipelines.Scripts;
 

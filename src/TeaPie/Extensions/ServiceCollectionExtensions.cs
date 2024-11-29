@@ -29,6 +29,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
 
         services.AddSingleton<IVariables, Variables.Variables>();
+        services.AddSingleton<IVariablesResolver, VariablesResolver>();
 
         return services;
     }

@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using TeaPie.Requests;
 using TeaPie.Variables;
 
@@ -11,10 +10,10 @@ internal interface IHttpFileParser
     HttpRequestMessage Parse(string fileContent);
 }
 
-internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariables variables) : IHttpFileParser
+internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver) : IHttpFileParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
-    private readonly IVariables _variables = variables;
+    private readonly IVariablesResolver _variablesResolver = variablesResolver;
     private readonly IEnumerable<ILineParser> _lineParsers =
         [
             new CommentLineParser(),
@@ -31,25 +30,12 @@ internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvide
 
         foreach (var line in fileContent.Split(Environment.NewLine))
         {
-            var resolvedLine = ResolveVariables(line);
+            var resolvedLine = _variablesResolver.ResolveVariablesInLine(line);
             Parse(resolvedLine, context);
         }
 
         return CreateHttpRequestMessage(context);
     }
-
-    private string ResolveVariables(string line)
-        => VariableNotationPatternRegex().Replace(line, match =>
-        {
-            var variableName = match.Groups[1].Value;
-            if (_variables.ContainsVariable(variableName))
-            {
-                var variableValue = _variables.GetVariable<object>(variableName, default);
-                return variableValue?.ToString() ?? "null";
-            }
-
-            throw new InvalidOperationException($"Variable '{{{variableName}}}' was not found.");
-        });
 
     private void Parse(string line, HttpParsingContext context)
     {
@@ -87,7 +73,4 @@ internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvide
 
         return requestMessage;
     }
-
-    [GeneratedRegex(HttpFileParserConstants.VariableNotationPattern)]
-    private static partial Regex VariableNotationPatternRegex();
 }

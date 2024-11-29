@@ -104,8 +104,10 @@ public class ExecuteRequestStepShould
     {
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
+        var variables = new global::TeaPie.Variables.Variables();
+        var variablesResolver = new VariablesResolver(variables);
 
-        return new HttpFileParser(headersProvider, Substitute.For<IVariables>());
+        return new HttpFileParser(headersProvider, variablesResolver);
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler
