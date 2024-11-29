@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Exceptions;
+﻿namespace TeaPie.Variables;
 
 internal class VariableNameViolationException : Exception
 {

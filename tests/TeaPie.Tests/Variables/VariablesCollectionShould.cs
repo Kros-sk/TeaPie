@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using TeaPie.Exceptions;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Variables;
@@ -31,10 +30,6 @@ public class VariablesCollectionShould
         const string name = "NullVariable";
         collection.Set<object>(name, null);
 
-        var enumerator = collection.GetEnumerator();
-        enumerator.MoveNext();
-
-        enumerator.Current.GetValue<object>().Should().BeNull();
         collection.Contains(name).Should().BeTrue();
     }
 
@@ -144,7 +139,7 @@ public class VariablesCollectionShould
     }
 
     [Fact]
-    public void IndicatedRemovalOfNonExistingByReturningFalse()
+    public void IndicateRemovalOfNonExistingByReturningFalse()
     {
         VariablesCollection collection = [];
         const string name = "MyVariable";

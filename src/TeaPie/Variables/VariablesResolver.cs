@@ -22,7 +22,7 @@ internal partial class VariablesResolver(IVariables variables) : IVariablesResol
                 return variableValue?.ToString() ?? "null";
             }
 
-            throw new InvalidOperationException($"Variable '{{{variableName}}}' was not found.");
+            throw new InvalidOperationException($"Variable '{variableName}' was not found.");
         });
 
     [GeneratedRegex(HttpFileParserConstants.VariableNotationPattern)]

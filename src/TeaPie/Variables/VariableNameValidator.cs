@@ -1,12 +1,11 @@
 ﻿using System.Text.RegularExpressions;
-using TeaPie.Exceptions;
 using TeaPie.Http;
 
 namespace TeaPie.Variables;
 
 internal partial class VariableNameValidator
 {
-    public static void Resolve(object? name)
+    public static void Resolve(string? name)
     {
         if (!IsValid(name, out var errors))
         {
@@ -14,18 +13,12 @@ internal partial class VariableNameValidator
         }
     }
 
-    private static bool IsValid(object? value, out List<string> validationErrors)
+    private static bool IsValid(string? name, out List<string> validationErrors)
     {
         validationErrors = [];
-        if (value == null)
+        if (name == null)
         {
             validationErrors.Add("The variable name can not be null.");
-            return false;
-        }
-
-        if (value is not string name)
-        {
-            validationErrors.Add("The variable name has to be in string format.");
             return false;
         }
 
@@ -43,7 +36,8 @@ internal partial class VariableNameValidator
         else
         {
             validationErrors
-                .Add($"The variable name '{name}' contains invalid characters (only a-z, A-Z, 0-9 and '-' is allowed).");
+                .Add($"The variable name '{name}' contains invalid characters " +
+                "(only characters a-z, A-Z, 0-9 and '-' is allowed).");
 
             return false;
         }

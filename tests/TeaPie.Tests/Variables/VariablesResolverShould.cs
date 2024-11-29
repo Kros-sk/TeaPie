@@ -40,6 +40,20 @@ public class VariablesResolverShould
     }
 
     [Fact]
+    public void ResolveSingleVariableInSingleLineCorrectly()
+    {
+        const string variableValue = "Hello World!";
+        var line = "Console.Writeline(" + GetVariableNotation(VariableName) + ");";
+        const string resolvedLine = "Console.Writeline(" + variableValue + ");";
+
+        var variables = new global::TeaPie.Variables.Variables();
+        var resolver = new VariablesResolver(variables);
+
+        variables.SetVariable(VariableName, variableValue);
+        resolver.ResolveVariablesInLine(line).Should().BeEquivalentTo(resolvedLine);
+    }
+
+    [Fact]
     public void ResolveClassVariableAsItsStringRepresentation()
     {
         DummyPerson variableValue = new(0, "Joseph Carrot");
@@ -59,20 +73,6 @@ public class VariablesResolverShould
         DummyPerson? variableValue = null;
         var line = "Console.Writeline(" + GetVariableNotation(VariableName) + ");";
         const string resolvedLine = "Console.Writeline(null);";
-
-        var variables = new global::TeaPie.Variables.Variables();
-        var resolver = new VariablesResolver(variables);
-
-        variables.SetVariable(VariableName, variableValue);
-        resolver.ResolveVariablesInLine(line).Should().BeEquivalentTo(resolvedLine);
-    }
-
-    [Fact]
-    public void ResolveSingleVariableInSingleLineCorrectly()
-    {
-        const string variableValue = "Hello World!";
-        var line = "Console.Writeline(" + GetVariableNotation(VariableName) + ");";
-        const string resolvedLine = "Console.Writeline(" + variableValue + ");";
 
         var variables = new global::TeaPie.Variables.Variables();
         var resolver = new VariablesResolver(variables);

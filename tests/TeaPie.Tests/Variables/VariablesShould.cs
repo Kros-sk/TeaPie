@@ -56,14 +56,14 @@ public class VariablesShould
     }
 
     [Fact]
-    private static void CheckVariablesOverriding()
+    private static void OverwriteVariablesCorrectly()
     {
         var variables = new global::TeaPie.Variables.Variables();
-        variables.SetVariable("VariableWithOverridenValue", 1);
-        variables.SetVariable("VariableWithOverridenValue", 2);
-        variables.SetVariable("VariableWithOverridenValue", 3);
+        variables.SetVariable("VariableWithOverwrittenValue", 1);
+        variables.SetVariable("VariableWithOverwrittenValue", 2);
+        variables.SetVariable("VariableWithOverwrittenValue", 3);
 
-        variables.GetVariable<int>("VariableWithOverridenValue").Should().Be(3);
+        variables.GetVariable<int>("VariableWithOverwrittenValue").Should().Be(3);
     }
 
     public static IEnumerable<object[]> GetAllLevels()

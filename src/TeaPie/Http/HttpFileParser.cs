@@ -10,7 +10,7 @@ internal interface IHttpFileParser
     HttpRequestMessage Parse(string fileContent);
 }
 
-internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver) : IHttpFileParser
+internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver) : IHttpFileParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
@@ -31,13 +31,13 @@ internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvide
         foreach (var line in fileContent.Split(Environment.NewLine))
         {
             var resolvedLine = _variablesResolver.ResolveVariablesInLine(line);
-            Parse(resolvedLine, context);
+            ParseLine(resolvedLine, context);
         }
 
         return CreateHttpRequestMessage(context);
     }
 
-    private void Parse(string line, HttpParsingContext context)
+    private void ParseLine(string line, HttpParsingContext context)
     {
         foreach (var parser in _lineParsers)
         {
@@ -53,6 +53,14 @@ internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvide
     {
         var requestMessage = new HttpRequestMessage(context.Method, context.RequestUri);
 
+        CreateMessageContent(context, requestMessage);
+        CopyHeaders(context, requestMessage);
+
+        return requestMessage;
+    }
+
+    private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)
+    {
         var bodyContent = context.BodyBuilder.ToString().Trim();
         if (!string.IsNullOrEmpty(bodyContent))
         {
@@ -65,12 +73,13 @@ internal partial class HttpFileParser(IHttpRequestHeadersProvider headersProvide
 
             requestMessage.Content = content;
         }
+    }
 
+    private static void CopyHeaders(HttpParsingContext context, HttpRequestMessage requestMessage)
+    {
         foreach (var header in context.Headers)
         {
             requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
-
-        return requestMessage;
     }
 }

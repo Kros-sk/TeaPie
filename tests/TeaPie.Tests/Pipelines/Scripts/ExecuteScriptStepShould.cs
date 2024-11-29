@@ -12,7 +12,7 @@ namespace TeaPie.Tests.Pipelines.Scripts;
 public class ExecuteScriptStepShould
 {
     [Fact]
-    public async void ScriptWithNuGetPackageShouldExecuteWithoutAnyProblem()
+    public async void ExecuteScriptWithNuGetPackageWithoutAnyProblem()
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);

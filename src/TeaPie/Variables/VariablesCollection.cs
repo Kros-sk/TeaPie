@@ -47,5 +47,6 @@ public class VariablesCollection : IEnumerable<Variable>
     public void Clear() => _variables.Clear();
 
     public IEnumerator<Variable> GetEnumerator() => _variables.Values.GetEnumerator();
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
