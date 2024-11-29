@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Scripts;
-using TeaPie.Tests.Scripts;
+using TeaPie.Scripts;
 using TeaPie.Variables;
 
-namespace TeaPie.Tests.Pipelines.Scripts;
+namespace TeaPie.Tests.Scripts;
 
 [Collection(nameof(NonParallelCollection))]
 public class ExecuteScriptStepShould

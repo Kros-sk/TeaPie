@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace TeaPie.Pipelines.Requests;
+namespace TeaPie.Http;
 
 internal interface IRequestExecutionContextAccessor
 {

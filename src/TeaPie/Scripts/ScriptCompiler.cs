@@ -20,7 +20,7 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
     {
         var scriptOptions = ScriptOptions.Default
             .AddReferences(AppDomain.CurrentDomain.GetAssemblies().Where(x => !string.IsNullOrEmpty(x.Location)))
-            .WithImports(Constants.DefaultImports);
+            .WithImports(ScriptsConstants.DefaultImports);
 
         var script = CSharpScript.Create(scriptContent, scriptOptions, typeof(Globals));
 

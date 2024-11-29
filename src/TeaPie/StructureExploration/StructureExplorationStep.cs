@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Pipelines.Application;
-using TeaPie.StructureExploration;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.StructureExploration;
+namespace TeaPie.StructureExploration;
 
 internal sealed class StructureExplorationStep(IStructureExplorer structureExplorer) : IPipelineStep
 {

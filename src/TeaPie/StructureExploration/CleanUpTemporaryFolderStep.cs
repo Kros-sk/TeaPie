@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.TemporaryFolder;
+namespace TeaPie.StructureExploration;
 
 internal sealed class CleanUpTemporaryFolderStep : IPipelineStep
 {

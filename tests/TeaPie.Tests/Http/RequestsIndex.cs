@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Tests.Requests;
+﻿namespace TeaPie.Tests.Http;
 
 internal static class RequestsIndex
 {

@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Extensions;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Requests;
-using TeaPie.Pipelines.Scripts;
+using TeaPie.Http;
 using TeaPie.Scripts;
-using TeaPie.StructureExploration.IO;
-using File = TeaPie.StructureExploration.IO.File;
+using TeaPie.StructureExploration;
+using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Pipelines;
 

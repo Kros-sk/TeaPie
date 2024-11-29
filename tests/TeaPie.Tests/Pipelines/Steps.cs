@@ -1,5 +1,4 @@
 ﻿using TeaPie.Pipelines;
-using TeaPie.Pipelines.Application;
 
 namespace TeaPie.Tests.Pipelines;
 

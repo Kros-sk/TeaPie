@@ -3,12 +3,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using System.Data;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Scripts;
 using TeaPie.Scripts;
-using TeaPie.Tests.Scripts;
 
-namespace TeaPie.Tests.Pipelines.Scripts;
+namespace TeaPie.Tests.Scripts;
 
 public class CompileScriptStepShould
 {

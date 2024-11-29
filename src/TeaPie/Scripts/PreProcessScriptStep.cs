@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Extensions;
-using TeaPie.Pipelines.Application;
-using TeaPie.Scripts;
-using TeaPie.StructureExploration.IO;
+using TeaPie.Pipelines;
+using TeaPie.StructureExploration;
 
-namespace TeaPie.Pipelines.Scripts;
+namespace TeaPie.Scripts;
 
 internal sealed class PreProcessScriptStep(
     IPipeline pipeline,

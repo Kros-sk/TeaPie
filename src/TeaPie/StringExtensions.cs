@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Extensions;
+﻿namespace TeaPie;
 
 internal static class StringExtensions
 {

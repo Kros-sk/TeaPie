@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration;
-using TeaPie.StructureExploration.IO;
 
-namespace TeaPie.Pipelines.Application;
+namespace TeaPie;
 
 internal class ApplicationContext(
     string path,

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Extensions;
+using TeaPie.Http;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.StructureExploration;
-using TeaPie.Pipelines.TemporaryFolder;
+using TeaPie.Scripts;
+using TeaPie.StructureExploration;
 using TeaPie.Variables;
 
 namespace TeaPie;
@@ -43,8 +43,7 @@ public sealed class ApplicationBuilder
 
     public Application Build()
     {
-        ConfigureDefaultServices();
-        RegisterPipeline();
+        ConfigureServices();
         var provider = _services.BuildServiceProvider();
 
         CreateUserContext(provider);
@@ -61,15 +60,14 @@ public sealed class ApplicationBuilder
         return new Application(pipeline, applicationContext);
     }
 
-    private void ConfigureDefaultServices()
+    private void ConfigureServices()
     {
-        _services.ConfigureServices();
-        _services.ConfigureAccessors();
-        _services.ConfigureHttpClient();
-        _services.AddSteps();
+        _services.AddStructureExploration();
+        _services.AddScripts();
+        _services.AddHttp();
+        _services.AddVariables();
+        _services.AddPipelines();
     }
-
-    private void RegisterPipeline() => _services.AddSingleton<IPipeline, ApplicationPipeline>();
 
     private static TeaPie CreateUserContext(IServiceProvider provider)
         => TeaPie.Create(provider.GetRequiredService<IVariables>(), provider.GetRequiredService<ILogger<TeaPie>>());

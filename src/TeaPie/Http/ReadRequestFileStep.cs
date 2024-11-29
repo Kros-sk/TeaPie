@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.Requests;
+namespace TeaPie.Http;
 
 internal sealed class ReadRequestFileStep(IRequestExecutionContextAccessor requestExecutionContextAccessor) : IPipelineStep
 {

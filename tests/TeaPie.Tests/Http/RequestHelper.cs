@@ -1,9 +1,8 @@
-﻿using TeaPie.Extensions;
-using TeaPie.Pipelines.Requests;
-using TeaPie.StructureExploration.IO;
-using File = TeaPie.StructureExploration.IO.File;
+﻿using TeaPie.Http;
+using TeaPie.StructureExploration;
+using File = TeaPie.StructureExploration.File;
 
-namespace TeaPie.Tests.Requests;
+namespace TeaPie.Tests.Http;
 
 internal static class RequestHelper
 {

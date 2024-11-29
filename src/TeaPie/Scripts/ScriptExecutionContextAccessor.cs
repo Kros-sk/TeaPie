@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using TeaPie.Scripts;
 
-namespace TeaPie.Pipelines.Scripts;
+namespace TeaPie.Scripts;
 
 internal interface IScriptExecutionContextAccessor
 {

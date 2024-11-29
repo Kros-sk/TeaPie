@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using TeaPie.Extensions;
+using TeaPie.StructureExploration;
 
 namespace TeaPie.Scripts;
 
@@ -75,7 +75,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
             var realPath = tempPath.TrimRootPath(_tempFolderPath, false);
             realPath = _rootPath.MergeWith(realPath);
 
-            if (!File.Exists(realPath))
+            if (!System.IO.File.Exists(realPath))
             {
                 throw new FileNotFoundException($"Referenced script on path '{realPath}' was not found");
             }

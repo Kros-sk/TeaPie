@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.Scripts;
+namespace TeaPie.Scripts;
 
 internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptExecutionContextAccessor) : IPipelineStep
 {

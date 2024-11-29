@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.Application;
+namespace TeaPie;
 
 internal class ApplicationPipeline : IPipeline
 {

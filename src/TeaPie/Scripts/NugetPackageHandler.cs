@@ -5,7 +5,6 @@ using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using System.Reflection;
-using TeaPie.Exceptions;
 
 namespace TeaPie.Scripts;
 
@@ -24,7 +23,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
     private readonly HashSet<NuGetPackageDescription> _nugetPackagesInAssembly = [];
 
     private static readonly string _packagesPath =
-        Path.Combine(Environment.CurrentDirectory, Constants.DefaultNuGetPackagesFolderName);
+        Path.Combine(Environment.CurrentDirectory, ScriptsConstants.DefaultNuGetPackagesFolderName);
 
     public async Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages)
     {
@@ -50,7 +49,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
         var packageId = nugetPackage.PackageName;
         var version = nugetPackage.Version;
         var cache = new SourceCacheContext();
-        var repositories = Repository.Factory.GetCoreV3(Constants.NuGetApiResourcesUrl);
+        var repositories = Repository.Factory.GetCoreV3(ScriptsConstants.NuGetApiResourcesUrl);
 
         await repositories.GetResourceAsync<FindPackageByIdResource>();
         var packageVersion = new NuGetVersion(version);
@@ -101,7 +100,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
         if (!_nugetPackagesInAssembly.Contains(nugetPackage))
         {
             var path = FindCompatibleFrameworkPath(GetNuGetPackageLocation(nugetPackage));
-            var dllPath = Directory.GetFiles(path, $"*{Constants.LibraryFileExtension}").FirstOrDefault()
+            var dllPath = Directory.GetFiles(path, $"*{ScriptsConstants.LibraryFileExtension}").FirstOrDefault()
                 ?? throw new InvalidOperationException($"No NuGet library for '{Path.GetFileName(path)}' framework found.");
 
             Assembly.LoadFrom(dllPath);
@@ -116,8 +115,8 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
 
     private static string FindCompatibleFrameworkPath(string packagePath)
     {
-        var libPath = Path.Combine(packagePath, Constants.DefaultNuGetLibraryFolderName);
-        foreach (var framework in Constants.FrameworksPriorityList)
+        var libPath = Path.Combine(packagePath, ScriptsConstants.DefaultNuGetLibraryFolderName);
+        foreach (var framework in ScriptsConstants.FrameworksPriorityList)
         {
             var frameworkPath = Path.Combine(libPath, framework);
             if (Directory.Exists(frameworkPath))
@@ -147,7 +146,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
         {
             await using var packageStream = downloadResult.PackageStream;
             var packageFilePath = Path.Combine(_packagesPath,
-                $"{dependencyInfo.Id}.{dependencyInfo.Version}{Constants.NuGetPackageFileExtension}");
+                $"{dependencyInfo.Id}.{dependencyInfo.Version}{ScriptsConstants.NuGetPackageFileExtension}");
             await using var fileStream = new FileStream(packageFilePath, FileMode.Create, FileAccess.Write);
             await packageStream.CopyToAsync(fileStream);
         }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Http;
-using TeaPie.Pipelines.Application;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.Requests;
+namespace TeaPie.Http;
 
 internal class ParseRequestFileStep(IRequestExecutionContextAccessor contextAccessor, IHttpFileParser parser) : IPipelineStep
 {

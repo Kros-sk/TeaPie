@@ -1,9 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Requests;
-using TeaPie.Tests.Requests;
+using TeaPie.Http;
 
 namespace TeaPie.Tests.Http;
 

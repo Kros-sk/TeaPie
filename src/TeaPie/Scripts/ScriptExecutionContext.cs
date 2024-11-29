@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.Scripting;
 using System.Diagnostics;
-using Script = TeaPie.StructureExploration.IO.Script;
+using Script = TeaPie.StructureExploration.Script;
 
 namespace TeaPie.Scripts;
 

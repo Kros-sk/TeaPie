@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog.Events;
 
-namespace TeaPie.Extensions;
+namespace TeaPie.Logging;
 
 internal static class LoggingExtensions
 {

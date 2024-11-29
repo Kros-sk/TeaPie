@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Pipelines;
-using TeaPie.Pipelines.Application;
+using TeaPie.Tests.Pipelines;
 
-namespace TeaPie.Tests.Pipelines;
+namespace TeaPie.Tests;
 
 public class ApplicationPipelineShould
 {

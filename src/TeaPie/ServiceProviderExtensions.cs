@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Pipelines;
 
-namespace TeaPie.Extensions;
+namespace TeaPie;
 
 internal static class ServiceProviderExtensions
 {

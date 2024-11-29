@@ -1,6 +1,4 @@
-﻿using TeaPie.Pipelines.Application;
-
-namespace TeaPie;
+﻿namespace TeaPie;
 
 public sealed class Application
 {

@@ -3,10 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Http;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Requests;
-using TeaPie.Requests;
-using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;

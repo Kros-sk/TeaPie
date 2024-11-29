@@ -1,6 +1,4 @@
-﻿using TeaPie.Pipelines.Application;
-
-namespace TeaPie.Pipelines;
+﻿namespace TeaPie.Pipelines;
 
 internal interface IPipeline
 {

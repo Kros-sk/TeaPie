@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using File = TeaPie.StructureExploration.IO.File;
+using File = TeaPie.StructureExploration.File;
 
-namespace TeaPie.Pipelines.Requests;
+namespace TeaPie.Http;
 
 [DebuggerDisplay("{RequestFile}")]
 internal class RequestExecutionContext(File request)

@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Extensions;
-using TeaPie.StructureExploration.IO;
-using File = TeaPie.StructureExploration.IO.File;
 
 namespace TeaPie.StructureExploration;
 

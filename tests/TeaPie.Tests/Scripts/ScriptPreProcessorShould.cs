@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Exceptions;
 using TeaPie.Scripts;
 
 namespace TeaPie.Tests.Scripts;

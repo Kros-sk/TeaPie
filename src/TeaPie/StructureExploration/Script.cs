@@ -1,3 +1,3 @@
-﻿namespace TeaPie.StructureExploration.IO;
+﻿namespace TeaPie.StructureExploration;
 
 internal record Script(File File);

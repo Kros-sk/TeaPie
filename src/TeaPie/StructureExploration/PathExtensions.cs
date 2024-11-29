@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Extensions;
+﻿namespace TeaPie.StructureExploration;
 
 internal static class PathExtensions
 {

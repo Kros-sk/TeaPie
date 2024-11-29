@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http;
-using TeaPie.Requests;
-using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;

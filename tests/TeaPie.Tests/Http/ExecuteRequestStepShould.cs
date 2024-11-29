@@ -4,10 +4,6 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Net;
 using TeaPie.Http;
-using TeaPie.Pipelines.Application;
-using TeaPie.Pipelines.Requests;
-using TeaPie.Requests;
-using TeaPie.Tests.Requests;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;
@@ -91,7 +87,7 @@ public class ExecuteRequestStepShould
             throw new InvalidOperationException("Unsupported request.");
         });
 
-    private static IServiceProvider ConfigureServicesAndGetProvider()
+    private static ServiceProvider ConfigureServicesAndGetProvider()
     {
         var services = new ServiceCollection();
         services.AddHttpClient();

@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using TeaPie.Pipelines.Application;
-using TeaPie.Scripts;
+using TeaPie.Pipelines;
 
-namespace TeaPie.Pipelines.Scripts;
+namespace TeaPie.Scripts;
 
 internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecutionContextAccessor) : IPipelineStep
 {
