@@ -30,7 +30,7 @@ public class VariablesResolverShould
     }
 
     [Fact]
-    public void ThrowExceptionWhenAttemptingToResolveNonExistingVariable()
+    public void ThrowProperExceptionWhenAttemptingToResolveNonExistingVariable()
     {
         var line = "Console.Writeline(" + GetVariableNotation(VariableName) + ");";
 

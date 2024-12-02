@@ -7,7 +7,7 @@ namespace TeaPie.Tests;
 public class ApplicationBuilderShould
 {
     [Fact]
-    public void BuildMethodShouldReturnInstanceOfApplication()
+    public void ShouldReturnInstanceOfApplicationWhenCallingBuild()
     {
         var builder = ApplicationBuilder.Create();
         var app = builder.Build();
@@ -16,7 +16,7 @@ public class ApplicationBuilderShould
     }
 
     [Fact]
-    public void ChainingOfMethodsShouldNotCauseAnyProblem()
+    public void EnableChainingOfMethodsWithoutAnyProblem()
     {
         var builder = ApplicationBuilder.Create();
         var app = builder
@@ -29,7 +29,7 @@ public class ApplicationBuilderShould
     }
 
     [Fact]
-    public void MultipleInvocationsOfSameMethodShouldNotCauseAnyProblem()
+    public void EnableMultipleInvocationsOfSameMethodWithoutAnyProblem()
     {
         var builder = ApplicationBuilder.Create();
         var app = builder

@@ -8,7 +8,7 @@ namespace TeaPie.Tests.Http;
 public class ReadRequestFileStepShould
 {
     [Fact]
-    public async Task RequestContextWithInvalidPathShouldThrowProperException()
+    public async Task ThrowProperExceptionWhenRequestContextHasInvalidPath()
     {
         var context = RequestHelper.PrepareContext($"{Guid.NewGuid()}{Constants.RequestFileExtension}", false);
 
@@ -24,7 +24,7 @@ public class ReadRequestFileStepShould
     }
 
     [Fact]
-    public async Task RawContentOfRequestFileShouldBeAssignedCorrectly()
+    public async Task AssignRawContentOfRequestFileCorrectly()
     {
         var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
 

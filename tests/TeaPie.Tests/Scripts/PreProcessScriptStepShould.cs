@@ -7,7 +7,7 @@ namespace TeaPie.Tests.Scripts;
 public class PreProcessScriptStepShould
 {
     [Fact]
-    public async void ScriptPreProcessorShouldReceiveCallWhenExecutingStep()
+    public async void CallPreProcessMethodOnPreProcessorDuringExecution()
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);

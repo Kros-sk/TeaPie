@@ -8,7 +8,7 @@ namespace TeaPie.Tests.Scripts;
 public class ReadScriptFileStepShould
 {
     [Fact]
-    public async Task ScriptContextWithInvalidPathShouldThrowProperException()
+    public async Task ThrowProperExceptionWhenScriptContextHasInvalidPath()
     {
         var context = ScriptHelper.GetScriptExecutionContext($"{Guid.NewGuid()}{Constants.ScriptFileExtension}");
 
@@ -24,7 +24,7 @@ public class ReadScriptFileStepShould
     }
 
     [Fact]
-    public async Task RawContentOfScriptFileShouldBeAssignedCorrectly()
+    public async Task AssignRawContentOfScriptFileCorrectly()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithMultipleLoadAndNuGetDirectivesPath);
 

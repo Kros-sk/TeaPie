@@ -6,21 +6,21 @@ namespace TeaPie.Tests.Pipelines;
 public class StepsCollectionShould
 {
     [Fact]
-    public void AdditionOfNullShouldThrowError()
+    public void ThrowProperExceptionWhenAddingNullStep()
     {
         var collection = new StepsCollection();
         collection.Invoking(coll => coll.Add(null!)).Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
-    public void AdditionOfNullsShouldThrowError()
+    public void ThrowProperExceptionWhenAddingMultipleNullSteps()
     {
         var collection = new StepsCollection();
         collection.Invoking(coll => coll.AddRange([null!, null!, null!])).Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
-    public void AdditionOfStepShouldAddStepAtTheEnd()
+    public void AddStepAtTheEndWhenUsingAddMethod()
     {
         var collection = new StepsCollection();
         var random = new Random();
@@ -40,7 +40,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void InsertionOfNullShouldThrowError()
+    public void ThrowProperExceptionWhenInsertingNullStep()
     {
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
@@ -51,7 +51,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void InsertionsOfNullShouldThrowError()
+    public void ThrowProperExceptionWhenInsertingMultipleNullSteps()
     {
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
@@ -62,7 +62,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void InsertionOfSteptAfterNullPredecessorShouldThrowError()
+    public void ThrowProperExceptionWhenInsertingStepAfterNullPredecessor()
     {
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
@@ -71,7 +71,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void InsertionOfStepsAfterNullPredecessorShouldThrowError()
+    public void ThrowProperExceptionWhenInsertingMultipleStepsAfterNullPredecessor()
     {
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
@@ -81,7 +81,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void InsertionOfStepsAfterPredecessorOutOfCollectionShouldThrowError()
+    public void ThrowProperExceptionWhenInsertingMultipleStepsAfterPredecessorOutOfCollection()
     {
         var collection = new StepsCollection();
         var firstStep = new DummyStep();
@@ -91,7 +91,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void AfterInsertionsStepsShouldBeInCorrectOrder()
+    public void InsertMultipleStepsInCorrectOrder()
     {
         var collection = new StepsCollection();
         const int numberOfSteps = 7;
@@ -119,7 +119,7 @@ public class StepsCollectionShould
     }
 
     [Fact]
-    public void EnumeratorShouldBeCollectionModificationResistant()
+    public void HaveCollectionModificationResistantEnumeratorByDefault()
     {
         var collection = new StepsCollection();
         var enumerator = collection.GetEnumerator();

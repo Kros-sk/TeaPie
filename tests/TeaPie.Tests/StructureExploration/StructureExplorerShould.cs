@@ -7,25 +7,25 @@ namespace TeaPie.Tests.StructureExploration;
 
 public class StructureExplorerShould
 {
-    private static readonly string _rootFolderName = "Structure";
+    private const string RootFolderName = "Structure";
 
     private readonly string _rootFolderRelativePath = Path.Combine("Demo", "Structure");
 
     private static readonly string[] _testCasesPaths = [
-        Path.Combine(_rootFolderName, "FirstFolder", "FirstFolderInFirstFolder", $"Seed{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, "FirstFolder", "FirstFolderInFirstFolder",
+        Path.Combine(RootFolderName, "FirstFolder", "FirstFolderInFirstFolder", $"Seed{Constants.RequestFileExtension}"),
+        Path.Combine(RootFolderName, "FirstFolder", "FirstFolderInFirstFolder",
             $"Test1.1.1{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, "FirstFolder", "SecondFolderInFirstFolder", "FFinSFinFF",
+        Path.Combine(RootFolderName, "FirstFolder", "SecondFolderInFirstFolder", "FFinSFinFF",
             $"Test1.2.1.1{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, "FirstFolder", "SecondFolderInFirstFolder",
+        Path.Combine(RootFolderName, "FirstFolder", "SecondFolderInFirstFolder",
             $"Test1.2.1{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, "FirstFolder", "SecondFolderInFirstFolder",
+        Path.Combine(RootFolderName, "FirstFolder", "SecondFolderInFirstFolder",
             $"Test1.2.2{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, "SecondFolder", "FirstFolderInSecondFolder",
+        Path.Combine(RootFolderName, "SecondFolder", "FirstFolderInSecondFolder",
             $"ATest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, $"AZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, $"TheZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(_rootFolderName, $"ZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}")
+        Path.Combine(RootFolderName, $"AZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
+        Path.Combine(RootFolderName, $"TheZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
+        Path.Combine(RootFolderName, $"ZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}")
     ];
 
     private static readonly Dictionary<string, (bool hasPreRequest, bool hasPostResponse)> _testCasesScriptsMap = new()
@@ -44,7 +44,7 @@ public class StructureExplorerShould
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void InvalidPathShouldThrowException(bool emptyPath)
+    public void ThrowProperExceptionWhenInvalidPathIsGiven(bool emptyPath)
     {
         var structureExplorer = GetStructureExplorer();
 
@@ -65,7 +65,7 @@ public class StructureExplorerShould
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void FoldersWithoutTestCaseShouldReturnEmptyListOfTestCases(bool nestedFolders)
+    public void ReturnEmptyListOfTestCasesWhenExploringFoldersWithoutAnyTestCases(bool nestedFolders)
     {
         string tempDirectoryPath;
         if (nestedFolders)
@@ -85,7 +85,7 @@ public class StructureExplorerShould
     }
 
     [Fact]
-    public void FoundTestCasesShouldBeInCorrectOrder()
+    public void ReturnTestCasesInCorrectOrder()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
@@ -97,12 +97,12 @@ public class StructureExplorerShould
         for (var i = 0; i < _testCasesPaths.Length; i++)
         {
             testCasesOrder[i].Should().BeEquivalentTo(
-                Path.Combine(tempDirectoryPath, _testCasesPaths[i].TrimRootPath(_rootFolderName)));
+                Path.Combine(tempDirectoryPath, _testCasesPaths[i].TrimRootPath(RootFolderName)));
         }
     }
 
     [Fact]
-    public void FoundPreRequestAndPostResponseScriptsOfTestCasesShouldReflectReality()
+    public void AssignPreRequestAndPostResponseScriptsOfTestCasesCorrectly()
     {
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
@@ -127,6 +127,6 @@ public class StructureExplorerShould
         }
     }
 
-    private static IStructureExplorer GetStructureExplorer()
-     => new StructureExplorer(Substitute.For<ILogger<StructureExplorer>>());
+    private static StructureExplorer GetStructureExplorer()
+     => new(Substitute.For<ILogger<StructureExplorer>>());
 }

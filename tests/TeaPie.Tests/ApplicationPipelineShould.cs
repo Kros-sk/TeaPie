@@ -8,7 +8,7 @@ namespace TeaPie.Tests;
 public class ApplicationPipelineShould
 {
     [Fact]
-    public async void PipelineRunShouldExecuteAllSteps()
+    public async void ExecuteAllStepsDuringRun()
     {
         var pipeline = new ApplicationPipeline();
         var cancellationToken = CancellationToken.None;
@@ -33,7 +33,7 @@ public class ApplicationPipelineShould
     }
 
     [Fact]
-    public async Task PipelineStepsShouldBeExecutedInCorrectOrderWhenInsertedOneByOne()
+    public async Task ExecuteStepsInCorrectOrderWhenInsertingStepsOneByOne()
     {
         var pipeline = new ApplicationPipeline();
         var context = CreateApplicationContext(string.Empty);
@@ -60,7 +60,7 @@ public class ApplicationPipelineShould
     }
 
     [Fact]
-    public async Task PipelineStepsShouldBeExecutedInCorrectOrderWhenInsertedAsRange()
+    public async Task ExecuteStepsInCorrectOrderWhenInsertingStepsInRange()
     {
         var pipeline = new ApplicationPipeline();
         var context = CreateApplicationContext(string.Empty);
@@ -86,7 +86,7 @@ public class ApplicationPipelineShould
     }
 
     [Fact]
-    public async void AddingStepsDuringPipelineRunShouldNotThrowException()
+    public async void EnableAddingStepsDuringPipelineRun()
     {
         var pipeline = new ApplicationPipeline();
         pipeline.AddSteps(new GenerativeStep(pipeline));
