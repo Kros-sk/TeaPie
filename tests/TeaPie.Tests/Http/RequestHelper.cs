@@ -9,7 +9,7 @@ internal static class RequestHelper
 {
     public static RequestExecutionContext PrepareRequestContext(string path, bool readFile = true)
     {
-        var file = GetFileObject(path);
+        var file = GetFile(path);
 
         return new RequestExecutionContext(file)
         {
@@ -19,7 +19,7 @@ internal static class RequestHelper
 
     public static TestCaseExecutionContext PrepareTestCaseContext(string path, bool readFile = true)
     {
-        var file = GetFileObject(path);
+        var file = GetFile(path);
 
         var testCase = new TestCase(file);
 
@@ -29,7 +29,7 @@ internal static class RequestHelper
         };
     }
 
-    public static File GetFileObject(string path)
+    public static File GetFile(string path)
     {
         var folder = new Folder(
             RequestsIndex.RootFolderFullPath,

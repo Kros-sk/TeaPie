@@ -23,7 +23,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         }
 
         var separatedRequests = RequestsSeparatorLineRegex().Split(testCaseExecutionContext.RequestsFileContent)
-                .Where(requestContent => !requestContent.Equals(string.Empty));
+            .Where(requestContent => !requestContent.Equals(string.Empty));
 
         AddStepsForRequests(context, testCaseExecutionContext, separatedRequests);
 
@@ -33,15 +33,15 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
     private void AddStepsForRequests(
         ApplicationContext appContext,
         TestCaseExecutionContext testCaseExecutionContext,
-        IEnumerable<string> requestsRawContents)
+        IEnumerable<string> separatedRequests)
     {
         List<IPipelineStep> newSteps = [];
         RequestExecutionContext requestExecutionContext;
-        foreach (var requestRawContent in requestsRawContents)
+        foreach (var requestContent in separatedRequests)
         {
             requestExecutionContext = new(testCaseExecutionContext.TestCase.RequestsFile)
             {
-                RawContent = requestRawContent
+                RawContent = requestContent
             };
 
             AddStepsForRequest(appContext, requestExecutionContext, newSteps);
@@ -51,7 +51,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
         appContext.Logger.LogDebug(
             "Steps for all requests ({Count}) within requests file on '{Path}' were scheduled in the pipeline.",
-            requestsRawContents.Count(),
+            separatedRequests.Count(),
             testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
     }
 

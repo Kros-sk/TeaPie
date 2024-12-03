@@ -16,7 +16,7 @@ namespace TeaPie.Tests.TestCases;
 
 public class InitializeTestCaseStepShould
 {
-    private static readonly File _file = RequestHelper.GetFileObject(
+    private static readonly File _file = RequestHelper.GetFile(
             Path.Combine(ScriptIndex.RootSubFolderFullPath,
                 $"virtualRequest{Constants.RequestSuffix}{Constants.RequestFileExtension}"));
 

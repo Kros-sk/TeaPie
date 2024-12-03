@@ -5,7 +5,7 @@ using TeaPie.StructureExploration;
 
 namespace TeaPie.TestCases;
 
-internal sealed class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
+internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
 {
     private readonly IPipeline _pipeline = pipeline;
 
