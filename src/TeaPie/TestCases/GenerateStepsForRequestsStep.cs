@@ -22,10 +22,10 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
             throw new InvalidOperationException("Unable to prepare steps for requests, if the requests file's content is null.");
         }
 
-        var requestsRawContents = RequestsSeparatorLineRegex().Split(testCaseExecutionContext.RequestsFileContent)
+        var separatedRequests = RequestsSeparatorLineRegex().Split(testCaseExecutionContext.RequestsFileContent)
                 .Where(requestContent => !requestContent.Equals(string.Empty));
 
-        AddStepsForRequests(context, testCaseExecutionContext, requestsRawContents);
+        AddStepsForRequests(context, testCaseExecutionContext, separatedRequests);
 
         await Task.CompletedTask;
     }
