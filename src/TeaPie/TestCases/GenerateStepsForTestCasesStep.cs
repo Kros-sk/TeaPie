@@ -36,5 +36,6 @@ internal sealed class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipel
         accessor.TestCaseExecutionContext = testCaseExecutionContext;
 
         newSteps.Add(provider.GetStep<InitializeTestCaseStep>());
+        newSteps.Add(provider.GetStep<FinishTestCaseStep>());
     }
 }
