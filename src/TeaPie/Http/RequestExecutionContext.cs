@@ -4,9 +4,9 @@ using File = TeaPie.StructureExploration.File;
 namespace TeaPie.Http;
 
 [DebuggerDisplay("{RequestFile}")]
-internal class RequestExecutionContext(File request)
+internal class RequestExecutionContext(File requestFile)
 {
-    public File RequestFile { get; set; } = request;
+    public File RequestFile { get; set; } = requestFile;
     public string? RawContent { get; set; }
     public HttpRequestMessage? Request { get; set; }
     public HttpResponseMessage? Response { get; set; }

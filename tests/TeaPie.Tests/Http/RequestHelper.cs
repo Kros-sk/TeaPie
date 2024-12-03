@@ -1,12 +1,35 @@
 ﻿using TeaPie.Http;
 using TeaPie.StructureExploration;
+using TeaPie.TestCases;
 using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Http;
 
 internal static class RequestHelper
 {
-    public static RequestExecutionContext PrepareContext(string path, bool readFile = true)
+    public static RequestExecutionContext PrepareRequestContext(string path, bool readFile = true)
+    {
+        var file = GetFileObject(path);
+
+        return new RequestExecutionContext(file)
+        {
+            RawContent = readFile ? System.IO.File.ReadAllText(path) : null
+        };
+    }
+
+    public static TestCaseExecutionContext PrepareTestCaseContext(string path, bool readFile = true)
+    {
+        var file = GetFileObject(path);
+
+        var testCase = new TestCase(file);
+
+        return new TestCaseExecutionContext(testCase)
+        {
+            RequestsFileContent = readFile ? System.IO.File.ReadAllText(path) : null
+        };
+    }
+
+    public static File GetFileObject(string path)
     {
         var folder = new Folder(
             RequestsIndex.RootFolderFullPath,
@@ -14,15 +37,10 @@ internal static class RequestHelper
             RequestsIndex.RootFolderName,
             null);
 
-        var file = new File(
+        return new File(
             path,
             RequestsIndex.RootFolderFullPath.TrimRootPath(Environment.CurrentDirectory),
             Path.GetFileName(path),
             folder);
-
-        return new RequestExecutionContext(file)
-        {
-            RawContent = readFile ? System.IO.File.ReadAllText(path) : null
-        };
     }
 }

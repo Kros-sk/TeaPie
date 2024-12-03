@@ -52,7 +52,7 @@ internal sealed class PreProcessScriptStep(
                 var relativePath = scriptPath.TrimRootPath(context.Path, true);
 
                 var folder = context.TestCases.Values
-                    .Select(x => x.Request.ParentFolder)
+                    .Select(x => x.RequestsFile.ParentFolder)
                     .FirstOrDefault(x => x.Path == Directory.GetParent(scriptPath)?.FullName)
                     ?? throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
 

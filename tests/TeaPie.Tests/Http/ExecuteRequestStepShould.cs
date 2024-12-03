@@ -21,7 +21,7 @@ public class ExecuteRequestStepShould
     {
         var serviceProvider = ConfigureServicesAndGetProvider();
 
-        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
@@ -40,7 +40,7 @@ public class ExecuteRequestStepShould
     {
         var serviceProvider = ConfigureServicesAndGetProvider();
 
-        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,

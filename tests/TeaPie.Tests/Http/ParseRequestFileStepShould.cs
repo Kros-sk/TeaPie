@@ -12,7 +12,7 @@ public class ParseRequestFileStepShould
     [Fact]
     public async Task ThrowProperExceptionWhenRequestContextIsWithoutRawContent()
     {
-        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
@@ -30,7 +30,7 @@ public class ParseRequestFileStepShould
     [Fact]
     public async Task AssignRequestMessageCorrectly()
     {
-        var context = RequestHelper.PrepareContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,
@@ -53,7 +53,7 @@ public class ParseRequestFileStepShould
     [Fact]
     public async Task CallParseMethodOnParserDuringExecution()
     {
-        var context = RequestHelper.PrepareContext(RequestsIndex.PlainGetRequestPath);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.PlainGetRequestPath);
 
         var appContext = new ApplicationContext(
             RequestsIndex.RootFolderFullPath,

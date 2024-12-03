@@ -5,6 +5,7 @@ using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.TestCases;
 using TeaPie.Variables;
 
 namespace TeaPie;
@@ -63,6 +64,7 @@ public sealed class ApplicationBuilder
     private void ConfigureServices()
     {
         _services.AddStructureExploration();
+        _services.AddTestCases();
         _services.AddScripts();
         _services.AddHttp();
         _services.AddVariables();

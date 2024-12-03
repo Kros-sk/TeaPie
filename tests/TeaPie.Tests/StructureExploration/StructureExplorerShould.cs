@@ -120,7 +120,7 @@ public class StructureExplorerShould
             hasPreRequest = testCase.PreRequestScripts.Any();
             hasPostResponse = testCase.PostResponseScripts.Any();
 
-            path = testCase.Request.RelativePath.TrimRootPath(_rootFolderRelativePath);
+            path = testCase.RequestsFile.RelativePath.TrimRootPath(_rootFolderRelativePath);
 
             hasPreRequest.Should().Be(_testCasesScriptsMap[path].hasPreRequest);
             hasPostResponse.Should().Be(_testCasesScriptsMap[path].hasPostResponse);

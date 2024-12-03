@@ -16,7 +16,6 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVari
     private readonly IEnumerable<ILineParser> _lineParsers =
         [
             new CommentLineParser(),
-            new RequestSeparatorParser(),
             new EmptyLineParser(),
             new MethodAndUriParser(),
             new HeaderParser(),
