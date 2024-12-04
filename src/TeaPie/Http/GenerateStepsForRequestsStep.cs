@@ -66,7 +66,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         var accessor = provider.GetRequiredService<IRequestExecutionContextAccessor>();
         accessor.RequestExecutionContext = requestExecutionContext;
 
-        newSteps.Add(provider.GetStep<ParseRequestFileStep>());
+        newSteps.Add(provider.GetStep<ParseHttpRequestStep>());
         newSteps.Add(provider.GetStep<ExecuteRequestStep>());
     }
 

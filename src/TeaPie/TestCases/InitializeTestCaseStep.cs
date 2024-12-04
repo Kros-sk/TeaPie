@@ -17,6 +17,7 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         var testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
             ?? throw new NullReferenceException("Test case's execution context is null.");
 
+        context.CurrentTestCase = testCaseExecutionContext;
         AddSteps(context, testCaseExecutionContext);
 
         await Task.CompletedTask;

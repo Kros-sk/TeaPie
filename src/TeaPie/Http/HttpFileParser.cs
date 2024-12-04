@@ -6,10 +6,11 @@ namespace TeaPie.Http;
 
 internal interface IHttpFileParser
 {
-    HttpRequestMessage Parse(string fileContent);
+    void Parse(RequestExecutionContext requestExecutionContext);
 }
 
-internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver) : IHttpFileParser
+internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver)
+    : IHttpFileParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
@@ -22,17 +23,22 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVari
             new BodyParser()
         ];
 
-    public HttpRequestMessage Parse(string fileContent)
+    public void Parse(RequestExecutionContext requestExecutionContext)
     {
-        var context = new HttpParsingContext(_headersProvider.GetDefaultHeaders());
+        var parsingContext = new HttpParsingContext(_headersProvider.GetDefaultHeaders());
 
-        foreach (var line in fileContent.Split(Environment.NewLine))
+        if (requestExecutionContext.RawContent is null)
         {
-            var resolvedLine = _variablesResolver.ResolveVariablesInLine(line);
-            ParseLine(resolvedLine, context);
+            throw new InvalidOperationException("Unable to parse file, which content is null.");
         }
 
-        return CreateHttpRequestMessage(context);
+        foreach (var line in requestExecutionContext.RawContent.Split(Environment.NewLine))
+        {
+            var resolvedLine = _variablesResolver.ResolveVariablesInLine(line);
+            ParseLine(resolvedLine, parsingContext);
+        }
+
+        ApplyChanges(requestExecutionContext, parsingContext);
     }
 
     private void ParseLine(string line, HttpParsingContext context)
@@ -47,14 +53,21 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVari
         }
     }
 
-    private static HttpRequestMessage CreateHttpRequestMessage(HttpParsingContext context)
+    private static void ApplyChanges(
+        RequestExecutionContext requestExecutionContext,
+        HttpParsingContext parsingContext)
     {
-        var requestMessage = new HttpRequestMessage(context.Method, context.RequestUri);
+        var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
-        CreateMessageContent(context, requestMessage);
-        CopyHeaders(context, requestMessage);
+        CreateMessageContent(parsingContext, requestMessage);
+        CopyHeaders(parsingContext, requestMessage);
 
-        return requestMessage;
+        requestExecutionContext.Request = requestMessage;
+
+        if (!parsingContext.RequestName.Equals(string.Empty))
+        {
+            requestExecutionContext.Name = parsingContext.RequestName;
+        }
     }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)

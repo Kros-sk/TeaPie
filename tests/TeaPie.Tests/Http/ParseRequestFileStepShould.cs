@@ -22,7 +22,7 @@ public class ParseRequestFileStepShould
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = CreateParser();
-        var step = new ParseRequestFileStep(accessor, parser);
+        var step = new ParseHttpRequestStep(accessor, parser);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<InvalidOperationException>();
     }
@@ -40,7 +40,7 @@ public class ParseRequestFileStepShould
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = CreateParser();
-        var step = new ParseRequestFileStep(accessor, parser);
+        var step = new ParseHttpRequestStep(accessor, parser);
 
         await step.Execute(appContext);
 
@@ -63,7 +63,7 @@ public class ParseRequestFileStepShould
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = Substitute.For<IHttpFileParser>();
-        var step = new ParseRequestFileStep(accessor, parser);
+        var step = new ParseHttpRequestStep(accessor, parser);
 
         await step.Execute(appContext);
 

@@ -47,13 +47,14 @@ public sealed class ApplicationBuilder
         ConfigureServices();
         var provider = _services.BuildServiceProvider();
 
-        CreateUserContext(provider);
+        var userContext = CreateUserContext(provider);
 
         var applicationContext =
             new ApplicationContext(
                 _path,
                 provider.GetRequiredService<ILogger<ApplicationContext>>(),
                 provider,
+                userContext,
                 _tempPath ?? string.Empty);
 
         var pipeline = BuildDefaultPipeline(provider);
