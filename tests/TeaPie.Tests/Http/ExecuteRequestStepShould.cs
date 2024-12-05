@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
 using System.Net;
 using TeaPie.Http;
 using TeaPie.Variables;
@@ -23,10 +21,9 @@ public class ExecuteRequestStepShould
 
         var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
-        var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -42,15 +39,14 @@ public class ExecuteRequestStepShould
 
         var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
-        var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
         var parser = CreateParser(serviceProvider);
-        context.Request = parser.Parse(context.RawContent!);
+        parser.Parse(context);
 
         var step = new ExecuteRequestStep(serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor);
 

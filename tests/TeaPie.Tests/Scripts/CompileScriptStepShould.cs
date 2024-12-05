@@ -19,10 +19,9 @@ public class CompileScriptStepShould
 
         var compiler = Substitute.For<IScriptCompiler>();
 
-        var appContext = new ApplicationContext(
-            string.Empty,
-            logger,
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithLogger(logger)
+            .Build();
         var step = new CompileScriptStep(accessor, compiler);
 
         await step.Execute(appContext);
@@ -40,10 +39,10 @@ public class CompileScriptStepShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        var appContext = new ApplicationContext(
-            string.Empty,
-            logger,
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithLogger(logger)
+            .Build();
+
         var step = new CompileScriptStep(accessor, compiler);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<SyntaxErrorException>();

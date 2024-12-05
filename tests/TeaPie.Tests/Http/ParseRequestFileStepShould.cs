@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.Http;
 using TeaPie.Variables;
@@ -14,10 +13,9 @@ public class ParseRequestFileStepShould
     {
         var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
 
-        var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -32,10 +30,9 @@ public class ParseRequestFileStepShould
     {
         var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
 
-        var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -55,10 +52,9 @@ public class ParseRequestFileStepShould
     {
         var context = RequestHelper.PrepareRequestContext(RequestsIndex.PlainGetRequestPath);
 
-        var appContext = new ApplicationContext(
-            RequestsIndex.RootFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
@@ -67,7 +63,7 @@ public class ParseRequestFileStepShould
 
         await step.Execute(appContext);
 
-        parser.Received(1).Parse(context.RawContent!);
+        parser.Received(1).Parse(context);
     }
 
     private static HttpFileParser CreateParser()

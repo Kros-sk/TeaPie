@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NSubstitute;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
@@ -40,10 +39,10 @@ public class InitializeTestCaseStepShould
 
         var provider = services.BuildServiceProvider();
 
-        var appContext = new ApplicationContext(
-            ScriptIndex.RootSubFolderFullPath,
-            Substitute.For<ILogger>(),
-            provider);
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(ScriptIndex.RootSubFolderFullPath)
+            .WithServiceProvider(provider)
+            .Build();
 
         var pipeline = new ApplicationPipeline();
         var step = new InitializeTestCaseStep(accessor, pipeline);

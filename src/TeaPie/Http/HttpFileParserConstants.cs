@@ -2,7 +2,7 @@
 
 internal static class HttpFileParserConstants
 {
-    private const string VariableNamePatternBase = "[a-zA-Z0-9_-]+";
+    private const string VariableNamePatternBase = "[a-zA-Z0-9_.-]+";
     public const string VariableNamePattern = "^" + VariableNamePatternBase + "$";
     public const string VariableNotationPattern = "{{(" + VariableNamePatternBase + ")}}";
 

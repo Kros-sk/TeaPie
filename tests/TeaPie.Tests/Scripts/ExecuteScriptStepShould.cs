@@ -18,10 +18,9 @@ public class ExecuteScriptStepShould
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContext(
-            string.Empty,
-            logger,
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithLogger(logger)
+            .Build();
 
         await step.Execute(appContext);
     }
@@ -32,14 +31,13 @@ public class ExecuteScriptStepShould
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        TeaPie.Create(Substitute.For<IVariables>(), logger);
+        var userContext = TeaPie.Create(Substitute.For<IVariables>(), logger);
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContext(
-            string.Empty,
-            Substitute.For<ILogger<ApplicationContext>>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithUserContext(userContext)
+            .Build();
 
         await step.Execute(appContext);
 
@@ -55,15 +53,14 @@ public class ExecuteScriptStepShould
         var variables = Substitute.For<IVariables>();
         variables.ContainsVariable("VariableToRemove").Returns(true);
 
-        TeaPie.Create(variables, logger);
+        var userContext = TeaPie.Create(variables, logger);
 
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContext(
-            string.Empty,
-            Substitute.For<ILogger<ApplicationContext>>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithUserContext(userContext)
+            .Build();
 
         await step.Execute(appContext);
 

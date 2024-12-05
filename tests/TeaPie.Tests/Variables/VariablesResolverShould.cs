@@ -21,7 +21,7 @@ public class VariablesResolverShould
     [Fact]
     public void ReturnSameLineIfVariableNameViolatesNamingConventions()
     {
-        const string invalidVariableName = "My.Variable";
+        const string invalidVariableName = "My<Variable>";
         var line = "Console.Writeline(" + GetVariableNotation(invalidVariableName) + ");";
 
         var resolver = new VariablesResolver(Substitute.For<IVariables>());

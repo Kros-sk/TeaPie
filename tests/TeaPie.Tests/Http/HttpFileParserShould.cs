@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http;
+using TeaPie.StructureExploration;
 using TeaPie.Variables;
+using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Http;
 
@@ -180,7 +182,19 @@ public class HttpFileParserShould
         var resolver = new VariablesResolver(variables);
 
         var parser = new HttpFileParser(headersProvider, resolver);
-        return parser.Parse(await File.ReadAllTextAsync(path));
+
+        var folder =
+            new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);
+        var file =
+            new File(path, path.TrimRootPath(RequestsIndex.RootFolderFullPath), Path.GetFileName(path), folder);
+
+        var requestContext = new RequestExecutionContext(file)
+        {
+            RawContent = await System.IO.File.ReadAllTextAsync(path)
+        };
+
+        parser.Parse(requestContext);
+        return requestContext.Request!;
     }
 
     private static void CheckMethodUriAndExistenceOfContent(

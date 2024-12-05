@@ -20,11 +20,11 @@ public class PreProcessScriptStepShould
         var tempPath = Path.GetTempPath();
 
         var pipeline = new ApplicationPipeline();
-        var appContext = new ApplicationContext(
-            rootPath,
-            logger,
-            Substitute.For<IServiceProvider>(),
-            tempPath);
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(rootPath)
+            .WithLogger(logger)
+            .WithTempFolderPath(tempPath)
+            .Build();
 
         var step = new PreProcessScriptStep(pipeline, accessor, processor);
         await step.Execute(appContext);

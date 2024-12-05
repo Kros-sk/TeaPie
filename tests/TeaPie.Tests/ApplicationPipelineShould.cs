@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using NSubstitute;
+﻿using NSubstitute;
 using TeaPie.Pipelines;
 using TeaPie.Tests.Pipelines;
 
@@ -97,5 +96,7 @@ public class ApplicationPipelineShould
     }
 
     private static ApplicationContext CreateApplicationContext(string path)
-        => new(path, Substitute.For<ILogger>(), Substitute.For<IServiceProvider>());
+        => new ApplicationContextBuilder()
+            .WithPath(path)
+            .Build();
 }

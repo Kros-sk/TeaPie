@@ -1,6 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
 using TeaPie.Scripts;
 
 namespace TeaPie.Tests.Scripts;
@@ -12,10 +10,9 @@ public class ReadScriptFileStepShould
     {
         var context = ScriptHelper.GetScriptExecutionContext($"{Guid.NewGuid()}{Constants.ScriptFileExtension}");
 
-        var appContext = new ApplicationContext(
-            ScriptIndex.RootSubFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(ScriptIndex.RootSubFolderFullPath)
+            .Build();
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);
@@ -28,10 +25,9 @@ public class ReadScriptFileStepShould
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithMultipleLoadAndNuGetDirectivesPath);
 
-        var appContext = new ApplicationContext(
-            ScriptIndex.RootSubFolderFullPath,
-            Substitute.For<ILogger>(),
-            Substitute.For<IServiceProvider>());
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(ScriptIndex.RootSubFolderFullPath)
+            .Build();
 
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
         var step = new ReadScriptFileStep(accessor);
