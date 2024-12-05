@@ -4,7 +4,7 @@ using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesAccessor
+public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 {
     internal static TeaPie Create(IVariables variables, ILogger logger)
     {

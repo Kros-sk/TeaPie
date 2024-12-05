@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Variables;
 
-internal interface IVariables : IVariablesOperations, IVariablesAccessor;
+internal interface IVariables : IVariablesOperations, IVariablesExposer;
 
 internal class Variables : IVariables
 {

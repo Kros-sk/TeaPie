@@ -5,5 +5,8 @@ namespace TeaPie.TestCases;
 internal class FinishTestCaseStep : IPipelineStep
 {
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
-        => await Task.CompletedTask;
+    {
+        context.CurrentTestCase = null;
+        await Task.CompletedTask;
+    }
 }
