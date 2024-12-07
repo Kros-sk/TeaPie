@@ -34,7 +34,7 @@ internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVari
 
         foreach (var line in requestExecutionContext.RawContent.Split(Environment.NewLine))
         {
-            var resolvedLine = _variablesResolver.ResolveVariablesInLine(line);
+            var resolvedLine = _variablesResolver.ResolveVariablesInLine(line, requestExecutionContext);
             ParseLine(resolvedLine, parsingContext);
         }
 

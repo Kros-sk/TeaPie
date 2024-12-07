@@ -39,7 +39,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         RequestExecutionContext requestExecutionContext;
         foreach (var requestContent in separatedRequests)
         {
-            requestExecutionContext = new(testCaseExecutionContext.TestCase.RequestsFile)
+            requestExecutionContext = new(testCaseExecutionContext.TestCase.RequestsFile, testCaseExecutionContext)
             {
                 RawContent = requestContent
             };
