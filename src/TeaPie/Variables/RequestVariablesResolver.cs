@@ -1,14 +1,18 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-using System.Xml;
 using TeaPie.Http;
 
 namespace TeaPie.Variables;
 
 internal partial class RequestVariablesResolver(RequestVariableDescription requestVariable)
 {
+    private readonly IBodyResolver[] _bodyResolvers =
+        [
+            new JsonBodyResolver(),
+            new XmlBodyResolver()
+        ];
+
     private readonly RequestVariableDescription _requestVariable = requestVariable;
 
     public async Task<string> Resolve(RequestExecutionContext executionContext)
@@ -56,52 +60,20 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
 
     private string ResolveBody(string body, string? contentType)
     {
-        if (_requestVariable.Query.Equals("*"))
+        if (_requestVariable.Query.Equals("*") || contentType is null)
         {
             return body;
         }
 
-        try
+        foreach (var resolver in _bodyResolvers)
         {
-            return contentType switch
+            if (resolver.CanResolve(contentType))
             {
-                "application/json" => ResolveJsonBody(body, _requestVariable.Query),
-                "application/xml" or "text/xml" => ResolveXmlBody(body, _requestVariable.Query),
-                _ => body
-            };
-        }
-        catch
-        {
-            return _requestVariable.ToString();
-        }
-    }
-
-    private string ResolveJsonBody(string body, string query)
-    {
-        var json = JToken.Parse(body);
-        var token = json.SelectToken(query);
-
-        if (token is null)
-        {
-            return _requestVariable.ToString();
+                return resolver.Resolve(body, _requestVariable.Query, _requestVariable.ToString());
+            }
         }
 
-        return token.ToString();
-    }
-
-    private string ResolveXmlBody(string body, string query)
-    {
-        var xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml(body);
-        var navigator = xmlDocument.CreateNavigator();
-        var node = navigator?.SelectSingleNode(query);
-
-        if (node is null)
-        {
-            return _requestVariable.ToString();
-        }
-
-        return node.Value;
+        return body;
     }
 
     private bool TryGetHttpRequestMessage(
@@ -114,8 +86,20 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
         [NotNullWhen(true)] out HttpResponseMessage? response)
         => executionContext.TestCaseExecutionContext!.Responses.TryGetValue(_requestVariable.Name, out response);
 
+    private bool IsRequest()
+        => _requestVariable.Type.Equals(HttpFileParserConstants.RequestSelector, StringComparison.OrdinalIgnoreCase);
+
+    private bool IsResponse()
+        => _requestVariable.Type.Equals(HttpFileParserConstants.ResponseSelector, StringComparison.OrdinalIgnoreCase);
+
+    private bool IsBody()
+        => _requestVariable.Content.Equals(HttpFileParserConstants.BodySelector, StringComparison.OrdinalIgnoreCase);
+
+    private bool IsHeaders()
+        => _requestVariable.Content.Equals(HttpFileParserConstants.HeadersSelector, StringComparison.OrdinalIgnoreCase);
+
     public static bool IsRequestVariable(string variableName)
-        => RequestVariableNamePattern().Match(variableName).Success;
+    => RequestVariableNamePattern().Match(variableName).Success;
 
     public static bool TryGetVariableDescription(string variableName, [NotNullWhen(true)] out RequestVariableDescription? description)
     {
@@ -130,18 +114,6 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
 
         return true;
     }
-
-    private bool IsRequest()
-        => _requestVariable.Type.Equals(HttpFileParserConstants.RequestSelector, StringComparison.OrdinalIgnoreCase);
-
-    private bool IsResponse()
-        => _requestVariable.Type.Equals(HttpFileParserConstants.ResponseSelector, StringComparison.OrdinalIgnoreCase);
-
-    private bool IsBody()
-        => _requestVariable.Content.Equals(HttpFileParserConstants.BodySelector, StringComparison.OrdinalIgnoreCase);
-
-    private bool IsHeaders()
-        => _requestVariable.Content.Equals(HttpFileParserConstants.HeadersSelector, StringComparison.OrdinalIgnoreCase);
 
     [GeneratedRegex(HttpFileParserConstants.RequestVariablePattern)]
     private static partial Regex RequestVariableNamePattern();

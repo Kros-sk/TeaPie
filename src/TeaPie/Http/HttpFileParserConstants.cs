@@ -11,15 +11,19 @@ internal static class HttpFileParserConstants
     public const string RequestNameMetadataPattern =
         @"@name\s*=\s*(?<" + RequestNameMetadataGroupName + ">" + StructureVariableNamePatternBase + ")";
 
-    public const string HeaderNamePattern = SimpleNamePattern;
-    public const string RequestVariablePattern =
-        "^" + SimpleNamePattern + @"\\.(response|request)\\.(body|headers)" +
-        @"\\.(\\*|\\$\\.\\S+|\\/[^\\/]+\\/[^\\/]+|" + HeaderNamePattern + ")$";
-
+    public const string RequestVariableSeparator = ".";
     public const string RequestSelector = "request";
     public const string ResponseSelector = "response";
     public const string BodySelector = "body";
     public const string HeadersSelector = "headers";
+    public const char WholeBodySelector = '*';
+
+    public const string HeaderNamePattern = SimpleNamePattern;
+    public const string RequestVariablePattern =
+        "^" + SimpleNamePattern + @"\\" + RequestVariableSeparator +
+        @"(response|request)\\" + RequestVariableSeparator +
+        "(body|headers\\)" + RequestVariableSeparator +
+        @"(\\*|\\$\\" + RequestVariableSeparator + @"\\S+|\\/[^\\/]+\\/[^\\/]+|" + HeaderNamePattern + ")$";
 
     public const string HttpHeaderSeparator = ":";
     public const string HttpCommentPrefix = "# ";
