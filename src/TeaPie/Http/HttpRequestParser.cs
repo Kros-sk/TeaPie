@@ -4,13 +4,13 @@ using TeaPie.Variables;
 
 namespace TeaPie.Http;
 
-internal interface IHttpFileParser
+internal interface IHttpRequestParser
 {
     void Parse(RequestExecutionContext requestExecutionContext);
 }
 
-internal class HttpFileParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver)
-    : IHttpFileParser
+internal class HttpRequestParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver)
+    : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;

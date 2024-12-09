@@ -2,16 +2,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using TeaPie.Http;
+using TeaPie.TestCases;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;
 
-public class ParseRequestFileStepShould
+public class ParseHttpRequestStepShould
 {
     [Fact]
     public async Task ThrowProperExceptionWhenRequestContextIsWithoutRawContent()
     {
-        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithFullStructure, false);
 
         var appContext = new ApplicationContextBuilder()
             .WithPath(RequestsIndex.RootFolderFullPath)
@@ -28,7 +29,7 @@ public class ParseRequestFileStepShould
     [Fact]
     public async Task AssignRequestMessageCorrectly()
     {
-        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithFullStructure);
 
         var appContext = new ApplicationContextBuilder()
             .WithPath(RequestsIndex.RootFolderFullPath)
@@ -58,7 +59,7 @@ public class ParseRequestFileStepShould
 
         var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
 
-        var parser = Substitute.For<IHttpFileParser>();
+        var parser = Substitute.For<IHttpRequestParser>();
         var step = new ParseHttpRequestStep(accessor, parser);
 
         await step.Execute(appContext);
@@ -66,7 +67,30 @@ public class ParseRequestFileStepShould
         parser.Received(1).Parse(context);
     }
 
-    private static HttpFileParser CreateParser()
+    [Fact]
+    public async Task AddNamedRequestToParentTestCaseRequests()
+    {
+        const string RequestName = "NamedRequest";
+        var parser = CreateParser();
+
+        var testCaseContext = new TestCaseExecutionContext(null!);
+        var context = RequestHelper.PrepareRequestContext(RequestsIndex.RequestWithNamePath);
+        context.TestCaseExecutionContext = testCaseContext;
+
+        var appContext = new ApplicationContextBuilder()
+            .WithPath(RequestsIndex.RootFolderFullPath)
+            .Build();
+
+        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+
+        var step = new ParseHttpRequestStep(accessor, parser);
+
+        await step.Execute(appContext);
+
+        context.TestCaseExecutionContext.Requests.ContainsKey(RequestName).Should().BeTrue();
+    }
+
+    private static HttpRequestParser CreateParser()
     {
         var services = new ServiceCollection();
         services.AddHttpClient();
@@ -79,6 +103,6 @@ public class ParseRequestFileStepShould
         var variables = new global::TeaPie.Variables.Variables();
         var resolver = new VariablesResolver(variables);
 
-        return new HttpFileParser(headersProvider, resolver);
+        return new HttpRequestParser(headersProvider, resolver);
     }
 }

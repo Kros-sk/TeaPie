@@ -24,7 +24,7 @@ public class ReadHttpFileStepShould
     [Fact]
     public async Task AssignRawContentOfRequestFileCorrectly()
     {
-        var context = RequestHelper.PrepareTestCaseContext(RequestsIndex.RequestWithCommentsBodyAndHeadersPath, false);
+        var context = RequestHelper.PrepareTestCaseContext(RequestsIndex.RequestWithFullStructure, false);
 
         var appContext = new ApplicationContextBuilder()
             .WithPath(RequestsIndex.RootFolderFullPath)
@@ -35,7 +35,7 @@ public class ReadHttpFileStepShould
 
         await step.Execute(appContext);
 
-        var expectedContent = await File.ReadAllTextAsync(RequestsIndex.RequestWithCommentsBodyAndHeadersPath);
+        var expectedContent = await File.ReadAllTextAsync(RequestsIndex.RequestWithFullStructure);
 
         context.RequestsFileContent.Should().Be(expectedContent);
     }
