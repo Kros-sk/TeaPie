@@ -3,13 +3,13 @@
 internal static class HttpFileParserConstants
 {
     private const string SimpleNamePattern = "[a-zA-Z0-9_-]+";
-    private const string StructureVariableNamePatternBase = "[a-zA-Z0-9_.-]+";
+    private const string StructureVariableNamePatternBase = "[a-zA-Z0-9_.$-]+";
     public const string VariableNamePattern = "^" + StructureVariableNamePatternBase + "$";
     public const string VariableNotationPattern = "{{(" + StructureVariableNamePatternBase + ")}}";
 
     public const string RequestNameMetadataGroupName = "name";
     public const string RequestNameMetadataPattern =
-        @"@name\s*=\s*(?<" + RequestNameMetadataGroupName + ">" + StructureVariableNamePatternBase + ")";
+        @"@name\s+(?<" + RequestNameMetadataGroupName + ">" + StructureVariableNamePatternBase + ")";
 
     public const string RequestVariableSeparator = ".";
     public const string RequestSelector = "request";

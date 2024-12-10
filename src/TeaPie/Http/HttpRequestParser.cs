@@ -59,8 +59,8 @@ internal class HttpRequestParser(IHttpRequestHeadersProvider headersProvider, IV
     {
         var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
-        CreateMessageContent(parsingContext, requestMessage);
         CopyHeaders(parsingContext, requestMessage);
+        CreateMessageContent(parsingContext, requestMessage);
 
         requestExecutionContext.Request = requestMessage;
 
