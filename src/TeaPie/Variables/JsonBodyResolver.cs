@@ -4,7 +4,7 @@ namespace TeaPie.Variables;
 
 internal class JsonBodyResolver : IBodyResolver
 {
-    public bool CanResolve(string mediaType) => mediaType.Equals("application/jason", StringComparison.OrdinalIgnoreCase);
+    public bool CanResolve(string mediaType) => mediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase);
 
     public string Resolve(string body, string query, string defaultValue = "")
     {

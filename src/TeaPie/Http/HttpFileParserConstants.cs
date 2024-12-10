@@ -16,14 +16,14 @@ internal static class HttpFileParserConstants
     public const string ResponseSelector = "response";
     public const string BodySelector = "body";
     public const string HeadersSelector = "headers";
-    public const char WholeBodySelector = '*';
+    public const string WholeBodySelector = "*";
 
     public const string HeaderNamePattern = SimpleNamePattern;
     public const string RequestVariablePattern =
-        "^" + SimpleNamePattern + @"\\" + RequestVariableSeparator +
-        @"(response|request)\\" + RequestVariableSeparator +
-        "(body|headers\\)" + RequestVariableSeparator +
-        @"(\\*|\\$\\" + RequestVariableSeparator + @"\\S+|\\/[^\\/]+\\/[^\\/]+|" + HeaderNamePattern + ")$";
+        "^" + SimpleNamePattern + @"\" + RequestVariableSeparator +
+        "(" + RequestSelector + "|" + ResponseSelector + @")\" + RequestVariableSeparator +
+        "(" + BodySelector + "|" + HeadersSelector + @")\" + RequestVariableSeparator +
+        @"(\*|\$[^\s]+|\/[^\/]+\/[^\/]+|" + HeaderNamePattern + ")$";
 
     public const string HttpHeaderSeparator = ":";
     public const string HttpCommentPrefix = "# ";

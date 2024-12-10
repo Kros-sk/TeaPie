@@ -99,7 +99,7 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
         => _requestVariable.Content.Equals(HttpFileParserConstants.HeadersSelector, StringComparison.OrdinalIgnoreCase);
 
     public static bool IsRequestVariable(string variableName)
-    => RequestVariableNamePattern().Match(variableName).Success;
+        => RequestVariableNamePattern().Match(variableName).Success;
 
     public static bool TryGetVariableDescription(string variableName, [NotNullWhen(true)] out RequestVariableDescription? description)
     {
