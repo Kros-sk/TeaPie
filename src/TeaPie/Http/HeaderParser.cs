@@ -13,11 +13,11 @@ internal class HeaderParser : ILineParser
             var name = parts[0].Trim();
             var value = parts[1].Trim();
 
-            ResolveHeaders(context, name, value);
+            ResolveHeader(context, name, value);
         }
     }
 
-    private static void ResolveHeaders(HttpParsingContext context, string name, string value)
+    private static void ResolveHeader(HttpParsingContext context, string name, string value)
     {
         if (HttpFileParserConstants.SpecialHeaders.Contains(name))
         {

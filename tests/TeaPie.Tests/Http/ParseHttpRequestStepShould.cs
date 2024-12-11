@@ -87,6 +87,7 @@ public class ParseHttpRequestStepShould
 
         await step.Execute(appContext);
 
+        context.TestCaseExecutionContext.Request.Should().Be(context.Request);
         context.TestCaseExecutionContext.Requests.ContainsKey(RequestName).Should().BeTrue();
     }
 

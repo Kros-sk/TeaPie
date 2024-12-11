@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Headers;
 
 namespace TeaPie.Http;
 
@@ -6,9 +7,7 @@ internal interface IHeaderResolver
 {
     bool CanResolve(string name);
 
-    void ResolveHeader(
-        string value,
-        HttpRequestMessage requestExecutionContext);
+    void ResolveHeader(string value, HttpRequestMessage requestExecutionContext);
 }
 
 internal interface IHeadersResolver
@@ -72,6 +71,10 @@ internal class HeadersResolver : IHeadersResolver
         }
     }
 
+    private static void CheckIfContentExists(string headerName, [NotNull] HttpContent? content)
+        => _ = content
+            ?? throw new InvalidOperationException($"Unable to resolve header '{headerName}' when body's content is null.");
+
     private class ContentTypeHeaderResolver : IHeaderResolver
     {
         const string HeaderName = "Content-Type";
@@ -80,14 +83,8 @@ internal class HeadersResolver : IHeadersResolver
 
         public void ResolveHeader(string value, HttpRequestMessage requestExecutionContext)
         {
-            if (requestExecutionContext.Content is not null)
-            {
-                requestExecutionContext.Content.Headers.ContentType = new MediaTypeHeaderValue(value);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unable to resolve header '{HeaderName}' when content is null.");
-            }
+            CheckIfContentExists(HeaderName, requestExecutionContext.Content);
+            requestExecutionContext.Content.Headers.ContentType = new MediaTypeHeaderValue(value);
         }
     }
 
@@ -99,14 +96,8 @@ internal class HeadersResolver : IHeadersResolver
 
         public void ResolveHeader(string value, HttpRequestMessage requestExecutionContext)
         {
-            if (requestExecutionContext.Content is null)
-            {
-                throw new InvalidOperationException($"Unable to resolve header '{HeaderName}' when content is null.");
-            }
-            else
-            {
-                requestExecutionContext.Content.Headers.ContentDisposition = ContentDispositionHeaderValue.Parse(value);
-            }
+            CheckIfContentExists(HeaderName, requestExecutionContext.Content);
+            requestExecutionContext.Content.Headers.ContentDisposition = ContentDispositionHeaderValue.Parse(value);
         }
     }
 
@@ -118,14 +109,8 @@ internal class HeadersResolver : IHeadersResolver
 
         public void ResolveHeader(string value, HttpRequestMessage requestExecutionContext)
         {
-            if (requestExecutionContext.Content is not null)
-            {
-                requestExecutionContext.Content.Headers.ContentEncoding.Add(value);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unable to resolve header '{HeaderName}' when content is null.");
-            }
+            CheckIfContentExists(HeaderName, requestExecutionContext.Content);
+            requestExecutionContext.Content.Headers.ContentEncoding.Add(value);
         }
     }
 
@@ -137,14 +122,8 @@ internal class HeadersResolver : IHeadersResolver
 
         public void ResolveHeader(string value, HttpRequestMessage requestExecutionContext)
         {
-            if (requestExecutionContext.Content is not null)
-            {
-                requestExecutionContext.Content.Headers.ContentLanguage.Add(value);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unable to resolve header '{HeaderName}' when content is null.");
-            }
+            CheckIfContentExists(HeaderName, requestExecutionContext.Content);
+            requestExecutionContext.Content.Headers.ContentLanguage.Add(value);
         }
     }
 

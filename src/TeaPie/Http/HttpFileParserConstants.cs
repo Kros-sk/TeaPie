@@ -1,6 +1,4 @@
-﻿using System.Composition;
-
-namespace TeaPie.Http;
+﻿namespace TeaPie.Http;
 
 internal static class HttpFileParserConstants
 {
@@ -11,7 +9,7 @@ internal static class HttpFileParserConstants
 
     public const string RequestNameMetadataGroupName = "name";
     public const string RequestNameMetadataPattern =
-        @"@name\s+(?<" + RequestNameMetadataGroupName + ">" + StructureVariableNamePatternBase + ")";
+        @"@name\s+(?<" + RequestNameMetadataGroupName + ">" + SimpleNamePattern + ")";
 
     public const string RequestVariableSeparator = ".";
     public const string RequestSelector = "request";

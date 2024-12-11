@@ -90,6 +90,7 @@ public class ExecuteRequestStepShould
 
         await step.Execute(appContext);
 
+        testCaseContext.Response.Should().Be(context.Response);
         testCaseContext.Responses.ContainsKey(RequestName).Should().BeTrue();
     }
 

@@ -23,7 +23,7 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
 
         _parser.Parse(requestExecutionContext);
 
-        AddToRequestsIfNamed(requestExecutionContext);
+        UpdateCurrentTestCase(requestExecutionContext);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
             requestExecutionContext.RequestFile.RelativePath);
@@ -31,13 +31,18 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
         await Task.CompletedTask;
     }
 
-    private static void AddToRequestsIfNamed(RequestExecutionContext requestExecutionContext)
+    private static void UpdateCurrentTestCase(RequestExecutionContext requestExecutionContext)
     {
-        if (!requestExecutionContext.Name.Equals(string.Empty))
+        if (requestExecutionContext.TestCaseExecutionContext is not null)
         {
-            requestExecutionContext.TestCaseExecutionContext?.Requests.Add(
-                requestExecutionContext.Name,
-                requestExecutionContext.Request!);
+            requestExecutionContext.TestCaseExecutionContext.Request = requestExecutionContext.Request;
+
+            if (!requestExecutionContext.Name.Equals(string.Empty))
+            {
+                requestExecutionContext.TestCaseExecutionContext?.Requests.Add(
+                    requestExecutionContext.Name,
+                    requestExecutionContext.Request!);
+            }
         }
     }
 }

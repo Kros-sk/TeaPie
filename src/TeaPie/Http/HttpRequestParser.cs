@@ -11,7 +11,8 @@ internal interface IHttpRequestParser
 
 internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
-    IVariablesResolver variablesResolver, IHeadersResolver headersResolver)
+    IVariablesResolver variablesResolver,
+    IHeadersResolver headersResolver)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;

@@ -56,7 +56,7 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
     }
 
     private string ResolveHeaders(HttpHeaders headers)
-        => headers.TryGetValues(_requestVariable.Query, out var values) ? string.Join(",", values) : _requestVariable.Query;
+        => headers.TryGetValues(_requestVariable.Query, out var values) ? values.Last() : _requestVariable.ToString();
 
     private string ResolveBody(string body, string? contentType)
     {
@@ -110,7 +110,11 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
             return false;
         }
 
-        description = new RequestVariableDescription(segments[0], segments[1], segments[2], string.Join('.', segments.Skip(3)));
+        description = new RequestVariableDescription(
+            segments[0],
+            segments[1],
+            segments[2],
+            string.Join(HttpFileParserConstants.RequestVariableSeparator, segments.Skip(3)));
 
         return true;
     }
