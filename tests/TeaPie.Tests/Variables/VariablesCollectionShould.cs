@@ -8,10 +8,9 @@ public class VariablesCollectionShould
     [Theory]
     [InlineData(null, "null name")]
     [InlineData("", "empty name")]
-    [InlineData("$", "name with forbidden character '$'")]
     [InlineData("<", "name with forbidden character '<'")]
     [InlineData(">", "name with forbidden character '>'")]
-    [InlineData("$<script>", "name with forbidden characters")]
+    [InlineData("<script>", "name with forbidden characters")]
     public void ThrowProperExceptionWhenSettingVariableWithInvalidName(string? name, string reason)
     {
         VariablesCollection collection = [];

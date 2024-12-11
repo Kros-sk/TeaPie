@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http;
+﻿using System.Composition;
+
+namespace TeaPie.Http;
 
 internal static class HttpFileParserConstants
 {
@@ -51,4 +53,17 @@ internal static class HttpFileParserConstants
             { HttpOptionsMethodDirective, HttpMethod.Options },
             { HttpTraceMethodDirective, HttpMethod.Trace }
         };
+
+    public static readonly List<string> SpecialHeaders =
+        [
+            "Content-Type",
+            "Content-Disposition",
+            "Content-Encoding",
+            "Content-Language",
+            "Expect",
+            "Authorization",
+            "User-Agent",
+            "Date",
+            "Connection"
+        ];
 }

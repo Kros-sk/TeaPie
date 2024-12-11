@@ -190,9 +190,10 @@ public class HttpRequestParserShould
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
         var variables = new global::TeaPie.Variables.Variables();
-        var resolver = new VariablesResolver(variables);
+        var variablesResolver = new VariablesResolver(variables);
+        var headersResolver = new HeadersResolver();
 
-        var parser = new HttpRequestParser(headersProvider, resolver);
+        var parser = new HttpRequestParser(headersProvider, variablesResolver, headersResolver);
 
         var folder =
             new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);

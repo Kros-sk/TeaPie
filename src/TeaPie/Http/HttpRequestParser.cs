@@ -9,11 +9,14 @@ internal interface IHttpRequestParser
     void Parse(RequestExecutionContext requestExecutionContext);
 }
 
-internal class HttpRequestParser(IHttpRequestHeadersProvider headersProvider, IVariablesResolver variablesResolver)
+internal class HttpRequestParser(
+    IHttpRequestHeadersProvider headersProvider,
+    IVariablesResolver variablesResolver, IHeadersResolver headersResolver)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
+    private readonly IHeadersResolver _headersResolver = headersResolver;
     private readonly IEnumerable<ILineParser> _lineParsers =
         [
             new CommentLineParser(),
@@ -53,14 +56,14 @@ internal class HttpRequestParser(IHttpRequestHeadersProvider headersProvider, IV
         }
     }
 
-    private static void ApplyChanges(
+    private void ApplyChanges(
         RequestExecutionContext requestExecutionContext,
         HttpParsingContext parsingContext)
     {
         var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
-        CopyHeaders(parsingContext, requestMessage);
         CreateMessageContent(parsingContext, requestMessage);
+        _headersResolver.Resolve(parsingContext, requestMessage);
 
         requestExecutionContext.Request = requestMessage;
 
@@ -83,14 +86,6 @@ internal class HttpRequestParser(IHttpRequestHeadersProvider headersProvider, IV
             }
 
             requestMessage.Content = content;
-        }
-    }
-
-    private static void CopyHeaders(HttpParsingContext context, HttpRequestMessage requestMessage)
-    {
-        foreach (var header in context.Headers)
-        {
-            requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
     }
 }

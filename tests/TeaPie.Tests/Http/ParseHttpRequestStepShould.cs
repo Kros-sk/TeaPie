@@ -101,8 +101,9 @@ public class ParseHttpRequestStepShould
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
         var variables = new global::TeaPie.Variables.Variables();
-        var resolver = new VariablesResolver(variables);
+        var variablesResolver = new VariablesResolver(variables);
+        var headersResolver = new HeadersResolver();
 
-        return new HttpRequestParser(headersProvider, resolver);
+        return new HttpRequestParser(headersProvider, variablesResolver, headersResolver);
     }
 }

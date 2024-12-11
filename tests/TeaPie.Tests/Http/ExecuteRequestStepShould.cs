@@ -127,8 +127,9 @@ public class ExecuteRequestStepShould
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
         var variables = new global::TeaPie.Variables.Variables();
         var variablesResolver = new VariablesResolver(variables);
+        var headersResolver = new HeadersResolver();
 
-        return new HttpRequestParser(headersProvider, variablesResolver);
+        return new HttpRequestParser(headersProvider, variablesResolver, headersResolver);
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler

@@ -10,7 +10,22 @@ internal class HeaderParser : ILineParser
         var parts = line.Split(HttpFileParserConstants.HttpHeaderSeparator, 2);
         if (parts.Length == 2)
         {
-            context.Headers.TryAddWithoutValidation(parts[0].Trim(), parts[1].Trim());
+            var name = parts[0].Trim();
+            var value = parts[1].Trim();
+
+            ResolveHeaders(context, name, value);
+        }
+    }
+
+    private static void ResolveHeaders(HttpParsingContext context, string name, string value)
+    {
+        if (HttpFileParserConstants.SpecialHeaders.Contains(name))
+        {
+            context.SpecialHeaders.Add(name, value);
+        }
+        else if (!context.Headers.TryAddWithoutValidation(name, value))
+        {
+            throw new InvalidOperationException($"Unable to resolve header '{name} : {value}'");
         }
     }
 }

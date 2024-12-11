@@ -10,6 +10,7 @@ internal static class Setup
 
         services.AddScoped<IRequestExecutionContextAccessor, RequestExecutionContextAccessor>();
 
+        services.AddSingleton<IHeadersResolver, HeadersResolver>();
         services.AddSingleton<IHttpRequestParser, HttpRequestParser>();
         services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
 
