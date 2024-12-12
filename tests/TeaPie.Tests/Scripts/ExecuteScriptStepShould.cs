@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using TeaPie.Scripts;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Scripts;
@@ -31,7 +32,7 @@ public class ExecuteScriptStepShould
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        var userContext = TeaPie.Create(Substitute.For<IVariables>(), logger);
+        var userContext = TeaPie.Create(Substitute.For<IVariables>(), logger, Substitute.For<ITester>());
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
@@ -53,7 +54,7 @@ public class ExecuteScriptStepShould
         var variables = Substitute.For<IVariables>();
         variables.ContainsVariable("VariableToRemove").Returns(true);
 
-        var userContext = TeaPie.Create(variables, logger);
+        var userContext = TeaPie.Create(variables, logger, Substitute.For<ITester>());
 
         await ScriptHelper.PrepareScriptForExecution(context);
 

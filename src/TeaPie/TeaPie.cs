@@ -1,23 +1,25 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
+public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer, ITester
 {
-    internal static TeaPie Create(IVariables variables, ILogger logger)
+    internal static TeaPie Create(IVariables variables, ILogger logger, ITester tester)
     {
-        Instance = new(variables, logger);
+        Instance = new(variables, logger, tester);
         return Instance;
     }
 
     public static TeaPie? Instance { get; private set; }
 
-    private TeaPie(IVariables variables, ILogger logger)
+    private TeaPie(IVariables variables, ILogger logger, ITester tester)
     {
         _variables = variables;
         Logger = logger;
+        _tester = tester;
     }
 
     public ILogger Logger { get; }
@@ -36,5 +38,14 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     public Dictionary<string, HttpResponseMessage> Responses => _currentTestCaseExecutionContext?.Responses ?? [];
     public HttpRequestMessage? Request => _currentTestCaseExecutionContext?.Request;
     public HttpResponseMessage? Response => _currentTestCaseExecutionContext?.Response;
+    #endregion
+
+    #region Testing
+    internal ITester _tester;
+    public void Test(string testName, Action testFunction) => _tester.Test(testName, testFunction);
+    public Task Test(string testName, Func<Task> testFunction) => _tester.Test(testName, testFunction);
+    public void AddTestTheory(Action<Theory> testFunction) => _tester.AddTestTheory(testFunction);
+    public void AddTestTheory(string testName, Action<Theory> testFunction)
+        => _tester.AddTestTheory(testName, testFunction);
     #endregion
 }

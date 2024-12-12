@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests;
@@ -47,6 +48,6 @@ internal class ApplicationContextBuilder
             _path ?? string.Empty,
             _logger ?? Substitute.For<ILogger>(),
             _serviceProvider ?? Substitute.For<IServiceProvider>(),
-            _userContext ?? TeaPie.Create(Substitute.For<IVariables>(), Substitute.For<ILogger>()),
+            _userContext ?? TeaPie.Create(Substitute.For<IVariables>(), Substitute.For<ILogger>(), Substitute.For<ITester>()),
             _tempFolderPath ?? string.Empty);
 }

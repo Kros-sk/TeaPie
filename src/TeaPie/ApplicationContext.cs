@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
+using TeaPie.Testing;
 
 namespace TeaPie;
 
@@ -31,6 +32,7 @@ internal class ApplicationContext(
         {
             _currentTestCase = value;
             UserContext._currentTestCaseExecutionContext = value;
+            ((Tester)UserContext._tester).TestCaseExecutionContext = value; // TODO: Change approach of property update
         }
     }
 }

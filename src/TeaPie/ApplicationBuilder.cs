@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie;
@@ -69,11 +71,16 @@ public sealed class ApplicationBuilder
         _services.AddScripts();
         _services.AddHttp();
         _services.AddVariables();
+        _services.AddTesting();
+        _services.AddReporting();
         _services.AddPipelines();
     }
 
     private static TeaPie CreateUserContext(IServiceProvider provider)
-        => TeaPie.Create(provider.GetRequiredService<IVariables>(), provider.GetRequiredService<ILogger<TeaPie>>());
+        => TeaPie.Create(
+            provider.GetRequiredService<IVariables>(),
+            provider.GetRequiredService<ILogger<TeaPie>>(),
+            provider.GetRequiredService<ITester>());
 
     // TODO: This should be part of some pipeline builder/factory class
     private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
