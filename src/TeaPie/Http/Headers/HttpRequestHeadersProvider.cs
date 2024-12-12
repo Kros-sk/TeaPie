@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Headers;
 
 internal interface IHttpRequestHeadersProvider
 {

@@ -72,6 +72,8 @@ internal class HeadersHandler : IHeadersHandler
     {
         foreach (var header in parsingContext.Headers)
         {
+            HeaderNameValidator.CheckHeader(header.Key, string.Join(", ", header.Value));
+
             if (!requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value))
             {
                 throw new InvalidOperationException($"Unable to set header '{header.Key} : {header.Value}'");
@@ -83,6 +85,8 @@ internal class HeadersHandler : IHeadersHandler
     {
         foreach (var header in parsingContext.SpecialHeaders)
         {
+            HeaderNameValidator.CheckHeader(header.Key, header.Value);
+
             if (TryGetHandler(header.Key, out var handler))
             {
                 handler.SetHeader(header.Value, requestMessage);

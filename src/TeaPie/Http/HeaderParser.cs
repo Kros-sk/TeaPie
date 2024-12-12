@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http;
+﻿using TeaPie.Http.Headers;
+
+namespace TeaPie.Http;
 
 internal class HeaderParser : ILineParser
 {
@@ -19,6 +21,8 @@ internal class HeaderParser : ILineParser
 
     private static void ResolveHeader(HttpParsingContext context, string name, string value)
     {
+        HeaderNameValidator.CheckHeader(name, value);
+
         if (HttpFileParserConstants.SpecialHeaders.Contains(name))
         {
             context.SpecialHeaders.Add(name, value);

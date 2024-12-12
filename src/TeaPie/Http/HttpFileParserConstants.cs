@@ -7,6 +7,9 @@ internal static class HttpFileParserConstants
     public const string VariableNamePattern = "^" + StructureVariableNamePatternBase + "$";
     public const string VariableNotationPattern = "{{(" + StructureVariableNamePatternBase + ")}}";
 
+    public const string HeaderNamePattern = "^[A-Za-z0-9!#$%&'*+.^_`|~-]+$";
+    public const string HeaderValuePattern = @"^[\t\x20-\x7E\x80-\xFF]*$";
+
     public const string RequestNameMetadataGroupName = "name";
     public const string RequestNameMetadataPattern =
         @"@name\s+(?<" + RequestNameMetadataGroupName + ">" + SimpleNamePattern + ")";
@@ -18,12 +21,11 @@ internal static class HttpFileParserConstants
     public const string HeadersSelector = "headers";
     public const string WholeBodySelector = "*";
 
-    public const string HeaderNamePattern = SimpleNamePattern;
     public const string RequestVariablePattern =
         "^" + SimpleNamePattern + @"\" + RequestVariableSeparator +
         "(" + RequestSelector + "|" + ResponseSelector + @")\" + RequestVariableSeparator +
         "(" + BodySelector + "|" + HeadersSelector + @")\" + RequestVariableSeparator +
-        @"(\*|\$[^\s]+|\/[^\/]+\/[^\/]+|" + HeaderNamePattern + ")$";
+        @"(\*|(\$[^\s]+)|([A-Za-z0-9!#$%&'*+.^_`|~-]+(\.[A-Za-z0-9!#$%&'*+.^_`|~-]+)*)|)";
 
     public const string HttpHeaderSeparator = ":";
     public const string HttpCommentPrefix = "# ";
