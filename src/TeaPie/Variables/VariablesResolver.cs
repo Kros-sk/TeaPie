@@ -8,9 +8,10 @@ internal interface IVariablesResolver
     string ResolveVariablesInLine(string line, RequestExecutionContext requestExecutionContext);
 }
 
-internal partial class VariablesResolver(IVariables variables) : IVariablesResolver
+internal partial class VariablesResolver(IVariables variables, IServiceProvider serviceProvider) : IVariablesResolver
 {
     private readonly IVariables _variables = variables;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public string ResolveVariablesInLine(string line, RequestExecutionContext requestExecutionContext)
         => VariableNotationPatternRegex().Replace(line, match =>
@@ -31,11 +32,11 @@ internal partial class VariablesResolver(IVariables variables) : IVariablesResol
             throw new InvalidOperationException($"Variable '{variableName}' was not found.");
         });
 
-    private static async Task<string> ResolveRequestVariable(string variableName, RequestExecutionContext requestExecutionContext)
+    private async Task<string> ResolveRequestVariable(string variableName, RequestExecutionContext requestExecutionContext)
     {
         if (RequestVariablesResolver.TryGetVariableDescription(variableName, out var descriptor))
         {
-            var requestVariableResolver = new RequestVariablesResolver(descriptor);
+            var requestVariableResolver = new RequestVariablesResolver(descriptor, _serviceProvider);
             return await requestVariableResolver.Resolve(requestExecutionContext);
         }
 

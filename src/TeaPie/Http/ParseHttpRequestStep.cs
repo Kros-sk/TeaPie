@@ -25,7 +25,8 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
 
         UpdateCurrentTestCase(requestExecutionContext);
 
-        context.Logger.LogTrace("Parsing of the request on path '{Path}' finished successfully.",
+        context.Logger.LogTrace("Parsing of the request {RequestName} on path '{Path}' finished successfully.",
+            requestExecutionContext.Name.Equals(string.Empty) ? string.Empty : $"'{requestExecutionContext.Name}'",
             requestExecutionContext.RequestFile.RelativePath);
 
         await Task.CompletedTask;

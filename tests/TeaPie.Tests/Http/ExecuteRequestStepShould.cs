@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using TeaPie.Http;
+using TeaPie.Http.Headers;
 using TeaPie.TestCases;
 using TeaPie.Variables;
 
@@ -127,8 +128,8 @@ public class ExecuteRequestStepShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
         var variables = new global::TeaPie.Variables.Variables();
-        var variablesResolver = new VariablesResolver(variables);
-        var headersResolver = new HeadersResolver();
+        var variablesResolver = new VariablesResolver(variables, serviceProvider);
+        var headersResolver = new HeadersHandler();
 
         return new HttpRequestParser(headersProvider, variablesResolver, headersResolver);
     }

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using TeaPie.Http;
+using TeaPie.Http.Headers;
 
 namespace TeaPie.Tests.Http;
 
@@ -16,9 +17,9 @@ public class HeadersResolverShould
         parsingContext.Headers.Add(headerName, headerValue);
 
         var requestMessage = new HttpRequestMessage();
-        var headersResolver = new HeadersResolver();
+        var headersResolver = new HeadersHandler();
 
-        headersResolver.Resolve(parsingContext, requestMessage);
+        headersResolver.SetHeaders(parsingContext, requestMessage);
 
         assertHeader(requestMessage);
     }
@@ -43,9 +44,9 @@ public class HeadersResolverShould
             Content = new StringContent("Hello World!")
         };
 
-        var headersResolver = new HeadersResolver();
+        var headersResolver = new HeadersHandler();
 
-        headersResolver.Resolve(parsingContext, requestMessage);
+        headersResolver.SetHeaders(parsingContext, requestMessage);
 
         assertHeader(requestMessage);
     }

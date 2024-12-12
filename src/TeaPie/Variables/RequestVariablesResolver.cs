@@ -1,12 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Headers;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using TeaPie.Http;
+using TeaPie.Http.Headers;
 
 namespace TeaPie.Variables;
 
-internal partial class RequestVariablesResolver(RequestVariableDescription requestVariable)
+internal partial class RequestVariablesResolver(RequestVariableDescription requestVariable, IServiceProvider serviceProvider)
 {
+    private readonly IHeadersHandler _headersHandler = serviceProvider.GetRequiredService<IHeadersHandler>();
     private readonly IBodyResolver[] _bodyResolvers =
         [
             new JsonBodyResolver(),
@@ -24,21 +26,29 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
 
         if (IsRequest() && TryGetHttpRequestMessage(executionContext, out var request))
         {
-            return await Resolve(request.Headers, request.Content);
+            return await Resolve(request, request.Content);
         }
         else if (IsResponse() && TryGetHttpResponseMessage(executionContext, out var response))
         {
-            return await Resolve(response.Headers, response.Content);
+            return await Resolve(response, response.Content);
         }
 
         return _requestVariable.ToString();
     }
 
-    private async Task<string> Resolve(HttpHeaders headers, HttpContent? content)
+    private async Task<string> Resolve<TMessage>(TMessage message, HttpContent? content)
+        where TMessage : class
     {
         if (IsHeaders())
         {
-            return ResolveHeaders(headers);
+            if (message is HttpRequestMessage requestMessage)
+            {
+                return ResolveHeaders(requestMessage);
+            }
+            else if (message is HttpResponseMessage responseMessage)
+            {
+                return ResolveHeaders(responseMessage);
+            }
         }
         else if (IsBody())
         {
@@ -55,8 +65,11 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
         return _requestVariable.ToString();
     }
 
-    private string ResolveHeaders(HttpHeaders headers)
-        => headers.TryGetValues(_requestVariable.Query, out var values) ? values.Last() : _requestVariable.ToString();
+    private string ResolveHeaders(HttpRequestMessage requestMessage)
+        => _headersHandler.GetHeader(_requestVariable.Query, requestMessage);
+
+    private string ResolveHeaders(HttpResponseMessage responseMessage)
+        => _headersHandler.GetHeader(_requestVariable.Query, responseMessage);
 
     private string ResolveBody(string body, string? contentType)
     {

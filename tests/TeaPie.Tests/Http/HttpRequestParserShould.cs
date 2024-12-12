@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http;
+using TeaPie.Http.Headers;
 using TeaPie.StructureExploration;
 using TeaPie.Variables;
 using File = TeaPie.StructureExploration.File;
@@ -190,8 +191,8 @@ public class HttpRequestParserShould
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
 
         var variables = new global::TeaPie.Variables.Variables();
-        var variablesResolver = new VariablesResolver(variables);
-        var headersResolver = new HeadersResolver();
+        var variablesResolver = new VariablesResolver(variables, serviceProvider);
+        var headersResolver = new HeadersHandler();
 
         var parser = new HttpRequestParser(headersProvider, variablesResolver, headersResolver);
 

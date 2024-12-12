@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using TeaPie.Http.Headers;
 using TeaPie.Variables;
 
 namespace TeaPie.Http;
@@ -12,12 +13,12 @@ internal interface IHttpRequestParser
 internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
     IVariablesResolver variablesResolver,
-    IHeadersResolver headersResolver)
+    IHeadersHandler headersResolver)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
-    private readonly IHeadersResolver _headersResolver = headersResolver;
+    private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IEnumerable<ILineParser> _lineParsers =
         [
             new CommentLineParser(),
@@ -64,7 +65,7 @@ internal class HttpRequestParser(
         var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
         CreateMessageContent(parsingContext, requestMessage);
-        _headersResolver.Resolve(parsingContext, requestMessage);
+        _headersResolver.SetHeaders(parsingContext, requestMessage);
 
         requestExecutionContext.Request = requestMessage;
 

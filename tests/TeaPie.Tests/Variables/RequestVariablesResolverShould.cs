@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using TeaPie.Http;
+using TeaPie.Http.Headers;
 using TeaPie.TestCases;
 using TeaPie.Variables;
 using Consts = TeaPie.Http.HttpFileParserConstants;
@@ -126,9 +128,9 @@ public class RequestVariablesResolverShould
             bodyContent: string.Empty,
             type: Consts.ResponseSelector,
             bodyOrHeaders: Consts.HeadersSelector,
-            query: "Authorization",
-            headers: [new("Authorization", "authToken")],
-            expectedValue: "authToken",
+            query: "X-Custom-Header",
+            headers: [new("X-Custom-Header", "CustomValue")],
+            expectedValue: "CustomValue",
             isResponse: true);
 
     private static async Task AssertResolvedVariableAsync(
@@ -142,12 +144,16 @@ public class RequestVariablesResolverShould
         string expectedValue,
         bool isResponse = false)
     {
+        var services = new ServiceCollection();
+        services.AddSingleton<IHeadersHandler, HeadersHandler>();
+        var provider = services.BuildServiceProvider();
+
         var variableDescription = new RequestVariableDescription(requestName, type, bodyOrHeaders, query);
         var requestContext = isResponse
             ? GetRequestContextWithResponse(requestName, contentType, bodyContent, headers)
             : GetRequestContext(requestName, contentType, bodyContent, headers);
 
-        var resolver = new RequestVariablesResolver(variableDescription);
+        var resolver = new RequestVariablesResolver(variableDescription, provider);
         var resolved = await resolver.Resolve(requestContext);
 
         resolved.Should().BeEquivalentTo(expectedValue);
