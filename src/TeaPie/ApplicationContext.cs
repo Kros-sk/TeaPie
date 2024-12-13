@@ -7,9 +7,10 @@ namespace TeaPie;
 
 internal class ApplicationContext(
     string path,
-    ILogger logger,
-    IServiceProvider serviceProvider,
     TeaPie userContext,
+    IServiceProvider serviceProvider,
+    ITester tester,
+    ILogger logger,
     string tempFolder = "")
 {
     public string Path { get; } = path;
@@ -32,7 +33,9 @@ internal class ApplicationContext(
         {
             _currentTestCase = value;
             UserContext._currentTestCaseExecutionContext = value;
-            ((Tester)UserContext._tester).TestCaseExecutionContext = value; // TODO: Change approach of property update
+            Tester.SetCurrentTestCaseExecutionContext(value);
         }
     }
+
+    public ITester Tester { get; set; } = tester;
 }

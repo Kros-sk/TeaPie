@@ -5,7 +5,7 @@ using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer, ITester
+public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer, ITesterExposer
 {
     internal static TeaPie Create(IVariables variables, ILogger logger, ITester tester)
     {

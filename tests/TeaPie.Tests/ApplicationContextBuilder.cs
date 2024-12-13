@@ -12,28 +12,11 @@ internal class ApplicationContextBuilder
     private static ILogger? _logger;
     private static IServiceProvider? _serviceProvider;
     private static TeaPie? _userContext;
+    private static ITester? _tester;
 
     public ApplicationContextBuilder WithPath(string path)
     {
         _path = path;
-        return this;
-    }
-
-    public ApplicationContextBuilder WithTempFolderPath(string tempFolderPath)
-    {
-        _tempFolderPath = tempFolderPath;
-        return this;
-    }
-
-    public ApplicationContextBuilder WithLogger(ILogger logger)
-    {
-        _logger = logger;
-        return this;
-    }
-
-    public ApplicationContextBuilder WithServiceProvider(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
         return this;
     }
 
@@ -43,11 +26,36 @@ internal class ApplicationContextBuilder
         return this;
     }
 
+    public ApplicationContextBuilder WithServiceProvider(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+        return this;
+    }
+
+    public ApplicationContextBuilder WithLogger(ILogger logger)
+    {
+        _logger = logger;
+        return this;
+    }
+
+    public ApplicationContextBuilder WithTempFolderPath(string tempFolderPath)
+    {
+        _tempFolderPath = tempFolderPath;
+        return this;
+    }
+
+    public ApplicationContextBuilder WithTester(ITester tester)
+    {
+        _tester = tester;
+        return this;
+    }
+
     public ApplicationContext Build()
         => new(
             _path ?? string.Empty,
-            _logger ?? Substitute.For<ILogger>(),
-            _serviceProvider ?? Substitute.For<IServiceProvider>(),
             _userContext ?? TeaPie.Create(Substitute.For<IVariables>(), Substitute.For<ILogger>(), Substitute.For<ITester>()),
+            _serviceProvider ?? Substitute.For<IServiceProvider>(),
+            _tester ?? Substitute.For<ITester>(),
+            _logger ?? Substitute.For<ILogger>(),
             _tempFolderPath ?? string.Empty);
 }

@@ -51,18 +51,21 @@ public sealed class ApplicationBuilder
 
         var userContext = CreateUserContext(provider);
 
-        var applicationContext =
-            new ApplicationContext(
-                _path,
-                provider.GetRequiredService<ILogger<ApplicationContext>>(),
-                provider,
-                userContext,
-                _tempPath ?? string.Empty);
+        var applicationContext = GetApplicationContext(userContext, provider);
 
         var pipeline = BuildDefaultPipeline(provider);
 
         return new Application(pipeline, applicationContext);
     }
+
+    private ApplicationContext GetApplicationContext(TeaPie userContext, IServiceProvider provider)
+        => new(
+            _path,
+            userContext,
+            provider,
+            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<ILogger<ApplicationContext>>(),
+            _tempPath ?? string.Empty);
 
     private void ConfigureServices()
     {

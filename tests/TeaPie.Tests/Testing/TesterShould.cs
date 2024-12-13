@@ -16,10 +16,8 @@ public class TesterShould
     {
         _mockReporter = Substitute.For<IReporter>();
         _mockTestCaseExecutionContext = new TestCaseExecutionContext(null!);
-        _tester = new Tester(_mockReporter)
-        {
-            TestCaseExecutionContext = _mockTestCaseExecutionContext
-        };
+        _tester = new Tester(_mockReporter);
+        _tester.SetCurrentTestCaseExecutionContext(_mockTestCaseExecutionContext);
     }
 
     [Fact]

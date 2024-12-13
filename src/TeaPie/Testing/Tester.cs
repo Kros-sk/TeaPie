@@ -6,7 +6,7 @@ namespace TeaPie.Testing;
 internal class Tester(IReporter reporter) : ITester
 {
     private readonly IReporter _reporter = reporter;
-    internal TestCaseExecutionContext? TestCaseExecutionContext { get; set; }
+    private TestCaseExecutionContext? _testCaseExecutionContext;
 
     public void Test(string testName, Action testFunction)
         => TestBase(testName, () => { testFunction(); return Task.CompletedTask; })
@@ -17,17 +17,22 @@ internal class Tester(IReporter reporter) : ITester
 
     private async Task TestBase(string testName, Func<Task> testFunction)
     {
-        if (TestCaseExecutionContext is null)
+        if (_testCaseExecutionContext is null)
         {
             throw new InvalidOperationException("Unable to execute test, if there is no test case assigned.");
         }
 
         var test = new Test(testName, testFunction);
-        TestCaseExecutionContext.TestManager.RegisterTest(test);
+        _testCaseExecutionContext.TestManager.RegisterTest(test);
 
+        await Execute(test);
+    }
+
+    private async Task Execute(Test test)
+    {
         try
         {
-            await ExecuteTest(test, testFunction);
+            await ExecuteTest(test, test.Function);
         }
         catch (Exception ex)
         {
@@ -69,4 +74,7 @@ internal class Tester(IReporter reporter) : ITester
         testResult.Message = ex.Message;
         testResult.StackTrace = ex.StackTrace;
     }
+
+    public void SetCurrentTestCaseExecutionContext(TestCaseExecutionContext? testCaseExecutionContext)
+        => _testCaseExecutionContext = testCaseExecutionContext;
 }
