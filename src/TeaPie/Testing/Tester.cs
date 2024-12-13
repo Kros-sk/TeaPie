@@ -1,4 +1,5 @@
-﻿using TeaPie.Reporting;
+﻿using System.Diagnostics.CodeAnalysis;
+using TeaPie.Reporting;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
@@ -8,6 +9,7 @@ internal class Tester(IReporter reporter) : ITester
     private readonly IReporter _reporter = reporter;
     private TestCaseExecutionContext? _testCaseExecutionContext;
 
+    #region Tests
     public void Test(string testName, Action testFunction)
         => TestBase(testName, () => { testFunction(); return Task.CompletedTask; })
             .ConfigureAwait(false).GetAwaiter().GetResult();
@@ -17,18 +19,15 @@ internal class Tester(IReporter reporter) : ITester
 
     private async Task TestBase(string testName, Func<Task> testFunction)
     {
-        if (_testCaseExecutionContext is null)
-        {
-            throw new InvalidOperationException("Unable to execute test, if there is no test case assigned.");
-        }
+        CheckIfTestCaseExecutionContextIsSet();
 
         var test = new Test(testName, testFunction);
         _testCaseExecutionContext.TestManager.RegisterTest(test);
 
-        await Execute(test);
+        await ExecuteTest(test);
     }
 
-    private async Task Execute(Test test)
+    private async Task ExecuteTest(Test test)
     {
         try
         {
@@ -58,23 +57,31 @@ internal class Tester(IReporter reporter) : ITester
         _reporter.ReportTestSuccess(test.Name);
     }
 
+    private static void SetTestResult(TestResult result, Exception ex)
+    {
+        result.Success = false;
+        result.Message = ex.Message;
+        result.StackTrace = ex.StackTrace;
+    }
+    #endregion
+
+    #region Theories
     public void AddTestTheory(Action<Theory> testFunction)
     {
-        // TODO: Implement
+        // TODO: Implement method
     }
 
     public void AddTestTheory(string testName, Action<Theory> testFunction)
     {
-        // TODO: Implement
+        // TODO: Implement method
     }
-
-    private static void SetTestResult(TestResult testResult, Exception ex)
-    {
-        testResult.Success = false;
-        testResult.Message = ex.Message;
-        testResult.StackTrace = ex.StackTrace;
-    }
+    #endregion
 
     public void SetCurrentTestCaseExecutionContext(TestCaseExecutionContext? testCaseExecutionContext)
         => _testCaseExecutionContext = testCaseExecutionContext;
+
+    [MemberNotNull(nameof(_testCaseExecutionContext))]
+    private void CheckIfTestCaseExecutionContextIsSet()
+    => _ = _testCaseExecutionContext
+        ?? throw new InvalidOperationException("Unable to execute test, if there is no test case assigned.");
 }
