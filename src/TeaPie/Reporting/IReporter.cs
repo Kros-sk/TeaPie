@@ -4,7 +4,7 @@ internal interface IReporter
 {
     void ReportTestStart(string testName, string path);
 
-    void ReportTestSuccess(string testName);
+    void ReportTestSuccess(string testName, long duration);
 
-    void ReportTestFailure(string testName, string errorMessage);
+    void ReportTestFailure(string testName, string errorMessage, long duration);
 }

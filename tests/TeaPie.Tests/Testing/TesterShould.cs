@@ -44,8 +44,8 @@ public class TesterShould
         _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName);
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
     }
 
     [Fact]
@@ -62,8 +62,8 @@ public class TesterShould
         await _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName);
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public class TesterShould
         _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
-        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed");
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName);
+        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed", Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 
     [Fact]
@@ -97,8 +97,8 @@ public class TesterShould
         await _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed");
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName);
+        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed", Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 
     [Fact]
@@ -120,8 +120,8 @@ public class TesterShould
         _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName);
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class TesterShould
         _tester.Test(testName, testFunction);
 
         _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestFailure(testName, Arg.Any<string>());
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName);
+        _mockReporter.Received(1).ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
+        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 }

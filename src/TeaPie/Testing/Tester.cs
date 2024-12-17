@@ -1,4 +1,5 @@
-﻿using TeaPie.Reporting;
+﻿using System.Diagnostics;
+using TeaPie.Reporting;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
@@ -7,6 +8,7 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 {
     private readonly IReporter _reporter = reporter;
     private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
+    private readonly Stopwatch _stopWatch = new();
 
     #region Tests
     public void Test(string testName, Action testFunction)
@@ -30,6 +32,8 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 
     private async Task<Test> ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext)
     {
+        _stopWatch.Reset();
+
         try
         {
             return await ExecuteTest(test, test.Function, testCaseExecutionContext);
@@ -42,8 +46,11 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 
     private Test TestFailure(Test test, Exception ex)
     {
-        test = test with { Result = new TestResult.Failed(ex.Message, ex) };
-        _reporter.ReportTestFailure(test.Name, ex.Message);
+        _stopWatch.Stop();
+
+        test = test with { Result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) };
+
+        _reporter.ReportTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
         return test;
     }
 
@@ -51,10 +58,15 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
     {
         _reporter.ReportTestStart(test.Name, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
 
-        await testFunction();
-        test = test with { Result = new TestResult.Succeed() };
+        _stopWatch.Start();
 
-        _reporter.ReportTestSuccess(test.Name);
+        await testFunction();
+
+        _stopWatch.Stop();
+
+        test = test with { Result = new TestResult.Succeed(_stopWatch.ElapsedMilliseconds) };
+
+        _reporter.ReportTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds);
         return test;
     }
     #endregion
