@@ -22,7 +22,7 @@ internal class Tester(IReporter reporter) : ITester
         CheckIfTestCaseExecutionContextIsSet();
 
         var test = new Test(testName, testFunction);
-        _testCaseExecutionContext.TestManager.RegisterTest(test);
+        _testCaseExecutionContext.RegisterTest(test);
 
         await ExecuteTest(test);
     }
@@ -62,18 +62,6 @@ internal class Tester(IReporter reporter) : ITester
         result.Success = false;
         result.Message = ex.Message;
         result.StackTrace = ex.StackTrace;
-    }
-    #endregion
-
-    #region Theories
-    public void AddTestTheory(Action<Theory> testFunction)
-    {
-        // TODO: Implement method
-    }
-
-    public void AddTestTheory(string testName, Action<Theory> testFunction)
-    {
-        // TODO: Implement method
     }
     #endregion
 

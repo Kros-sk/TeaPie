@@ -33,9 +33,9 @@ internal class ApplicationContext(
         {
             _currentTestCase = value;
             UserContext._currentTestCaseExecutionContext = value;
-            Tester.SetCurrentTestCaseExecutionContext(value);
+            _tester.SetCurrentTestCaseExecutionContext(value);
         }
     }
 
-    public ITester Tester { get; set; } = tester;
+    private readonly ITester _tester = tester;
 }

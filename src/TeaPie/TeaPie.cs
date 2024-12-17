@@ -5,7 +5,7 @@ using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer, ITesterExposer
+public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 {
     internal static TeaPie Create(IVariables variables, ILogger logger, ITester tester)
     {
@@ -41,11 +41,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer, ITeste
     #endregion
 
     #region Testing
-    internal ITester _tester;
-    public void Test(string testName, Action testFunction) => _tester.Test(testName, testFunction);
-    public Task Test(string testName, Func<Task> testFunction) => _tester.Test(testName, testFunction);
-    public void AddTestTheory(Action<Theory> testFunction) => _tester.AddTestTheory(testFunction);
-    public void AddTestTheory(string testName, Action<Theory> testFunction)
-        => _tester.AddTestTheory(testName, testFunction);
+    internal readonly ITester _tester;
     #endregion
 }

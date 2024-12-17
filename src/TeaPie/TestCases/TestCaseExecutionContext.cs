@@ -4,7 +4,7 @@ using TeaPie.Testing;
 
 namespace TeaPie.TestCases;
 
-internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextExposer
+internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextExposer, ITestRegistrator
 {
     public TestCase TestCase { get; } = testCase;
     public string? RequestsFileContent;
@@ -16,5 +16,8 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
     public HttpRequestMessage? Request { get; set; }
     public HttpResponseMessage? Response { get; set; }
 
-    public ITestManager TestManager { get; set; } = new TestManager();
+    private readonly Dictionary<string, Test> _tests = [];
+
+    public void RegisterTest(Test test)
+        => _tests.Add(test.Name, test);
 }
