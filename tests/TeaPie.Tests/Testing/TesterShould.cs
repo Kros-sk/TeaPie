@@ -32,7 +32,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -50,7 +50,7 @@ public class TesterShould
 
         await _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -67,7 +67,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestFailure(testName, "Test failed");
         _mockReporter.DidNotReceive().ReportTestSuccess(testName);
     }
@@ -85,7 +85,7 @@ public class TesterShould
 
         await _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestFailure(testName, "Test failed");
         _mockReporter.DidNotReceive().ReportTestSuccess(testName);
     }
@@ -108,7 +108,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -131,7 +131,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName);
+        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
         _mockReporter.Received(1).ReportTestFailure(testName, Arg.Any<string>());
         _mockReporter.DidNotReceive().ReportTestSuccess(testName);
     }

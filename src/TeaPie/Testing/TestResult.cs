@@ -1,9 +1,11 @@
-﻿namespace TeaPie.Testing;
+﻿using Dunet;
 
-internal class TestResult(string name)
+namespace TeaPie.Testing;
+
+[Union]
+internal partial record TestResult
 {
-    public string TestName { get; } = name;
-    public bool Success { get; set; }
-    public string? Message { get; set; }
-    public string? StackTrace { get; set; }
+    public partial record NotRun;
+    public partial record Succeed;
+    public partial record Failed(string ErrorMessage, string? StackTrace);
 }

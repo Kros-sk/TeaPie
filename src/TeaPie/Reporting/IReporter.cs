@@ -2,7 +2,7 @@
 
 internal interface IReporter
 {
-    void ReportTestStart(string testName);
+    void ReportTestStart(string testName, string path);
 
     void ReportTestSuccess(string testName);
 

@@ -1,9 +1,6 @@
 ﻿namespace TeaPie.Testing;
 
-internal class Test(string name, Func<Task> function)
+internal record Test(string Name, Func<Task> Function)
 {
-    public bool Executed { get; set; }
-    public string Name { get; set; } = name;
-    public TestResult Result { get; set; } = new(name);
-    public Func<Task> Function { get; set; } = function;
+    public TestResult Result { get; set; } = new TestResult.NotRun();
 }

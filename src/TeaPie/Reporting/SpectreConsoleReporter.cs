@@ -4,9 +4,9 @@ namespace TeaPie.Reporting;
 
 public class SpectreConsoleReporter : IReporter
 {
-    public void ReportTestStart(string testName)
+    public void ReportTestStart(string testName, string path)
     {
-        AnsiConsole.MarkupLine($"[yellow]Running test:[/] {testName}");
+        AnsiConsole.MarkupLine($"[yellow]Running test:[/][white] {testName} [/][i][gray]({path})[/][/]");
     }
 
     public void ReportTestSuccess(string testName)

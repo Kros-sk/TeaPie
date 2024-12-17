@@ -37,31 +37,22 @@ internal class Tester(IReporter reporter) : ITester
         {
             TestFailure(test, ex);
         }
-
-        test.Executed = true;
     }
 
     private void TestFailure(Test test, Exception ex)
     {
-        SetTestResult(test.Result, ex);
-        _reporter.ReportTestFailure(test.Name, test.Result.Message!);
+        test.Result = new TestResult.Failed(ex.Message, ex.StackTrace);
+        _reporter.ReportTestFailure(test.Name, ex.Message);
     }
 
     private async Task ExecuteTest(Test test, Func<Task> testFunction)
     {
-        _reporter.ReportTestStart(test.Name);
+        _reporter.ReportTestStart(test.Name, _testCaseExecutionContext!.TestCase.RequestsFile.RelativePath);
 
         await testFunction();
-        test.Result.Success = true;
+        test.Result = new TestResult.Succeed();
 
         _reporter.ReportTestSuccess(test.Name);
-    }
-
-    private static void SetTestResult(TestResult result, Exception ex)
-    {
-        result.Success = false;
-        result.Message = ex.Message;
-        result.StackTrace = ex.StackTrace;
     }
     #endregion
 
