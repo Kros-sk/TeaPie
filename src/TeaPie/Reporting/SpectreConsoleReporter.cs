@@ -19,12 +19,4 @@ public class SpectreConsoleReporter : IReporter
         AnsiConsole.MarkupLine($"[red]Test Failed:[/] {testName}");
         AnsiConsole.MarkupLine($"[red]Error:[/] {errorMessage}");
     }
-
-    public void ReportTestCaseSummary(int passed, int failed, int skipped)
-    {
-        AnsiConsole.MarkupLine("[bold]Test Summary:[/]");
-        AnsiConsole.MarkupLine($"[green]Passed:[/] {passed}");
-        AnsiConsole.MarkupLine($"[red]Failed:[/] {failed}");
-        AnsiConsole.MarkupLine($"[yellow]Skipped:[/] {skipped}");
-    }
 }

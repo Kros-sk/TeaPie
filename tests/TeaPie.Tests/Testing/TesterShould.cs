@@ -1,23 +1,34 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
+using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Testing;
 
 public class TesterShould
 {
+    private readonly string _mockPath;
     private readonly IReporter _mockReporter;
     private readonly TestCaseExecutionContext _mockTestCaseExecutionContext;
+    private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor;
     private readonly Tester _tester;
 
     public TesterShould()
     {
+        _mockPath = "pathToTestCase.http";
         _mockReporter = Substitute.For<IReporter>();
-        _mockTestCaseExecutionContext = new TestCaseExecutionContext(null!);
-        _tester = new Tester(_mockReporter);
-        _tester.SetCurrentTestCaseExecutionContext(_mockTestCaseExecutionContext);
+        _mockTestCaseExecutionContext = new TestCaseExecutionContext(
+            new TestCase(new File(_mockPath, _mockPath, _mockPath, null!)));
+
+        _currentTestCaseExecutionContextAccessor = new CurrentTestCaseExecutionContextAccessor()
+        {
+            CurrentTestCaseExecutionContext = _mockTestCaseExecutionContext
+        };
+
+        _tester = new Tester(_mockReporter, _currentTestCaseExecutionContextAccessor);
     }
 
     [Fact]
@@ -32,7 +43,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -50,7 +61,7 @@ public class TesterShould
 
         await _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -85,7 +96,7 @@ public class TesterShould
 
         await _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
         _mockReporter.Received(1).ReportTestFailure(testName, "Test failed");
         _mockReporter.DidNotReceive().ReportTestSuccess(testName);
     }
@@ -108,7 +119,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
         _mockReporter.Received(1).ReportTestSuccess(testName);
         _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>());
     }
@@ -131,7 +142,7 @@ public class TesterShould
 
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
+        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
         _mockReporter.Received(1).ReportTestFailure(testName, Arg.Any<string>());
         _mockReporter.DidNotReceive().ReportTestSuccess(testName);
     }

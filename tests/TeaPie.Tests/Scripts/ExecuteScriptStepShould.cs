@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using TeaPie.Scripts;
+using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
 
@@ -32,13 +33,16 @@ public class ExecuteScriptStepShould
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
-        var userContext = TeaPie.Create(Substitute.For<IVariables>(), logger, Substitute.For<ITester>());
+        TeaPie.Create(
+            Substitute.For<IVariables>(),
+            logger,
+            Substitute.For<ITester>(),
+            Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
+
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContextBuilder()
-            .WithUserContext(userContext)
-            .Build();
+        var appContext = new ApplicationContextBuilder().Build();
 
         await step.Execute(appContext);
 
@@ -54,14 +58,12 @@ public class ExecuteScriptStepShould
         var variables = Substitute.For<IVariables>();
         variables.ContainsVariable("VariableToRemove").Returns(true);
 
-        var userContext = TeaPie.Create(variables, logger, Substitute.For<ITester>());
+        TeaPie.Create(variables, logger, Substitute.For<ITester>(), Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
 
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContextBuilder()
-            .WithUserContext(userContext)
-            .Build();
+        var appContext = new ApplicationContextBuilder().Build();
 
         await step.Execute(appContext);
 

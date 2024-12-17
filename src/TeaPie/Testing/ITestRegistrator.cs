@@ -2,5 +2,5 @@
 
 internal interface ITestRegistrator
 {
-    public void RegisterTest(Test test);
+    void RegisterTest(Test test);
 }

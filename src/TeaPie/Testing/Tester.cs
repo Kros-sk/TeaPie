@@ -1,13 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using TeaPie.Reporting;
+﻿using TeaPie.Reporting;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
 
-internal class Tester(IReporter reporter) : ITester
+internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccessor accessor) : ITester
 {
     private readonly IReporter _reporter = reporter;
-    private TestCaseExecutionContext? _testCaseExecutionContext;
+    private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
 
     #region Tests
     public void Test(string testName, Action testFunction)
@@ -19,48 +18,44 @@ internal class Tester(IReporter reporter) : ITester
 
     private async Task TestBase(string testName, Func<Task> testFunction)
     {
-        CheckIfTestCaseExecutionContextIsSet();
+        var testCaseExecutionContext = _testCaseExecutionContextAccessor.CurrentTestCaseExecutionContext
+            ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
 
-        var test = new Test(testName, testFunction);
-        _testCaseExecutionContext.RegisterTest(test);
+        var test = new Test(testName, testFunction, new TestResult.NotRun());
 
-        await ExecuteTest(test);
+        test = await ExecuteTest(test, testCaseExecutionContext);
+
+        testCaseExecutionContext.RegisterTest(test);
     }
 
-    private async Task ExecuteTest(Test test)
+    private async Task<Test> ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext)
     {
         try
         {
-            await ExecuteTest(test, test.Function);
+            return await ExecuteTest(test, test.Function, testCaseExecutionContext);
         }
         catch (Exception ex)
         {
-            TestFailure(test, ex);
+            return TestFailure(test, ex);
         }
     }
 
-    private void TestFailure(Test test, Exception ex)
+    private Test TestFailure(Test test, Exception ex)
     {
-        test.Result = new TestResult.Failed(ex.Message, ex.StackTrace);
+        test = test with { Result = new TestResult.Failed(ex.Message, ex) };
         _reporter.ReportTestFailure(test.Name, ex.Message);
+        return test;
     }
 
-    private async Task ExecuteTest(Test test, Func<Task> testFunction)
+    private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCaseExecutionContext testCaseExecutionContext)
     {
-        _reporter.ReportTestStart(test.Name, _testCaseExecutionContext!.TestCase.RequestsFile.RelativePath);
+        _reporter.ReportTestStart(test.Name, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
 
         await testFunction();
-        test.Result = new TestResult.Succeed();
+        test = test with { Result = new TestResult.Succeed() };
 
         _reporter.ReportTestSuccess(test.Name);
+        return test;
     }
     #endregion
-
-    public void SetCurrentTestCaseExecutionContext(TestCaseExecutionContext? testCaseExecutionContext)
-        => _testCaseExecutionContext = testCaseExecutionContext;
-
-    [MemberNotNull(nameof(_testCaseExecutionContext))]
-    private void CheckIfTestCaseExecutionContextIsSet()
-    => _ = _testCaseExecutionContext
-        ?? throw new InvalidOperationException("Unable to execute test, if there is no test case assigned.");
 }

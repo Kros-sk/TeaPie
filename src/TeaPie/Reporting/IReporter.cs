@@ -7,6 +7,4 @@ internal interface IReporter
     void ReportTestSuccess(string testName);
 
     void ReportTestFailure(string testName, string errorMessage);
-
-    void ReportTestCaseSummary(int passed, int failed, int skipped);
 }

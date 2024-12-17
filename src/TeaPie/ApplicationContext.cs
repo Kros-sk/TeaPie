@@ -1,15 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
-using TeaPie.Testing;
 
 namespace TeaPie;
 
 internal class ApplicationContext(
     string path,
-    TeaPie userContext,
     IServiceProvider serviceProvider,
-    ITester tester,
+    ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
     ILogger logger,
     string tempFolder = "")
 {
@@ -23,19 +21,12 @@ internal class ApplicationContext(
 
     public IServiceProvider ServiceProvider { get; } = serviceProvider;
 
-    public TeaPie UserContext { get; init; } = userContext;
+    private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor =
+        currentTestCaseExecutionContextAccessor;
 
-    private TestCaseExecutionContext? _currentTestCase;
     public TestCaseExecutionContext? CurrentTestCase
     {
-        get => _currentTestCase;
-        set
-        {
-            _currentTestCase = value;
-            UserContext._currentTestCaseExecutionContext = value;
-            _tester.SetCurrentTestCaseExecutionContext(value);
-        }
+        get => _currentTestCaseExecutionContextAccessor.CurrentTestCaseExecutionContext;
+        set => _currentTestCaseExecutionContextAccessor.CurrentTestCaseExecutionContext = value;
     }
-
-    private readonly ITester _tester = tester;
 }

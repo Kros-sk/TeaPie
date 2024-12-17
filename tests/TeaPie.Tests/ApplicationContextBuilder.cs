@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Testing;
-using TeaPie.Variables;
+using TeaPie.TestCases;
 
 namespace TeaPie.Tests;
 
@@ -11,18 +10,11 @@ internal class ApplicationContextBuilder
     private static string? _tempFolderPath;
     private static ILogger? _logger;
     private static IServiceProvider? _serviceProvider;
-    private static TeaPie? _userContext;
-    private static ITester? _tester;
+    private static ICurrentTestCaseExecutionContextAccessor? _currentTestCaseExecutionContextAccessor;
 
     public ApplicationContextBuilder WithPath(string path)
     {
         _path = path;
-        return this;
-    }
-
-    public ApplicationContextBuilder WithUserContext(TeaPie userContext)
-    {
-        _userContext = userContext;
         return this;
     }
 
@@ -44,18 +36,18 @@ internal class ApplicationContextBuilder
         return this;
     }
 
-    public ApplicationContextBuilder WithTester(ITester tester)
+    public ApplicationContextBuilder WithCurrentTestCaseExecutionContextAccessor(
+        ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor)
     {
-        _tester = tester;
+        _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
         return this;
     }
 
     public ApplicationContext Build()
         => new(
             _path ?? string.Empty,
-            _userContext ?? TeaPie.Create(Substitute.For<IVariables>(), Substitute.For<ILogger>(), Substitute.For<ITester>()),
             _serviceProvider ?? Substitute.For<IServiceProvider>(),
-            _tester ?? Substitute.For<ITester>(),
+            _currentTestCaseExecutionContextAccessor ?? Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
             _logger ?? Substitute.For<ILogger>(),
             _tempFolderPath ?? string.Empty);
 }

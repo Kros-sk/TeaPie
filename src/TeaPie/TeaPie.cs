@@ -7,19 +7,28 @@ namespace TeaPie;
 
 public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 {
-    internal static TeaPie Create(IVariables variables, ILogger logger, ITester tester)
+    internal static TeaPie Create(
+        IVariables variables,
+        ILogger logger,
+        ITester tester,
+        ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor)
     {
-        Instance = new(variables, logger, tester);
+        Instance = new(variables, logger, tester, currentTestCaseExecutionContextAccessor);
         return Instance;
     }
 
     public static TeaPie? Instance { get; private set; }
 
-    private TeaPie(IVariables variables, ILogger logger, ITester tester)
+    private TeaPie(
+        IVariables variables,
+        ILogger logger,
+        ITester tester,
+        ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor)
     {
         _variables = variables;
         Logger = logger;
         _tester = tester;
+        _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
     }
 
     public ILogger Logger { get; }
@@ -33,11 +42,15 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     #endregion
 
     #region Execution Context
-    internal TestCaseExecutionContext? _currentTestCaseExecutionContext;
-    public Dictionary<string, HttpRequestMessage> Requests => _currentTestCaseExecutionContext?.Requests ?? [];
-    public Dictionary<string, HttpResponseMessage> Responses => _currentTestCaseExecutionContext?.Responses ?? [];
-    public HttpRequestMessage? Request => _currentTestCaseExecutionContext?.Request;
-    public HttpResponseMessage? Response => _currentTestCaseExecutionContext?.Response;
+    private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor;
+
+    internal TestCaseExecutionContext? CurrentTestCaseExecutionContext
+        => _currentTestCaseExecutionContextAccessor.CurrentTestCaseExecutionContext;
+
+    public Dictionary<string, HttpRequestMessage> Requests => CurrentTestCaseExecutionContext?.Requests ?? [];
+    public Dictionary<string, HttpResponseMessage> Responses => CurrentTestCaseExecutionContext?.Responses ?? [];
+    public HttpRequestMessage? Request => CurrentTestCaseExecutionContext?.Request;
+    public HttpResponseMessage? Response => CurrentTestCaseExecutionContext?.Response;
     #endregion
 
     #region Testing

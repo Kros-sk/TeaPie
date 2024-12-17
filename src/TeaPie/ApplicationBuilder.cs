@@ -49,21 +49,20 @@ public sealed class ApplicationBuilder
         ConfigureServices();
         var provider = _services.BuildServiceProvider();
 
-        var userContext = CreateUserContext(provider);
+        CreateUserContext(provider);
 
-        var applicationContext = GetApplicationContext(userContext, provider);
+        var applicationContext = GetApplicationContext(provider);
 
         var pipeline = BuildDefaultPipeline(provider);
 
         return new Application(pipeline, applicationContext);
     }
 
-    private ApplicationContext GetApplicationContext(TeaPie userContext, IServiceProvider provider)
+    private ApplicationContext GetApplicationContext(IServiceProvider provider)
         => new(
             _path,
-            userContext,
             provider,
-            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ILogger<ApplicationContext>>(),
             _tempPath ?? string.Empty);
 
@@ -83,7 +82,8 @@ public sealed class ApplicationBuilder
         => TeaPie.Create(
             provider.GetRequiredService<IVariables>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
-            provider.GetRequiredService<ITester>());
+            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>());
 
     // TODO: This should be part of some pipeline builder/factory class
     private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
