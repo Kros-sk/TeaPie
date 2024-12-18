@@ -16,7 +16,7 @@ public class ExecuteScriptStepShould
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
@@ -32,7 +32,7 @@ public class ExecuteScriptStepShould
     {
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         TeaPie.Create(
             Substitute.For<IVariables>(),
             logger,
@@ -54,7 +54,7 @@ public class ExecuteScriptStepShould
     {
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptManipulatingWithVariables);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         var variables = Substitute.For<IVariables>();
         variables.ContainsVariable("VariableToRemove").Returns(true);
 

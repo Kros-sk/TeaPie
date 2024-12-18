@@ -62,10 +62,9 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out Script<object> script)
     {
-        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new InvalidOperationException("Unable to execute script if script's execution context is null.");
-
-        script = scriptExecutionContext.ScriptObject
-            ?? throw new InvalidOperationException("Unable to execute script if script object is null.");
+        const string activityName = "execute script";
+        ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            scriptExecutionContext.ScriptObject, out script, activityName, "its script object");
     }
 }

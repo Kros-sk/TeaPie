@@ -2,13 +2,10 @@
 
 namespace TeaPie.Http;
 
-internal interface IRequestExecutionContextAccessor
-{
-    RequestExecutionContext? RequestExecutionContext { get; set; }
-}
+internal interface IRequestExecutionContextAccessor : IContextAccessor<RequestExecutionContext>;
 
-[DebuggerDisplay("{RequestExecutionContext}")]
+[DebuggerDisplay("{Context}")]
 internal class RequestExecutionContextAccessor : IRequestExecutionContextAccessor
 {
-    public RequestExecutionContext? RequestExecutionContext { get; set; }
+    public RequestExecutionContext? Context { get; set; }
 }

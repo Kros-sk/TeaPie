@@ -15,7 +15,7 @@ public class ReadHttpFileStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new TestCaseExecutionContextAccessor() { TestCaseExecutionContext = context };
+        var accessor = new TestCaseExecutionContextAccessor() { Context = context };
         var step = new ReadHttpFileStep(accessor);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<FileNotFoundException>();
@@ -30,7 +30,7 @@ public class ReadHttpFileStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new TestCaseExecutionContextAccessor() { TestCaseExecutionContext = context };
+        var accessor = new TestCaseExecutionContextAccessor() { Context = context };
         var step = new ReadHttpFileStep(accessor);
 
         await step.Execute(appContext);

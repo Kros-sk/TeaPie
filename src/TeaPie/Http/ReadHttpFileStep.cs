@@ -34,9 +34,7 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out TestCase testCase)
     {
-        testCaseExecutionContext = _testCaseContextAccessor.TestCaseExecutionContext
-            ?? throw new InvalidOperationException("Unable to read file if test case's execution context is null.");
-
+        ExecutionContextValidator.Validate(_testCaseContextAccessor, out testCaseExecutionContext, "read HTTP file");
         testCase = testCaseExecutionContext.TestCase;
     }
 }

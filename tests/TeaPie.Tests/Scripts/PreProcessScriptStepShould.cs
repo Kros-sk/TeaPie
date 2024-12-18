@@ -11,7 +11,7 @@ public class PreProcessScriptStepShould
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         context.RawContent = await File.ReadAllTextAsync(context.Script.File.Path);
 
         var processor = Substitute.For<IScriptPreProcessor>();

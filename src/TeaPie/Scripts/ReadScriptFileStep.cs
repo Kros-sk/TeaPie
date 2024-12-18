@@ -29,7 +29,6 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
         }
     }
 
-    private ScriptExecutionContext ValidateContext(out ScriptExecutionContext scriptExecutionContext)
-        => scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new InvalidOperationException("Unable to read script file if script's execution context is null.");
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext)
+        => ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, "read script");
 }

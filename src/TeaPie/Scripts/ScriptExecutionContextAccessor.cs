@@ -2,13 +2,10 @@
 
 namespace TeaPie.Scripts;
 
-internal interface IScriptExecutionContextAccessor
-{
-    ScriptExecutionContext? ScriptExecutionContext { get; set; }
-}
+internal interface IScriptExecutionContextAccessor : IContextAccessor<ScriptExecutionContext>;
 
-[DebuggerDisplay("{ScriptExecutionContext}")]
+[DebuggerDisplay("{Context}")]
 internal class ScriptExecutionContextAccessor : IScriptExecutionContextAccessor
 {
-    public ScriptExecutionContext? ScriptExecutionContext { get; set; }
+    public ScriptExecutionContext? Context { get; set; }
 }

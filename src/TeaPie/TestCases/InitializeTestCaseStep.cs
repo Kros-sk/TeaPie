@@ -77,7 +77,7 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         var provider = scope.ServiceProvider;
 
         var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
-        accessor.ScriptExecutionContext = scriptExecutionContext;
+        accessor.Context = scriptExecutionContext;
 
         newSteps.Add(provider.GetStep<ReadScriptFileStep>());
         newSteps.Add(provider.GetStep<PreProcessScriptStep>());
@@ -95,15 +95,13 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         var provider = scope.ServiceProvider;
 
         var accessor = provider.GetRequiredService<ITestCaseExecutionContextAccessor>();
-        accessor.TestCaseExecutionContext = testCaseExecutionContext;
+        accessor.Context = testCaseExecutionContext;
 
         newSteps.Add(provider.GetStep<ReadHttpFileStep>());
         newSteps.Add(provider.GetStep<GenerateStepsForRequestsStep>());
     }
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext)
-    {
-        testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
-            ?? throw new InvalidOperationException("Unable to initialize test case if its execution context is null.");
-    }
+        => ExecutionContextValidator.Validate(
+            _testCaseExecutionContextAccessor, out testCaseExecutionContext, "initialize test case");
 }

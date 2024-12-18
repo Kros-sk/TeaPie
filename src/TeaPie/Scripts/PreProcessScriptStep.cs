@@ -82,7 +82,7 @@ internal sealed class PreProcessScriptStep(
         var provider = scope.ServiceProvider;
 
         var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
-        accessor.ScriptExecutionContext = scriptContext;
+        accessor.Context = scriptContext;
 
         return [provider.GetStep<ReadScriptFileStep>(),
             provider.GetStep<PreProcessScriptStep>(),
@@ -91,10 +91,9 @@ internal sealed class PreProcessScriptStep(
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
     {
-        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new InvalidOperationException("Unable to pre-process script if script's execution context is null.");
-
-        content = scriptExecutionContext.RawContent
-            ?? throw new InvalidOperationException("Unable to pre-process script if script's content is null.");
+        const string activityName = "pre-process script";
+        ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            scriptExecutionContext.RawContent, out content, activityName, "its content");
     }
 }

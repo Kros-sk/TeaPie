@@ -14,7 +14,7 @@ public class CompileScriptStepShould
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.PlainScriptPath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         await ScriptHelper.PrepareScriptForCompilation(context);
 
         var compiler = Substitute.For<IScriptCompiler>();
@@ -34,7 +34,7 @@ public class CompileScriptStepShould
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         await ScriptHelper.PrepareScriptForCompilation(context);
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());

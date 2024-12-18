@@ -5,17 +5,17 @@ namespace TeaPie.Scripts;
 
 internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accessor) : IPipelineStep
 {
-    private readonly IScriptExecutionContextAccessor _accessor = accessor;
+    private readonly IScriptExecutionContextAccessor _scriptContextAccessor = accessor;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        ValidateContext(out var scriptExecution, out var content);
+        ValidateContext(out var scriptExecutionContext, out var content);
 
-        var temporaryPath = await SaveTemporaryScript(context, scriptExecution, content, cancellationToken);
+        var temporaryPath = await SaveTemporaryScript(context, scriptExecutionContext, content, cancellationToken);
 
         context.Logger.LogTrace(
             "Pre-processed script from path '{ScriptPath}' was saved to temporary folder, on path '{TempPath}'",
-            scriptExecution.Script.File.RelativePath,
+            scriptExecutionContext.Script.File.RelativePath,
             temporaryPath);
     }
 
@@ -41,12 +41,11 @@ internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accesso
         return temporaryPath;
     }
 
-    private void ValidateContext(out ScriptExecutionContext scriptExecution, out string content)
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
     {
-        scriptExecution = _accessor.ScriptExecutionContext
-            ?? throw new InvalidOperationException("Unable to save temporary script if script's execution context is null.");
-
-        content = scriptExecution.ProcessedContent
-            ?? throw new InvalidOperationException("Unable to save temporary script if processed content is null.");
+        const string activityName = "save temporary script";
+        ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            scriptExecutionContext.ProcessedContent, out content, activityName, "its processed content");
     }
 }

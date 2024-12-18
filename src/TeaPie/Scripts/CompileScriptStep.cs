@@ -37,10 +37,9 @@ internal sealed class CompileScriptStep(
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
     {
-        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new InvalidOperationException("Unable to compile script if script's execution context is null.");
-
-        content = scriptExecutionContext.ProcessedContent
-            ?? throw new InvalidOperationException("Unable to compile script if its pre-processed content is null.");
+        const string activityName = "compile script";
+        ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            scriptExecutionContext.ProcessedContent, out content, activityName, "its processed content");
     }
 }

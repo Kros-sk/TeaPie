@@ -2,13 +2,10 @@
 
 namespace TeaPie.TestCases;
 
-internal interface ICurrentTestCaseExecutionContextAccessor
-{
-    TestCaseExecutionContext? CurrentTestCaseExecutionContext { get; set; }
-}
+internal interface ICurrentTestCaseExecutionContextAccessor : IContextAccessor<TestCaseExecutionContext>;
 
-[DebuggerDisplay("{CurrentTestCaseExecutionContext}")]
+[DebuggerDisplay("{Context}")]
 internal class CurrentTestCaseExecutionContextAccessor : ICurrentTestCaseExecutionContextAccessor
 {
-    public TestCaseExecutionContext? CurrentTestCaseExecutionContext { get; set; }
+    public TestCaseExecutionContext? Context { get; set; }
 }

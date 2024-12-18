@@ -31,7 +31,7 @@ public class InitializeTestCaseStepShould
         var executionContext = new TestCaseExecutionContext(testCase);
         var accessor = new TestCaseExecutionContextAccessor()
         {
-            TestCaseExecutionContext = executionContext
+            Context = executionContext
         };
 
         var services = new ServiceCollection();

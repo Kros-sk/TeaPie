@@ -25,7 +25,7 @@ public class TesterShould
 
         _currentTestCaseExecutionContextAccessor = new CurrentTestCaseExecutionContextAccessor()
         {
-            CurrentTestCaseExecutionContext = _mockTestCaseExecutionContext
+            Context = _mockTestCaseExecutionContext
         };
 
         _tester = new Tester(_mockReporter, _currentTestCaseExecutionContextAccessor);

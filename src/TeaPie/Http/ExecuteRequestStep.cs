@@ -37,9 +37,9 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
 
     private void ValidateContext(out RequestExecutionContext requestExecutionContext, out HttpRequestMessage request)
     {
-        requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
-            ?? throw new InvalidOperationException("Unable to execute request if execution context is null.");
-        request = requestExecutionContext.Request
-            ?? throw new InvalidOperationException("Unable to execute request if request message is null.");
+        const string activityName = "execute request";
+        ExecutionContextValidator.Validate(_requestExecutionContextAccessor, out requestExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            requestExecutionContext.Request, out request, activityName, "request message");
     }
 }

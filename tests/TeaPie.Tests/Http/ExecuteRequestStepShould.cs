@@ -27,7 +27,7 @@ public class ExecuteRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var step = new ExecuteRequestStep(serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor);
 
@@ -45,7 +45,7 @@ public class ExecuteRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var parser = CreateParser(serviceProvider);
         parser.Parse(context);
@@ -82,7 +82,7 @@ public class ExecuteRequestStepShould
 
         appContext.CurrentTestCase = testCaseContext;
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var parser = CreateParser(serviceProvider);
         parser.Parse(context);

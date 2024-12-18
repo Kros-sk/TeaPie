@@ -29,7 +29,7 @@ internal class ApplicationContext(
 
     public TestCaseExecutionContext? CurrentTestCase
     {
-        get => _currentTestCaseExecutionContextAccessor.CurrentTestCaseExecutionContext;
-        set => _currentTestCaseExecutionContextAccessor.CurrentTestCaseExecutionContext = value;
+        get => _currentTestCaseExecutionContextAccessor.Context;
+        set => _currentTestCaseExecutionContextAccessor.Context = value;
     }
 }

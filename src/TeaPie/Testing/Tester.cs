@@ -20,7 +20,7 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 
     private async Task TestBase(string testName, Func<Task> testFunction)
     {
-        var testCaseExecutionContext = _testCaseExecutionContextAccessor.CurrentTestCaseExecutionContext
+        var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
             ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
 
         var test = new Test(testName, testFunction, new TestResult.NotRun());

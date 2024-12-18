@@ -30,10 +30,9 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
 
     private void ValidateContext(out RequestExecutionContext requestExecutionContext)
     {
-        requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
-            ?? throw new InvalidOperationException("Unable to parse HTTP request if request execution context is null.");
-
-        _ = requestExecutionContext.RawContent
-            ?? throw new InvalidOperationException("Unable to parse HTTP request if its content is null.");
+        const string activityName = "parse HTTP request";
+        ExecutionContextValidator.Validate(_requestExecutionContextAccessor, out requestExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            requestExecutionContext.RawContent, out _, activityName, "its content");
     }
 }

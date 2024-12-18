@@ -58,7 +58,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         var provider = scope.ServiceProvider;
 
         var accessor = provider.GetRequiredService<IRequestExecutionContextAccessor>();
-        accessor.RequestExecutionContext = requestExecutionContext;
+        accessor.Context = requestExecutionContext;
 
         newSteps.Add(provider.GetStep<ParseHttpRequestStep>());
         newSteps.Add(provider.GetStep<ExecuteRequestStep>());
@@ -66,13 +66,10 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out string content)
     {
-        testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
-            ?? throw new InvalidOperationException(
-                "Unable to prepare steps for requests if test case's execution context is null.");
-
-        content = testCaseExecutionContext.RequestsFileContent
-            ?? throw new InvalidOperationException(
-                "Unable to prepare steps for requests if the requests file's content is null.");
+        const string activityName = "generate steps for requests";
+        ExecutionContextValidator.Validate(_testCaseExecutionContextAccessor, out testCaseExecutionContext, activityName);
+        ExecutionContextValidator.ValidateParameter(
+            testCaseExecutionContext.RequestsFileContent, out content, activityName, "the requests file's content");
     }
 
     [GeneratedRegex(HttpFileParserConstants.HttpRequestSeparatorDirectiveLineRegex, RegexOptions.IgnoreCase)]

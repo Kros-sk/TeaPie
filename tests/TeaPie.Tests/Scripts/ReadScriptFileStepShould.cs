@@ -14,7 +14,7 @@ public class ReadScriptFileStepShould
             .WithPath(ScriptIndex.RootSubFolderFullPath)
             .Build();
 
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         var step = new ReadScriptFileStep(accessor);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<FileNotFoundException>();
@@ -29,7 +29,7 @@ public class ReadScriptFileStepShould
             .WithPath(ScriptIndex.RootSubFolderFullPath)
             .Build();
 
-        var accessor = new ScriptExecutionContextAccessor() { ScriptExecutionContext = context };
+        var accessor = new ScriptExecutionContextAccessor() { Context = context };
         var step = new ReadScriptFileStep(accessor);
 
         await step.Execute(appContext);

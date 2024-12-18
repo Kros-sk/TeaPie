@@ -19,7 +19,7 @@ public class ParseHttpRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var parser = CreateParser();
         var step = new ParseHttpRequestStep(accessor, parser);
@@ -36,7 +36,7 @@ public class ParseHttpRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var parser = CreateParser();
         var step = new ParseHttpRequestStep(accessor, parser);
@@ -58,7 +58,7 @@ public class ParseHttpRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var parser = Substitute.For<IHttpRequestParser>();
         var step = new ParseHttpRequestStep(accessor, parser);
@@ -82,7 +82,7 @@ public class ParseHttpRequestStepShould
             .WithPath(RequestsIndex.RootFolderFullPath)
             .Build();
 
-        var accessor = new RequestExecutionContextAccessor() { RequestExecutionContext = context };
+        var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var step = new ParseHttpRequestStep(accessor, parser);
 

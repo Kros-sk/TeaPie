@@ -33,7 +33,7 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
         var provider = scope.ServiceProvider;
 
         var accessor = provider.GetRequiredService<ITestCaseExecutionContextAccessor>();
-        accessor.TestCaseExecutionContext = testCaseExecutionContext;
+        accessor.Context = testCaseExecutionContext;
 
         newSteps.Add(provider.GetStep<InitializeTestCaseStep>());
         newSteps.Add(provider.GetStep<FinishTestCaseStep>());
