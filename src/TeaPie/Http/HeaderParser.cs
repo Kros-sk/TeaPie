@@ -22,14 +22,6 @@ internal class HeaderParser : ILineParser
     private static void ResolveHeader(HttpParsingContext context, string name, string value)
     {
         HeaderNameValidator.CheckHeader(name, value);
-
-        if (HttpFileParserConstants.SpecialHeaders.Contains(name))
-        {
-            context.SpecialHeaders.Add(name, value);
-        }
-        else if (!context.Headers.TryAddWithoutValidation(name, value))
-        {
-            throw new InvalidOperationException($"Unable to resolve header '{name} : {value}'");
-        }
+        context.AddHeader(name, value);
     }
 }

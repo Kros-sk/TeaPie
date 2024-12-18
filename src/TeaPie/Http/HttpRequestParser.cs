@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Text;
 using TeaPie.Http.Headers;
 using TeaPie.Variables;
 
@@ -20,13 +19,13 @@ internal class HttpRequestParser(
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IEnumerable<ILineParser> _lineParsers =
-        [
-            new CommentLineParser(),
-            new EmptyLineParser(),
-            new MethodAndUriParser(),
-            new HeaderParser(),
-            new BodyParser()
-        ];
+    [
+        new CommentLineParser(),
+        new EmptyLineParser(),
+        new MethodAndUriParser(),
+        new HeaderParser(),
+        new BodyParser()
+    ];
 
     public void Parse(RequestExecutionContext requestExecutionContext)
     {
@@ -80,14 +79,7 @@ internal class HttpRequestParser(
         var bodyContent = context.BodyBuilder.ToString().Trim();
         if (!string.IsNullOrEmpty(bodyContent))
         {
-            var content = new StringContent(bodyContent, Encoding.UTF8);
-
-            if (context.Headers.TryGetValues("Content-Type", out var contentType) && contentType?.Count() == 1)
-            {
-                content.Headers.ContentType = new MediaTypeHeaderValue(contentType.First());
-            }
-
-            requestMessage.Content = content;
+            requestMessage.Content = new StringContent(bodyContent, Encoding.UTF8);
         }
     }
 }

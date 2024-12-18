@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Headers;
 
 namespace TeaPie.Http.Headers;
 
@@ -18,100 +17,48 @@ internal class HeadersHandler : IHeadersHandler
         new HostHeaderHandler()
     ];
 
+    #region Headers setting
     public void SetHeaders(HttpParsingContext parsingContext, HttpRequestMessage requestMessage)
-    {
-        SetNormalHeaders(parsingContext, requestMessage);
-        SetSpecialHeaders(parsingContext, requestMessage);
-    }
-
-    public string GetHeader(string name, HttpRequestMessage requestMessage, string defaultValue = "")
-    {
-        if (TryGetNormalHeader(name, requestMessage.Headers, out var found))
-        {
-            return found;
-        }
-        else if (TryGetHandler(name, out var handler))
-        {
-            var value = handler.GetHeader(requestMessage);
-            return !value.Equals(string.Empty) ? value : defaultValue;
-        }
-
-        return defaultValue;
-    }
-
-    public string GetHeader(string name, HttpResponseMessage responseMessage, string defaultValue = "")
-    {
-        if (TryGetNormalHeader(name, responseMessage.Headers, out var found))
-        {
-            return found;
-        }
-        else if (TryGetHandler(name, out var handler))
-        {
-            var value = handler.GetHeader(responseMessage);
-            return !value.Equals(string.Empty) ? value : defaultValue;
-        }
-
-        return defaultValue;
-    }
-
-    private static bool TryGetNormalHeader(string name, HttpHeaders headers, [NotNullWhen(true)] out string? found)
-    {
-        if (headers.TryGetValues(name, out var values))
-        {
-            found = string.Join(", ", values);
-            return true;
-        }
-        else
-        {
-            found = null;
-            return false;
-        }
-    }
-
-    private static void SetNormalHeaders(HttpParsingContext parsingContext, HttpRequestMessage requestMessage)
     {
         foreach (var header in parsingContext.Headers)
         {
             HeaderNameValidator.CheckHeader(header.Key, string.Join(", ", header.Value));
-
-            if (!requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value))
-            {
-                throw new InvalidOperationException($"Unable to set header '{header.Key} : {header.Value}'");
-            }
+            SetHeader(header, requestMessage);
         }
     }
 
-    private void SetSpecialHeaders(HttpParsingContext parsingContext, HttpRequestMessage requestMessage)
+    private void SetHeader(KeyValuePair<string, string> header, HttpRequestMessage requestMessage)
     {
-        foreach (var header in parsingContext.SpecialHeaders)
-        {
-            HeaderNameValidator.CheckHeader(header.Key, header.Value);
-
-            if (TryGetHandler(header.Key, out var handler))
-            {
-                handler.SetHeader(header.Value, requestMessage);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Unable to set header '{header.Key} : {header.Value}'");
-            }
-        }
+        var handler = GetHandler(header.Key);
+        handler.SetHeader(header.Value, requestMessage);
     }
+    #endregion
 
-    private bool TryGetHandler(string headerName, [NotNullWhen(true)] out IHeaderHandler? foundHandler)
+    #region Headers getting
+    public string GetHeader(string name, HttpRequestMessage requestMessage, string defaultValue = "")
+        => GetHeader(name, GetHeaderFromRequest, requestMessage, defaultValue);
+
+    public string GetHeader(string name, HttpResponseMessage responseMessage, string defaultValue = "")
+        => GetHeader(name, GetHeaderFromResponse, responseMessage, defaultValue);
+
+    private string GetHeader<T>(string name, Func<IHeaderHandler, T, string> getter, T message, string defaultValue = "")
+        where T : class
     {
-        foreach (var handler in _handlers)
-        {
-            if (handler.CanResolve(headerName))
-            {
-                foundHandler = handler;
-                return true;
-            }
-        }
+        var handler = GetHandler(name);
 
-        foundHandler = null;
-        return false;
+        var value = getter(handler, message);
+        return !value.Equals(string.Empty) ? value : defaultValue;
     }
+
+    private string GetHeaderFromRequest(IHeaderHandler handler, HttpRequestMessage requestMessage)
+        => handler.GetHeader(requestMessage);
+
+    private string GetHeaderFromResponse(IHeaderHandler handler, HttpResponseMessage responseMessage)
+        => handler.GetHeader(responseMessage);
+    #endregion
+
+    private IHeaderHandler GetHandler(string headerName)
+        => _handlers.FirstOrDefault(h => h.CanResolve(headerName), new DefaultHeaderHandler(headerName));
 
     public static void CheckIfContentExists(string headerName, [NotNull] HttpContent? content)
         => _ = content

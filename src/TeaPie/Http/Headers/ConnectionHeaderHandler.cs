@@ -16,9 +16,9 @@ internal class ConnectionHeaderHandler : IHeaderHandler
             {
                 requestMessage.Headers.ConnectionClose = true;
             }
-            else
+            else if (!requestMessage.Headers.TryAddWithoutValidation(HeaderName, val))
             {
-                requestMessage.Headers.TryAddWithoutValidation(HeaderName, val);
+                throw new InvalidOperationException($"Unable to resolve header '{HeaderName}' with value '{val}'.");
             }
         }
     }

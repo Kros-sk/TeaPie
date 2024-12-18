@@ -14,7 +14,7 @@ public class HeadersResolverShould
         Action<HttpRequestMessage> assertHeader)
     {
         var parsingContext = new HttpParsingContext(new HttpClient().DefaultRequestHeaders);
-        parsingContext.Headers.Add(headerName, headerValue);
+        parsingContext.AddHeader(headerName, headerValue);
 
         var requestMessage = new HttpRequestMessage();
         var headersResolver = new HeadersHandler();
@@ -31,13 +31,8 @@ public class HeadersResolverShould
         string headerValue,
         Action<HttpRequestMessage> assertHeader)
     {
-        var parsingContext = new HttpParsingContext(new HttpClient().DefaultRequestHeaders)
-        {
-            SpecialHeaders = new()
-            {
-                { headerName, headerValue }
-            }
-        };
+        var parsingContext = new HttpParsingContext(new HttpClient().DefaultRequestHeaders);
+        parsingContext.AddHeader(headerName, headerValue);
 
         var requestMessage = new HttpRequestMessage
         {
