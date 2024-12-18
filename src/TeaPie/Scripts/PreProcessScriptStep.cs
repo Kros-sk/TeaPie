@@ -16,13 +16,7 @@ internal sealed class PreProcessScriptStep(
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new NullReferenceException("Script's execution context is null.");
-
-        if (scriptExecutionContext.RawContent is null)
-        {
-            throw new InvalidOperationException("Pre-processing of the script can not be done with null content.");
-        }
+        ValidateContext(out var scriptExecutionContext, out var content);
 
         context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' started.",
             scriptExecutionContext.Script.File.RelativePath);
@@ -32,7 +26,7 @@ internal sealed class PreProcessScriptStep(
         scriptExecutionContext.ProcessedContent =
             await _scriptPreProcessor.ProcessScript(
                 scriptExecutionContext.Script.File.Path,
-                scriptExecutionContext.RawContent,
+                content,
                 context.Path,
                 context.TempFolderPath,
                 referencedScriptsPaths);
@@ -49,29 +43,37 @@ internal sealed class PreProcessScriptStep(
         {
             if (!context.UserDefinedScripts.ContainsKey(scriptPath))
             {
-                var relativePath = scriptPath.TrimRootPath(context.Path, true);
-
-                var folder = context.TestCases.Values
-                    .Select(x => x.RequestsFile.ParentFolder)
-                    .FirstOrDefault(x => x.Path == Directory.GetParent(scriptPath)?.FullName)
-                    ?? throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
-
-                var script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
-
-                var scriptContext = new ScriptExecutionContext(script);
-
-                var steps = PrepareSteps(context, scriptContext);
-
-                _pipeline.InsertSteps(this, steps);
-
-                context.Logger.LogDebug(
-                    "For the referenced script '{RefScriptPath}', {Count} steps of pre-process were scheduled in the pipeline.",
-                    relativePath,
-                    steps.Length);
-
-                context.RegisterUserDefinedScript(scriptPath, script);
+                InsertStepsForScript(context, scriptPath);
             }
         }
+    }
+
+    private void InsertStepsForScript(ApplicationContext context, string scriptPath)
+    {
+        PrepareSteps(context, scriptPath, out var relativePath, out var script, out var steps);
+
+        _pipeline.InsertSteps(this, steps);
+
+        context.Logger.LogDebug(
+            "For the referenced script '{RefScriptPath}', {Count} steps of pre-process were scheduled in the pipeline.",
+            relativePath,
+            steps.Length);
+
+        context.RegisterUserDefinedScript(scriptPath, script);
+    }
+
+    private static void PrepareSteps(ApplicationContext context, string scriptPath, out string relativePath, out Script script, out IPipelineStep[] steps)
+    {
+        relativePath = scriptPath.TrimRootPath(context.Path, true);
+        var folder = context.TestCases.Values
+            .Select(x => x.RequestsFile.ParentFolder)
+            .FirstOrDefault(x => x.Path == Directory.GetParent(scriptPath)?.FullName)
+            ?? throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
+
+        script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
+        var scriptContext = new ScriptExecutionContext(script);
+
+        steps = PrepareSteps(context, scriptContext);
     }
 
     private static IPipelineStep[] PrepareSteps(ApplicationContext context, ScriptExecutionContext scriptContext)
@@ -85,5 +87,14 @@ internal sealed class PreProcessScriptStep(
         return [provider.GetStep<ReadScriptFileStep>(),
             provider.GetStep<PreProcessScriptStep>(),
             provider.GetStep<SaveTempScriptStep>()];
+    }
+
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
+    {
+        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new InvalidOperationException("Unable to pre-process script if script's execution context is null.");
+
+        content = scriptExecutionContext.RawContent
+            ?? throw new InvalidOperationException("Unable to pre-process script if script's content is null.");
     }
 }

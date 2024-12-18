@@ -14,15 +14,9 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
-            ?? throw new NullReferenceException("Test case's execution context is null.");
+        ValidateContext(out var testCaseExecutionContext, out var content);
 
-        if (testCaseExecutionContext.RequestsFileContent is null)
-        {
-            throw new InvalidOperationException("Unable to prepare steps for requests, if the requests file's content is null.");
-        }
-
-        var separatedRequests = RequestsSeparatorLineRegex().Split(testCaseExecutionContext.RequestsFileContent)
+        var separatedRequests = RequestsSeparatorLineRegex().Split(content)
             .Where(requestContent => !requestContent.Equals(string.Empty));
 
         AddStepsForRequests(context, testCaseExecutionContext, separatedRequests);
@@ -68,6 +62,17 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
         newSteps.Add(provider.GetStep<ParseHttpRequestStep>());
         newSteps.Add(provider.GetStep<ExecuteRequestStep>());
+    }
+
+    private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out string content)
+    {
+        testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
+            ?? throw new InvalidOperationException(
+                "Unable to prepare steps for requests if test case's execution context is null.");
+
+        content = testCaseExecutionContext.RequestsFileContent
+            ?? throw new InvalidOperationException(
+                "Unable to prepare steps for requests if the requests file's content is null.");
     }
 
     [GeneratedRegex(HttpFileParserConstants.HttpRequestSeparatorDirectiveLineRegex, RegexOptions.IgnoreCase)]

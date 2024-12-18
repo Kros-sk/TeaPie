@@ -14,8 +14,7 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
-            ?? throw new NullReferenceException("Test case's execution context is null.");
+        ValidateContext(out var testCaseExecutionContext);
 
         context.CurrentTestCase = testCaseExecutionContext;
         AddSteps(context, testCaseExecutionContext);
@@ -100,5 +99,11 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
 
         newSteps.Add(provider.GetStep<ReadHttpFileStep>());
         newSteps.Add(provider.GetStep<GenerateStepsForRequestsStep>());
+    }
+
+    private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext)
+    {
+        testCaseExecutionContext = _testCaseExecutionContextAccessor.TestCaseExecutionContext
+            ?? throw new InvalidOperationException("Unable to initialize test case if its execution context is null.");
     }
 }

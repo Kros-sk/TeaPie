@@ -9,8 +9,7 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new NullReferenceException("Script's execution context is null.");
+        ValidateContext(out var scriptExecutionContext);
 
         try
         {
@@ -29,4 +28,8 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
             throw;
         }
     }
+
+    private ScriptExecutionContext ValidateContext(out ScriptExecutionContext scriptExecutionContext)
+        => scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new InvalidOperationException("Unable to read script file if script's execution context is null.");
 }

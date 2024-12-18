@@ -13,20 +13,14 @@ internal sealed class CompileScriptStep(
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new NullReferenceException("Script's execution context is null.");
-
-        if (scriptExecutionContext.ProcessedContent is null)
-        {
-            throw new InvalidOperationException("Script can not be compiled, when pre-processed content is null.");
-        }
+        ValidateContext(out var scriptExecutionContext, out var content);
 
         try
         {
             context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
                 scriptExecutionContext.Script.File.RelativePath);
 
-            scriptExecutionContext.ScriptObject = _compiler.CompileScript(scriptExecutionContext.ProcessedContent);
+            scriptExecutionContext.ScriptObject = _compiler.CompileScript(content);
 
             context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
                 scriptExecutionContext.Script.File.RelativePath);
@@ -39,5 +33,14 @@ internal sealed class CompileScriptStep(
         }
 
         await Task.CompletedTask;
+    }
+
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
+    {
+        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new InvalidOperationException("Unable to compile script if script's execution context is null.");
+
+        content = scriptExecutionContext.ProcessedContent
+            ?? throw new InvalidOperationException("Unable to compile script if its pre-processed content is null.");
     }
 }

@@ -10,16 +10,10 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
-            ?? throw new NullReferenceException("Request's execution context is null.");
-
-        if (requestExecutionContext.RawContent is null)
-        {
-            throw new InvalidOperationException("Parsing of the request file can not be done with null content.");
-        }
+        ValidateContext(out var requestExecutionContext);
 
         context.Logger.LogTrace("Parsing of the request on path '{Path}' started.",
-            requestExecutionContext.RequestFile.RelativePath);
+                requestExecutionContext.RequestFile.RelativePath);
 
         _parser.Parse(requestExecutionContext);
 
@@ -28,9 +22,18 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
             requestExecutionContext.Name);
 
         context.Logger.LogTrace("Parsing of the request {RequestName} on path '{Path}' finished successfully.",
-            requestExecutionContext.Name.Equals(string.Empty) ? string.Empty : $"'{requestExecutionContext.Name}'",
-            requestExecutionContext.RequestFile.RelativePath);
+                requestExecutionContext.Name.Equals(string.Empty) ? string.Empty : $"'{requestExecutionContext.Name}'",
+                requestExecutionContext.RequestFile.RelativePath);
 
         await Task.CompletedTask;
+    }
+
+    private void ValidateContext(out RequestExecutionContext requestExecutionContext)
+    {
+        requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
+            ?? throw new InvalidOperationException("Unable to parse HTTP request if request execution context is null.");
+
+        _ = requestExecutionContext.RawContent
+            ?? throw new InvalidOperationException("Unable to parse HTTP request if its content is null.");
     }
 }

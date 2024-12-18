@@ -11,11 +11,7 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
-            ?? throw new NullReferenceException("Request's execution context is null.");
-
-        var request = requestExecutionContext.Request ??
-            throw new InvalidOperationException("Unable to execute request if request message is null.");
+        ValidateContext(out var requestExecutionContext, out var request);
 
         var response = await ExecuteRequest(context, request, cancellationToken);
 
@@ -37,5 +33,13 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
 
         return response;
+    }
+
+    private void ValidateContext(out RequestExecutionContext requestExecutionContext, out HttpRequestMessage request)
+    {
+        requestExecutionContext = _requestExecutionContextAccessor.RequestExecutionContext
+            ?? throw new InvalidOperationException("Unable to execute request if execution context is null.");
+        request = requestExecutionContext.Request
+            ?? throw new InvalidOperationException("Unable to execute request if request message is null.");
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
 
 namespace TeaPie.Scripts;
@@ -9,26 +10,11 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
-            ?? throw new NullReferenceException("Script's execution context is null.");
-
-        var script = scriptExecutionContext.ScriptObject;
-
-        ArgumentNullException.ThrowIfNull(script, nameof(script));
+        ValidateContext(out var scriptExecutionContext, out var script);
 
         try
         {
-            context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' started.",
-                GetTypeOfScript(scriptExecutionContext),
-                scriptExecutionContext.Script.File.RelativePath);
-
-            await script.RunAsync(
-                globals: new Globals() { tp = TeaPie.Instance },
-                cancellationToken: cancellationToken);
-
-            context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' finished.",
-                GetTypeOfScript(scriptExecutionContext),
-                scriptExecutionContext.Script.File.RelativePath);
+            await CompileScript(context, scriptExecutionContext, script, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -37,6 +23,25 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
             throw;
         }
+    }
+
+    private static async Task CompileScript(
+        ApplicationContext context,
+        ScriptExecutionContext scriptExecutionContext,
+        Script<object> script,
+        CancellationToken cancellationToken)
+    {
+        context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' started.",
+            GetTypeOfScript(scriptExecutionContext),
+            scriptExecutionContext.Script.File.RelativePath);
+
+        await script.RunAsync(
+            globals: new Globals() { tp = TeaPie.Instance },
+            cancellationToken: cancellationToken);
+
+        context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' finished.",
+            GetTypeOfScript(scriptExecutionContext),
+            scriptExecutionContext.Script.File.RelativePath);
     }
 
     private static string GetTypeOfScript(ScriptExecutionContext scriptExecutionContext)
@@ -53,5 +58,14 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
             var p when p.EndsWith($"{Constants.PostResponseSuffix}{Constants.ScriptFileExtension}") => "Post-Response script",
             _ => "User-defined script"
         };
+    }
+
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out Script<object> script)
+    {
+        scriptExecutionContext = _scriptContextAccessor.ScriptExecutionContext
+            ?? throw new InvalidOperationException("Unable to execute script if script's execution context is null.");
+
+        script = scriptExecutionContext.ScriptObject
+            ?? throw new InvalidOperationException("Unable to execute script if script object is null.");
     }
 }

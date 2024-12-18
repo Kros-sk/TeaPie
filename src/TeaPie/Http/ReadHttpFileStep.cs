@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
+using TeaPie.StructureExploration;
 using TeaPie.TestCases;
+using File = System.IO.File;
 
 namespace TeaPie.Http;
 
@@ -10,10 +12,7 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var testCaseExecutionContext = _testCaseContextAccessor.TestCaseExecutionContext
-            ?? throw new NullReferenceException("Test case's execution context is null.");
-
-        var testCase = testCaseExecutionContext.TestCase;
+        ValidateContext(out var testCaseExecutionContext, out var testCase);
 
         try
         {
@@ -31,5 +30,13 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
 
             throw;
         }
+    }
+
+    private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out TestCase testCase)
+    {
+        testCaseExecutionContext = _testCaseContextAccessor.TestCaseExecutionContext
+            ?? throw new InvalidOperationException("Unable to read file if test case's execution context is null.");
+
+        testCase = testCaseExecutionContext.TestCase;
     }
 }

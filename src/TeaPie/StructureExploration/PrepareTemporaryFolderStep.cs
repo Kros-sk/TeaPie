@@ -13,19 +13,29 @@ internal sealed class PrepareTemporaryFolderStep(IPipeline pipeline) : IPipeline
         {
             context.TempFolderPath = Path.Combine(Path.GetTempPath(), Constants.ApplicationName);
 
-            if (Directory.Exists(context.TempFolderPath))
-            {
-                await context.ServiceProvider.GetStep<CleanUpTemporaryFolderStep>().Execute(context, cancellationToken);
-                context.Logger.LogTrace(
-                    "Since temporary folder structure on path '{TempPath}' already existed, it was deleted to prevent " +
-                    "incorrect structure of folders.",
-                    context.TempFolderPath);
-            }
+            await CleanTemporaryFolderIfExists(context, cancellationToken);
 
             _pipeline.AddSteps(context.ServiceProvider.GetStep<CleanUpTemporaryFolderStep>());
             context.Logger.LogDebug("Temporary folder clean-up step was scheduled at the end of the pipeline.");
         }
 
+        CreateTemporaryFolderIfDoesntExistYet(context);
+    }
+
+    private static async Task CleanTemporaryFolderIfExists(ApplicationContext context, CancellationToken cancellationToken)
+    {
+        if (Directory.Exists(context.TempFolderPath))
+        {
+            await context.ServiceProvider.GetStep<CleanUpTemporaryFolderStep>().Execute(context, cancellationToken);
+            context.Logger.LogTrace(
+                "Since temporary folder structure on path '{TempPath}' already existed, it was deleted to prevent " +
+                "incorrect structure of folders.",
+                context.TempFolderPath);
+        }
+    }
+
+    private static void CreateTemporaryFolderIfDoesntExistYet(ApplicationContext context)
+    {
         if (!Directory.Exists(context.TempFolderPath))
         {
             Directory.CreateDirectory(context.TempFolderPath);

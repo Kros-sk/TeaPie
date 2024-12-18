@@ -9,18 +9,25 @@ internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accesso
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        var scriptExecution = _accessor.ScriptExecutionContext ??
-            throw new NullReferenceException("Script's execution context is null.");
+        ValidateContext(out var scriptExecution, out var content);
 
-        if (scriptExecution.ProcessedContent is null)
-        {
-            throw new InvalidOperationException(
-                "Processed content of the script can not be null when storing to temporary script file.");
-        }
+        var temporaryPath = await SaveTemporaryScript(context, scriptExecution, content, cancellationToken);
 
-        var tmpPath = Path.Combine(context.TempFolderPath, scriptExecution.Script.File.RelativePath);
+        context.Logger.LogTrace(
+            "Pre-processed script from path '{ScriptPath}' was saved to temporary folder, on path '{TempPath}'",
+            scriptExecution.Script.File.RelativePath,
+            temporaryPath);
+    }
 
-        var parent = Directory.GetParent(tmpPath);
+    private static async Task<string> SaveTemporaryScript(
+        ApplicationContext context,
+        ScriptExecutionContext scriptExecution,
+        string content,
+        CancellationToken cancellationToken)
+    {
+        var temporaryPath = Path.Combine(context.TempFolderPath, scriptExecution.Script.File.RelativePath);
+
+        var parent = Directory.GetParent(temporaryPath);
         ArgumentNullException.ThrowIfNull(parent);
 
         if (!Directory.Exists(parent.FullName))
@@ -28,13 +35,18 @@ internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accesso
             Directory.CreateDirectory(parent.FullName);
         }
 
-        await File.WriteAllTextAsync(tmpPath, scriptExecution.ProcessedContent, cancellationToken);
+        await File.WriteAllTextAsync(temporaryPath, content, cancellationToken);
 
-        scriptExecution.TemporaryPath = tmpPath;
+        scriptExecution.TemporaryPath = temporaryPath;
+        return temporaryPath;
+    }
 
-        context.Logger.LogTrace("Pre-processed script from path '{ScriptPath}' was saved to temporary folder," +
-            " on path '{TempPath}'",
-            scriptExecution.Script.File.RelativePath,
-            tmpPath);
+    private void ValidateContext(out ScriptExecutionContext scriptExecution, out string content)
+    {
+        scriptExecution = _accessor.ScriptExecutionContext
+            ?? throw new InvalidOperationException("Unable to save temporary script if script's execution context is null.");
+
+        content = scriptExecution.ProcessedContent
+            ?? throw new InvalidOperationException("Unable to save temporary script if processed content is null.");
     }
 }
