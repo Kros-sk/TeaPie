@@ -23,7 +23,7 @@ public class VariablesCollection : IEnumerable<Variable>
             var variable = _variables[key];
             return variable.GetValue<T>();
         }
-        catch (Exception)
+        catch
         {
             return defaultValue;
         }

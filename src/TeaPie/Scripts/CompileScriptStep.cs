@@ -15,24 +15,20 @@ internal sealed class CompileScriptStep(
     {
         ValidateContext(out var scriptExecutionContext, out var content);
 
-        try
-        {
-            context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
-                scriptExecutionContext.Script.File.RelativePath);
-
-            scriptExecutionContext.ScriptObject = _compiler.CompileScript(content);
-
-            context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
-                scriptExecutionContext.Script.File.RelativePath);
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError(message: ex.Message);
-
-            throw;
-        }
+        CompileScript(context, scriptExecutionContext, content);
 
         await Task.CompletedTask;
+    }
+
+    private void CompileScript(ApplicationContext context, ScriptExecutionContext scriptExecutionContext, string content)
+    {
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
+            scriptExecutionContext.Script.File.RelativePath);
+
+        scriptExecutionContext.ScriptObject = _compiler.CompileScript(content);
+
+        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
+            scriptExecutionContext.Script.File.RelativePath);
     }
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)

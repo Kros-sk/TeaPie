@@ -89,7 +89,7 @@ public sealed class ApplicationBuilder
     private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {
         var pipeline = provider.GetRequiredService<IPipeline>();
-        pipeline.AddSteps(provider.GetStep<StructureExplorationStep>());
+        pipeline.AddSteps(provider.GetStep<ExploreStructureStep>());
         pipeline.AddSteps(provider.GetStep<PrepareTemporaryFolderStep>());
         pipeline.AddSteps(provider.GetStep<GenerateStepsForTestCasesStep>());
 

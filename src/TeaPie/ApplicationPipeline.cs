@@ -5,7 +5,8 @@ namespace TeaPie;
 
 internal class ApplicationPipeline : IPipeline
 {
-    protected readonly StepsCollection _pipelineSteps = [];
+    private readonly StepsCollection _pipelineSteps = [];
+    private bool _errorOccured;
 
     public async Task Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -13,15 +14,40 @@ internal class ApplicationPipeline : IPipeline
 
         var enumerator = _pipelineSteps.GetEnumerator();
 
+        await Run(context, enumerator, cancellationToken);
+
+        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
+            _pipelineSteps.Count);
+    }
+
+    private async Task Run(
+        ApplicationContext context, IEnumerator<IPipelineStep> enumerator, CancellationToken cancellationToken)
+    {
         IPipelineStep step;
         while (enumerator.MoveNext())
         {
             step = enumerator.Current;
+            await ExecuteStep(step, context, cancellationToken);
+
+            if (_errorOccured)
+            {
+                context.Logger.LogError("Error occured during pipeline run. Shutting down the application.");
+                Environment.Exit(1);
+            }
+        }
+    }
+
+    private async Task ExecuteStep(IPipelineStep step, ApplicationContext context, CancellationToken cancellationToken)
+    {
+        try
+        {
             await step.Execute(context, cancellationToken);
         }
-
-        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
-            _pipelineSteps.Count);
+        catch (Exception ex)
+        {
+            _errorOccured = true;
+            ExceptionHandler.Handle(ex, step.GetType(), context.Logger);
+        }
     }
 
     public void AddSteps(params IPipelineStep[] steps)

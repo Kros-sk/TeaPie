@@ -11,22 +11,19 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
     {
         ValidateContext(out var scriptExecutionContext);
 
-        try
-        {
-            scriptExecutionContext.RawContent =
-                await File.ReadAllTextAsync(scriptExecutionContext.Script.File.Path, cancellationToken);
+        await ReadScriptFile(context, scriptExecutionContext, cancellationToken);
+    }
 
-            context.Logger.LogTrace("Content of the script file on path '{ScriptPath}' was read.",
-                scriptExecutionContext.Script.File.RelativePath);
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError("Reading of the script on path '{ScriptPath}' failed, because of '{ErrorMessage}'.",
-                scriptExecutionContext.Script.File.RelativePath,
-                ex.Message);
+    private static async Task ReadScriptFile(
+        ApplicationContext context,
+        ScriptExecutionContext scriptExecutionContext,
+        CancellationToken cancellationToken)
+    {
+        scriptExecutionContext.RawContent =
+            await File.ReadAllTextAsync(scriptExecutionContext.Script.File.Path, cancellationToken);
 
-            throw;
-        }
+        context.Logger.LogTrace("Content of the script file on path '{ScriptPath}' was read.",
+            scriptExecutionContext.Script.File.RelativePath);
     }
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext)

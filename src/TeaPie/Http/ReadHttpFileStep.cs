@@ -14,22 +14,20 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
     {
         ValidateContext(out var testCaseExecutionContext, out var testCase);
 
-        try
-        {
-            testCaseExecutionContext.RequestsFileContent =
-                await File.ReadAllTextAsync(testCase.RequestsFile.Path, cancellationToken);
+        await ReadHttpFile(context, testCaseExecutionContext, testCase, cancellationToken);
+    }
 
-            context.Logger.LogTrace("Content of the requests file on path '{RequestPath}' was read.",
-                testCase.RequestsFile.RelativePath);
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError("Reading of the requests file on path '{Path}' failed, because of '{ErrorMessage}'.",
-                testCase.RequestsFile.RelativePath,
-                ex.Message);
+    private static async Task ReadHttpFile(
+        ApplicationContext context,
+        TestCaseExecutionContext testCaseExecutionContext,
+        TestCase testCase,
+        CancellationToken cancellationToken)
+    {
+        testCaseExecutionContext.RequestsFileContent =
+            await File.ReadAllTextAsync(testCase.RequestsFile.Path, cancellationToken);
 
-            throw;
-        }
+        context.Logger.LogTrace("Content of the requests file on path '{RequestPath}' was read.",
+            testCase.RequestsFile.RelativePath);
     }
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out TestCase testCase)

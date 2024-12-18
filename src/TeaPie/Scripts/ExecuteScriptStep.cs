@@ -12,20 +12,10 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
     {
         ValidateContext(out var scriptExecutionContext, out var script);
 
-        try
-        {
-            await CompileScript(context, scriptExecutionContext, script, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError("Error occured during execution of the script on path '{RelativePath}'. Cause: {Cause}.",
-                scriptExecutionContext.Script.File.RelativePath, ex.Message);
-
-            throw;
-        }
+        await ExecuteScript(context, scriptExecutionContext, script, cancellationToken);
     }
 
-    private static async Task CompileScript(
+    private static async Task ExecuteScript(
         ApplicationContext context,
         ScriptExecutionContext scriptExecutionContext,
         Script<object> script,
