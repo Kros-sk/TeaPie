@@ -41,8 +41,12 @@ internal class HeadersHandler : IHeadersHandler
     public string GetHeader(string name, HttpResponseMessage responseMessage, string defaultValue = "")
         => GetHeader(name, GetHeaderFromResponse, responseMessage, defaultValue);
 
-    private string GetHeader<T>(string name, Func<IHeaderHandler, T, string> getter, T message, string defaultValue = "")
-        where T : class
+    private string GetHeader<TMessage>(
+        string name,
+        Func<IHeaderHandler, TMessage, string> getter,
+        TMessage message,
+        string defaultValue = "")
+        where TMessage : class
     {
         var handler = GetHandler(name);
 

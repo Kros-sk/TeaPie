@@ -10,10 +10,10 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
 {
     private readonly IHeadersHandler _headersHandler = serviceProvider.GetRequiredService<IHeadersHandler>();
     private readonly IBodyResolver[] _bodyResolvers =
-        [
-            new JsonBodyResolver(),
-            new XmlBodyResolver()
-        ];
+    [
+        new JsonBodyResolver(),
+        new XmlBodyResolver()
+    ];
 
     private readonly RequestVariableDescription _requestVariable = requestVariable;
 
@@ -41,28 +41,41 @@ internal partial class RequestVariablesResolver(RequestVariableDescription reque
     {
         if (IsHeaders())
         {
-            if (message is HttpRequestMessage requestMessage)
-            {
-                return ResolveHeaders(requestMessage);
-            }
-            else if (message is HttpResponseMessage responseMessage)
-            {
-                return ResolveHeaders(responseMessage);
-            }
+            return ResolveHeaders(message);
         }
         else if (IsBody())
         {
-            if (content is not null)
-            {
-                var body = await content.ReadAsStringAsync();
-                var contentType = content.Headers.ContentType?.MediaType;
-                return ResolveBody(body, contentType);
-            }
-
-            return string.Empty;
+            return await ResolveBody(content);
         }
 
         return _requestVariable.ToString();
+    }
+
+    private string ResolveHeaders<TMessage>(TMessage message)
+        where TMessage : class
+    {
+        if (message is HttpRequestMessage requestMessage)
+        {
+            return ResolveHeaders(requestMessage);
+        }
+        else if (message is HttpResponseMessage responseMessage)
+        {
+            return ResolveHeaders(responseMessage);
+        }
+
+        return _requestVariable.ToString();
+    }
+
+    private async Task<string> ResolveBody(HttpContent? content)
+    {
+        if (content is not null)
+        {
+            var body = await content.ReadAsStringAsync();
+            var contentType = content.Headers.ContentType?.MediaType;
+            return ResolveBody(body, contentType);
+        }
+
+        return string.Empty;
     }
 
     private string ResolveHeaders(HttpRequestMessage requestMessage)

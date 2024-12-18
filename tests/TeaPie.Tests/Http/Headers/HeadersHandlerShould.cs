@@ -6,12 +6,12 @@ using TeaPie.Http.Headers;
 
 namespace TeaPie.Tests.Http.Headers;
 
-public class HeadersHandlerTests
+public class HeadersHandlerShould
 {
     private readonly HeadersHandler _headersHandler;
     private readonly HttpRequestHeaders _defaultHeaders;
 
-    public HeadersHandlerTests()
+    public HeadersHandlerShould()
     {
         _headersHandler = new HeadersHandler();
         _defaultHeaders = new HttpClient().DefaultRequestHeaders;
