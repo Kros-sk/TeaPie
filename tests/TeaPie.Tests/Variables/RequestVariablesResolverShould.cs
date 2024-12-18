@@ -176,8 +176,7 @@ public class RequestVariablesResolverShould
         AddHeaders(requestMessage.Headers, headers);
 
         requestContext.Request = requestMessage;
-        testCaseContext.Request = requestMessage;
-        testCaseContext.Requests.Add(requestName, requestMessage);
+        testCaseContext.RegisterRequest(requestMessage, requestName);
 
         return requestContext;
     }
@@ -217,8 +216,7 @@ public class RequestVariablesResolverShould
         AddHeaders(responseMessage.Headers, headers);
 
         requestContext.Response = responseMessage;
-        testCaseContext.Response = responseMessage;
-        testCaseContext.Responses.Add(requestName, responseMessage);
+        testCaseContext.RegisterResponse(responseMessage, requestName);
 
         return requestContext;
     }

@@ -69,7 +69,7 @@ internal sealed class PreProcessScriptStep(
                     relativePath,
                     steps.Length);
 
-                context.UserDefinedScripts.Add(scriptPath, script);
+                context.RegisterUserDefinedScript(scriptPath, script);
             }
         }
     }

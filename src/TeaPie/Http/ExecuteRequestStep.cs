@@ -20,8 +20,7 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
         var response = await ExecuteRequest(context, request, cancellationToken);
 
         requestExecutionContext.Response = response;
-
-        UpdateCurrentTestCase(context, requestExecutionContext, response);
+        requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
     }
 
     private async Task<HttpResponseMessage> ExecuteRequest(
@@ -38,21 +37,5 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
 
         return response;
-    }
-
-    private static void UpdateCurrentTestCase(
-        ApplicationContext context,
-        RequestExecutionContext requestExecutionContext,
-        HttpResponseMessage response)
-    {
-        if (context.CurrentTestCase is not null)
-        {
-            context.CurrentTestCase.Response = response;
-
-            if (!requestExecutionContext.Name.Equals(string.Empty))
-            {
-                context.CurrentTestCase.Responses.Add(requestExecutionContext.Name, response);
-            }
-        }
     }
 }

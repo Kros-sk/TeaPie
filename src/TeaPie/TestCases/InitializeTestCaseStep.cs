@@ -44,7 +44,7 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         => AddStepsForScripts(
             context,
             testCaseExecutionContext.TestCase.PreRequestScripts,
-            testCaseExecutionContext.PreRequestScripts,
+            testCaseExecutionContext.RegisterPreRequestScript,
             newSteps);
 
     private static void AddStepsForPostResponseScripts(
@@ -54,18 +54,18 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         => AddStepsForScripts(
             context,
             testCaseExecutionContext.TestCase.PostResponseScripts,
-            testCaseExecutionContext.PostResponseScripts,
+            testCaseExecutionContext.RegisterPostResponseScript,
             newSteps);
 
     private static void AddStepsForScripts(
         ApplicationContext context,
         IEnumerable<Script> scriptsCollection,
-        Dictionary<string, ScriptExecutionContext> scriptsCollectionInContext,
+        Action<string, ScriptExecutionContext> addToCollection,
         List<IPipelineStep> newSteps)
     {
         foreach (var script in scriptsCollection)
         {
-            scriptsCollectionInContext.Add(script.File.Path, new(script));
+            addToCollection(script.File.Path, new(script));
             AddStepsForScript(context, script, newSteps);
         }
     }

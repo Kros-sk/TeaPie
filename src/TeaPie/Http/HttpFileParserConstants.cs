@@ -41,8 +41,8 @@ internal static class HttpFileParserConstants
     public const string HttpOptionsMethodDirective = "OPTIONS";
     public const string HttpTraceMethodDirective = "TRACE";
 
-    public static readonly Dictionary<string, HttpMethod> HttpMethodsMap =
-        new(StringComparer.OrdinalIgnoreCase)
+    public static readonly IReadOnlyDictionary<string, HttpMethod> HttpMethodsMap =
+        new Dictionary<string, HttpMethod>(StringComparer.OrdinalIgnoreCase)
         {
             { HttpGetMethodDirective, HttpMethod.Get },
             { HttpPutMethodDirective, HttpMethod.Put },
