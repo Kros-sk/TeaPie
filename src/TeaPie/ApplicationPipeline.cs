@@ -29,11 +29,16 @@ internal class ApplicationPipeline : IPipeline
             step = enumerator.Current;
             await ExecuteStep(step, context, cancellationToken);
 
-            if (_errorOccured)
-            {
-                context.Logger.LogError("Error occured during pipeline run. Shutting down the application.");
-                Environment.Exit(1);
-            }
+            IfErrorOccuredFinishPrematurely(context.Logger);
+        }
+    }
+
+    private void IfErrorOccuredFinishPrematurely(ILogger logger)
+    {
+        if (_errorOccured)
+        {
+            logger.LogError("Error occured during pipeline run. Shutting down the application...");
+            Environment.Exit(1);
         }
     }
 

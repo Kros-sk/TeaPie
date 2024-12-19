@@ -12,7 +12,7 @@ internal class DefaultHeaderHandler(string headerName) : IHeaderHandler
     {
         if (!requestMessage.Headers.TryAddWithoutValidation(_headerName, value))
         {
-            throw new InvalidOperationException($"Unable to resolve '{_headerName}' header with value '{value}'.");
+            throw new InvalidOperationException($"Unable to resolve '{_headerName}' header with the value '{value}'.");
         }
     }
 
