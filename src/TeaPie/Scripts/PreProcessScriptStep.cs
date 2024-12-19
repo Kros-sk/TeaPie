@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 
@@ -62,7 +61,8 @@ internal sealed class PreProcessScriptStep(
         context.RegisterUserDefinedScript(scriptPath, script);
     }
 
-    private static void PrepareSteps(ApplicationContext context, string scriptPath, out string relativePath, out Script script, out IPipelineStep[] steps)
+    private static void PrepareSteps(
+        ApplicationContext context, string scriptPath, out string relativePath, out Script script, out IPipelineStep[] steps)
     {
         relativePath = scriptPath.TrimRootPath(context.Path, true);
         var folder = context.TestCases.Values
@@ -73,20 +73,7 @@ internal sealed class PreProcessScriptStep(
         script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
         var scriptContext = new ScriptExecutionContext(script);
 
-        steps = PrepareSteps(context, scriptContext);
-    }
-
-    private static IPipelineStep[] PrepareSteps(ApplicationContext context, ScriptExecutionContext scriptContext)
-    {
-        using var scope = context.ServiceProvider.CreateScope();
-        var provider = scope.ServiceProvider;
-
-        var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
-        accessor.Context = scriptContext;
-
-        return [provider.GetStep<ReadScriptFileStep>(),
-            provider.GetStep<PreProcessScriptStep>(),
-            provider.GetStep<SaveTempScriptStep>()];
+        steps = ScriptStepsFactory.CreateStepsForScriptPreProcess(context.ServiceProvider, scriptContext);
     }
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)

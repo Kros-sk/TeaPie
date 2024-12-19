@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 
@@ -28,14 +27,6 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
     private static void AddStepsForTestCase(ApplicationContext context, TestCase testCase, List<IPipelineStep> newSteps)
     {
         var testCaseExecutionContext = new TestCaseExecutionContext(testCase);
-
-        using var scope = context.ServiceProvider.CreateScope();
-        var provider = scope.ServiceProvider;
-
-        var accessor = provider.GetRequiredService<ITestCaseExecutionContextAccessor>();
-        accessor.Context = testCaseExecutionContext;
-
-        newSteps.Add(provider.GetStep<InitializeTestCaseStep>());
-        newSteps.Add(provider.GetStep<FinishTestCaseStep>());
+        newSteps.AddRange(TestCaseStepsFactory.CreateStepsForTestsCase(context.ServiceProvider, testCaseExecutionContext));
     }
 }

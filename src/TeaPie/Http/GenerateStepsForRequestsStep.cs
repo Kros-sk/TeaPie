@@ -38,7 +38,8 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
                 RawContent = requestContent
             };
 
-            AddStepsForRequest(appContext, requestExecutionContext, newSteps);
+            newSteps.AddRange(
+                RequestStepsFactory.CreateStepsForRequest(appContext.ServiceProvider, requestExecutionContext));
         }
 
         _pipeline.InsertSteps(this, [.. newSteps]);
@@ -47,21 +48,6 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
             "Steps for all requests ({Count}) within requests file on '{Path}' were scheduled in the pipeline.",
             separatedRequests.Count(),
             testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
-    }
-
-    private static void AddStepsForRequest(
-        ApplicationContext appContext,
-        RequestExecutionContext requestExecutionContext,
-        List<IPipelineStep> newSteps)
-    {
-        using var scope = appContext.ServiceProvider.CreateScope();
-        var provider = scope.ServiceProvider;
-
-        var accessor = provider.GetRequiredService<IRequestExecutionContextAccessor>();
-        accessor.Context = requestExecutionContext;
-
-        newSteps.Add(provider.GetStep<ParseHttpRequestStep>());
-        newSteps.Add(provider.GetStep<ExecuteRequestStep>());
     }
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out string content)

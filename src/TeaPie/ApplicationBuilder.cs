@@ -85,13 +85,10 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<ITester>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>());
 
-    // TODO: This should be part of some pipeline builder/factory class
     private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {
         var pipeline = provider.GetRequiredService<IPipeline>();
-        pipeline.AddSteps(provider.GetStep<ExploreStructureStep>());
-        pipeline.AddSteps(provider.GetStep<PrepareTemporaryFolderStep>());
-        pipeline.AddSteps(provider.GetStep<GenerateStepsForTestCasesStep>());
+        pipeline.AddSteps(ApplicationStepsFactory.CreateDefaultPipelineSteps(provider));
 
         return (ApplicationPipeline)pipeline;
     }
