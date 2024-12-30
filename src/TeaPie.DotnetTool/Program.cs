@@ -7,8 +7,8 @@ app.Configure(config =>
     config.SetApplicationName("tp");
 
     config.AddCommand<TestCommand>("test")
-        .WithDescription("Command for running tests within collection on given path. " +
-        "If no path is given, current directory is chosen.")
+        .WithDescription("Runs tests from the collection at the specified path. " +
+        "If no path is provided, the current directory is used.")
         .WithExample("test", "[pathToCollection]")
         .WithExample("test", "\"path\\to\\collection\"");
 });
