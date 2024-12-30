@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Spectre.Console.Cli" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TeaPie\TeaPie.csproj" />
   </ItemGroup>
 

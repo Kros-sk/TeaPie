@@ -38,9 +38,12 @@ public sealed class ApplicationBuilder
         return this;
     }
 
-    public ApplicationBuilder AddLogging(LogLevel minimumLevel = LogLevel.Information, string pathToLogFile = "")
+    public ApplicationBuilder AddLogging(
+        LogLevel minimumLevel = LogLevel.Information,
+        string pathToLogFile = "",
+        LogLevel minimumLevelForLogFile = LogLevel.Information)
     {
-        _services.ConfigureLogging(minimumLevel, pathToLogFile);
+        _services.ConfigureLogging(minimumLevel, pathToLogFile, minimumLevelForLogFile);
         return this;
     }
 

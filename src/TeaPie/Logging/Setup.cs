@@ -10,7 +10,8 @@ internal static class Setup
     public static IServiceCollection ConfigureLogging(
         this IServiceCollection services,
         LogLevel minimumLevel,
-        string pathToLogFile = "")
+        string pathToLogFile = "",
+        LogLevel minimumLevelForLogFile = LogLevel.Debug)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -19,14 +20,14 @@ internal static class Setup
         else
         {
             var config = new LoggerConfiguration()
-                .MinimumLevel.Is(minimumLevel.ToSerilogLogLevel())
+                .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .WriteTo.Console();
+                .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
 
             if (!pathToLogFile.Equals(string.Empty))
             {
-                config.WriteTo.File(pathToLogFile);
+                config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
             }
 
             Log.Logger = config.CreateLogger();
@@ -38,6 +39,11 @@ internal static class Setup
 
         return services;
     }
+
+    private static LogEventLevel GetMaximumFromMinimalLevels(LogLevel minimumLevel1, LogLevel minimumLevel2)
+        => minimumLevel1 <= minimumLevel2
+            ? minimumLevel1.ToSerilogLogLevel()
+            : minimumLevel2.ToSerilogLogLevel();
 
     private static LogEventLevel ApplyRestrictiveLogLevelRule(LogLevel minimumLevel)
         => minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug;
