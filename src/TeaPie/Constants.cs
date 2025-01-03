@@ -12,4 +12,6 @@ internal static class Constants
     public const string PascalCasePattern = "([A-Z][a-z]*|[a-z]+)";
 
     public const string ApplicationName = "TeaPie";
+
+    public static readonly string DefaultTemporaryFolderPath = Path.Combine(Path.GetTempPath(), ApplicationName);
 }

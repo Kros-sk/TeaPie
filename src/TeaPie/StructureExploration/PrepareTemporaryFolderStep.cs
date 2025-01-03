@@ -9,10 +9,8 @@ internal sealed class PrepareTemporaryFolderStep(IPipeline pipeline) : IPipeline
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (context.TempFolderPath.Equals(string.Empty))
+        if (context.TempFolderPath.Equals(Constants.DefaultTemporaryFolderPath))
         {
-            context.TempFolderPath = Path.Combine(Path.GetTempPath(), Constants.ApplicationName);
-
             await CleanTemporaryFolderIfExists(context, cancellationToken);
 
             _pipeline.AddSteps(context.ServiceProvider.GetStep<CleanUpTemporaryFolderStep>());

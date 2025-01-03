@@ -15,7 +15,8 @@ namespace TeaPie;
 public sealed class ApplicationBuilder
 {
     private readonly IServiceCollection _services;
-    private string _path;
+
+    private string? _path;
     private string? _tempPath;
 
     private LogLevel _minimumLogLevel = LogLevel.None;
@@ -25,7 +26,6 @@ public sealed class ApplicationBuilder
     private ApplicationBuilder(IServiceCollection services)
     {
         _services = services;
-        _path = string.Empty;
     }
 
     public static ApplicationBuilder Create() => new(new ServiceCollection());
@@ -69,11 +69,11 @@ public sealed class ApplicationBuilder
 
     private ApplicationContext GetApplicationContext(IServiceProvider provider)
         => new(
-            _path,
+            string.IsNullOrEmpty(_path) ? Directory.GetCurrentDirectory() : _path,
             provider,
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ILogger<ApplicationContext>>(),
-            _tempPath ?? string.Empty);
+            string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath);
 
     private void ConfigureServices()
     {

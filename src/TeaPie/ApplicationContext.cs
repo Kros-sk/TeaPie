@@ -9,10 +9,10 @@ internal class ApplicationContext(
     IServiceProvider serviceProvider,
     ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
     ILogger logger,
-    string tempFolder = "")
+    string tempFolderPath)
 {
     public string Path { get; } = path;
-    public string TempFolderPath { get; set; } = tempFolder;
+    public string TempFolderPath { get; set; } = tempFolderPath;
 
     public IReadOnlyDictionary<string, TestCase> TestCases { get; set; } = new Dictionary<string, TestCase>();
 

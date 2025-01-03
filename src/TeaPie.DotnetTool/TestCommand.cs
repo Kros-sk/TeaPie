@@ -26,16 +26,12 @@ internal sealed class TestCommand : AsyncCommand<TestCommand.Settings>
 
     private static void Configure(ApplicationBuilder appBuilder, Settings settings)
     {
-        var path = settings.CollectionPath ?? Directory.GetCurrentDirectory();
-        if (settings.TempPath is not null)
-        {
-            appBuilder.WithTemporaryPath(settings.TempPath);
-        }
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = ResolveLogLevel(settings);
 
         appBuilder
-            .WithPath(path)
+            .WithPath(settings.Path ?? string.Empty)
+            .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel);
     }
 
@@ -63,14 +59,14 @@ internal sealed class TestCommand : AsyncCommand<TestCommand.Settings>
 
     public sealed class Settings : CommandSettings
     {
-        [CommandArgument(0, "[collectionPath]")]
-        [Description("Path to the collection. Defaults to the current directory.")]
-        public string? CollectionPath { get; init; }
+        [CommandArgument(0, "[path]")]
+        [Description("Path to the collection which will be tested. Defaults to the current directory.")]
+        public string? Path { get; init; }
 
         [CommandOption("--temp-path")]
         [Description("Temporary path for the application. Defaults to the system's temporary folder with a TeaPie sub-folder " +
             "if no path is provided.")]
-        public string? TempPath { get; init; }
+        public string? TemporaryPath { get; init; }
 
         #region Logging
         [CommandOption("--log-file")]
