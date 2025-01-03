@@ -22,7 +22,7 @@ public class ApplicationBuilderShould
         var app = builder
             .WithPath("path/to/collection")
             .WithTemporaryPath("path/to/custom/temp/folder")
-            .AddLogging(LogLevel.Debug, "path/to/logFile")
+            .WithLogging(LogLevel.Debug, "path/to/logFile", LogLevel.Debug)
             .Build();
 
         app.Should().NotBeNull();
@@ -37,9 +37,9 @@ public class ApplicationBuilderShould
             .WithTemporaryPath("path/to/custom/temp/folder")
             .WithPath("i/have/changed/my/mind")
             .WithPath("or/lets/have/it/as/it/was")
-            .AddLogging(LogLevel.Debug, "path/to/logFile")
-            .AddLogging(LogLevel.Information, "path/to/logFile")
-            .AddLogging(LogLevel.Warning)
+            .WithLogging(LogLevel.Debug, "path/to/logFile")
+            .WithLogging(LogLevel.Information, "path/to/logFile")
+            .WithLogging(LogLevel.Warning)
             .Build();
 
         app.Should().NotBeNull();

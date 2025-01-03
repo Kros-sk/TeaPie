@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using NuGet.Common;
 using TeaPie.Http;
-using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
@@ -92,7 +91,7 @@ public class InitializeTestCaseStepShould
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        services.ConfigureLogging(LogLevel.None);
+        services.AddSingleton<NuGet.Common.ILogger, NullLogger>();
 
         services.AddTestCases();
         services.AddScripts();

@@ -31,23 +31,22 @@ internal sealed class TestCommand : AsyncCommand<TestCommand.Settings>
         {
             appBuilder.WithTemporaryPath(settings.TempPath);
         }
-
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = ResolveLogLevel(settings);
 
         appBuilder
             .WithPath(path)
-            .AddLogging(logLevel, pathToLogFile, settings.LogFileLogLevel);
+            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel);
     }
 
     private static LogLevel ResolveLogLevel(Settings settings)
-        => settings.IsQuiet
-            ? Silence()
-            : settings.IsDebug
-                ? LogLevel.Debug
-                : settings.IsVerbose
-                    ? LogLevel.Trace
-                    : settings.LogLevel;
+        => settings switch
+        {
+            { IsQuiet: true } => Silence(),
+            { IsDebug: true } => LogLevel.Debug,
+            { IsVerbose: true } => LogLevel.Trace,
+            _ => settings.LogLevel
+        };
 
     private static LogLevel Silence()
     {

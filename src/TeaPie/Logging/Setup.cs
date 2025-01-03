@@ -7,6 +7,16 @@ namespace TeaPie.Logging;
 
 internal static class Setup
 {
+    public static IServiceCollection AddLogging(this IServiceCollection services, Action configure)
+    {
+        configure();
+
+        services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
+        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
+        return services;
+    }
+
     public static IServiceCollection ConfigureLogging(
         this IServiceCollection services,
         LogLevel minimumLevel,
@@ -25,17 +35,13 @@ internal static class Setup
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
 
-            if (!pathToLogFile.Equals(string.Empty))
+            if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
             }
 
             Log.Logger = config.CreateLogger();
         }
-
-        services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
-
-        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
         return services;
     }
