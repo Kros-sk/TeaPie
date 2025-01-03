@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>teapie</ToolCommandName>
+    <PackageId>TeaPie.Tool</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 

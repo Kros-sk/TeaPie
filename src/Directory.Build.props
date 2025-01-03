@@ -13,6 +13,7 @@
         <Company>KROS a.s.</Company>
         <Description>CLI tool for API testing.</Description>
         <Copyright>Copyright © KROS a.s.</Copyright>
+        <Version>1.0.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
