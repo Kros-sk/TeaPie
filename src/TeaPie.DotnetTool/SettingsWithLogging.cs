@@ -11,7 +11,7 @@ internal class SettingsWithLogging : CommandSettings
     public string? LogFile { get; init; }
 
     [CommandOption("--log-file-log-level")]
-    [Description("Log level for the log file (if a file path is specified). " +
+    [Description("Log level for the log file (if the log file path is specified). " +
         "Supported levels: Trace, Debug, Information, Warning, Error, Critical, None.")]
     public LogLevel LogFileLogLevel { get; init; } = LogLevel.Information;
 

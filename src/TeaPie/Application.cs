@@ -11,6 +11,6 @@ public sealed class Application
         _appContext = applicationContext;
     }
 
-    public async Task Run(CancellationToken cancellationToken = default)
+    public async Task<int> Run(CancellationToken cancellationToken = default)
         => await _pipeline.Run(_appContext, cancellationToken);
 }

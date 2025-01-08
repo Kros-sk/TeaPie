@@ -5,9 +5,6 @@ namespace TeaPie.DotnetTool;
 
 internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
-        => await base.ExecuteAsync(context, settings);
-
     protected override void ConfigureApplication(ApplicationBuilder appBuilder, Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
@@ -22,7 +19,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
     public sealed class Settings : SettingsWithLogging
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to the collection which will be explored. Defaults to the current directory.")]
+        [Description("Path to collection which will be explored. Defaults to the current directory.")]
         public string? Path { get; init; }
     }
 }

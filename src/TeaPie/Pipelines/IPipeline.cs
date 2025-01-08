@@ -2,7 +2,7 @@
 
 internal interface IPipeline
 {
-    Task Run(ApplicationContext context, CancellationToken cancellationToken = default);
+    Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default);
 
     void AddSteps(params IPipelineStep[] steps);
 

@@ -8,20 +8,19 @@ internal class ApplicationPipeline : IPipeline
     private readonly StepsCollection _pipelineSteps = [];
     private bool _errorOccured;
 
-    public async Task Run(ApplicationContext context, CancellationToken cancellationToken = default)
+    public async Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
 
         var enumerator = _pipelineSteps.GetEnumerator();
 
-        await Run(context, enumerator, cancellationToken);
-
-        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
-            _pipelineSteps.Count);
+        return await Run(context, enumerator, cancellationToken);
     }
 
-    private async Task Run(
-        ApplicationContext context, IEnumerator<IPipelineStep> enumerator, CancellationToken cancellationToken)
+    private async Task<int> Run(
+        ApplicationContext context,
+        IEnumerator<IPipelineStep> enumerator,
+        CancellationToken cancellationToken)
     {
         IPipelineStep step;
         while (enumerator.MoveNext())
@@ -29,17 +28,17 @@ internal class ApplicationPipeline : IPipeline
             step = enumerator.Current;
             await ExecuteStep(step, context, cancellationToken);
 
-            IfErrorOccuredFinishPrematurely(context.Logger);
+            if (_errorOccured)
+            {
+                context.Logger.LogError("Error occured during pipeline run. Pipeline is stoping with exit code 1...");
+                return 1;
+            }
         }
-    }
 
-    private void IfErrorOccuredFinishPrematurely(ILogger logger)
-    {
-        if (_errorOccured)
-        {
-            logger.LogError("Error occured during pipeline run. Shutting down the application...");
-            Environment.Exit(1);
-        }
+        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
+                _pipelineSteps.Count);
+
+        return 0;
     }
 
     private async Task ExecuteStep(IPipelineStep step, ApplicationContext context, CancellationToken cancellationToken)

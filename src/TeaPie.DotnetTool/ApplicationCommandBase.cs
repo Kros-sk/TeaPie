@@ -6,12 +6,7 @@ namespace TeaPie.DotnetTool;
 internal abstract class ApplicationCommandBase<TSettings> : AsyncCommand<TSettings> where TSettings : SettingsWithLogging
 {
     public override async Task<int> ExecuteAsync(CommandContext context, TSettings settings)
-    {
-        var app = BuildApplication(settings);
-        await app.Run(new CancellationToken());
-
-        return 0;
-    }
+        => await BuildApplication(settings).Run(new CancellationToken());
 
     protected Application BuildApplication(TSettings settings)
     {

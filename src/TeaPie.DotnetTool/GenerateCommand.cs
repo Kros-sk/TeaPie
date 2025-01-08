@@ -100,10 +100,10 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     {
         [CommandArgument(0, "<name>")]
         [Description("Name of test case to be generated.")]
-        public string Name { get; init; } = "testCase";
+        public string Name { get; init; } = "test-case";
 
         [CommandArgument(1, "[path]")]
-        [Description("Path on which entry will be created.")]
+        [Description("Path on which test-case will be created.")]
         public string? Path { get; init; }
 
         [CommandOption("-i|--init|--pre-req")]

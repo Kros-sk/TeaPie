@@ -5,9 +5,6 @@ namespace TeaPie.DotnetTool;
 
 internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
 {
-    public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
-        => await base.ExecuteAsync(context, settings);
-
     protected override void ConfigureApplication(ApplicationBuilder appBuilder, Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
