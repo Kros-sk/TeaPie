@@ -23,6 +23,8 @@ public sealed class ApplicationBuilder
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
 
+    private Func<IServiceProvider, IPipelineStep[]> _pipelineBuildFunction = ApplicationStepsFactory.CreateDefaultPipelineSteps;
+
     private ApplicationBuilder(IServiceCollection services)
     {
         _services = services;
@@ -50,6 +52,18 @@ public sealed class ApplicationBuilder
         _minimumLogLevel = minimumLevel;
         _pathToLogFile = pathToLogFile;
         _minimumLevelForLogFile = minimumLevelForLogFile;
+        return this;
+    }
+
+    public ApplicationBuilder WithDefaultPipeline()
+    {
+        _pipelineBuildFunction = ApplicationStepsFactory.CreateDefaultPipelineSteps;
+        return this;
+    }
+
+    public ApplicationBuilder WithStructureExplorationPipeline()
+    {
+        _pipelineBuildFunction = ApplicationStepsFactory.CreateStructureExplorationSteps;
         return this;
     }
 
@@ -95,10 +109,10 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<ITester>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>());
 
-    private static ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
+    private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {
         var pipeline = provider.GetRequiredService<IPipeline>();
-        pipeline.AddSteps(ApplicationStepsFactory.CreateDefaultPipelineSteps(provider));
+        pipeline.AddSteps(_pipelineBuildFunction.Invoke(provider));
 
         return (ApplicationPipeline)pipeline;
     }

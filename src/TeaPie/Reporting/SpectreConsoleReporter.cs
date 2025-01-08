@@ -24,21 +24,12 @@ public class SpectreConsoleReporter : IReporter
     {
         var timeSpan = TimeSpan.FromMilliseconds(milliseconds);
 
-        if (timeSpan.TotalSeconds < 1)
+        return timeSpan switch
         {
-            return $"{milliseconds} ms";
-        }
-
-        if (timeSpan.TotalSeconds < 60)
-        {
-            return $"{timeSpan.TotalSeconds:F2} s";
-        }
-
-        if (timeSpan.TotalMinutes < 60)
-        {
-            return $"{(int)timeSpan.TotalMinutes}m {timeSpan.Seconds}s";
-        }
-
-        return $"{(int)timeSpan.TotalHours}h {(int)timeSpan.Minutes}m {timeSpan.Seconds}s";
+            { TotalSeconds: < 1 } => $"{milliseconds} ms",
+            { TotalSeconds: < 60 } => $"{timeSpan.TotalSeconds:F2} s",
+            { TotalMinutes: < 60 } => $"{(int)timeSpan.TotalMinutes}m {timeSpan.Seconds}s",
+            _ => $"{(int)timeSpan.TotalHours}h {(int)timeSpan.Minutes}m {timeSpan.Seconds}s"
+        };
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace TeaPie.DotnetTool;
 
-internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
+internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
 {
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
         => await base.ExecuteAsync(context, settings);
@@ -15,20 +15,14 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
 
         appBuilder
             .WithPath(settings.Path ?? string.Empty)
-            .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
-            .WithDefaultPipeline();
+            .WithStructureExplorationPipeline();
     }
 
     public sealed class Settings : SettingsWithLogging
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to the collection which will be tested. Defaults to the current directory.")]
+        [Description("Path to the collection which will be explored. Defaults to the current directory.")]
         public string? Path { get; init; }
-
-        [CommandOption("--temp-path")]
-        [Description("Temporary path for the application. Defaults to the system's temporary folder with a TeaPie sub-folder " +
-            "if no path is provided.")]
-        public string? TemporaryPath { get; init; }
     }
 }

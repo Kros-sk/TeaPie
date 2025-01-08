@@ -20,6 +20,14 @@ app.Configure(config =>
         .WithExample("gen", "myTestCase", "\"path\"")
         .WithExample("g", "myTestCase", "\"path\"", "-i", "FALSE", "-t", "TRUE");
 
+    config.AddCommand<ExploreCommand>("explore")
+        .WithAlias("exp")
+        .WithAlias("e")
+        .WithDescription("Explores collection structure and display it.")
+        .WithExample("explore", "[path]")
+        .WithExample("exp", "\"path\\to\\collection\"")
+        .WithExample("e", "\"path\\to\\collection\"");
+
 #if DEBUG
     config.PropagateExceptions();
     config.ValidateExamples();

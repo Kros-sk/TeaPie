@@ -10,4 +10,8 @@ internal static class ApplicationStepsFactory
         => [provider.GetStep<ExploreStructureStep>(),
             provider.GetStep<PrepareTemporaryFolderStep>(),
             provider.GetStep<GenerateStepsForTestCasesStep>()];
+
+    public static IPipelineStep[] CreateStructureExplorationSteps(IServiceProvider provider)
+        => [provider.GetStep<ExploreStructureStep>(),
+            provider.GetStep<DisplayStructureStep>()];
 }
