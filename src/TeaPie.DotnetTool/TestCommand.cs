@@ -14,7 +14,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         var logLevel = ResolveLogLevel(settings);
 
         appBuilder
-            .WithPath(settings.Path ?? string.Empty)
+            .WithPath(PathResolver.Resolve(settings.Path, string.Empty))
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithDefaultPipeline();

@@ -128,7 +128,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
 
     private static string GetPathFromLoadDirective(string directive)
     {
-        var segments = directive.Split(new[] { ScriptPreProcessorConstants.LoadScriptDirective }, 2, StringSplitOptions.None);
+        var segments = directive.Split(ScriptPreProcessorConstants.LoadScriptDirective, 2, StringSplitOptions.None);
         var path = segments[1].Trim();
         return path.Replace("\"", string.Empty);
     }

@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Cli;
 using System.ComponentModel;
+using TeaPie.StructureExploration;
 
 namespace TeaPie.DotnetTool;
 
@@ -8,15 +9,35 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
 {
     public override int Execute(CommandContext context, Settings settings)
     {
-        var path = settings.Path ?? Directory.GetCurrentDirectory();
+        var path = ResolvePathAndCreateDirectoryIfNeeded(settings);
 
-        GeneratePreRequestFile(path, settings);
-        GenerateRequestFile(path, settings.Name);
-        GeneratePostResponseFile(path, settings);
+        GenerateFiles(settings, path);
 
         ReportSuccessfullCreation(settings);
 
         return 0;
+    }
+
+    private static string ResolvePathAndCreateDirectoryIfNeeded(Settings settings)
+    {
+        var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
+
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+
+            AnsiConsole.MarkupLine("[green]Directory [/][white]'" +
+                path.TrimRootPath(Directory.GetCurrentDirectory()) + "'[/][green] was successfully created.[/]");
+        }
+
+        return path;
+    }
+
+    private static void GenerateFiles(Settings settings, string path)
+    {
+        GeneratePreRequestFile(path, settings);
+        GenerateRequestFile(path, settings.Name);
+        GeneratePostResponseFile(path, settings);
     }
 
     private static string GenerateRequestFile(string path, string name)
@@ -39,7 +60,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     private static string GenerateFile(string path, string name, Func<string, string> nameGetter)
     {
         var filePath = Path.Combine(path, nameGetter(name));
-        File.Create(filePath);
+        System.IO.File.Create(filePath);
 
         return filePath;
     }
@@ -57,7 +78,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     {
         const string beginningOfSentence = "[green]Test case [/]";
         var testCaseName = $"[white]'{settings.Name}'[/]";
-        const string endOfSentence = "[green] was successfully generated.[/]";
+        const string endOfSentence = "[green] was successfully created.[/]";
         var description = GetDescription(settings);
 
         AnsiConsole.Markup(beginningOfSentence + testCaseName + endOfSentence + description);

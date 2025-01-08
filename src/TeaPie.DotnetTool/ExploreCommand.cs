@@ -14,7 +14,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
         var logLevel = ResolveLogLevel(settings);
 
         appBuilder
-            .WithPath(settings.Path ?? string.Empty)
+            .WithPath(PathResolver.Resolve(settings.Path, string.Empty))
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithStructureExplorationPipeline();
     }
