@@ -8,7 +8,7 @@ internal sealed class ExploreStructureStep(IStructureExplorer structureExplorer)
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        context.TestCases = _structureExplorer.ExploreCollectionStructure(context.Path);
+        context.CollectionStructure = _structureExplorer.ExploreCollectionStructure(context.Path);
         await Task.CompletedTask;
     }
 }

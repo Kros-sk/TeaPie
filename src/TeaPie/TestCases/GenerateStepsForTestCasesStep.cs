@@ -11,7 +11,7 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         List<IPipelineStep> newSteps = [];
-        foreach (var testCase in context.TestCases.Values)
+        foreach (var testCase in context.TestCases)
         {
             AddStepsForTestCase(context, testCase, newSteps);
         }

@@ -5,15 +5,13 @@ namespace TeaPie.StructureExploration;
 
 internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
 {
-    private static readonly bool _supportsEmojis = CompatibilityChecker.SupportsEmojis();
-
-    public object Render(IEnumerable<TestCase> testCases)
+    public object Render(IReadOnlyCollectionStructure collectionStructure)
     {
-        var folders = GetFolders(testCases);
+        var folders = collectionStructure.Folders;
         var foldersByParent = GroupFoldersByParent(folders);
-        var testCasesByParent = GroupTestCasesByParent(testCases);
+        var testCasesByParent = GroupTestCasesByParent(collectionStructure.TestCases);
 
-        var rootFolder = folders.FirstOrDefault(f => f.ParentFolder is null)
+        var rootFolder = collectionStructure.Root
             ?? throw new InvalidOperationException("Unable to find root of structure.");
 
         return BuildTree(foldersByParent, testCasesByParent, rootFolder);
@@ -48,7 +46,7 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         {
             foreach (var folder in childFolders)
             {
-                var childNode = parentNode.AddNode(GetFolderReport(folder.Name));
+                var childNode = parentNode.AddNode(GetFolderReport(folder.Name.EscapeMarkup()));
                 queue.Enqueue(new Node(folder.RelativePath, childNode));
             }
         }
@@ -68,16 +66,11 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         }
     }
 
-    private static string GetFolderReport(string name)
-    {
-        var emoji = _supportsEmojis ? ":open_file_folder:" : "[grey italic]F[/]";
-        return $"{emoji} [white]{name}[/]";
-    }
+    private static string GetFolderReport(string name) => $"{Emoji.Known.OpenFileFolder} [white]{name}[/]";
 
     private static string GetTestCaseReport(TestCase testCase)
     {
-        var emoji = _supportsEmojis ? ":test_tube:" : "[grey italic]TC[/]";
-        var name = $"{emoji} [green]{testCase.Name}[/]";
+        var name = $"{Emoji.Known.TestTube} [green]{testCase.Name.EscapeMarkup()}[/]";
 
         var descriptionParts = new List<string>();
         if (testCase.PreRequestScripts.Any())
@@ -96,9 +89,6 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
 
         return name + description;
     }
-
-    private static IEnumerable<Folder> GetFolders(IEnumerable<TestCase> testCases)
-        => testCases.Select(tc => tc.ParentFolder).Distinct();
 
     private static Dictionary<string, List<Folder>> GroupFoldersByParent(IEnumerable<Folder> folders)
         => folders

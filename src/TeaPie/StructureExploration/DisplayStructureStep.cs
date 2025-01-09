@@ -16,7 +16,8 @@ internal class DisplayStructureStep(ITreeStructureRenderer treeRenderer) : IPipe
         }
         else
         {
-            AnsiConsole.Markup($"[red]Collection on path [/][white]'{context.Path}'[/][red] is empty - nothing to display.[/]");
+            AnsiConsole.Markup($"[red]Collection on path [/][white]'{context.Path.EscapeMarkup()}'[/]" +
+                "[red] is empty - nothing to display.[/]");
         }
 
         await Task.CompletedTask;
@@ -24,13 +25,14 @@ internal class DisplayStructureStep(ITreeStructureRenderer treeRenderer) : IPipe
 
     private void DisplayStructure(ApplicationContext context)
     {
-        var tree = _treeRenderer.Render(context.TestCases.Values) as Tree;
+        var tree = _treeRenderer.Render(context.CollectionStructure) as Tree;
         var table = new Table
         {
             Border = TableBorder.Rounded
         };
 
-        table.AddColumn($"[bold yellow]Collection - {Path.GetFileName(context.Path)}[/]");
+        table.AddColumn($"[bold yellow]Collection - {Path.GetFileName(context.Path)}[/] " +
+            $"[italic white](Number of test-cases: [/][italic bold yellow]{context.TestCases.Count}[/][italic white])[/]");
         table.AddRow(tree!);
 
         AnsiConsole.Write(table);

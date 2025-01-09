@@ -4,5 +4,5 @@ namespace TeaPie.Reporting;
 
 internal interface ITreeStructureRenderer
 {
-    object Render(IEnumerable<TestCase> testCases);
+    object Render(IReadOnlyCollectionStructure collectionStructure);
 }

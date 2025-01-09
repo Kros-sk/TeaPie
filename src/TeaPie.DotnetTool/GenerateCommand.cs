@@ -27,7 +27,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
             Directory.CreateDirectory(path);
 
             AnsiConsole.MarkupLine("[green]Directory [/][white]'" +
-                path.TrimRootPath(Directory.GetCurrentDirectory()) + "'[/][green] was successfully created.[/]");
+                path.TrimRootPath(Directory.GetCurrentDirectory()).EscapeMarkup() + "'[/][green] was successfully created.[/]");
         }
 
         return path;
@@ -77,7 +77,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     private static void ReportSuccessfullCreation(Settings settings)
     {
         const string beginningOfSentence = "[green]Test case [/]";
-        var testCaseName = $"[white]'{settings.Name}'[/]";
+        var testCaseName = $"[white]'{settings.Name.EscapeMarkup()}'[/]";
         const string endOfSentence = "[green] was successfully created.[/]";
         var description = GetDescription(settings);
 
