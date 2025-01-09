@@ -1,0 +1,180 @@
+{
+  "uuid": "5eb45937-17ab-4eea-89ac-286688426007",
+  "lastMigration": 32,
+  "name": "CarRentalServer",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "546f491a-8f8c-4f66-a6a7-75f885b2118f",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "cars",
+      "responses": [
+        {
+          "uuid": "004c19ac-43a1-4e78-a68d-c33c09af3024",
+          "body": "{}",
+          "latency": 100,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "mrg7",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "Id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "3abb2d07-6a57-45f3-9cc7-b739c05805d7",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "customers",
+      "responses": [
+        {
+          "uuid": "50277bcf-2728-4fd4-a36d-fd5e320e414b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "fz87",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "Id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "ab6eecbe-7d35-4b3d-8a26-552bd3154ef4",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "rental",
+      "responses": [
+        {
+          "uuid": "aed4ee08-ea9d-4246-b4df-45af7cf79cd3",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "mtvm",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "546f491a-8f8c-4f66-a6a7-75f885b2118f"
+    },
+    {
+      "type": "route",
+      "uuid": "3abb2d07-6a57-45f3-9cc7-b739c05805d7"
+    },
+    {
+      "type": "route",
+      "uuid": "ab6eecbe-7d35-4b3d-8a26-552bd3154ef4"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [
+    {
+      "uuid": "45f5cc40-f180-40ea-987d-58cf93f1e2fc",
+      "id": "mrg7",
+      "name": "Cars",
+      "documentation": "",
+      "value": "[\n  {\n    \"Id\": 1,\n    \"Brand\": \"Toyota\",\n    \"Model\": \"Landcruiser\",\n    \"EngineType\": \"2.2 TDI\",\n    \"TransmissionType\": \"Manual\",\n    \"PeopleCapacity\": 5,\n    \"Color\": \"black\",\n    \"Year\": 2018,\n    \"DrivenKilometres\": 12000.0,\n    \"Description\": \"\"\n  },\n  {\n    \"Id\": 2,\n    \"Brand\": \"BMW\",\n    \"Model\": \"320i\",\n    \"EngineType\": \"2.0 Petrol\",\n    \"TransmissionType\": \"Automatic\",\n    \"PeopleCapacity\": 5,\n    \"Color\": \"White\",\n    \"Year\": 2020,\n    \"DrivenKilometres\": 8000.0,\n    \"Description\": \"A luxury sedan with sporty performance and comfort.\"\n  },\n  {\n    \"Id\": 3,\n    \"Brand\": \"Ford\",\n    \"Model\": \"Focus\",\n    \"EngineType\": \"1.5 EcoBoost\",\n    \"TransmissionType\": \"Manual\",\n    \"PeopleCapacity\": 5,\n    \"Color\": \"Blue\",\n    \"Year\": 2019,\n    \"DrivenKilometres\": 15000.0,\n    \"Description\": \"A compact car with efficient fuel consumption and handling.\"\n  },\n  {\n    \"Id\": 4,\n    \"Brand\": \"Audi\",\n    \"Model\": \"Q7\",\n    \"EngineType\": \"3.0 TDI\",\n    \"TransmissionType\": \"Automatic\",\n    \"PeopleCapacity\": 7,\n    \"Color\": \"Grey\",\n    \"Year\": 2021,\n    \"DrivenKilometres\": 5000.0,\n    \"Description\": \"A premium SUV with spacious interior and advanced features.\"\n  },\n  {\n    \"Id\": 5,\n    \"Brand\": \"Honda\",\n    \"Model\": \"Civic\",\n    \"EngineType\": \"1.8 Petrol\",\n    \"TransmissionType\": \"CVT\",\n    \"PeopleCapacity\": 5,\n    \"Color\": \"Red\",\n    \"Year\": 2017,\n    \"DrivenKilometres\": 22000.0,\n    \"Description\": \"A reliable sedan with a reputation for durability and efficiency.\"\n  }\n]"
+    },
+    {
+      "uuid": "87f64ba4-3d82-4bf6-951f-e8ee774f27a0",
+      "id": "fz87",
+      "name": "Customers",
+      "documentation": "",
+      "value": "[\r\n  {\r\n    \"Id\": 1,\r\n    \"FirstName\": \"John\",\r\n    \"LastName\": \"Doe\",\r\n    \"Email\": \"john.doe@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 2,\r\n    \"FirstName\": \"Jane\",\r\n    \"LastName\": \"Smith\",\r\n    \"Email\": \"jane.smith@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 3,\r\n    \"FirstName\": \"Alice\",\r\n    \"LastName\": \"Johnson\",\r\n    \"Email\": \"alice.johnson@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 4,\r\n    \"FirstName\": \"Robert\",\r\n    \"LastName\": \"Brown\",\r\n    \"Email\": \"robert.brown@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 5,\r\n    \"FirstName\": \"Emily\",\r\n    \"LastName\": \"Davis\",\r\n    \"Email\": \"emily.davis@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 6,\r\n    \"FirstName\": \"Michael\",\r\n    \"LastName\": \"Miller\",\r\n    \"Email\": \"michael.miller@example.com\"\r\n  },\r\n  {\r\n    \"Id\": 7,\r\n    \"FirstName\": \"Jessica\",\r\n    \"LastName\": \"Wilson\",\r\n    \"Email\": \"jessica.wilson@example.com\"\r\n  }\r\n]"
+    },
+    {
+      "uuid": "4b763643-dd31-4c38-b32e-128f8fb64028",
+      "id": "mtvm",
+      "name": "Car Rentals",
+      "documentation": "",
+      "value": "[\n  {\n    \"Id\": 1,\n    \"CarId\": 1,\n    \"CustomerId\": 5,\n    \"RentalStart\": \"2023-08-01\",\n    \"RentalEnd\": \"2023-08-05\",\n    \"Price\": 200.00,\n    \"Notes\": \"Rented for a weekend wedding.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 2,\n    \"CarId\": 2,\n    \"CustomerId\": 4,\n    \"RentalStart\": \"2023-09-05\",\n    \"RentalEnd\": \"2023-09-10\",\n    \"Price\": 325.00,\n    \"Notes\": \"Preferred compact car.\",\n    \"NumberOfDrivers\": 2\n  },\n  {\n    \"Id\": 3,\n    \"CarId\": 5,\n    \"CustomerId\": 3,\n    \"RentalStart\": \"2023-10-15\",\n    \"RentalEnd\": \"2023-10-20\",\n    \"Price\": 200.00,\n    \"Notes\": \"Needed for a local event.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 4,\n    \"CarId\": 4,\n    \"CustomerId\": 2,\n    \"RentalStart\": \"2023-11-20\",\n    \"RentalEnd\": \"2023-11-25\",\n    \"Price\": 450.00,\n    \"Notes\": \"Extended rental period due to business trip.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 5,\n    \"CarId\": 3,\n    \"CustomerId\": 1,\n    \"RentalStart\": \"2023-12-10\",\n    \"RentalEnd\": \"2023-12-15\",\n    \"Price\": 375.00,\n    \"Notes\": \"Requested baby seat.\",\n    \"NumberOfDrivers\": 2\n  },\n  {\n    \"Id\": 6,\n    \"CarId\": 1,\n    \"CustomerId\": 7,\n    \"RentalStart\": \"2024-01-05\",\n    \"RentalEnd\": \"2024-01-12\",\n    \"Price\": 700.00,\n    \"Notes\": \"VIP customer, special discounts applied.\",\n    \"NumberOfDrivers\": 3\n  },\n  {\n    \"Id\": 7,\n    \"CarId\": 2,\n    \"CustomerId\": 6,\n    \"RentalStart\": \"2024-02-25\",\n    \"RentalEnd\": \"2024-02-28\",\n    \"Price\": 120.00,\n    \"Notes\": \"Weekend getaway.\",\n    \"NumberOfDrivers\": 2\n  },\n  {\n    \"Id\": 8,\n    \"CarId\": 5,\n    \"CustomerId\": 5,\n    \"RentalStart\": \"2024-03-15\",\n    \"RentalEnd\": \"2024-03-20\",\n    \"Price\": 250.00,\n    \"Notes\": \"First time renting.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 9,\n    \"CarId\": 4,\n    \"CustomerId\": 2,\n    \"RentalStart\": \"2024-04-01\",\n    \"RentalEnd\": \"2024-04-10\",\n    \"Price\": 630.00,\n    \"Notes\": \"Traveling with family.\",\n    \"NumberOfDrivers\": 3\n  },\n  {\n    \"Id\": 10,\n    \"CarId\": 3,\n    \"CustomerId\": 4,\n    \"RentalStart\": \"2024-05-20\",\n    \"RentalEnd\": \"2024-05-25\",\n    \"Price\": 300.00,\n    \"Notes\": \"Preferred early morning pickup.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 11,\n    \"CarId\": 1,\n    \"CustomerId\": 3,\n    \"RentalStart\": \"2024-06-10\",\n    \"RentalEnd\": \"2024-06-15\",\n    \"Price\": 225.00,\n    \"Notes\": \"Requested GPS system.\",\n    \"NumberOfDrivers\": 1\n  },\n  {\n    \"Id\": 12,\n    \"CarId\": 2,\n    \"CustomerId\": 1,\n    \"RentalStart\": \"2024-07-01\",\n    \"RentalEnd\": \"2024-07-05\",\n    \"Price\": 400.00,\n    \"Notes\": \"Regular customer, enjoys long drives.\",\n    \"NumberOfDrivers\": 2\n  }\n]\n"
+    }
+  ],
+  "callbacks": []
+}
