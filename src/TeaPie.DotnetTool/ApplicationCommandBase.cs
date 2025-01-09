@@ -3,6 +3,7 @@ using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace TeaPie.DotnetTool;
+
 internal abstract class ApplicationCommandBase<TSettings> : AsyncCommand<TSettings> where TSettings : SettingsWithLogging
 {
     public override async Task<int> ExecuteAsync(CommandContext context, TSettings settings)

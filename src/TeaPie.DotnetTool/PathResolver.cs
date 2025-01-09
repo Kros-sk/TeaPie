@@ -6,5 +6,11 @@ internal static class PathResolver
         => path is null ? valueIfNull : Resolve(path);
 
     public static string Resolve(string path)
-        => Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
+        => Trim(path).NormalizeSeparators().Root();
+
+    private static string Trim(string path)
+    {
+        path = path.Trim('\"');
+        return path.Trim();
+    }
 }
