@@ -1,3 +1,0 @@
-### Get All Cars
-GET http://localhost:3001/cars
-Content-Type: application/json

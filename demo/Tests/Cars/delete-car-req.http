@@ -1,8 +1,0 @@
-### Delete Car
-@hostname=localhost
-@port=3001
-
-# This variable will be fetch from the context, not from file variable
-@Cars-NewCar-Id=6 
-DELETE http://{{hostname}}:{{port}}/cars/{{Cars-NewCar-Id}}
-Content-Type: application/json

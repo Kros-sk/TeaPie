@@ -1,0 +1,2 @@
+#load "../SetVariablesAndInstallNuGets.csx"
+SetVariables();

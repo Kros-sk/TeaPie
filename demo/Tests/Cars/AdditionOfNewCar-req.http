@@ -18,11 +18,11 @@ Content-Type: application/json
 
 ### Get new car
 # @name GetNewCarRequest
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$id}}
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 
 ### Edit new car
 # @name EditNewCarRequest
-POST {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$id}}
+POST {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 Content-Type: application/json
 
 {
@@ -39,14 +39,9 @@ Content-Type: application/json
 }
 
 ### Get new car
-# @name GetNewCarRequest
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$id}}
-
+# @name GetUpdatedCarRequest
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 
 ### Get new car
 # @name DeleteNewCarRequest
-DELETE {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$id}}
-
-### Get new car
-# @name GetDeletedCarRequest
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$id}}
+DELETE {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
