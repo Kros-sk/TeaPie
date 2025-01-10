@@ -30,7 +30,7 @@ internal class ApplicationPipeline : IPipeline
 
             if (_errorOccured)
             {
-                context.Logger.LogError("Error occured during pipeline run. Pipeline is stoping with exit code 1...");
+                context.Logger.LogError("Error occured during pipeline run - terminated with exit code 1.");
                 return 1;
             }
         }

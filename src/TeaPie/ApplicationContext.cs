@@ -14,7 +14,8 @@ internal class ApplicationContext(
     public string Path { get; } = path;
     public string TempFolderPath { get; set; } = tempFolderPath;
 
-    public IReadOnlyDictionary<string, TestCase> TestCases { get; set; } = new Dictionary<string, TestCase>();
+    public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
+    public IReadOnlyCollection<TestCase> TestCases => CollectionStructure.TestCases;
 
     private readonly Dictionary<string, Script> _userDefinedScripts = [];
     public IReadOnlyDictionary<string, Script> UserDefinedScripts => _userDefinedScripts;

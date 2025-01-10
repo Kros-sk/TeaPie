@@ -51,7 +51,7 @@ public class StructureExplorerShould
         if (emptyPath)
         {
             structureExplorer.Invoking(se => se.ExploreCollectionStructure(string.Empty))
-                .Should().Throw<ArgumentException>();
+                .Should().Throw<InvalidOperationException>();
         }
         else
         {
@@ -79,7 +79,7 @@ public class StructureExplorerShould
 
         var structureExplorer = GetStructureExplorer();
 
-        var testCases = structureExplorer.ExploreCollectionStructure(tempDirectoryPath);
+        var testCases = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases;
 
         testCases.Should().BeEmpty();
     }
@@ -90,13 +90,13 @@ public class StructureExplorerShould
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Keys.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases.ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
         for (var i = 0; i < _testCasesPaths.Length; i++)
         {
-            testCasesOrder[i].Should().BeEquivalentTo(
+            testCasesOrder[i].RequestsFile.Path.Should().BeEquivalentTo(
                 Path.Combine(tempDirectoryPath, _testCasesPaths[i].TrimRootPath(RootFolderName)));
         }
     }
@@ -107,7 +107,7 @@ public class StructureExplorerShould
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).Values.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases.ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
