@@ -88,7 +88,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
             RegisterPreRequestScript(preRequestScripts, testCase, fileName);
             RegisterPostResponseScript(postResponseScripts, testCase, fileName);
 
-            if (collectionStructure.TryAddTestCase(testCase))
+            if (!collectionStructure.TryAddTestCase(testCase))
             {
                 throw new InvalidOperationException($"Unable to register same test-case twice. {testCase.RequestsFile.Path}");
             }
