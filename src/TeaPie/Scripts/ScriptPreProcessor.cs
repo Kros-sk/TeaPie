@@ -118,7 +118,8 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
     {
         var realPath = GetPathFromLoadDirective(directive);
         realPath = realPath.Replace("\"", string.Empty);
-        realPath = ResolvePath(path, realPath);
+        var directoryPath = Path.GetDirectoryName(path) ?? string.Empty;
+        realPath = ResolvePath(directoryPath, realPath);
 
         var relativePath = realPath.TrimRootPath(_rootPath, true);
         var tempPath = Path.Combine(_tempFolderPath, relativePath);
@@ -130,7 +131,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
     {
         var segments = directive.Split(ScriptPreProcessorConstants.LoadScriptDirective, 2, StringSplitOptions.None);
         var path = segments[1].Trim();
-        return path.Replace("\"", string.Empty);
+        return path.Replace("\"", string.Empty).NormalizeSeparators();
     }
 
     private static string ProcessNuGetPackage(string directive, List<NuGetPackageDescription> listOfNuGetPackages)

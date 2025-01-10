@@ -57,7 +57,7 @@ internal static class ScriptHelper
     private static void CompileScriptAndSaveMetadata(ScriptExecutionContext context)
     {
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
-        context.ScriptObject = compiler.CompileScript(context.ProcessedContent!);
+        context.ScriptObject = compiler.CompileScript(context.ProcessedContent!, context.Script.File.Path);
     }
 
     public static async Task PrepareScriptForExecution(ScriptExecutionContext context)

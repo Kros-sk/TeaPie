@@ -26,7 +26,7 @@ public class CompileScriptStepShould
 
         await step.Execute(appContext);
 
-        compiler.Received(1).CompileScript(context.ProcessedContent!);
+        compiler.Received(1).CompileScript(context.ProcessedContent!, context.Script.File.RelativePath);
     }
 
     [Fact]

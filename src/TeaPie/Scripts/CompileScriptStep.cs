@@ -25,7 +25,7 @@ internal sealed class CompileScriptStep(
         context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
             scriptExecutionContext.Script.File.RelativePath);
 
-        scriptExecutionContext.ScriptObject = _compiler.CompileScript(content);
+        scriptExecutionContext.ScriptObject = _compiler.CompileScript(content, scriptExecutionContext.Script.File.RelativePath);
 
         context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
             scriptExecutionContext.Script.File.RelativePath);

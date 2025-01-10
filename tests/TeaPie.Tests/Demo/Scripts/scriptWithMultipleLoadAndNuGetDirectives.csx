@@ -1,9 +1,9 @@
-﻿#load "../init.csx"
+﻿#load "./init.csx"
 #nuget "Newtonsoft.Json, 13.0.3"
-#load "../Nested/first.csx"
+#load "./Nested/first.csx"
 #nuget "System.IO.Abstractions, 13.2.6"
 #nuget "System.Net.Http, 4.3.4"
-#load "../Nested/second.csx"
+#load "./Nested/second.csx"
 
 using Newtonsoft.Json;
 using System.IO.Abstractions;

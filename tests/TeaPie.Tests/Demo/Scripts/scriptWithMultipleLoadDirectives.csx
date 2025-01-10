@@ -1,6 +1,6 @@
-﻿#load "../init.csx"
-#load "../Nested/first.csx"
-#load "../Nested/second.csx"
+﻿#load "./init.csx"
+#load "./Nested/first.csx"
+#load "./Nested/second.csx"
 
 Initialization();
 FirstMethod();

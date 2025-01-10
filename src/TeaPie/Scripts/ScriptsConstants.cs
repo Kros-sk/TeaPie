@@ -21,7 +21,9 @@ internal static class ScriptsConstants
         "System.Threading.Tasks",
         "Microsoft.Extensions.Logging",
         "TeaPie.Variables",
-        "TeaPie.Testing"
+        "TeaPie.Testing",
+        "TeaPie.Http",
+        "TeaPie"
     ];
 
     public static readonly string[] FrameworksPriorityList =
