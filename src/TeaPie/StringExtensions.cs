@@ -1,8 +1,10 @@
-﻿namespace TeaPie;
+﻿using Newtonsoft.Json.Linq;
 
-internal static class StringExtensions
+namespace TeaPie;
+
+public static class StringExtensions
 {
-    public static string TrimSuffix(this string text, string suffix)
+    internal static string TrimSuffix(this string text, string suffix)
     {
         ArgumentNullException.ThrowIfNull(text);
 
@@ -13,4 +15,10 @@ internal static class StringExtensions
 
         return text;
     }
+
+    public static JObject ToJson(this string text)
+        => JObject.Parse(text);
+
+    public static JObject ToJson(this Task<string> text)
+        => JObject.Parse(text.Result);
 }

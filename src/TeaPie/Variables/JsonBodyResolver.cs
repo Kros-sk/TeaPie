@@ -8,7 +8,7 @@ internal class JsonBodyResolver : IBodyResolver
 
     public string Resolve(string body, string query, string defaultValue = "")
     {
-        var json = JToken.Parse(body);
+        var json = JObject.Parse(body);
         var token = json.SelectToken(query);
 
         if (token is null)
