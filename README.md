@@ -104,7 +104,7 @@ This gives you comprehensive access to headers and body content of named request
 
 ## Post-response Script
 
-The **post-response script** is used to define tests. A test is considered **failed** if an exception is thrown within the test body, which aligns with common practices in testing frameworks. This approach allows you to **use any assertion library** referenced via NuGet.
+The **post-response script** is used to define tests. A test is considered **failed** if an exception is thrown within the test body, which aligns with common practices in testing frameworks. This approach allows you to **use any assertion library** referenced via NuGet. Although, `FluentAssertions` is **recommended** and **automatically available** in all scripts.
 
 Example of a simple test:
 ```csharp
