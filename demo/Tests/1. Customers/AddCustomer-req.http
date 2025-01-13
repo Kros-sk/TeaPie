@@ -1,0 +1,10 @@
+### Add Customer
+POST {{ApiBaseUrl}}{{ApiCustomersSection}}
+Content-Type: application/json
+
+{
+    "Id": 3,
+    "FirstName": "Alice",
+    "LastName": "Johnson",
+    "Email": "alice.johnson@example.com"
+}

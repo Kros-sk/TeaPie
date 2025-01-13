@@ -29,6 +29,6 @@ public static class StringExtensions
     /// </summary>
     /// <param name="text">Task which product is text that will be parsed into json object.</param>
     /// <returns><see cref="JObject"/> representation of json stored in <paramref name="text"/>.</returns>
-    public static JObject ToJson(this Task<string> text)
-        => JObject.Parse(text.Result);
+    public static async Task<JObject> ToJsonAsync(this string text)
+        => await Task.Run(() => JObject.Parse(text));
 }

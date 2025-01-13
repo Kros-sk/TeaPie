@@ -22,8 +22,8 @@ GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 
 ### Edit new car
 # @name EditNewCarRequest
-POST {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
-Content-Type: application/json
+PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
+Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 
 {
     "Id": 6,
