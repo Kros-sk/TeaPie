@@ -10,7 +10,7 @@ namespace TeaPie.Scripts;
 
 internal interface INuGetPackageHandler
 {
-    Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages);
+    Task HandleNuGetPackages(IEnumerable<NuGetPackageDescription> nugetPackages);
 }
 
 internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, NuGet.Common.ILogger nugetLogger)
@@ -25,7 +25,7 @@ internal partial class NuGetPackageHandler(ILogger<NuGetPackageHandler> logger, 
     private static readonly string _packagesPath =
         Path.Combine(Environment.CurrentDirectory, ScriptsConstants.DefaultNuGetPackagesFolderName);
 
-    public async Task HandleNuGetPackages(List<NuGetPackageDescription> nugetPackages)
+    public async Task HandleNuGetPackages(IEnumerable<NuGetPackageDescription> nugetPackages)
     {
         foreach (var package in nugetPackages)
         {

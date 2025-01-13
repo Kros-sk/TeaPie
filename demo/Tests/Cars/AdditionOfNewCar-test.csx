@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 tp.Test("Status code of car addition should be 201. (Created)", () =>
     {
         var statusCode = tp.Responses["AddCarRequest"].StatusCode;

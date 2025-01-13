@@ -11,6 +11,11 @@ internal static class ScriptsConstants
 
     public const string NuGetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
 
+    public static readonly IEnumerable<NuGetPackageDescription> DefaultNuGetPackages =
+    [
+        new("FluentAssertions", "6.12.1")
+    ];
+
     public static readonly IEnumerable<string> DefaultImports = [
         "System",
         "System.Collections.Generic",
@@ -20,6 +25,7 @@ internal static class ScriptsConstants
         "System.Threading",
         "System.Threading.Tasks",
         "Microsoft.Extensions.Logging",
+        "FluentAssertions",
         "TeaPie.Variables",
         "TeaPie.Testing",
         "TeaPie.Http",

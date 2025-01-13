@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 tp.Test("Status code of car retrieval should be 200. (OK)", () =>
     {
         var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode;
