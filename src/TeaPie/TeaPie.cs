@@ -47,11 +47,26 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     internal TestCaseExecutionContext? CurrentTestCaseExecutionContext
         => _currentTestCaseExecutionContextAccessor.Context;
 
+    /// <summary>
+    /// Collection of current test case's http requests accessible by names.
+    /// </summary>
     public IReadOnlyDictionary<string, HttpRequestMessage> Requests =>
         CurrentTestCaseExecutionContext?.Requests ?? new Dictionary<string, HttpRequestMessage>();
+
+    /// <summary>
+    /// Collection of current test case's http responses accessible by names.
+    /// </summary>
     public IReadOnlyDictionary<string, HttpResponseMessage> Responses =>
         CurrentTestCaseExecutionContext?.Responses ?? new Dictionary<string, HttpResponseMessage>();
+
+    /// <summary>
+    /// The most recently executed http request.
+    /// </summary>
     public HttpRequestMessage? Request => CurrentTestCaseExecutionContext?.Request;
+
+    /// <summary>
+    /// The most recently retrieved http response.
+    /// </summary>
     public HttpResponseMessage? Response => CurrentTestCaseExecutionContext?.Response;
     #endregion
 
