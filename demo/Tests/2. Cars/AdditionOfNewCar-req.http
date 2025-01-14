@@ -19,29 +19,3 @@ Content-Type: application/json
 ### Get new car
 # @name GetNewCarRequest
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
-
-### Edit new car
-# @name EditNewCarRequest
-PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
-Content-Type: {{AddCarRequest.request.headers.Content-Type}}
-
-{
-    "Id": 6,
-    "Brand": "Toyota",
-    "Model": "RAV4",
-    "EngineType": "3.0 TDI",
-    "TransmissionType": "Manual",
-    "PeopleCapacity": 5,
-    "Color": "silver",
-    "Year": 2022,
-    "DrivenKilometres": 21000.0,
-    "Description": ""
-}
-
-### Get new car
-# @name GetUpdatedCarRequest
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
-
-### Get new car
-# @name DeleteNewCarRequest
-DELETE {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}

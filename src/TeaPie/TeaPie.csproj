@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dunet" />
+    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" />
     <PackageReference Include="Microsoft.Extensions.Http" />

@@ -19,7 +19,7 @@ Content-Type: application/json
 ### Edit new car
 # @name EditCarRequest
 POST {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
-Content-Type: application/json
+Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 
 {
     "Id": 6,
