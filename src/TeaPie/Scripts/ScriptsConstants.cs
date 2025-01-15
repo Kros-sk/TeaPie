@@ -18,7 +18,6 @@ internal static class ScriptsConstants
 
     public static readonly IEnumerable<NuGetPackageDescription> DefaultNuGetPackages =
     [
-        new("FluentAssertions", "6.12.1"),
         new("Microsoft.CSharp", "4.7.0")
     ];
 
@@ -31,9 +30,7 @@ internal static class ScriptsConstants
         "System.Threading",
         "System.Threading.Tasks",
         "Microsoft.Extensions.Logging",
-        "FluentAssertions",
         "TeaPie.Testing",
-        "TeaPie.Testing.FluentAssertionsHelperMethods",
         "TeaPie.Variables",
         "TeaPie.Http",
         "TeaPie.Json",
