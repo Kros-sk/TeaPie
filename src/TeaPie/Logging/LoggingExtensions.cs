@@ -29,4 +29,17 @@ internal static class LoggingExtensions
             NuGet.Common.LogLevel.Error => LogLevel.Error,
             _ => throw new ArgumentOutOfRangeException(nameof(level), $"Unsupported NuGet.Common.LogLevel: {level}"),
         };
+
+    public static string ToHumanReadableTime(this long milliseconds)
+    {
+        var timeSpan = TimeSpan.FromMilliseconds(milliseconds);
+
+        return timeSpan switch
+        {
+            { TotalSeconds: < 1 } => $"{milliseconds} ms",
+            { TotalSeconds: < 60 } => $"{timeSpan.TotalSeconds:F2} s",
+            { TotalMinutes: < 60 } => $"{(int)timeSpan.TotalMinutes}m {timeSpan.Seconds}s",
+            _ => $"{(int)timeSpan.TotalHours}h {timeSpan.Minutes}m {timeSpan.Seconds}s"
+        };
+    }
 }

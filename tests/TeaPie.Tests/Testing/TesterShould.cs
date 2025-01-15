@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Reporting;
+using NSubstitute.ExceptionExtensions;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -11,7 +12,6 @@ namespace TeaPie.Tests.Testing;
 public class TesterShould
 {
     private readonly string _mockPath;
-    private readonly IReporter _mockReporter;
     private readonly TestCaseExecutionContext _mockTestCaseExecutionContext;
     private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor;
     private readonly Tester _tester;
@@ -19,7 +19,6 @@ public class TesterShould
     public TesterShould()
     {
         _mockPath = "pathToTestCase.http";
-        _mockReporter = Substitute.For<IReporter>();
         _mockTestCaseExecutionContext = new TestCaseExecutionContext(
             new TestCase(new File(_mockPath, _mockPath, _mockPath, null!)));
 
@@ -28,11 +27,25 @@ public class TesterShould
             Context = _mockTestCaseExecutionContext
         };
 
-        _tester = new Tester(_mockReporter, _currentTestCaseExecutionContextAccessor);
+        _tester = new Tester(_currentTestCaseExecutionContextAccessor, Substitute.For<ILogger<Tester>>());
     }
 
     [Fact]
-    public void ReportTestStartAndTestSuccessWhenTestSucceed()
+    public void ActuallyExecuteTestFunction()
+    {
+        var wasExecuted = false;
+
+        void testFunction()
+        {
+            wasExecuted = true;
+        }
+
+        _tester.Test(string.Empty, testFunction);
+        wasExecuted.Should().BeTrue();
+    }
+
+    [Fact]
+    public void RegisterTestToCurrentExecutionContext()
     {
         const string testName = "SyncTest";
 
@@ -41,33 +54,35 @@ public class TesterShould
             true.Should().BeTrue();
         }
 
+        var test = new Test(testName, () => Task.FromResult(testFunction), new TestResult.Succeed(10));
+
         _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
+        // If test was already registered, attempt to register it again should fail.
+        _mockTestCaseExecutionContext.Invoking(c => c.RegisterTest(test)).Throws<ArgumentException>();
     }
 
     [Fact]
-    public async Task ReportTestStartAndTestSuccessWhenAsyncTestSucceed()
+    public async Task RegisterAsyncTestToCurrentExecutionContext()
     {
         const string testName = "AsyncTest";
 
         static async Task testFunction()
         {
-            await Task.Delay(100);
             true.Should().BeTrue();
+            await Task.CompletedTask;
         }
+
+        var test = new Test(testName, testFunction, new TestResult.Succeed(10));
 
         await _tester.Test(testName, testFunction);
 
-        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
+        // If test was already registered, attempt to register it again should fail.
+        _mockTestCaseExecutionContext.Invoking(c => c.RegisterTest(test)).Throws<ArgumentException>();
     }
 
     [Fact]
-    public void HandleExceptionAndReportFailureWhenTestFails()
+    public void CatchExceptionFromTest()
     {
         const string testName = "SyncTestWithException";
 
@@ -77,14 +92,10 @@ public class TesterShould
         }
 
         _tester.Test(testName, testFunction);
-
-        _mockReporter.Received(1).ReportTestStart(testName, Arg.Any<string>());
-        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed", Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 
     [Fact]
-    public async Task HandleExceptionAndReportFailureWhenAsyncTestFails()
+    public async Task CatchExceptionFromAsyncTest()
     {
         const string testName = "AsyncTestWithException";
 
@@ -95,14 +106,10 @@ public class TesterShould
         }
 
         await _tester.Test(testName, testFunction);
-
-        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestFailure(testName, "Test failed", Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 
     [Fact]
-    public void UseDifferentAssertionsButHaveSameBehavior()
+    public void UseDifferentAssertionLanguageWithSameResults()
     {
         const string testName = "SyncTestWithMultipleAssertions";
 
@@ -118,32 +125,5 @@ public class TesterShould
         }
 
         _tester.Test(testName, testFunction);
-
-        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestSuccess(testName, Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
-    }
-
-    [Fact]
-    public void ReportTestFailureWhenUsingDifferentAssertionsAndFails()
-    {
-        const string testName = "SyncTestWithMultipleAssertionsFailure";
-
-        static void testFunction()
-        {
-            true.Should().BeFalse();
-            2.Should().BeGreaterThan(3);
-            "test".Should().BeEquivalentTo("fail");
-
-            Assert.False(true);
-            Assert.Equal(5, 3);
-            Assert.Equal("test", "fail");
-        }
-
-        _tester.Test(testName, testFunction);
-
-        _mockReporter.Received(1).ReportTestStart(testName, _mockPath);
-        _mockReporter.Received(1).ReportTestFailure(testName, Arg.Any<string>(), Arg.Any<long>());
-        _mockReporter.DidNotReceive().ReportTestSuccess(testName, Arg.Any<long>());
     }
 }

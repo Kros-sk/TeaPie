@@ -1,16 +1,17 @@
-﻿using System.Diagnostics;
-using TeaPie.Reporting;
+﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using TeaPie.Logging;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
 
-internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccessor accessor) : ITester
+internal partial class Tester(ICurrentTestCaseExecutionContextAccessor accessor, ILogger<Tester> logger) : ITester
 {
-    private readonly IReporter _reporter = reporter;
+    private readonly ILogger<Tester> _logger = logger;
     private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
     private readonly Stopwatch _stopWatch = new();
 
-    #region Tests
+    #region Determined tests
     public void Test(string testName, Action testFunction)
         => TestBase(testName, () => { testFunction(); return Task.CompletedTask; })
             .ConfigureAwait(false).GetAwaiter().GetResult();
@@ -50,13 +51,19 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 
         test = test with { Result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) };
 
-        _reporter.ReportTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
+        LogTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
         return test;
+    }
+
+    private void LogTestFailure(string name, string message, long elapsedMilliseconds)
+    {
+        LogTestFailureLine(name, elapsedMilliseconds.ToHumanReadableTime());
+        LogTestFailureReason(message);
     }
 
     private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCaseExecutionContext testCaseExecutionContext)
     {
-        _reporter.ReportTestStart(test.Name, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
+        LogTestStart(test.Name, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
 
         _stopWatch.Start();
 
@@ -66,8 +73,20 @@ internal class Tester(IReporter reporter, ICurrentTestCaseExecutionContextAccess
 
         test = test with { Result = new TestResult.Succeed(_stopWatch.ElapsedMilliseconds) };
 
-        _reporter.ReportTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds);
+        LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
         return test;
     }
     #endregion
+
+    [LoggerMessage(Message = "Running test: '{Name}' ({Path})", Level = LogLevel.Information)]
+    partial void LogTestStart(string Name, string Path);
+
+    [LoggerMessage(Message = "Test Passed: '{Name}' in {Duration}", Level = LogLevel.Information)]
+    partial void LogTestSuccess(string Name, string Duration);
+
+    [LoggerMessage(Message = "Test '{Name}' failed: after {Duration}", Level = LogLevel.Error)]
+    partial void LogTestFailureLine(string Name, string Duration);
+
+    [LoggerMessage(Message = "Reason: {Reason}", Level = LogLevel.Error)]
+    partial void LogTestFailureReason(string Reason);
 }

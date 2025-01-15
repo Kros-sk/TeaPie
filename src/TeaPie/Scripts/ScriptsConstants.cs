@@ -11,6 +11,11 @@ internal static class ScriptsConstants
 
     public const string NuGetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
 
+    public static readonly HashSet<string> SupressedWarnings =
+    [
+        "CS1701"
+    ];
+
     public static readonly IEnumerable<NuGetPackageDescription> DefaultNuGetPackages =
     [
         new("FluentAssertions", "6.12.1"),

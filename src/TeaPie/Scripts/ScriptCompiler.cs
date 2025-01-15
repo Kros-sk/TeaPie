@@ -34,7 +34,7 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
     {
         var hasWarnings = false;
         var hasErrors = false;
-        foreach (var diagnostic in compilationDiagnostics)
+        foreach (var diagnostic in compilationDiagnostics.Where(d => !ScriptsConstants.SupressedWarnings.Contains(d.Id)))
         {
             if (diagnostic.Severity == DiagnosticSeverity.Warning)
             {
