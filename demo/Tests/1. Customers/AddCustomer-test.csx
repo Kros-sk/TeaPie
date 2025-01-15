@@ -1,5 +1,5 @@
 tp.Test("Customer should be created successfully.",
-    () => tp.Response.StatusCode().Should().Be(201));
+    () => Equal(tp.Response.StatusCode(), 201));
 
 var body = tp.Request.GetBody().ToJson();
 var id = (long)body["Id"];

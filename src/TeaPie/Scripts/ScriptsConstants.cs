@@ -18,7 +18,8 @@ internal static class ScriptsConstants
 
     public static readonly IEnumerable<NuGetPackageDescription> DefaultNuGetPackages =
     [
-        new("Microsoft.CSharp", "4.7.0")
+        new("Microsoft.CSharp", "4.7.0"),
+        new("Xunit.Assert", "2.9.3")
     ];
 
     public static readonly IEnumerable<string> DefaultImports = [
@@ -30,6 +31,7 @@ internal static class ScriptsConstants
         "System.Threading",
         "System.Threading.Tasks",
         "Microsoft.Extensions.Logging",
+        "Xunit.Assert",
         "TeaPie.Testing",
         "TeaPie.Variables",
         "TeaPie.Http",

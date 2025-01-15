@@ -1,6 +1,6 @@
 ﻿tp.Test("Status code of car addition should be 201. (Created)", () => {
     var statusCode = tp.Responses["AddCarRequest"].StatusCode();
-    statusCode.Should().Be(201);
+    Equal(statusCode, 201);
 });
 
 await tp.Test("Newly added car should have 'Toyota' brand.", async () => {
@@ -8,7 +8,7 @@ await tp.Test("Newly added car should have 'Toyota' brand.", async () => {
     dynamic responseJson = responseBody.ToJsonExpando();
 
     // To access json properties like this, variable has to be explicitly 'dynamic' type
-    StringShould(responseJson.brand).Be("Toyota");
+    Equal(responseJson.brand, "Toyota");
 });
 
 await tp.Test("Identificators of added and then retrieved car should match.", async () => {
@@ -18,6 +18,6 @@ await tp.Test("Identificators of added and then retrieved car should match.", as
     var responseBody = await tp.Responses["GetNewCarRequest"].GetBodyAsync();
     dynamic responseJson = responseBody.ToJsonExpando();
 
-    LongShould(requestJson.Id).Be(responseJson.Id);
+    Equal(requestJson.Id, responseJson.Id);
     tp.CollectionVariables.Set("NewCarId", requestJson.Id);
 });
