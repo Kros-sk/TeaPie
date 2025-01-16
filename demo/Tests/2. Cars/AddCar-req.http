@@ -1,4 +1,4 @@
-// Notice, that this test case doesn't have any pre-request script. (<test-case-name>-init.csx)
+// Notice, that this test case doesn't have any pre-request script. ('<test-case-name>-init.csx')
 
 ### Add New Car
 // Name the request using the metadata line for easier referencing.
@@ -19,7 +19,7 @@ Content-Type: application/json
     "Description": ""
 }
 
-// Separate multiple requests in a single .http file with a line containing '3 hashtags':
+// Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:
 ### Get New Car
 
 # @name GetNewCarRequest

@@ -1,4 +1,4 @@
-﻿tp.Test("Status code of car addition should be 201 (Created)", () => {
+﻿tp.Test("Status code of car addition should be 201 (Created).", () => {
     // Access named responses using their name.
     var statusCode = tp.Responses["AddCarRequest"].StatusCode();
     Equal(statusCode, 201);

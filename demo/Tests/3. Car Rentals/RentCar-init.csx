@@ -1,16 +1,16 @@
-// Use #nuget directives to download NuGet packages with their dependencies.
-// Downloaded libraries are globally available across scripts but require a 'using' directive to access its functionality.
+// Use '#nuget' directives to download NuGet packages with their dependencies.
+// Downloaded libraries are globally available across scripts but require a 'using' directive to access their functionality.
 #nuget "Mapster, 7.4.0"
 #nuget "Mapster.Core, 1.2.1"
 
 using Mapster;
 using Newtonsoft.Json.Linq;
 
-// Store variables in 'TestCaseVariables' for the test case lifecycle or 'CollectionVariables' for broader scope.
+// Store variables in 'TestCaseVariables' for the test case life-cycle or 'CollectionVariables' for broader scope.
 tp.TestCaseVariables.Set("ApiCarRentalSection", "/rental");
 tp.CollectionVariables.Set("aaa", "/rental");
 
-// Configure Mapster for mapping JSON objects to a Car object.
+// Configure Mapster for mapping JSON objects to a 'Car' object.
 TypeAdapterConfig<JObject, Car>.NewConfig()
     .Map(dest => dest.Brand, src => src["Brand"].Value<string>())
     .Map(dest => dest.Model, src => src["Model"].Value<string>())

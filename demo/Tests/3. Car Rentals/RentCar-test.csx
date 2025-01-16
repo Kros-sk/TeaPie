@@ -1,4 +1,5 @@
-﻿#load "../ClearVariables.csx"
+﻿// Reference of multiple scripts is also allowed.
+#load "../ClearVariables.csx"
 #load "./RentCar-init.csx"
 
 // Use a NuGet package which was downloaded in another script.

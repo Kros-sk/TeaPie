@@ -1,7 +1,7 @@
 
 # Demo Setup
 
-All necessary information about the `TeaPie` tool from the user's perspective can be found [here](https://github.com/Kros-sk/TeaPie/blob/master/README.md).
+All necessary information about the `TeaPie` tool from the user's perspective can be found [here](../README.md).
 
 ---
 
