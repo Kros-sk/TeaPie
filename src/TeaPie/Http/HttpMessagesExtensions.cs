@@ -6,7 +6,8 @@ public static class HttpMessagesExtensions
     /// Gets the body content as a <see cref="string"/> from the specified <paramref name="request"/>.
     /// </summary>
     /// <param name="request">The HTTP request message to extract the body content from.</param>
-    /// <returns>The body content as a <see cref="string"/>. Returns an empty string if the content is null.</returns>
+    /// <returns>The body content as a <see cref="string"/>. Returns an <b>empty string</b> if the content is
+    /// <see langword="null"/>.</returns>
     public static string GetBody(this HttpRequestMessage request)
         => GetBody(request.Content).Result;
 
@@ -14,7 +15,8 @@ public static class HttpMessagesExtensions
     /// Gets the body content as a <see cref="string"/> from the specified <paramref name="response"/>.
     /// </summary>
     /// <param name="response">The HTTP response message to extract the body content from.</param>
-    /// <returns>The body content as a <see cref="string"/>. Returns an empty string if the content is null.</returns>
+    /// <returns>The body content as a <see cref="string"/>. Returns an <b>empty string</b> if the content is
+    /// <see langword="null"/>.</returns>
     public static string GetBody(this HttpResponseMessage response)
         => GetBody(response.Content).Result;
 
@@ -22,8 +24,8 @@ public static class HttpMessagesExtensions
     /// Asynchronously gets the body content as a <see cref="string"/> from the specified <paramref name="request"/>.
     /// </summary>
     /// <param name="request">The HTTP request message to extract the body content from.</param>
-    /// <returns>A task that represents the asynchronous operation. The result is the body content as a <see cref="string"/>.
-    /// Returns an empty string if the content is null.</returns>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
+    /// <see cref="string"/>. Returns an <b>empty string</b> if the content is <see langword="null"/>.</returns>
     public static async Task<string> GetBodyAsync(this HttpRequestMessage request)
         => await GetBody(request.Content);
 
@@ -31,8 +33,8 @@ public static class HttpMessagesExtensions
     /// Asynchronously gets the body content as a <see cref="string"/> from the specified <paramref name="response"/>.
     /// </summary>
     /// <param name="response">The HTTP response message to extract the body content from.</param>
-    /// <returns>A task that represents the asynchronous operation. The result is the body content as a <see cref="string"/>.
-    /// Returns an empty string if the content is null.</returns>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
+    /// <see cref="string"/>. Returns an <b>empty string</b> if the content is <see langword="null"/>.</returns>
     public static async Task<string> GetBodyAsync(this HttpResponseMessage response)
         => await GetBody(response.Content);
 
@@ -40,10 +42,10 @@ public static class HttpMessagesExtensions
         => content is null ? string.Empty : await content.ReadAsStringAsync();
 
     /// <summary>
-    /// Gets the status code as an integer from the specified <paramref name="response"/>.
+    /// Gets the status code as an <see cref="int"/> from the specified <paramref name="response"/>.
     /// </summary>
     /// <param name="response">The HTTP response to extract the status code from.</param>
-    /// <returns>The status code as an integer.</returns>
+    /// <returns>The status code as an <see cref="int"/>.</returns>
     public static int StatusCode(this HttpResponseMessage response)
         => (int)response.StatusCode;
 }
