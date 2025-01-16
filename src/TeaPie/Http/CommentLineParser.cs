@@ -5,7 +5,17 @@ namespace TeaPie.Http;
 internal partial class CommentLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
-        => !context.IsBody && line.TrimStart().StartsWith(HttpFileParserConstants.HttpCommentPrefix);
+    {
+        if (context.IsBody)
+        {
+            return false;
+        }
+
+        var trimmed = line.TrimStart();
+
+        return trimmed.StartsWith(HttpFileParserConstants.HttpCommentPrefix) ||
+            trimmed.StartsWith(HttpFileParserConstants.HttpCommentAltPrefix);
+    }
 
     public void Parse(string line, HttpParsingContext context)
     {

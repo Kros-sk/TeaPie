@@ -16,12 +16,15 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         ValidateContext(out var testCaseExecutionContext, out var content);
 
         var separatedRequests = RequestsSeparatorLineRegex().Split(content)
-            .Where(requestContent => !requestContent.Equals(string.Empty));
+            .Where(IsRequest);
 
         AddStepsForRequests(context, testCaseExecutionContext, separatedRequests);
 
         await Task.CompletedTask;
     }
+
+    private static bool IsRequest(string requestContent)
+        => RequestMethodAndUriLineRegex().IsMatch(requestContent);
 
     private void AddStepsForRequests(
         ApplicationContext appContext,
@@ -59,4 +62,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
     [GeneratedRegex(HttpFileParserConstants.HttpRequestSeparatorDirectiveLineRegex, RegexOptions.IgnoreCase)]
     private static partial Regex RequestsSeparatorLineRegex();
+
+    [GeneratedRegex(HttpFileParserConstants.RequestMethodAndUriLinePattern, RegexOptions.IgnoreCase)]
+    private static partial Regex RequestMethodAndUriLineRegex();
 }

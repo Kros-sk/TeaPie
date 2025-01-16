@@ -42,7 +42,8 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
 
         if (hasLoadDirectives || hasNuGetDirectives)
         {
-            lines = scriptContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            lines = scriptContent.Split([Environment.NewLine], StringSplitOptions.None)
+                .Where(line => !line.TrimStart().StartsWith(ScriptPreProcessorConstants.CommentPrefix));
 
             if (hasLoadDirectives)
             {

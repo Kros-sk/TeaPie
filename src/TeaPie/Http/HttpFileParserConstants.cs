@@ -27,8 +27,12 @@ internal static class HttpFileParserConstants
         "(" + BodySelector + "|" + HeadersSelector + @")\" + RequestVariableSeparator +
         @"(\*|(\$[^\s]+)|([A-Za-z0-9!#$%&'*+.^_`|~-]+(\.[A-Za-z0-9!#$%&'*+.^_`|~-]+)*)|)";
 
+    public const string RequestMethodAndUriLinePattern =
+        @"\b(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH|TRACE)\b\s+.+";
+
     public const string HttpHeaderSeparator = ":";
     public const string HttpCommentPrefix = "# ";
+    public const string HttpCommentAltPrefix = "// ";
     public const string HttpDirectivePrefix = "## ";
     public const string HttpRequestSeparatorDirectiveLineRegex = "###.*";
 
