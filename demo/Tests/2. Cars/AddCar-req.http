@@ -1,4 +1,7 @@
+// Notice, that this test case doesn't have any pre-request script. (<test-case-name>-init.csx)
+
 ### Add New Car
+// Name the request using the metadata line for easier referencing.
 # @name AddCarRequest
 POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
@@ -16,6 +19,10 @@ Content-Type: application/json
     "Description": ""
 }
 
-### Get new car
+// Separate multiple requests in a single .http file with a line containing '3 hashtags':
+### Get New Car
+
 # @name GetNewCarRequest
+// Access the body and headers of a named request/response using this syntax.
+// For JSON bodies, use JPath to retrieve properties. For XML, use XPath.
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}

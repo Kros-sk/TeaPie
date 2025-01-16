@@ -1,17 +1,23 @@
+// Use #nuget directives to download NuGet packages with their dependencies.
+// Downloaded libraries are globally available across scripts but require a 'using' directive to access its functionality.
 #nuget "Mapster, 7.4.0"
 #nuget "Mapster.Core, 1.2.1"
 
 using Mapster;
 using Newtonsoft.Json.Linq;
 
+// Store variables in 'TestCaseVariables' for the test case lifecycle or 'CollectionVariables' for broader scope.
 tp.TestCaseVariables.Set("ApiCarRentalSection", "/rental");
 tp.CollectionVariables.Set("aaa", "/rental");
 
+// Configure Mapster for mapping JSON objects to a Car object.
 TypeAdapterConfig<JObject, Car>.NewConfig()
     .Map(dest => dest.Brand, src => src["Brand"].Value<string>())
     .Map(dest => dest.Model, src => src["Model"].Value<string>())
     .Map(dest => dest.Year, src => src["Year"].Value<long>());
 
+// Classes, records, or structs can be defined in scripts.
+// To reuse them in other scripts, reference the script containing the class definition.
 public record Car(string Brand, string Model, long Year)
 {
     public override string ToString()

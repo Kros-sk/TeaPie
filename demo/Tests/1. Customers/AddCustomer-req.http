@@ -1,4 +1,5 @@
-### Add Customer
+# Comments in .htpp file can start with either '# ' or '// ' prefix.
+// Variables' string value can be accessed by following notation.
 POST {{ApiBaseUrl}}{{ApiCustomersSection}}
 Content-Type: application/json
 
