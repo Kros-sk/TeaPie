@@ -1,4 +1,5 @@
-﻿#load "./RentCar-init.csx"
+﻿#load "../ClearVariables.csx"
+#load "./RentCar-init.csx"
 
 // Use a NuGet package which was downloaded in another script.
 using Mapster;
@@ -6,7 +7,8 @@ using Mapster;
 // Instantiate a record/class/structure defined in the referenced script.
 var car = new Car("Toyota", "RAV4", 2022);
 
-tp.Test("Car should be rented successfully.", () => {
+tp.Test("Car should be rented successfully.", () =>
+{
     // Access a named response.
     Equal(tp.Responses["RentCarRequest"].StatusCode(), 201);
     // Access the last executed response.
@@ -14,7 +16,8 @@ tp.Test("Car should be rented successfully.", () => {
 });
 
 // Interpolated strings resolve correctly (Car overrides the ToString() method).
-tp.Test($"Rented car should be '{car}'.", () => {
+tp.Test($"Rented car should be '{car}'.", () =>
+{
     var carResponse = tp.Response.GetBody().ToJson();
     var retrievedCar = carResponse.Adapt<Car>();
 
@@ -22,3 +25,5 @@ tp.Test($"Rented car should be '{car}'.", () => {
     Equal(retrievedCar.Model, car.Model);
     Equal(retrievedCar.Year, car.Year);
 });
+
+ClearVariables();

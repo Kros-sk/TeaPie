@@ -24,7 +24,7 @@ await tp.Test("Identifiers of added and retrieved cars should match.", async () 
 
     Equal(requestJson.Id, responseJson.Id);
 
-    // Store the ID in collection variables for future reuse.
-    tp.CollectionVariables.Set("NewCarId", requestJson.Id);
+    // Each variable can have none or multiple tags ('cars', 'ids' in this case).
+    tp.CollectionVariables.Set("NewCarId", requestJson.Id, "cars", "ids");
 });
 

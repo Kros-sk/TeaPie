@@ -23,7 +23,7 @@ To set up the application, execute the following commands:
    dotnet tool install -g TeaPie.Tool
    ```
 
-The tool should now be ready to use via the `teapie` command.
+The tool should be ready to use via the `teapie` command now.
 
 ---
 
@@ -44,19 +44,73 @@ If you don’t have a local NuGet feed already, you can set one up as follows:
 ---
 
 # Usage
+## Test case
 
 To get started, **create your first test case** using the command:
 
 ```sh
-teapie generate <test-case name> [path] [-i|--init|--pre-request] [-t|--test|--post-response]
+teapie generate <test-case-name> [path] [-i|--init|--pre-request] [-t|--test|--post-response]
 ```
 
 This command generates three files in the specified path (or the current directory if no path is provided):
-- **Pre-request script**: `<test-case-name>-init.csx`
-- **Request file**: `<test-case-name>-req.http`
-- **Post-response script**: `<test-case-name>-test.csx`
+- [**Pre-request script**](#pre-request-script): `<test-case-name>-init.csx`
+- [**Request file**](#request-file): `<test-case-name>-req.http`
+- [**Post-response script**](#post-response-script): `<test-case-name>-test.csx`
 
-You can set the `-i` and `-t` options to `false` in order to **disable** the generation of the pre-request or post-response scripts.
+You can set the `-i` and `-t` options to `false` in order to **disable the generation of the pre-request or post-response scripts.**
+
+---
+## Running Tests
+
+After generating test cases and writing your tests, you can execute the **main command for testing**:
+
+```sh
+teapie
+```
+
+This command **runs all test cases** found in the current folder and its subfolders. For more advanced usage, the full command specification is:
+
+```sh
+teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
+```
+
+To view detailed information about each argument and option, use:
+
+```sh
+teapie --help
+```
+
+
+### How Collection Runs Work
+
+The **collection run** consists of two main steps:
+
+1. **Structure Exploration**
+   The tool examines the folder structure to identify all test cases.
+
+2. **Testing**
+   Each found test case is executed one by one.
+
+---
+## Exploring Collection Structure
+
+If you only want to **inspect the collection structure** without running the tests, you can do so with the following command:
+
+```sh
+teapie explore [path-to-collection] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
+```
+
+---
+
+## Logging options
+
+- **Debug Output (`-d | --debug`)**: Displays more detailed logging.
+- **Verbose Output (`-v | --verbose`)**: Displays the most detailed logging.
+- **Quiet Mode (`-q | --quiet`)**: Suppresses any output.
+- **Logging Options**:
+  - **`--log-level`** - Sets the minimal log level for console output.
+  - **`--log-file`** - Specifies a path to save logs.
+  - **`--log-file-log-level`** - Sets the minimal log level for the log file.
 
 ---
 
@@ -111,14 +165,14 @@ Example of a simple test:
 tp.Test("Status code should be 201.", () =>
 {
     var statusCode = tp.Responses["RequestName"].StatusCode();
-    statusCode.Should().Be(201);
+    Equal(statusCode, 201);
 });
 ```
 
-- Use `tp.Requests` and `tp.Responses` to access requests and responses objects for named requests.
+- Use `tp.Requests` and `tp.Responses` to access requests and responses objects of named requests.
 - For a single request in the file or the most recently executed request, you can directly use `tp.Request` and `tp.Response`.
 
-Both `HttpRequestMessage` and `HttpResponseMessage` objects are enriched with the `GetBody` and `GetBodyAsync` methods to retrieve the body content as a string. Moreover, response object is extended by `StatusCode()` method, which easifies work with status codes by returning its **integer** value.
+Both `HttpRequestMessage` and `HttpResponseMessage` objects are enriched with the `GetBody()` and `GetBodyAsync()` methods to retrieve the body content in string form. Moreover, response object is extended by `StatusCode()` method, which easifies work with status codes by returning its **integer** value.
 
 ---
 
@@ -129,7 +183,7 @@ For requests that handle `application/json` payloads, a `ToJson()` extension met
 tp.Test("Identifier should be a positive integer.", () =>
 {
     var responseBody = tp.Response.GetBody().ToJson();
-    responseBody["id"].As<int>().Should().BeGreaterThan(0);
+    True(responseBody["id"].As<int>() > 0);
 });
 ```
 
