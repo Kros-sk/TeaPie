@@ -40,6 +40,9 @@
     <None Update="Demo\Requests\RequestWithBodyAndHeader.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Demo\Requests\RequestWithCommentsAllOverFile.http">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Demo\Requests\RequestWithName.http">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

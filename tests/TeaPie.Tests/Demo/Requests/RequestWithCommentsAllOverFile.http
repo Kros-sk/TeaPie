@@ -1,0 +1,16 @@
+﻿# This is a comment explaining the request
+# Another comment for additional context
+# @name FullyStructuredRequest
+POST https://jsonplaceholder.typicode.com/posts
+// CommentLine
+Content-Type: application/json
+User-Agent: UnitTest/1.0
+// CommentLine
+X-Test-Case: RequestWithCommentsBodyAndHeaders
+// CommentLine
+
+{
+  "title": "foo",
+  "body": "bar",
+  "userId": 1
+}

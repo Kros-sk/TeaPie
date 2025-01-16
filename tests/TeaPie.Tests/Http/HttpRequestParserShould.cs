@@ -36,6 +36,20 @@ public class HttpRequestParserShould
     }
 
     [Fact]
+    public async Task ParseRequestWithCommentsAllOverFileCorrectly()
+    {
+        var parsed = await GetParsedContext(RequestsIndex.RequestWithCommentsAllOverFile);
+
+        CheckMethodUriAndExistenceOfContent(parsed, HttpMethod.Post, _baseRequestUri, true);
+        await CheckBody(parsed, "\"title\": \"foo\"", "\"body\": \"bar\"", "\"userId\": 1");
+
+        parsed.Request!.Headers.UserAgent.ToString().Should().Be("UnitTest/1.0");
+        parsed.Request.Headers.GetValues("X-Test-Case").Should().Contain("RequestWithCommentsBodyAndHeaders");
+
+        parsed.Name.Should().BeEquivalentTo("FullyStructuredRequest");
+    }
+
+    [Fact]
     public async Task ParseRequestWithNameCorrectly()
     {
         var parsed = await GetParsedContext(RequestsIndex.RequestWithNamePath);
