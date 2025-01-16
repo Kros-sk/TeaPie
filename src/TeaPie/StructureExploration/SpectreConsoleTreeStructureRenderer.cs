@@ -5,6 +5,8 @@ namespace TeaPie.StructureExploration;
 
 internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
 {
+    private static readonly bool _supportsEmojis = CompatibilityChecker.SupportsEmojis();
+
     public object Render(IReadOnlyCollectionStructure collectionStructure)
     {
         var folders = collectionStructure.Folders;
@@ -66,11 +68,16 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         }
     }
 
-    private static string GetFolderReport(string name) => $"{Emoji.Known.OpenFileFolder} [white]{name}[/]";
+    private static string GetFolderReport(string name)
+    {
+        var emoji = _supportsEmojis ? Emoji.Known.OpenFileFolder : "[grey italic]FO[/]";
+        return $"{emoji} [white]{name}[/]";
+    }
 
     private static string GetTestCaseReport(TestCase testCase)
     {
-        var name = $"{Emoji.Known.TestTube} [green]{testCase.Name.EscapeMarkup()}[/]";
+        var emoji = _supportsEmojis ? Emoji.Known.TestTube : "[grey italic]TC[/]";
+        var name = $"{emoji} [green]{testCase.Name}[/]";
 
         var descriptionParts = new List<string>();
         if (testCase.PreRequestScripts.Any())

@@ -97,7 +97,6 @@ public sealed class ApplicationBuilder
         _services.AddHttp();
         _services.AddVariables();
         _services.AddTesting();
-        _services.AddReporting();
         _services.AddPipelines();
         _services.AddLogging(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
     }
