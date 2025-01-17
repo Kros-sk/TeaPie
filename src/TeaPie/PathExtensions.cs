@@ -8,4 +8,7 @@ public static class PathExtensions
 
     public static string Root(this string path)
         => Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
+
+    public static string RemoveSlashAtTheEnd(this string path)
+        => path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 }

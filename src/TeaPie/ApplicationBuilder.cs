@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
-using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;

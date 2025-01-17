@@ -11,8 +11,8 @@ internal class ApplicationContext(
     ILogger logger,
     string tempFolderPath)
 {
-    public string Path { get; } = path;
-    public string TempFolderPath { get; set; } = tempFolderPath;
+    public string Path { get; } = path.NormalizeSeparators().RemoveSlashAtTheEnd();
+    public string TempFolderPath { get; set; } = tempFolderPath.NormalizeSeparators().RemoveSlashAtTheEnd();
 
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
     public IReadOnlyCollection<TestCase> TestCases => CollectionStructure.TestCases;

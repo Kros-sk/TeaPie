@@ -6,7 +6,7 @@ internal static class PathResolver
         => path is null ? valueIfNull : Resolve(path);
 
     public static string Resolve(string path)
-        => Trim(path).NormalizeSeparators().Root();
+        => Trim(path).NormalizeSeparators().RemoveSlashAtTheEnd().Root();
 
     private static string Trim(string path)
     {

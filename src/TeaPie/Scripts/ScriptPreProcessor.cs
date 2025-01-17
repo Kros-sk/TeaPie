@@ -142,7 +142,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
     {
         var segments = directive.Split(ScriptPreProcessorConstants.LoadScriptDirective, 2, StringSplitOptions.None);
         var path = segments[1].Trim();
-        return path.Replace("\"", string.Empty).NormalizeSeparators();
+        return path.Replace("\"", string.Empty).NormalizeSeparators().RemoveSlashAtTheEnd();
     }
 
     private static string ProcessNuGetPackage(string directive, List<NuGetPackageDescription> listOfNuGetPackages)
