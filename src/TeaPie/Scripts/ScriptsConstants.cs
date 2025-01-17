@@ -11,7 +11,7 @@ internal static class ScriptsConstants
 
     public const string NuGetApiResourcesUrl = "https://api.nuget.org/v3/index.json";
 
-    public static readonly HashSet<string> SupressedWarnings =
+    public static readonly HashSet<string> SuppressedWarnings =
     [
         "CS1701"
     ];

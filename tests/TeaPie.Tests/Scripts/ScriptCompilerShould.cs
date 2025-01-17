@@ -18,7 +18,7 @@ public class ScriptCompilerShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        compiler.Invoking(c => c.CompileScript(context.ProcessedContent!, context.Script.File.Path))
+        compiler.Invoking(c => c.CompileScript(context.ProcessedContent!, context.Script.File.RelativePath))
             .Should().Throw<SyntaxErrorException>();
     }
 
@@ -30,7 +30,7 @@ public class ScriptCompilerShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        var compiledScript = compiler.CompileScript(context.ProcessedContent!, context.Script.File.Path);
+        var compiledScript = compiler.CompileScript(context.ProcessedContent!, context.Script.File.RelativePath);
         compiledScript.Should().NotBe(null);
     }
 
@@ -42,7 +42,7 @@ public class ScriptCompilerShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        var compiledScript = compiler.CompileScript(context.ProcessedContent!, context.Script.File.Path);
+        var compiledScript = compiler.CompileScript(context.ProcessedContent!, context.Script.File.RelativePath);
         compiledScript.Should().NotBe(null);
     }
 }

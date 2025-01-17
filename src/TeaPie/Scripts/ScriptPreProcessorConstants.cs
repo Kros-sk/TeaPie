@@ -2,8 +2,6 @@
 
 internal static class ScriptPreProcessorConstants
 {
-    public const string CommentPrefix = "//";
-
     public const string LoadScriptDirective = "#load";
     public const string NuGetDirective = "#nuget";
 

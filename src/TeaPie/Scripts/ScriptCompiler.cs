@@ -32,35 +32,34 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
 
     private void ResolveCompilationDiagnostics(ImmutableArray<Diagnostic> compilationDiagnostics, string path)
     {
-        var hasWarnings = false;
-        var hasErrors = false;
-        foreach (var diagnostic in compilationDiagnostics.Where(d => !ScriptsConstants.SupressedWarnings.Contains(d.Id)))
+        var filteredDiagnostics = compilationDiagnostics
+            .Where(d => !ScriptsConstants.SuppressedWarnings.Contains(d.Id))
+            .GroupBy(d => d.Severity);
+
+        foreach (var group in filteredDiagnostics)
         {
-            if (diagnostic.Severity == DiagnosticSeverity.Warning)
+            if (group.Key == DiagnosticSeverity.Warning)
             {
-                if (!hasWarnings)
-                {
-                    LogWarningsOccured(path, compilationDiagnostics.Count(x => x.Severity == DiagnosticSeverity.Warning));
-                    hasWarnings = true;
-                }
-
-                LogWarning(diagnostic.GetMessage());
+                LogDiagnostics(path, group, LogWarningsOccured, LogWarning);
             }
-            else if (diagnostic.Severity == DiagnosticSeverity.Error)
+            else if (group.Key == DiagnosticSeverity.Error)
             {
-                if (!hasErrors)
-                {
-                    LogErrorsOccured(path, compilationDiagnostics.Count(x => x.Severity == DiagnosticSeverity.Error));
-                    hasErrors = true;
-                }
-
-                LogError(diagnostic.GetMessage());
+                LogDiagnostics(path, group, LogErrorsOccured, LogError);
+                throw new SyntaxErrorException("Exception thrown during script compilation: Script contains syntax errors.");
             }
         }
+    }
 
-        if (hasErrors)
+    private static void LogDiagnostics(
+        string path,
+        IGrouping<DiagnosticSeverity, Diagnostic> diagnostics,
+        Action<string, int> logGroupExistence,
+        Action<string> logSingleOccurence)
+    {
+        logGroupExistence(path, diagnostics.Count());
+        foreach (var diagnostic in diagnostics)
         {
-            throw new SyntaxErrorException("Exception thrown during script compilation: Script contains syntax errors.");
+            logSingleOccurence(diagnostic.GetMessage());
         }
     }
 

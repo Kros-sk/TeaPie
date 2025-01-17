@@ -48,24 +48,24 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         => _currentTestCaseExecutionContextAccessor.Context;
 
     /// <summary>
-    /// Collection of current test case's http requests accessible by names.
+    /// Collection of current test case's HTTP requests accessible by names.
     /// </summary>
     public IReadOnlyDictionary<string, HttpRequestMessage> Requests =>
         CurrentTestCaseExecutionContext?.Requests ?? new Dictionary<string, HttpRequestMessage>();
 
     /// <summary>
-    /// Collection of current test case's http responses accessible by names.
+    /// Collection of current test case's HTTP responses accessible by names.
     /// </summary>
     public IReadOnlyDictionary<string, HttpResponseMessage> Responses =>
         CurrentTestCaseExecutionContext?.Responses ?? new Dictionary<string, HttpResponseMessage>();
 
     /// <summary>
-    /// The most recently executed http request.
+    /// The most recently executed HTTP request.
     /// </summary>
     public HttpRequestMessage? Request => CurrentTestCaseExecutionContext?.Request;
 
     /// <summary>
-    /// The most recently retrieved http response.
+    /// The most recently retrieved HTTP response.
     /// </summary>
     public HttpResponseMessage? Response => CurrentTestCaseExecutionContext?.Response;
     #endregion

@@ -31,7 +31,7 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         string tempFolderPath,
         List<string> referencedScripts)
     {
-        IEnumerable<string> lines, referencedScriptsDirectives;
+        IEnumerable<string> lines;
 
         _rootPath = rootPath;
         _tempFolderPath = tempFolderPath;
@@ -42,30 +42,31 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
 
         if (hasLoadDirectives || hasNuGetDirectives)
         {
-            lines = scriptContent.Split([Environment.NewLine], StringSplitOptions.None)
-                .Where(line => !line.TrimStart().StartsWith(ScriptPreProcessorConstants.CommentPrefix));
+            lines = scriptContent.Split([Environment.NewLine], StringSplitOptions.None);
 
             if (hasLoadDirectives)
             {
                 lines = ResolveLoadDirectives(path, lines);
-                referencedScriptsDirectives = lines.Where(x => x.Contains(ScriptPreProcessorConstants.LoadScriptDirective));
-                CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
-
-                LogResolvedLoadDirectives(path);
             }
 
             if (hasNuGetDirectives)
             {
-                await ResolveNuGetDirectives(lines);
-                lines = lines.Where(x => !x.Contains(ScriptPreProcessorConstants.NuGetDirective));
-
-                LogResolvedNuGetDirectives(path);
+                lines = await ResolveNuGetDirectives(path, lines);
             }
 
             scriptContent = string.Join(Environment.NewLine, lines);
         }
 
         return scriptContent;
+    }
+
+    private async Task<IEnumerable<string>> ResolveNuGetDirectives(string path, IEnumerable<string> lines)
+    {
+        await ResolveNuGetDirectives(lines);
+        lines = lines.Where(x => !x.Contains(ScriptPreProcessorConstants.NuGetDirective));
+
+        LogResolvedNuGetDirectives(path);
+        return lines;
     }
 
     private void CheckAndRegisterReferencedScripts(IEnumerable<string> referencedScriptsDirectives)
@@ -85,8 +86,17 @@ internal partial class ScriptPreProcessor(INuGetPackageHandler nugetPackagesHand
         }
     }
 
-    private IEnumerable<string> ResolveLoadDirectives(string path, IEnumerable<string> lines)
-        => lines.Select(line => ResolveLoadDirective(path, line));
+    private IEnumerable<string> ResolveLoadDirectives(
+        string path,
+        IEnumerable<string> lines)
+    {
+        lines = lines.Select(line => ResolveLoadDirective(path, line));
+        var referencedScriptsDirectives = lines.Where(x => x.Contains(ScriptPreProcessorConstants.LoadScriptDirective));
+        CheckAndRegisterReferencedScripts(referencedScriptsDirectives);
+
+        LogResolvedLoadDirectives(path);
+        return lines;
+    }
 
     private string ResolveLoadDirective(string path, string line)
         => LoadReferenceRegex().IsMatch(line) ? ProcessLoadDirective(line, path) : line;

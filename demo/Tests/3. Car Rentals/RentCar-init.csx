@@ -1,4 +1,4 @@
-// Use '#nuget' directives to download NuGet packages with their dependencies.
+// Use 'nuget' directives to download NuGet packages with their dependencies.
 // Downloaded libraries are globally available across scripts but require a 'using' directive to access their functionality.
 #nuget "Mapster, 7.4.0"
 #nuget "Mapster.Core, 1.2.1"

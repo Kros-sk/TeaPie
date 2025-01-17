@@ -4,9 +4,9 @@ public static class TeaPieVariablesExtensions
 {
     /// <summary>
     /// Attempts to retrieve the <b>first matching</b> variable with the specified <paramref name="name"/> of type
-    /// <typeparamref name="T"/>.     /// If no such variable is found, the <paramref name="defaultValue"/> is returned.
-    /// Variables are searched across all levels in the following order: <i>TestCaseVariables, CollectionVariables,
-    /// EnvironmentVariables, GlobalVariables</i>.
+    /// <typeparamref name="T"/>. If no such variable is found, the <paramref name="defaultValue"/> is returned.
+    /// Variables are searched across all levels in the following order: <b><i>TestCaseVariables, CollectionVariables,
+    /// EnvironmentVariables, GlobalVariables</i></b>.
     /// </summary>
     /// <typeparam name="T">The type of the variable to retrieve.</typeparam>
     /// <param name="teaPie">The current context instance.</param>
@@ -29,8 +29,7 @@ public static class TeaPieVariablesExtensions
 
     /// <summary>
     /// Stores a variable with the specified <paramref name="name"/> of type <typeparamref name="T"/>
-    /// at the <b>collection level</b>.
-    /// The variable is tagged with the specified <paramref name="tags"/>.
+    /// at the <b>Collection level</b>. The variable is tagged with the specified <paramref name="tags"/>, which are optional.
     /// </summary>
     /// <typeparam name="T">The type of the variable to store.</typeparam>
     /// <param name="teaPie">The current context instance.</param>
@@ -42,7 +41,7 @@ public static class TeaPieVariablesExtensions
 
     /// <summary>
     /// Attempts to remove the variable(s) with the specified <paramref name="name"/> from all levels
-    /// (<i>TestCaseVariables, CollectionVariables, EnvironmentVariables, GlobalVariables</i>).
+    /// (<b><i>TestCaseVariables, CollectionVariables, EnvironmentVariables, GlobalVariables</i></b>).
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">The name of the variable(s) to remove.</param>
@@ -52,7 +51,7 @@ public static class TeaPieVariablesExtensions
 
     /// <summary>
     /// Attempts to remove all variables tagged with the specified <paramref name="tag"/> from all levels
-    /// (<i>TestCaseVariables, CollectionVariables, EnvironmentVariables, GlobalVariables</i>).
+    /// (<b><i>TestCaseVariables, CollectionVariables, EnvironmentVariables, GlobalVariables</i></b>).
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="tag">The tag used to identify variables for removal.</param>

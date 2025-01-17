@@ -23,9 +23,9 @@ public class VariablesCollection : IEnumerable<Variable>
     /// <typeparam name="T">Type of the variable.</typeparam>
     /// <param name="name">Name of the variable.</param>
     /// <param name="defaultValue">Value, that will be retrieved when no variable with given <paramref name="name"/> of
-    /// <typeparamref name="T"/> type is found.</param>
+    /// <typeparamref name="T"/> type was found.</param>
     /// <returns>Variable value or <paramref name="defaultValue"/> if no variable with given <paramref name="name"/> of
-    /// <typeparamref name="T"/> type is found.</returns>
+    /// <typeparamref name="T"/> type was found.</returns>
     public T? Get<T>(string name, T? defaultValue = default)
     {
         try
