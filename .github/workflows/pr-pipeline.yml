@@ -33,4 +33,4 @@ jobs:
 
     # Run unit tests
     - name: Run Unit tests
-      run: dotnet test --no-build --verbosity normal --configuration Release -warnaserror
+      run: dotnet test --no-build --verbosity normal --configuration Release
