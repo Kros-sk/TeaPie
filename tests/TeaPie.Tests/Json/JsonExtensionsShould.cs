@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NuGet.Protocol;
 using TeaPie.Json;
+using TeaPie.Reporting;
 
 namespace TeaPie.Tests.Json;
 
