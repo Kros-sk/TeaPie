@@ -3,14 +3,5 @@
 internal static class PathResolver
 {
     public static string Resolve(string? path, string valueIfNull)
-        => path is null ? valueIfNull : Resolve(path);
-
-    public static string Resolve(string path)
-        => Trim(path).NormalizeSeparators().RemoveSlashAtTheEnd().Root();
-
-    private static string Trim(string path)
-    {
-        path = path.Trim('\"');
-        return path.Trim();
-    }
+        => path is null ? valueIfNull : path.NormalizePath(true);
 }

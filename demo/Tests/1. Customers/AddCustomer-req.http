@@ -1,4 +1,4 @@
-# Comments in .htpp file can start with either '# ' or '// ' prefix.
+# Comments in .http file can start with either '# ' or '// ' prefix.
 // Variable's string value can be accessed by following notation.
 POST {{ApiBaseUrl}}{{ApiCustomersSection}}
 Content-Type: application/json
