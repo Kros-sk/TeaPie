@@ -29,8 +29,8 @@ jobs:
 
     # Build the project
     - name: Build project
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore -warnaserror
 
     # Run unit tests
     - name: Run Unit tests
-      run: dotnet test --no-build --verbosity normal --configuration Release
+      run: dotnet test --no-build --verbosity normal --configuration Release -warnaserror
