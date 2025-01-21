@@ -7,8 +7,10 @@ using Mapster;
 using Newtonsoft.Json.Linq;
 
 // Store variables in 'TestCaseVariables' for the test case life-cycle or 'CollectionVariables' for broader scope.
-tp.TestCaseVariables.Set("ApiCarRentalSection", "/rental");
-tp.CollectionVariables.Set("aaa", "/rental");
+tp.TestCaseVariables.Set("Brand", "Toyota", "cars");
+tp.TestCaseVariables.Set("Model", "RAV4", "cars");
+tp.TestCaseVariables.Set("Year", 2022, "cars");
+tp.CollectionVariables.Set("ApiCarRentalSection", "/rental");
 
 // Configure Mapster for mapping JSON objects to a 'Car' object.
 TypeAdapterConfig<JObject, Car>.NewConfig()

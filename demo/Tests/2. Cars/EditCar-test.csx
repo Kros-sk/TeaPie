@@ -1,10 +1,6 @@
-// Alternative approaches to handling status codes and JSON bodies.
-// These methods are less recommended due to larger code size.
-
 tp.Test("Status code of car retrieval should be 200 (OK)", () => {
-    // Access status code directly, casting it to int.
-    var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode;
-    Equal((int)statusCode, 200);
+    var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode();
+    Equal(statusCode, 200);
 });
 
 tp.Test("Engine type and people capacity should match after edit.", () => {

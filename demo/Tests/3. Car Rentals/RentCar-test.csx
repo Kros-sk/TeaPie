@@ -6,7 +6,11 @@
 using Mapster;
 
 // Instantiate a record/class/structure defined in the referenced script.
-var car = new Car("Toyota", "RAV4", 2022);
+var brand = tp.GetVariable("Brand");
+var model = tp.GetVariable("Brand");
+var year = tp.GetVariable("Brand");
+
+var car = new Car(brand, model, year);
 
 tp.Test("Car should be rented successfully.", () =>
 {
@@ -28,3 +32,5 @@ tp.Test($"Rented car should be '{car}'.", () =>
 });
 
 ClearVariables();
+
+tp.Logger.LogInformation("End of demo collection testing.");

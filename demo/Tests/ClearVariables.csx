@@ -1,5 +1,5 @@
 ﻿public void ClearVariables()
 {
-    // Removes all variables with tag 'ids'.
-    tp.RemoveVariablesWithTag("ids");
+    // Removes all variables with tag 'cars'.
+    tp.RemoveVariablesWithTag("cars");
 }

@@ -10,7 +10,7 @@ tp.Test("Customer should be created successfully.", () => {
     dynamic customer = body.ToJsonExpando();
 
     // Access expando properties dynamically and store them in variables.
-    tp.CollectionVariables.Set("NewCustomerId", customer.Id); // Equivalent to tp.SetVariable("NewCustomerId", customer.Id);
+    tp.SetVariable("NewCustomerId", customer.Id); // Equivalent to tp.CollectionVariables.Set("NewCustomerId", customer.Id);
 
     // Alternatively, use JSON parsing:
     // var body = tp.Request.GetBody().ToJson();
