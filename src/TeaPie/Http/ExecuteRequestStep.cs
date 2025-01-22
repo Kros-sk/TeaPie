@@ -29,10 +29,17 @@ internal class ExecuteRequestStep(IHttpClientFactory clientFactory, IRequestExec
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
         var response = await client.SendAsync(request, cancellationToken);
 
-        context.Logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
-            (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
+        await LogResponse(context.Logger, response);
 
         return response;
+    }
+
+    private static async Task LogResponse(ILogger logger, HttpResponseMessage response)
+    {
+        logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
+            (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
+
+        logger.LogTrace("Body: {NewLine}{BodyContent}", Environment.NewLine, await response.GetBodyAsync());
     }
 
     private void ValidateContext(out RequestExecutionContext requestExecutionContext, out HttpRequestMessage request)

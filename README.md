@@ -133,11 +133,20 @@ A [**request file**](https://learn.microsoft.com/en-us/aspnet/core/test/http-fil
 
 ```http
 # @name RequestName
+GET https:/localhost:3001/customers
+Content-Type: application/json
+
+{
+    "Id": 3,
+    "FirstName": "Alice",
+    "LastName": "Johnson",
+    "Email": "alice.johnson@example.com"
+}
 ```
 
 All variables can be used in the request file with the `{{variableName}}` notation.
 
->💁‍♂️ When you want use **reference type for variables**, make sure that they override `ToString()` method. During variable resulution, `ToString()` will be called.
+>💁‍♂️ When you want to use **reference types for variables**, make sure that they override `ToString()` method. During variable resolution, `ToString()` will be called on them.
 
 For **named requests**, you can access request and response data using the following syntax:
 

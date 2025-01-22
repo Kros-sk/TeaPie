@@ -19,8 +19,8 @@ Content-Type: application/json
     "Description": ""
 }
 
-// Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:
 ### Get New Car
+// Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:
 
 # @name GetNewCarRequest
 // Access the body and headers of a named request/response using this syntax.

@@ -6,9 +6,9 @@
 using Mapster;
 
 // Instantiate a record/class/structure defined in the referenced script.
-var brand = tp.GetVariable("Brand");
-var model = tp.GetVariable("Brand");
-var year = tp.GetVariable("Brand");
+var brand = tp.GetVariable<string>("Brand");
+var model = tp.GetVariable<string>("Model");
+var year = tp.GetVariable<int>("Year");
 
 var car = new Car(brand, model, year);
 
