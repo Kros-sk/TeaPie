@@ -39,6 +39,32 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     public VariablesCollection EnvironmentVariables => _variables.EnvironmentVariables;
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
     public VariablesCollection TestCaseVariables => _variables.TestCaseVariables;
+
+    /// <summary>
+    /// Attempts to retrieve the <b>first matching</b> variable with the specified <paramref name="name"/> of type
+    /// <typeparamref name="T"/>. If no such variable is found, the <paramref name="defaultValue"/> is returned.
+    /// Variables are searched across all levels in the following order: <b><i>TestCaseVariables, CollectionVariables,
+    /// EnvironmentVariables, GlobalVariables</i></b>.
+    /// </summary>
+    /// <typeparam name="T">The type of the variable to retrieve.</typeparam>
+    /// <param name="name">The name of the variable to retrieve.</param>
+    /// <param name="defaultValue">The value to return if no variable with the specified <paramref name="name"/> and
+    /// <typeparamref name="T"/> type is found.</param>
+    /// <returns>The variable with the specified <paramref name="name"/> of type <typeparamref name="T"/>, or
+    /// <paramref name="defaultValue"/> if no matching variable is found.</returns>
+    public T? GetVariable<T>(string name, T? defaultValue = default)
+        => _variables.GetVariable(name, defaultValue);
+
+    /// <summary>
+    /// Stores a variable with the specified <paramref name="name"/> of type <typeparamref name="T"/>
+    /// at the <b>Collection level</b>. The variable is tagged with the specified <paramref name="tags"/>, which are optional.
+    /// </summary>
+    /// <typeparam name="T">The type of the variable to store.</typeparam>
+    /// <param name="name">The name under which the variable will be stored.</param>
+    /// <param name="value">The value of the variable to store.</param>
+    /// <param name="tags">An optional list of tags associated with the variable.</param>
+    public void SetVariable<T>(string name, T value, params string[] tags)
+        => _variables.SetVariable(name, value, tags);
     #endregion
 
     #region Execution Context
