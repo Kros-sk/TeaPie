@@ -1,6 +1,6 @@
 ﻿namespace TeaPie;
 
-public static class StringExtensions
+internal static class StringExtensions
 {
     internal static string TrimSuffix(this string text, string suffix)
     {

@@ -119,7 +119,9 @@ The **pre-request script** is used to set variables and initialize any required 
   var time = tp.GetVariable("CurrentTime");
   ```
 
-- Reference other scripts using the `#load` directive. You can provide either an absolute or a relative path:
+- Reference other scripts using the `#load` directive. You can provide either an absolute or a relative path.
+
+  **IMPORTANT:** Referenced script is **automatically executed**. For this reason, rather encapsulate logic in methods, to prevent unwanted execution.
 
   ```csharp
   #load "path\to\your\script.csx"

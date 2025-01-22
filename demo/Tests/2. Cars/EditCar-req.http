@@ -18,7 +18,7 @@ Content-Type: application/json
 
 ### Edit new car
 # @name EditCarRequest
-POST {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
+PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 // You can use request variables also in headers.
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 

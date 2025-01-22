@@ -5,19 +5,9 @@
 # @name AddCarRequest
 POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
+// It is possible to attach body dynamically (by using variables).
 
-{
-    "Id": 6,
-    "Brand": "Toyota",
-    "Model": "RAV4",
-    "EngineType": "2.5 TDI",
-    "TransmissionType": "Manual",
-    "PeopleCapacity": 7,
-    "Color": "silver",
-    "Year": 2022,
-    "DrivenKilometres": 21000.0,
-    "Description": ""
-}
+{{NewCarBody}}
 
 ### Get New Car
 // Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:

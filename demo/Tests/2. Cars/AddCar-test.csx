@@ -4,12 +4,15 @@
     Equal(statusCode, 201);
 });
 
-// Asynchronous tests are supported.
-await tp.Test("Newly added car should have 'Toyota' brand.", async () => {
+var body = tp.GetVariable<string>("NewCarBody");
+dynamic obj = body.ToExpando();
+var brand = obj.brand;
+
+await tp.Test($"Newly added car should have '{brand}' brand.", async () => {
     dynamic responseJson = await tp.Responses["GetNewCarRequest"].GetBodyAsExpandoAsync();
 
     // Access JSON properties case-insensitively.
-    Equal(responseJson.brand, "Toyota");
+    Equal(responseJson.brand, brand);
 });
 
 await tp.Test("Identifiers of added and retrieved cars should match.", async () => {

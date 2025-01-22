@@ -1,16 +1,6 @@
 ﻿// Reference of multiple scripts is also allowed.
 #load "../ClearVariables.csx"
-#load "./RentCar-init.csx"
-
-// Use a NuGet package which was downloaded in another script.
-using Mapster;
-
-// Instantiate a record/class/structure defined in the referenced script.
-var brand = tp.GetVariable<string>("Brand");
-var model = tp.GetVariable<string>("Model");
-var year = tp.GetVariable<int>("Year");
-
-var car = new Car(brand, model, year);
+#load "../2. Cars/Definitions/Car.csx"
 
 tp.Test("Car should be rented successfully.", () =>
 {
@@ -19,6 +9,9 @@ tp.Test("Car should be rented successfully.", () =>
     // Access the last executed response.
     Equal(tp.Response.StatusCode(), 200);
 });
+
+// If you have variable in JSON string, it can be easily converted to reference type, by using 'To<TResult>()' method.
+var car = tp.GetVariable<string>("NewCarBody").To<Car>();
 
 // Interpolated strings resolve correctly (Car overrides the 'ToString()' method).
 await tp.Test($"Rented car should be '{car}'.", async () =>

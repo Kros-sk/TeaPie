@@ -23,4 +23,13 @@ public static class JsonExtensions
     /// </returns>
     public static CaseInsensitiveExpandoObject ToExpando(this string jsonText)
         => new(JsonConvert.DeserializeObject<Dictionary<string, object?>>(jsonText) ?? []);
+
+    /// <summary>
+    /// Convert JSON string to <typeparamref name="TResult"/>.
+    /// </summary>
+    /// <typeparam name="TResult">Type which JSON string will be deserialized to.</typeparam>
+    /// <param name="jsonText">String in JSON structure, object should be extracted from.</param>
+    /// <returns><paramref name="jsonText"/> in a <typeparamref name="TResult"/> form.</returns>
+    public static TResult? To<TResult>(this string jsonText)
+        => System.Text.Json.JsonSerializer.Deserialize<TResult>(jsonText);
 }
