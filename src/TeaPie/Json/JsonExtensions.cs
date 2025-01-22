@@ -14,12 +14,13 @@ public static class JsonExtensions
         => JObject.Parse(text);
 
     /// <summary>
-    /// Parses given text (in JSON structure) to <b>case-insensitive</b> expando object (<see cref="CaseInsensitiveExpandoObject"/>).
+    /// Parses given text (in JSON structure) to <b>case-insensitive</b> expando object
+    /// (<see cref="CaseInsensitiveExpandoObject"/>).
     /// </summary>
     /// <param name="jsonText">Text to be parsed into <b>case-insensitive</b> expando object
     /// (<see cref="CaseInsensitiveExpandoObject"/>).</param>
     /// <returns><see cref="CaseInsensitiveExpandoObject"/> representation of JSON stored in <paramref name="jsonText"/>.
     /// </returns>
-    public static CaseInsensitiveExpandoObject ToJsonExpando(this string jsonText)
+    public static CaseInsensitiveExpandoObject ToExpando(this string jsonText)
         => new(JsonConvert.DeserializeObject<Dictionary<string, object?>>(jsonText) ?? []);
 }

@@ -1,18 +1,17 @@
-﻿tp.Test("Customer should be created successfully.", () =>
+﻿// Native support for asynchronous tests
+await tp.Test("Customer should be created successfully.", async () =>
 {
     // Assertions use XUnit.Assert by default, but you can use any assertion library.
     // 'Assert.' qualifier is optional with XUnit. StatusCode() returns an int => no casting needed.
     Equal(tp.Response.StatusCode(), 201); // Equivalent to Assert.Equal((int)tp.Response.StatusCode, 201);
 
-    // Use GetBody() to get the request/response body as a string. Returns empty string if the body is null.
-    string body = tp.Request.GetBody(); // Equivalent to await tp.Request.Content?.ReadAsStringAsync() ?? string.Empty;
-
+    // For easier access to content body, there are few handy methods in sync and async form.
     // To use dynamic expando objects, explicitly declare them as 'dynamic' (not 'var').
-    dynamic customer = body.ToJsonExpando();
+    dynamic customer = await tp.Request.GetBodyAsExpandoAsync();
 
     // Access expando properties dynamically and case-insensitively.
     // When storing to variables, type has to be explicitly written.
-    tp.SetVariable("NewCustomerId", (long)customer.id); // Equivalent to tp.CollectionVariables.Set("NewCustomerId", customer.Id);
+    tp.SetVariable("NewCustomerId", customer.id); // Equivalent to tp.CollectionVariables.Set("NewCustomerId", customer.Id);
 
     // Alternatively, use JSON parsing:
     // var body = tp.Request.GetBody().ToJson();

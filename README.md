@@ -176,7 +176,13 @@ tp.Test("Status code should be 201.", () =>
 - Use `tp.Requests` and `tp.Responses` to access requests and responses objects of named requests.
 - For a single request in the file or the most recently executed request, you can directly use `tp.Request` and `tp.Response`.
 
-Both `HttpRequestMessage` and `HttpResponseMessage` objects are enriched with the `GetBody()` and `GetBodyAsync()` methods to retrieve the body content in string form. Moreover, response object is extended by `StatusCode()` method, which easifies work with status codes by returning its **integer** value.
+Both `HttpRequestMessage` and `HttpResponseMessage` objects are enriched with these handy methods for work with body content:
+
+- `GetBody()`/`GetBodyAsync()` - retrieves `string` representation of the body.
+- `GetBody<TResult>()`/`GetBodyAsync<TResult>()` - retrieves **deserialized object** of `TResult` type from JSON string in the body.
+- `GetBodyAsExpando()`/`GetBodyAsExpandoAsync()` - retrieves `dynamic` **case-insensitive expando object**, which easifies access to properties. This method works only for bodies, which are in JSON form. Note, that for proper using of this type, variable in which it is stored, has to be explicitly typed as `dynamic`.
+
+Moreover, response object is extended by `StatusCode()` method, which easifies work with status codes by returning its **integer** value.
 
 ### JSON Handling
 

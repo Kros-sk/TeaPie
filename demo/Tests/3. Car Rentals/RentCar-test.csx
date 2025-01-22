@@ -20,11 +20,11 @@ tp.Test("Car should be rented successfully.", () =>
     Equal(tp.Response.StatusCode(), 200);
 });
 
-// Interpolated strings resolve correctly (Car overrides the ToString() method).
-tp.Test($"Rented car should be '{car}'.", () =>
+// Interpolated strings resolve correctly (Car overrides the 'ToString()' method).
+await tp.Test($"Rented car should be '{car}'.", async () =>
 {
-    var carResponse = tp.Response.GetBody().ToJson();
-    var retrievedCar = carResponse.Adapt<Car>();
+    // Body content in form of given reference type. (Works only for JSON structured bodies).
+    var retrievedCar = await tp.Response.GetBodyAsync<Car>();
 
     Equal(retrievedCar.Brand, car.Brand);
     Equal(retrievedCar.Model, car.Model);

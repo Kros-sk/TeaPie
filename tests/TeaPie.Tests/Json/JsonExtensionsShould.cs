@@ -42,7 +42,7 @@ public class JsonExtensionsShould
     [Fact]
     public void ConvertJsonStringToCaseInsensitiveExpandoObjectCorrectly()
     {
-        dynamic json = JsonString.ToJsonExpando();
+        dynamic json = JsonString.ToExpando();
 
         Assert.Equal(json.stringKey, "stringValue");
         Assert.Equal(json.numberKey, 123);

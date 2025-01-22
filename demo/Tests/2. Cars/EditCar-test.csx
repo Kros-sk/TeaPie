@@ -7,6 +7,7 @@ tp.Test("Engine type and people capacity should match after edit.", () => {
     const string comparedField1 = "EngineType";
     const string comparedField2 = "PeopleCapacity";
 
+    // Alternative approach of access to JSON objects.
     var oldCarJson = tp.Requests["AddCarRequest"].GetBody().ToJson();
     var newCarJson = tp.Responses["GetEditedCarRequest"].GetBody().ToJson();
 
