@@ -21,11 +21,12 @@ public class HttpMessagesExtensionsShould
     [Fact]
     public void ReturnStringContentWhenGetBodyCalledOnRequestWithContent()
     {
-        var request = CreateRequestWithContent("Request Body Content");
+        const string body = "Request Body Content";
+        var request = CreateRequestWithContent(body);
 
         var result = request.GetBody();
 
-        result.Should().Be("Request Body Content");
+        result.Should().Be(body);
     }
 
     [Fact]
@@ -41,11 +42,12 @@ public class HttpMessagesExtensionsShould
     [Fact]
     public void ReturnStringContentWhenGetBodyCalledOnResponseWithContent()
     {
-        var response = CreateResponseWithContent("Response Body Content");
+        const string body = "Response Body Content";
+        var response = CreateResponseWithContent(body);
 
         var result = response.GetBody();
 
-        result.Should().Be("Response Body Content");
+        result.Should().Be(body);
     }
 
     [Fact]
@@ -159,11 +161,12 @@ public class HttpMessagesExtensionsShould
     [Fact]
     public async Task ReturnStringContentWhenGetBodyAsyncCalledOnRequestWithContent()
     {
-        var request = CreateRequestWithContent("Async Request Body Content");
+        const string body = "Response Body Content";
+        var request = CreateRequestWithContent(body);
 
         var result = await request.GetBodyAsync();
 
-        result.Should().Be("Async Request Body Content");
+        result.Should().Be(body);
     }
 
     [Fact]
@@ -179,11 +182,12 @@ public class HttpMessagesExtensionsShould
     [Fact]
     public async Task ReturnStringContentWhenGetBodyAsyncCalledOnResponseWithContent()
     {
-        var response = CreateResponseWithContent("Async Response Body Content");
+        const string body = "Async Response Body Content";
+        var response = CreateResponseWithContent(body);
 
         var result = await response.GetBodyAsync();
 
-        result.Should().Be("Async Response Body Content");
+        result.Should().Be(body);
     }
 
     [Fact]

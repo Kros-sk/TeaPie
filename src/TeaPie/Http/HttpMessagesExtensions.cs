@@ -30,8 +30,7 @@ public static class HttpMessagesExtensions
     /// </summary>
     /// <typeparam name="TResult">Type which JSON body content will be deserialized to.</typeparam>
     /// <param name="request">The HTTP request message to extract the body content from.</param>
-    /// <returns>The body content as a <typeparamref name="TResult"/>.
-    /// If deserialisation fails, <see langword="null"/> is returned. </returns>
+    /// <returns>The body content as a <typeparamref name="TResult"/>.</returns>
     public static TResult? GetBody<TResult>(this HttpRequestMessage request)
         => Serializer.Deserialize<TResult>(GetBody(request.Content).Result);
 
@@ -41,8 +40,7 @@ public static class HttpMessagesExtensions
     /// </summary>
     /// <typeparam name="TResult">Type which JSON body content will be deserialized to.</typeparam>
     /// <param name="response">The HTTP response message to extract the body content from.</param>
-    /// <returns>The body content as a <typeparamref name="TResult"/>.
-    /// If deserialisation fails, <see langword="null"/> is returned. </returns>
+    /// <returns>The body content as a <typeparamref name="TResult"/>.</returns>
     public static TResult? GetBody<TResult>(this HttpResponseMessage response)
         => Serializer.Deserialize<TResult>(GetBody(response.Content).Result);
 
@@ -91,7 +89,7 @@ public static class HttpMessagesExtensions
     /// <typeparam name="TResult">Type which JSON body content will be deserialized to.</typeparam>
     /// <param name="request">The HTTP request message to extract the body content from.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
-    /// <typeparamref name="TResult"/>. If deserialisation fails, <see langword="null"/> is returned.</returns>
+    /// <typeparamref name="TResult"/>.</returns>
     public static async Task<TResult?> GetBodyAsync<TResult>(this HttpRequestMessage request)
         => Serializer.Deserialize<TResult>(await GetBody(request.Content));
 
@@ -102,7 +100,7 @@ public static class HttpMessagesExtensions
     /// <typeparam name="TResult">Type which JSON body content will be deserialized to.</typeparam>
     /// <param name="response">The HTTP response message to extract the body content from.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
-    /// <typeparamref name="TResult"/>. If deserialisation fails, <see langword="null"/> is returned.</returns>
+    /// <typeparamref name="TResult"/>.</returns>
     public static async Task<TResult?> GetBodyAsync<TResult>(this HttpResponseMessage response)
         => Serializer.Deserialize<TResult>(await GetBody(response.Content));
 

@@ -75,11 +75,9 @@ teapie --help
 
 The **collection run** consists of two main steps:
 
-1. **Structure Exploration**
-   The tool examines the folder structure to identify all test cases.
+1. **Structure Exploration** - The tool examines the folder structure to identify all test cases.
 
-2. **Testing**
-   Each found test case is executed one by one.
+2. **Testing** - Each found test case is executed one by one.
 
 ### Exploring Collection Structure
 
@@ -127,7 +125,7 @@ The **pre-request script** is used to set variables and initialize any required 
   #load "path\to\your\script.csx"
   ```
 
-  >💁‍♂️ When using relative paths, the parent folder of the current script serves as the starting point. Note that the `#load` directive does not automatically execute the loaded script; it simply allows access to its functions.
+  >💁‍♂️ When using relative paths, the parent folder of the current script serves as the starting point.
 
 ### Request File
 
@@ -188,9 +186,18 @@ Moreover, response object is extended by `StatusCode()` method, which easifies w
 
 ### JSON Handling
 
-For requests that handle `application/json` payloads, a `ToJson()` extension method is available to simplify access to JSON properties:
+For requests that handle `application/json` payloads, a **extension methods** `ToExpando()` and `ToJson()` can simplify access to JSON properties:
 
 ```csharp
+// Using case-insensitive expando object
+tp.Test("Identifier should be a positive integer.", () =>
+{
+    // Expando object has to be marked epxlicitly as 'dynamic'
+    dynamic responseBody = tp.Response.GetBody().ToExpando();
+    True(responseBody.id > 0);
+});
+
+// Using JObject
 tp.Test("Identifier should be a positive integer.", () =>
 {
     var responseBody = tp.Response.GetBody().ToJson();

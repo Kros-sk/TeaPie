@@ -1,5 +1,5 @@
-// Use 'load' to reference another script.
-// Path can be absolute or relative (relative path start from the parent directory).
+// Use 'load' directive to reference another script.
+// Path can be absolute or relative (relative path starts from the parent directory).
 // IMPORTANT: Referenced scripts run automatically. Encapsulate logic in methods to avoid unintended execution.
 #load ../InitializationScript.csx
 

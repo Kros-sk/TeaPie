@@ -2,7 +2,7 @@
 
 internal static class StringExtensions
 {
-    internal static string TrimSuffix(this string text, string suffix)
+    public static string TrimSuffix(this string text, string suffix)
     {
         ArgumentNullException.ThrowIfNull(text);
 
