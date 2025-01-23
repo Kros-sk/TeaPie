@@ -32,4 +32,12 @@ public static class JsonExtensions
     /// <returns><paramref name="jsonText"/> in a <typeparamref name="TResult"/> form.</returns>
     public static TResult? To<TResult>(this string jsonText)
         => System.Text.Json.JsonSerializer.Deserialize<TResult>(jsonText);
+
+    /// <summary>
+    /// Serializes object to <see cref="string"/> in <b>JSON structure</b>.
+    /// </summary>
+    /// <param name="obj">Object that should be serialized to JSON structured <see cref="string"/>.</param>
+    /// <returns><see cref="string"/> which represents <paramref name="obj"/> in <b>JSON structure</b>.</returns>
+    public static string ToJsonString(this object obj)
+        => System.Text.Json.JsonSerializer.Serialize(obj);
 }

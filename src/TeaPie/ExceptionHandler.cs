@@ -5,15 +5,14 @@ namespace TeaPie;
 
 internal static partial class ExceptionHandler
 {
-    private static readonly string _messageTemplate =
-        "Exception was thrown during execution of '{StepName}'. Error message: {Message}" + Environment.NewLine +
-        "Stack trace: {StackTrace}";
-
     internal static void Handle(Exception ex, Type stepType, ILogger logger)
-        => logger.LogError(_messageTemplate,
+    {
+        logger.LogError("Exception was thrown during execution of '{StepName}'. Error message: {Message}",
             ParseStepName(stepType.Name),
-            ex.Message,
-            ex.StackTrace);
+            ex.Message);
+
+        logger.LogDebug("Stack trace: {StackTrace}", ex.StackTrace);
+    }
 
     public static string ParseStepName(string stepName)
     {

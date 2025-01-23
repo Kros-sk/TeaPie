@@ -6,23 +6,7 @@ namespace TeaPie.Tests.Json;
 
 public class JsonExtensionsShould
 {
-    public const string JsonString =
-"""
-{
-    "stringKey": "stringValue",
-    "numberKey": 123,
-    "booleanKey": true,
-    "arrayKey": [
-        "value1",
-        2,
-        false
-    ],
-    "objectKey": {
-        "nestedStringKey": "nestedValue",
-        "nestedNumberKey": 456
-    }
-}
-""";
+    private const string JsonString = "{\"stringKey\":\"stringValue\",\"numberKey\":123,\"booleanKey\":true,\"arrayKey\":[\"value1\",2,false],\"objectKey\":{\"nestedStringKey\":\"nestedValue\",\"nestedNumberKey\":456}}";
 
     [Fact]
     public void ConvertJsonStringToJsonObjectCorrectly()
@@ -52,5 +36,16 @@ public class JsonExtensionsShould
         Assert.NotNull(json.ObjectKey);
         Assert.Equal(json.objectKey.NestedStringKey, "nestedValue");
         Assert.Equal(json.objectKey.nestedNumberKey, 456);
+    }
+
+    [Fact]
+    public void DeserializeAndSerializeCorrectly()
+    {
+        var obj = JsonString.To<object>();
+        var json = obj?.ToJsonString();
+
+        Assert.NotNull(obj);
+        Assert.NotNull(json);
+        Assert.Equal(JsonString, json);
     }
 }

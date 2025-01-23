@@ -4,7 +4,7 @@
     Equal(statusCode, 201);
 });
 
-var body = tp.GetVariable<string>("NewCarBody");
+var body = tp.GetVariable<string>("NewCar");
 dynamic obj = body.ToExpando();
 var brand = obj.brand;
 

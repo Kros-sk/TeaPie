@@ -11,7 +11,7 @@ tp.Test("Car should be rented successfully.", () =>
 });
 
 // If you have variable in JSON string, it can be easily converted to reference type, by using 'To<TResult>()' method.
-var car = tp.GetVariable<string>("NewCarBody").To<Car>();
+var car = tp.GetVariable<string>("NewCar").To<Car>();
 
 // Interpolated strings resolve correctly (Car overrides the 'ToString()' method).
 await tp.Test($"Rented car should be '{car}'.", async () =>

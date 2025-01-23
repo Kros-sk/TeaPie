@@ -7,7 +7,7 @@ POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
 // It is possible to attach body dynamically (by using variables).
 
-{{NewCarBody}}
+{{NewCar}}
 
 ### Get New Car
 // Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:
