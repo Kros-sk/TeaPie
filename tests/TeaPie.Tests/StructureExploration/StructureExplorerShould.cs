@@ -47,17 +47,20 @@ public class StructureExplorerShould
     public void ThrowProperExceptionWhenInvalidPathIsGiven(bool emptyPath)
     {
         var structureExplorer = GetStructureExplorer();
+        var builder = new ApplicationContextBuilder();
 
         if (emptyPath)
         {
-            structureExplorer.Invoking(se => se.ExploreCollectionStructure(string.Empty))
+            structureExplorer.Invoking(se => se.ExploreCollectionStructure(builder.WithPath(string.Empty).Build()))
                 .Should().Throw<InvalidOperationException>();
         }
         else
         {
             structureExplorer.Invoking(se =>
                 se.ExploreCollectionStructure(
-                    $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}"))
+                    builder.WithPath(
+                        $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}")
+                    .Build()))
                 .Should().Throw<DirectoryNotFoundException>();
         }
     }
@@ -67,6 +70,7 @@ public class StructureExplorerShould
     [InlineData(false)]
     public void ReturnEmptyListOfTestCasesWhenExploringFoldersWithoutAnyTestCases(bool nestedFolders)
     {
+        var builder = new ApplicationContextBuilder();
         string tempDirectoryPath;
         if (nestedFolders)
         {
@@ -79,7 +83,7 @@ public class StructureExplorerShould
 
         var structureExplorer = GetStructureExplorer();
 
-        var testCases = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases;
+        var testCases = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases;
 
         testCases.Should().BeEmpty();
     }
@@ -87,10 +91,12 @@ public class StructureExplorerShould
     [Fact]
     public void ReturnTestCasesInCorrectOrder()
     {
+        var builder = new ApplicationContextBuilder();
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases
+            .ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
@@ -104,10 +110,12 @@ public class StructureExplorerShould
     [Fact]
     public void AssignPreRequestAndPostResponseScriptsOfTestCasesCorrectly()
     {
+        var builder = new ApplicationContextBuilder();
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(tempDirectoryPath).TestCases.ToList();
+        var testCasesOrder = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases
+            .ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
 
@@ -128,5 +136,5 @@ public class StructureExplorerShould
     }
 
     private static StructureExplorer GetStructureExplorer()
-     => new(Substitute.For<ILogger<StructureExplorer>>());
+        => new(Substitute.For<ILogger<StructureExplorer>>());
 }

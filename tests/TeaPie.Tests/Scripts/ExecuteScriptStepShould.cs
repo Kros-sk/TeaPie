@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -33,16 +34,19 @@ public class ExecuteScriptStepShould
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
+
+        var step = new ExecuteScriptStep(accessor);
+        var appContext = new ApplicationContextBuilder().Build();
+
         TeaPie.Create(
             Substitute.For<IVariables>(),
             logger,
             Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
+            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
+            appContext,
+            Substitute.For<IPipeline>());
 
         await ScriptHelper.PrepareScriptForExecution(context);
-
-        var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContextBuilder().Build();
 
         await step.Execute(appContext);
 
@@ -58,12 +62,18 @@ public class ExecuteScriptStepShould
         var variables = Substitute.For<IVariables>();
         variables.ContainsVariable("VariableToRemove").Returns(true);
 
-        TeaPie.Create(variables, logger, Substitute.For<ITester>(), Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
-
-        await ScriptHelper.PrepareScriptForExecution(context);
-
         var step = new ExecuteScriptStep(accessor);
         var appContext = new ApplicationContextBuilder().Build();
+
+        TeaPie.Create(
+            variables,
+            logger,
+            Substitute.For<ITester>(),
+            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
+            appContext,
+            Substitute.For<IPipeline>());
+
+        await ScriptHelper.PrepareScriptForExecution(context);
 
         await step.Execute(appContext);
 
