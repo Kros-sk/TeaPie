@@ -4,14 +4,14 @@ using TeaPie.Variables;
 
 namespace TeaPie.Environments;
 
-internal class SetEnvironmentStep(IVariables variables, IEnvironmentsRegistry environmentsRegister) : IPipelineStep
+internal class SetEnvironmentStep(IVariables variables, IEnvironmentsRegistry environmentsRegistry) : IPipelineStep
 {
     private readonly IVariables _variables = variables;
-    private readonly IEnvironmentsRegistry _environmentsRegister = environmentsRegister;
+    private readonly IEnvironmentsRegistry _environmentsRegistry = environmentsRegistry;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (_environmentsRegister.TryGetEnvironment(context.EnvironmentName, out var environment))
+        if (_environmentsRegistry.TryGetEnvironment(context.EnvironmentName, out var environment))
         {
             environment.Apply(_variables.EnvironmentVariables);
         }

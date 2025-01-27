@@ -8,10 +8,10 @@ namespace TeaPie.Environments;
 internal class InitializeEnvironmentsStep(
     IPipeline pipeline,
     IVariables variables,
-    IEnvironmentsRegistry environmentsRegister) : IPipelineStep
+    IEnvironmentsRegistry environmentsRegistry) : IPipelineStep
 {
     private readonly IVariables _variables = variables;
-    private readonly IEnvironmentsRegistry _environmentsRegister = environmentsRegister;
+    private readonly IEnvironmentsRegistry _environmentsRegistry = environmentsRegistry;
     private readonly IPipeline _pipeline = pipeline;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
@@ -24,14 +24,14 @@ internal class InitializeEnvironmentsStep(
         _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<SetEnvironmentStep>());
     }
 
-    private static async Task<Dictionary<string, Dictionary<string, object>>> ParseEnvironmentFile(string environmentFilePath)
+    private static async Task<Dictionary<string, Dictionary<string, object?>>> ParseEnvironmentFile(string environmentFilePath)
     {
         await using var environmentFile = File.OpenRead(environmentFilePath);
-        return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, object>>>(environmentFile) ?? [];
+        return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, object?>>>(environmentFile) ?? [];
     }
 
     private void RegisterEnvironmentsAndApplyDefault(
-        Dictionary<string, Dictionary<string, object>> environments,
+        Dictionary<string, Dictionary<string, object?>> environments,
         string environmentFilePath,
         ILogger logger)
     {
@@ -48,10 +48,10 @@ internal class InitializeEnvironmentsStep(
         }
     }
 
-    private bool RegisterEnvironmentAndApplyIfDefault(KeyValuePair<string, Dictionary<string, object>> environmentToken)
+    private bool RegisterEnvironmentAndApplyIfDefault(KeyValuePair<string, Dictionary<string, object?>> environmentToken)
     {
         var environment = new Environment(environmentToken.Key, environmentToken.Value);
-        _environmentsRegister.RegisterEnvironment(environment);
+        _environmentsRegistry.RegisterEnvironment(environment);
 
         if (environment.Name.Equals(Constants.DefaultEnvironmentName))
         {

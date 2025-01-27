@@ -4,7 +4,7 @@ namespace TeaPie.Variables;
 
 internal static class VariableTypeResolver
 {
-    public static object? Resolve(object variableValue)
+    public static object? Resolve(object? variableValue)
     {
         if (variableValue is null)
         {

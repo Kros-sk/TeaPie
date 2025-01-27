@@ -2,12 +2,12 @@
 
 namespace TeaPie.Environments;
 
-internal class Environment(string name, Dictionary<string, object> variables)
+internal class Environment(string name, Dictionary<string, object?> variables)
 {
     public string Name { get; set; } = name;
     public IReadOnlyDictionary<string, object?> Variables { get; set; } = GetResolvedVariables(variables);
 
-    private static Dictionary<string, object?> GetResolvedVariables(Dictionary<string, object> variables)
+    private static Dictionary<string, object?> GetResolvedVariables(Dictionary<string, object?> variables)
     {
         Dictionary<string, object?> resolvedVariables = [];
         foreach (var variable in variables)
