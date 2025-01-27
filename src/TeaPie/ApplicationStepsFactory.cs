@@ -9,7 +9,7 @@ internal static class ApplicationStepsFactory
 {
     public static IPipelineStep[] CreateDefaultPipelineSteps(IServiceProvider provider)
         => [provider.GetStep<ExploreStructureStep>(),
-            provider.GetStep<InitializeEnvironmentStep>(),
+            provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<PrepareTemporaryFolderStep>(),
             provider.GetStep<InitializeApplicationStep>(),
             provider.GetStep<GenerateStepsForTestCasesStep>()];

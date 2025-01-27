@@ -1,7 +1,10 @@
-﻿namespace TeaPie.StructureExploration;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TeaPie.StructureExploration;
 
 internal class CollectionStructure : IReadOnlyCollectionStructure
 {
+    public File? EnvironmentFile { get; private set; }
     private readonly Dictionary<string, Folder> _folders = [];
     private readonly Dictionary<string, TestCase> _testCases = [];
 
@@ -34,4 +37,10 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
 
         return _testCases.TryAdd(testCase.RequestsFile.Path, testCase);
     }
+
+    [MemberNotNull(nameof(EnvironmentFile))]
+    internal void SetEnvironmentFile(File file) { EnvironmentFile = file; }
+
+    [MemberNotNullWhen(true, nameof(EnvironmentFile))]
+    public bool IsEnvironmentFileResolved() => EnvironmentFile != null;
 }

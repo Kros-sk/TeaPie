@@ -15,11 +15,10 @@ internal class ApplicationContext(
 {
     public string Path { get; } = path.NormalizePath();
     public string TempFolderPath { get; set; } = tempFolderPath.NormalizePath();
-    public string EnvironmentName { get; } = "test-lab"; // string.IsNullOrEmpty(environment) ? Constants.DefaultEnvironmentName : environment;
-    public string EnvironmentFilePath { get; set; } =
-        string.IsNullOrEmpty(environmentFilePath)
-            ? System.IO.Path.GetFileNameWithoutExtension(path) + Constants.EnvironmentFileSuffix + Constants.EnvironmentFileExtension
-            : environmentFilePath;
+
+    public string EnvironmentName { get; set; } =
+        string.IsNullOrEmpty(environment) ? Constants.DefaultEnvironmentName : environment;
+    public string EnvironmentFilePath { get; set; } = environmentFilePath;
 
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
     public IReadOnlyCollection<TestCase> TestCases => CollectionStructure.TestCases;

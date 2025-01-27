@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TeaPie.Environments;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
@@ -71,9 +72,9 @@ public sealed class ApplicationBuilder
         ConfigureServices();
         var provider = _services.BuildServiceProvider();
 
-        CreateUserContext(provider);
-
         var applicationContext = GetApplicationContext(provider);
+
+        CreateUserContext(provider, applicationContext);
 
         var pipeline = BuildDefaultPipeline(provider);
 
@@ -91,6 +92,7 @@ public sealed class ApplicationBuilder
     private void ConfigureServices()
     {
         _services.AddStructureExploration();
+        _services.AddEnvironments();
         _services.AddTestCases();
         _services.AddScripts();
         _services.AddHttp();
@@ -100,12 +102,14 @@ public sealed class ApplicationBuilder
         _services.AddLogging(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
     }
 
-    private static TeaPie CreateUserContext(IServiceProvider provider)
+    private static TeaPie CreateUserContext(IServiceProvider provider, ApplicationContext applicationContext)
         => TeaPie.Create(
             provider.GetRequiredService<IVariables>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
             provider.GetRequiredService<ITester>(),
-            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>());
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            applicationContext,
+            provider.GetRequiredService<IPipeline>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

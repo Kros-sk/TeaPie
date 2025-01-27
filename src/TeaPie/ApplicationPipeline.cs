@@ -7,6 +7,7 @@ internal class ApplicationPipeline : IPipeline
 {
     private readonly StepsCollection _pipelineSteps = [];
     private bool _errorOccured;
+    private IPipelineStep? _currentStep;
 
     public async Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -26,6 +27,8 @@ internal class ApplicationPipeline : IPipeline
         while (enumerator.MoveNext())
         {
             step = enumerator.Current;
+            _currentStep = step;
+
             await ExecuteStep(step, context, cancellationToken);
 
             if (_errorOccured)
@@ -60,11 +63,25 @@ internal class ApplicationPipeline : IPipeline
     public void AddSteps(params Func<ApplicationContext, CancellationToken, Task>[] lambdaFunctions)
         => _pipelineSteps.AddRange(lambdaFunctions.Select(function => new InlineStep(function)));
 
-    public void InsertSteps(IPipelineStep predecessor, params IPipelineStep[] steps)
-        => _pipelineSteps.InsertRange(predecessor, steps);
+    public void InsertSteps(IPipelineStep? predecessor, params IPipelineStep[] steps)
+        => InsertStepsWithValidation(predecessor, steps);
 
     public void InsertSteps(
-        IPipelineStep predecessor,
+        IPipelineStep? predecessor,
         params Func<ApplicationContext, CancellationToken, Task>[] lambdaFunctions)
-        => _pipelineSteps.InsertRange(predecessor, lambdaFunctions.Select(function => new InlineStep(function)));
+        => InsertStepsWithValidation(predecessor, lambdaFunctions.Select(f => new InlineStep(f)));
+
+    private IPipelineStep InsertStepsWithValidation(IPipelineStep? predecessor, IEnumerable<IPipelineStep> steps)
+    {
+        predecessor ??= _currentStep;
+
+        if (predecessor is null)
+        {
+            throw new InvalidOperationException("Unable to insert steps to pipeline, if predecessor step is null. " +
+                "This may occur, when currently executed step is not set to an instance of object.");
+        }
+
+        _pipelineSteps.InsertRange(predecessor, steps);
+        return predecessor;
+    }
 }
