@@ -31,8 +31,7 @@ internal static class VariableTypeResolver
 
     private static object? ResolveString(JsonElement element)
         => element.TryGetGuid(out var guidValue) ? guidValue :
-            element.TryGetDateTimeOffset(out var dateTimeOffsetValue) ? dateTimeOffsetValue :
-            element.TryGetDateTime(out var dateTimeValue) ? dateTimeValue : element.GetString();
+            element.TryGetDateTimeOffset(out var dateTimeOffsetValue) ? dateTimeOffsetValue : element.GetString();
 
     private static object? ResolveNumber(JsonElement element)
         => element.TryGetInt32(out var integerValue) ? integerValue :
