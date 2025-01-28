@@ -6,6 +6,7 @@
         "ApiCarRentalSection" : "/rental"
     },
     "local": {
-        "ApiBaseUrl": "http://localhost:3001"
+        "ApiBaseUrl": "http://localhost:3001",
+        "DebugMode": true
     }
 }

@@ -16,6 +16,10 @@
     - [JSON Handling](#json-handling)
   - [How to install locally](#how-to-install-locally)
     - [Setting up a Local NuGet Feed](#setting-up-a-local-nuget-feed)
+  - [Environments](#environments)
+    - [Environment File](#environment-file)
+    - [Default Environment (`$shared`)](#default-environment-shared)
+    - [Active Environment](#active-environment)
 
 ## Getting started
 
@@ -252,3 +256,62 @@ If you don’t have a local NuGet feed already, you can set one up as follows:
    ```sh
    dotnet nuget add source "path/to/your/local/feed" --name NameOfYourLocalFeed
    ```
+
+## Environments
+
+Environments are a crucial part of automating tests, allowing you to define variables for different scenarios. **TeaPie** supports environments to enhance flexibility and efficiency.
+
+### Environment File
+
+To use environments, you need to define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
+
+```sh
+--env-file <path-to-environment-file>
+```
+
+> You can use alias `--environment-file`, too.
+
+This is example, of how environment file can look like:
+
+```json
+{
+    "$shared": {
+        "ApiBaseUrl": "http://my-car-rental-company.com",
+        "ApiCustomersSection": "/customers",
+        "ApiCarsSection": "/cars",
+        "ApiCarRentalSection": "/rental"
+    },
+    "local": {
+        "ApiBaseUrl": "http://localhost:3001", // Override $shared's variable
+        "DebugMode": true // Environment-specific variable
+    }
+}
+```
+
+Each environment is defined by its **name** and **set of variables**.
+
+### Default Environment (`$shared`)
+
+Each environment file **must include** a `$shared` environment, which serves as the **default environment**. Key points about `$shared`:
+
+- **Global Variables**: Variables from `$shared` are always stored in `tp.GlobalVariables`.
+- **Environment Variables**: Variables from `$shared` are added to `tp.EnvironmentVariables` only if `$shared` is **selected as the active environment**.
+- **Overwriting**: Other environments can override variables defined in `$shared`.
+
+This approach was inspired by [Rest Client for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=humao.rest-client#environments).
+
+### Active Environment
+
+To specify the environment for running tests, use the `-e` option followed by the environment name:
+
+```sh
+-e <name-of-environment>
+```
+
+> You can also use aliases `--env` and `--environment` for the same purpose.
+
+There are some scenarios where you want to **switch environment in the code** (`.csx` scripts). There you can use:
+
+```csharp
+tp.SetEnvironment("local");
+```
