@@ -1,15 +1,11 @@
 {
     "$shared": {
+        "ApiBaseUrl": "http://my-car-rental-company.com",
         "ApiCustomersSection" : "/customers",
         "ApiCarsSection" : "/cars",
         "ApiCarRentalSection" : "/rental"
     },
-    "test-lab": {
-        "ApiBaseUrl": "http://localhost:3001",
-        "StringVar": "stringValue",
-        "BooleanVar": true,
-        "DoubleVar": 25.6,
-        "IntVar": 199,
-        "ListVar": ["one", "two", "three"]
+    "local": {
+        "ApiBaseUrl": "http://localhost:3001"
     }
 }

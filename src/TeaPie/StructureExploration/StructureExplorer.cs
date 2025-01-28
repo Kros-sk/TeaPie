@@ -20,7 +20,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
         InitializeStructure(applicationContext.Path, out var rootFolder, out var collectionStructure);
 
-        Explore(rootFolder, collectionStructure);
+        Explore(rootFolder, applicationContext.EnvironmentFilePath, collectionStructure);
 
         UpdateContext(applicationContext, collectionStructure);
 
@@ -64,7 +64,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
     private static void UpdateContext(ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
-        if (collectionStructure.IsEnvironmentFileResolved())
+        if (collectionStructure.HasEnvironmentFile)
         {
             applicationContext.EnvironmentFilePath = collectionStructure.EnvironmentFile.Path;
         }
@@ -72,8 +72,11 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     #endregion
 
     #region Exploration methods
-    private void Explore(Folder rootFolder, CollectionStructure collectionStructure)
-        => ExploreFolder(rootFolder, collectionStructure);
+    private void Explore(Folder rootFolder, string environmentFilePath, CollectionStructure collectionStructure)
+    {
+        ExploreFolder(rootFolder, collectionStructure);
+        RegisterEnvironmentFileIfNeeded(environmentFilePath, collectionStructure);
+    }
 
     /// <summary>
     /// Recursive depth-first algorithm, which examines file system tree. Whole structure is gradually formed within
@@ -104,7 +107,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         IOrderedEnumerable<string> files,
         CollectionStructure collectionStructure)
     {
-        if (_environmentFileName is not null && !collectionStructure.IsEnvironmentFileResolved())
+        if (_environmentFileName is not null && !collectionStructure.HasEnvironmentFile)
         {
             var envFile = files.FirstOrDefault(f => Path.GetFileName(f).Equals(_environmentFileName));
             if (envFile is not null)
@@ -169,6 +172,22 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
             .TryGetValue(GetRelatedScriptFileName(fileName, scriptSuffix), out var script)
                 ? [script]
                 : [];
+
+    private void RegisterEnvironmentFileIfNeeded(string environmentFilePath, CollectionStructure collectionStructure)
+    {
+        if (_environmentFileName is null)
+        {
+            var folder = collectionStructure.Folders.FirstOrDefault(x => x.Path.Equals(Path.GetDirectoryName(environmentFilePath)));
+            if (folder is null)
+            {
+                throw new InvalidOperationException("Unable to set environment file to file outside collection.");
+            }
+            else
+            {
+                collectionStructure.SetEnvironmentFile(GetFile(environmentFilePath, folder));
+            }
+        }
+    }
     #endregion
 
     #region Getting methods

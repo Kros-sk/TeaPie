@@ -1,8 +1,9 @@
-﻿public void SetVariables()
+﻿public void SetEnvironment()
 {
-    // Variables set this way are stored in the 'CollectionVariables' scope.
-    tp.SetVariable("ApiBaseUrl", "http://localhost:3001");
-    tp.SetVariable("ApiCustomersSection", "/customers");
-    tp.SetVariable("ApiCarsSection", "/cars");
-    tp.SetVariable("ApiCarRentalSection", "/rental");
+    // By default, environments are defined in a <collection-name>-env.json file.
+    // Use the option '--env-file <path-to-environment-file>' to specify a custom environment file.
+    // If no environment file is found or specified, the collection runs without an environment.
+    // The default environment ('$shared') is used if no specific environment is set.
+    // Environments can be switched dynamically at runtime.
+    tp.SetEnvironment("local");
 }

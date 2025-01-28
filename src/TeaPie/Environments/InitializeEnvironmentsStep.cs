@@ -16,12 +16,24 @@ internal class InitializeEnvironmentsStep(
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
+        if (context.CollectionStructure.HasEnvironmentFile)
+        {
+            await ResolveEnvironments(context);
+            _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<SetEnvironmentStep>());
+        }
+        else
+        {
+            context.Logger.LogWarning("Running without environment.");
+        }
+    }
+
+    private async Task ResolveEnvironments(ApplicationContext context)
+    {
         ValidateContext(context);
 
         var environments = await ParseEnvironmentFile(context.EnvironmentFilePath);
 
         RegisterEnvironmentsAndApplyDefault(environments, context.EnvironmentFilePath, context.Logger);
-        _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<SetEnvironmentStep>());
     }
 
     private static async Task<Dictionary<string, Dictionary<string, object?>>> ParseEnvironmentFile(string environmentFilePath)

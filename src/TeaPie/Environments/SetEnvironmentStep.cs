@@ -14,6 +14,7 @@ internal class SetEnvironmentStep(IVariables variables, IEnvironmentsRegistry en
         if (_environmentsRegistry.TryGetEnvironment(context.EnvironmentName, out var environment))
         {
             environment.Apply(_variables.EnvironmentVariables);
+            context.Logger.LogInformation("Running on {EnvironmentName} environment.", context.EnvironmentName);
         }
         else
         {

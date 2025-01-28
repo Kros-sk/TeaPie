@@ -21,6 +21,9 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     public IReadOnlyCollection<Folder> Folders => _folders.Values;
     public IReadOnlyCollection<TestCase> TestCases => _testCases.Values;
 
+    [MemberNotNullWhen(true, nameof(EnvironmentFile))]
+    public bool HasEnvironmentFile => EnvironmentFile != null;
+
     public bool TryAddFolder(Folder folder) => _folders.TryAdd(folder.Path, folder);
 
     /// <summary>
@@ -40,7 +43,4 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
 
     [MemberNotNull(nameof(EnvironmentFile))]
     internal void SetEnvironmentFile(File file) { EnvironmentFile = file; }
-
-    [MemberNotNullWhen(true, nameof(EnvironmentFile))]
-    public bool IsEnvironmentFileResolved() => EnvironmentFile != null;
 }
