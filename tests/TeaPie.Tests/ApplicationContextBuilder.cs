@@ -14,6 +14,17 @@ internal class ApplicationContextBuilder
     private static IServiceProvider? _serviceProvider;
     private static ICurrentTestCaseExecutionContextAccessor? _currentTestCaseExecutionContextAccessor;
 
+    public ApplicationContextBuilder()
+    {
+        _path = null;
+        _tempFolderPath = null;
+        _environmentName = null;
+        _environmentFilePath = null;
+        _logger = null;
+        _serviceProvider = null;
+        _currentTestCaseExecutionContextAccessor = null;
+    }
+
     public ApplicationContextBuilder WithPath(string path)
     {
         _path = path;

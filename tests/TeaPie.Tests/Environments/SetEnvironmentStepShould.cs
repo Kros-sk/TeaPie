@@ -4,7 +4,6 @@ namespace TeaPie.Tests.Environments;
 
 public class SetEnvironmentStepShould
 {
-    public const string EnvironmentName = "$shared";
     public readonly string GuidValue = Guid.NewGuid().ToString();
 
     [Fact]
@@ -36,7 +35,7 @@ public class SetEnvironmentStepShould
     }
 
     private global::TeaPie.Environments.Environment GetEnvironment()
-        => new(EnvironmentName, new()
+        => new(Constants.DefaultEnvironmentName, new()
         {
             { "boolVariable", true },
             { "intVariable", 987 },

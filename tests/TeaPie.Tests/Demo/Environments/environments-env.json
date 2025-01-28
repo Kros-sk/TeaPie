@@ -1,5 +1,6 @@
 {
     "$shared": {
+        "ApiBaseUrl": "https://my-car-rental-company.com/",
         "ApiCustomersSection": "/customers",
         "ApiCarsSection": "/cars",
         "ApiCarRentalSection": "/rental"

@@ -1,4 +1,7 @@
-﻿using TeaPie.Environments;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TeaPie.Environments;
+using TeaPie.Pipelines;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Environments;
 
@@ -7,28 +10,137 @@ public class InitializeEnvironmentStepShould
     [Fact]
     public async Task RegisterAllAvailableEnvironmentsCollection()
     {
-        var variables = new global::TeaPie.Variables.Variables();
-        var environmentsRegistry = new EnvironmentsRegistry();
-        var pipeline = new ApplicationPipeline();
+        PrepareServices(out var pipeline, out var provider, out var _, out var environmentsRegistry, out var appContextBuilder);
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder);
 
-        var appContext = new ApplicationContextBuilder()
-            .WithEnvironmentFilePath("./Demo/Environments/environments-env.json").Build();
+        CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
+        CheckExistenceOfEnvironment("test-lab", environmentsRegistry);
+        CheckExistenceOfEnvironment("empty", environmentsRegistry);
+    }
 
-        var step = new InitializeEnvironmentsStep(pipeline, variables, environmentsRegistry);
+    [Fact]
+    public async Task SetDefaultEnvironmentIfNoEnvironmentIsGiven()
+    {
+        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder);
+
+        CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
+        Assert.Equal("/customers", variables.GlobalVariables.Get<string>("ApiCustomersSection"));
+        Assert.Equal("/cars", variables.GlobalVariables.Get<string>("ApiCarsSection"));
+        Assert.Equal("/rental", variables.GlobalVariables.Get<string>("ApiCarRentalSection"));
+        Assert.Equal("/customers", variables.EnvironmentVariables.Get<string>("ApiCustomersSection"));
+        Assert.Equal("/cars", variables.EnvironmentVariables.Get<string>("ApiCarsSection"));
+        Assert.Equal("/rental", variables.EnvironmentVariables.Get<string>("ApiCarRentalSection"));
+        Assert.Equal("/customers", variables.GetVariable<string>("ApiCustomersSection"));
+        Assert.Equal("/cars", variables.GetVariable<string>("ApiCarsSection"));
+        Assert.Equal("/rental", variables.GetVariable<string>("ApiCarRentalSection"));
+    }
+
+    [Fact]
+    public async Task SetGivenEnvironment()
+    {
+        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab");
+
+        var hasTestLabEnv = environmentsRegistry.TryGetEnvironment("test-lab", out var testLabEnv);
+
+        Assert.True(hasTestLabEnv);
+        Assert.NotNull(testLabEnv);
+        Assert.Equal("http://localhost:3001", variables.EnvironmentVariables.Get<string>("ApiBaseUrl"));
+        Assert.Equal("stringValue", variables.EnvironmentVariables.Get<string>("StringVar"));
+        Assert.True(variables.EnvironmentVariables.Get<bool>("BooleanVar"));
+        Assert.Equal(25.6m, variables.EnvironmentVariables.Get<decimal>("DoubleVar"));
+        Assert.Equal(199, variables.EnvironmentVariables.Get<int>("IntVar"));
+        Assert.Equal(["one", "two", "three"], variables.EnvironmentVariables.Get<List<object>>("ListVar"));
+    }
+
+    [Fact]
+    public async Task LoadDefaultEnvironmentVariablesEvenIfAnotherEnvironmentIsGiven()
+    {
+        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab");
+
+        var hasTestLabEnv = environmentsRegistry.TryGetEnvironment("test-lab", out var testLabEnv);
+        var hasDefaultEnv = environmentsRegistry.TryGetEnvironment(Constants.DefaultEnvironmentName, out var defaultEnv);
+
+        Assert.True(hasTestLabEnv);
+        Assert.NotNull(testLabEnv);
+        Assert.True(hasDefaultEnv);
+        Assert.NotNull(defaultEnv);
+        Assert.Equal("/customers", variables.GlobalVariables.Get<string>("ApiCustomersSection"));
+        Assert.Equal("/cars", variables.GlobalVariables.Get<string>("ApiCarsSection"));
+        Assert.Equal("/rental", variables.GlobalVariables.Get<string>("ApiCarRentalSection"));
+        Assert.Equal("/customers", variables.GetVariable<string>("ApiCustomersSection"));
+        Assert.Equal("/cars", variables.GetVariable<string>("ApiCarsSection"));
+        Assert.Equal("/rental", variables.GetVariable<string>("ApiCarRentalSection"));
+    }
+
+    [Fact]
+    public async Task OverrideVariablesFromDefaultEnvironmentWithSameNameVariablesFromGivenEnvironment()
+    {
+        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab");
+
+        var hasTestLabEnv = environmentsRegistry.TryGetEnvironment("test-lab", out var testLabEnv);
+        var hasDefaultEnv = environmentsRegistry.TryGetEnvironment(Constants.DefaultEnvironmentName, out var defaultEnv);
+
+        Assert.True(hasTestLabEnv);
+        Assert.NotNull(testLabEnv);
+        Assert.True(hasDefaultEnv);
+        Assert.NotNull(defaultEnv);
+        Assert.Equal("http://localhost:3001", variables.GetVariable<string>("ApiBaseUrl"));
+    }
+
+    private static async Task RunApplicationPipeline(
+        IPipeline pipeline,
+        IServiceProvider provider,
+        ApplicationContextBuilder appContextBuilder,
+        string environmentName = "")
+    {
+        var step = provider.GetStep<InitializeEnvironmentsStep>();
 
         pipeline.AddSteps(step);
 
+        if (!environmentName.Equals(string.Empty))
+        {
+            appContextBuilder = appContextBuilder.WithEnvironment(environmentName);
+        }
+
+        var appContext = appContextBuilder.Build();
+
         await pipeline.Run(appContext, CancellationToken.None);
+    }
 
-        var hasDefaultEnv = environmentsRegistry.TryGetEnvironment(Constants.DefaultEnvironmentName, out var defaultEnv);
-        var hasTestLabEnv = environmentsRegistry.TryGetEnvironment("test-lab", out var testLabEnv);
-        var hasEmptyEnv = environmentsRegistry.TryGetEnvironment("empty", out var emptyEnv);
+    private static void PrepareServices(
+        out IPipeline pipeline,
+        out IServiceProvider provider,
+        out IVariables variables,
+        out IEnvironmentsRegistry environmentsRegistry,
+        out ApplicationContextBuilder appContextBuilder)
+    {
+        var services = new ServiceCollection();
+        services.AddScoped<InitializeEnvironmentsStep>();
+        services.AddScoped<SetEnvironmentStep>();
+        services.AddSingleton<IVariables, global::TeaPie.Variables.Variables>();
+        services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
+        services.AddSingleton<IPipeline, ApplicationPipeline>();
 
-        Assert.True(hasDefaultEnv);
-        Assert.NotNull(defaultEnv);
-        Assert.True(hasTestLabEnv);
-        Assert.NotNull(testLabEnv);
-        Assert.True(hasEmptyEnv);
-        Assert.NotNull(emptyEnv);
+        provider = services.BuildServiceProvider();
+
+        pipeline = provider.GetRequiredService<IPipeline>();
+        variables = provider.GetRequiredService<IVariables>();
+        environmentsRegistry = provider.GetRequiredService<IEnvironmentsRegistry>();
+
+        appContextBuilder = new ApplicationContextBuilder()
+            .WithServiceProvider(provider)
+            .WithEnvironmentFilePath("./Demo/Environments/environments-env.json");
+    }
+
+    private static void CheckExistenceOfEnvironment(string environmentName, IEnvironmentsRegistry environmentsRegistry)
+    {
+        var hasEnv = environmentsRegistry.TryGetEnvironment(environmentName, out var foundEnv);
+
+        Assert.True(hasEnv);
+        Assert.NotNull(foundEnv);
     }
 }
