@@ -33,6 +33,7 @@ internal class InitializeEnvironmentsStep(
 
         var environments = await ParseEnvironmentFile(context.EnvironmentFilePath);
 
+        EnsureEnvironmentNameIsSet(context);
         RegisterEnvironmentsAndApplyDefault(environments, context.EnvironmentFilePath, context.Logger);
     }
 
@@ -72,6 +73,14 @@ internal class InitializeEnvironmentsStep(
         }
 
         return false;
+    }
+
+    private static void EnsureEnvironmentNameIsSet(ApplicationContext context)
+    {
+        if (context.EnvironmentName.Equals(string.Empty))
+        {
+            context.EnvironmentName = Constants.DefaultEnvironmentName;
+        }
     }
 
     private static void ValidateContext(ApplicationContext context)

@@ -14,6 +14,8 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
             .WithPath(PathResolver.Resolve(settings.Path, string.Empty))
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
+            .WithEnvironment(settings.Environment ?? string.Empty)
+            .WithEnvironmentFile(settings.EnvironmentFile ?? string.Empty)
             .WithDefaultPipeline();
     }
 
@@ -27,5 +29,13 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         [Description("Temporary path for the application. Defaults to the system's temporary folder with a TeaPie sub-folder " +
             "if no path is provided.")]
         public string? TemporaryPath { get; init; }
+
+        [CommandOption("-e|--env|--environment")]
+        [Description("Name of the environment on which collection will be run.")]
+        public string? Environment { get; init; }
+
+        [CommandOption("--env-file|--environment-file")]
+        [Description("Path to file, which contains definitions of available environments.")]
+        public string? EnvironmentFile { get; init; }
     }
 }

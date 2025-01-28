@@ -16,8 +16,7 @@ internal class ApplicationContext(
     public string Path { get; } = path.NormalizePath();
     public string TempFolderPath { get; set; } = tempFolderPath.NormalizePath();
 
-    public string EnvironmentName { get; set; } =
-        string.IsNullOrEmpty(environment) ? Constants.DefaultEnvironmentName : environment;
+    public string EnvironmentName { get; set; } = environment;
     public string EnvironmentFilePath { get; set; } = environmentFilePath;
 
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();

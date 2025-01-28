@@ -19,6 +19,9 @@ public sealed class ApplicationBuilder
     private string? _path;
     private string? _tempPath;
 
+    private string? _environment;
+    private string? _environmentFilePath;
+
     private LogLevel _minimumLogLevel = LogLevel.None;
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
@@ -67,6 +70,18 @@ public sealed class ApplicationBuilder
         return this;
     }
 
+    public ApplicationBuilder WithEnvironment(string environmentName)
+    {
+        _environment = environmentName;
+        return this;
+    }
+
+    public ApplicationBuilder WithEnvironmentFile(string environmentFilePath)
+    {
+        _environmentFilePath = environmentFilePath;
+        return this;
+    }
+
     public Application Build()
     {
         ConfigureServices();
@@ -87,7 +102,9 @@ public sealed class ApplicationBuilder
             provider,
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ILogger<ApplicationContext>>(),
-            string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath);
+            string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath,
+            string.IsNullOrEmpty(_environment) ? string.Empty : _environment,
+            string.IsNullOrEmpty(_environmentFilePath) ? string.Empty : _environmentFilePath);
 
     private void ConfigureServices()
     {
