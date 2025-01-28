@@ -48,7 +48,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         }
         else if (!System.IO.File.Exists(applicationContext.EnvironmentFilePath))
         {
-            throw new InvalidOperationException($"Specified environment file on path " +
+            throw new InvalidOperationException("Specified environment file on path " +
                 $"'{applicationContext.EnvironmentFilePath}' does not exist.");
         }
     }

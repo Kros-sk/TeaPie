@@ -15,7 +15,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithEnvironment(settings.Environment ?? string.Empty)
-            .WithEnvironmentFile(settings.EnvironmentFile ?? string.Empty)
+            .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFile, string.Empty))
             .WithDefaultPipeline();
     }
 
