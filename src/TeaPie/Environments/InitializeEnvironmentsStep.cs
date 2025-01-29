@@ -31,7 +31,7 @@ internal class InitializeEnvironmentsStep(
         }
         else
         {
-            context.Logger.LogWarning("Running without environment.");
+            context.Logger.LogWarning("No environment file found. Running without environment.");
         }
     }
 

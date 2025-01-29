@@ -16,11 +16,7 @@ internal static class ScriptHelper
             ScriptIndex.RootFolderName,
             null);
 
-        var file = new File(
-            path,
-            path.TrimRootPath(ScriptIndex.RootFolderFullPath),
-            Path.GetFileName(path),
-            folder);
+        var file = File.Create(path, folder);
 
         var script = new Script(file);
 

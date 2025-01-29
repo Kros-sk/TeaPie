@@ -39,7 +39,8 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
         if (!Directory.Exists(applicationContext.Path))
         {
-            throw new DirectoryNotFoundException($"Provided folder on path '{applicationContext.Path}' doesn't exist.");
+            throw new InvalidOperationException($"Unable to explore collection on path '{applicationContext.Path}' " +
+                "because such a collection path doesn't exist.");
         }
 
         if (string.IsNullOrEmpty(applicationContext.EnvironmentFilePath))
@@ -115,7 +116,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
             if (envFile is not null)
             {
-                collectionStructure.SetEnvironmentFile(GetFile(envFile, parentFolder));
+                collectionStructure.SetEnvironmentFile(File.Create(envFile, parentFolder));
             }
         }
     }
@@ -182,7 +183,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         {
             if (collectionStructure.TryGetFolder(Path.GetDirectoryName(environmentFilePath) ?? string.Empty, out var folder))
             {
-                collectionStructure.SetEnvironmentFile(GetFile(environmentFilePath, folder));
+                collectionStructure.SetEnvironmentFile(File.Create(environmentFilePath, folder));
             }
             else
             {
@@ -193,16 +194,6 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     #endregion
 
     #region Getting methods
-    private static File GetFile(string filePath, Folder folder)
-    {
-        var fileName = Path.GetFileName(filePath);
-        return new File(
-            filePath,
-            $"{folder.RelativePath}{Path.DirectorySeparatorChar}{fileName}",
-            fileName,
-            folder);
-    }
-
     private static TestCase GetTestCase(
         Folder currentFolder,
         out string fileName,
@@ -232,7 +223,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
                 .Select(file =>
                 {
                     var fileName = Path.GetFileName(file);
-                    var script = new Script(GetFile(file, folder));
+                    var script = new Script(File.Create(file, folder));
 
                     return new KeyValuePair<string, Script>(fileName, script);
                 })

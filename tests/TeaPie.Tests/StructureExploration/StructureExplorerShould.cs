@@ -61,7 +61,7 @@ public class StructureExplorerShould
                     builder.WithPath(
                         $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}")
                     .Build()))
-                .Should().Throw<DirectoryNotFoundException>();
+                .Should().Throw<InvalidOperationException>();
         }
     }
 

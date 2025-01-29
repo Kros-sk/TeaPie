@@ -37,10 +37,6 @@ internal static class RequestHelper
             RequestsIndex.RootFolderName,
             null);
 
-        return new File(
-            path,
-            RequestsIndex.RootFolderFullPath.TrimRootPath(Environment.CurrentDirectory),
-            Path.GetFileName(path),
-            folder);
+        return File.Create(path, folder);
     }
 }

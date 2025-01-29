@@ -113,7 +113,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Environments
     /// <summary>
-    /// Set environment to one with given <paramref name="name"/>. Environment <b>must be defined in environment file</b>.
+    /// Set environment to one with given <paramref name="name"/>. Environment <b>must be defined in the environment file</b>.
     /// </summary>
     /// <param name="name">Name of the environment to be set.</param>
     public void SetEnvironment(string name)

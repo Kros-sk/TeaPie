@@ -13,6 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Demo\Environments\CollectionWithNestedEnvironmentFile\Folder1\.placeholder">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Environments\CollectionWithNestedEnvironmentFile\Folder2\CollectionWithNestedEnvironmentFile-env.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Environments\CollectionWithoutEnvironment\.placeholder">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Demo\Environments\Environments-env.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

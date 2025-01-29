@@ -71,7 +71,8 @@ internal sealed class PreProcessScriptStep(
         relativePath = scriptPath.TrimRootPath(context.Path, true);
         if (!context.CollectionStructure.TryGetFolder(Path.GetDirectoryName(scriptPath) ?? string.Empty, out var folder))
         {
-            throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
+            throw new InvalidOperationException($"Unable to find parent folder to script on path '{scriptPath}'.This may " +
+                "mean, that some of the directories within the path don't exist.");
         }
 
         script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));

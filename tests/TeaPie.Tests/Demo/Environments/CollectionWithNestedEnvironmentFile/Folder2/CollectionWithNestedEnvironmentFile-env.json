@@ -1,0 +1,29 @@
+{
+    "$shared": {
+        "ApiBaseUrl": "https://my-car-rental-company.com/",
+        "ApiCustomersSection": "/customers",
+        "ApiCarsSection": "/cars",
+        "ApiCarRentalSection": "/rental"
+    },
+    "test-lab": {
+        "ApiBaseUrl": "http://localhost:3001",
+        "StringVar": "stringValue",
+        "BooleanVar": true,
+        "DoubleVar": 25.6,
+        "IntVar": 199,
+        "ListVar": [ "one", "two", "three" ]
+    },
+    "empty": {
+    },
+    "allKind": {
+        "boolVariable": true,
+        "intVariable": 987,
+        "longVariable": 9223372036854775807,
+        "decimalVariable": 65.4,
+        "dateTimeOffsetVariable": "2025-01-27T12:34:56+01:00",
+        "guidVariable": "a68a15f4-f7da-4075-b779-a2e42e1c460c",
+        "stringVariable": "abc",
+        "arrayVariable": [ 1.2, 3.4, 5.6 ],
+        "nullVariable": null
+    }
+}

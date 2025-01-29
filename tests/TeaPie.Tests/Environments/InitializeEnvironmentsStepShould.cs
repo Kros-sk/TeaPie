@@ -4,6 +4,7 @@ using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 using TeaPie.Variables;
+using static Xunit.Assert;
 
 namespace TeaPie.Tests.Environments;
 
@@ -11,11 +12,85 @@ namespace TeaPie.Tests.Environments;
 public class InitializeEnvironmentStepShould
 {
     private static readonly string _collectionPath = Path.Combine(Directory.GetCurrentDirectory(), "Demo", "Environments");
+    private static readonly string _collectionWithNestedEnvironmentFilePath = Path.Combine(
+        _collectionPath,
+        "CollectionWithNestedEnvironmentFile");
+
+    private static readonly string _explicitEnvironmentFilePath = Path.Combine(
+        _collectionWithNestedEnvironmentFilePath,
+        "Folder2",
+        "CollectionWithNestedEnvironmentFile-env.json");
 
     [Fact]
-    public async Task RegisterAllAvailableEnvironmentsCollection()
+    public async Task FailIfGivenEnvironmentFileDoesntExists()
     {
-        PrepareServices(out var pipeline, out var provider, out var _, out var environmentsRegistry, out var appContextBuilder);
+        PrepareServices(out var pipeline, out var provider, out _, out _, out var appContextBuilder);
+
+        var result = await RunApplicationPipeline(
+            pipeline,
+            provider,
+            appContextBuilder,
+            Constants.DefaultEnvironmentName,
+            Path.Combine(_collectionPath, "NonExisting-env.json"));
+
+        Equal(1, result);
+    }
+
+    [Fact]
+    public async Task RunWithoutEnvironmentIfNoEnvironmentFileIsGivenOrFound()
+    {
+        PrepareServices(
+            out var pipeline,
+            out var provider,
+            out _,
+            out _,
+            out var appContextBuilder,
+            Path.Combine(_collectionPath, "CollectionWithoutEnvironment"));
+
+        var result = await RunApplicationPipeline(pipeline, provider, appContextBuilder);
+
+        Equal(0, result);
+    }
+
+    [Fact]
+    public async Task FailIfImplicitEnvironmentFileDoesntContainSpecifiedEnvironment()
+    {
+        PrepareServices(out var pipeline, out var provider, out _, out var environmentsRegistry, out var appContextBuilder);
+
+        var result = await RunApplicationPipeline(pipeline, provider, appContextBuilder, "non-existing-environment");
+
+        Equal(1, result);
+
+        var exists = environmentsRegistry.TryGetEnvironment("non-existing-environment", out var found);
+
+        False(exists);
+        Null(found);
+    }
+
+    [Fact]
+    public async Task FailIfExplicitEnvironmentFileDoesntContainSpecifiedEnvironment()
+    {
+        PrepareServices(out var pipeline, out var provider, out _, out var environmentsRegistry, out var appContextBuilder);
+
+        var result = await RunApplicationPipeline(
+            pipeline,
+            provider,
+            appContextBuilder,
+            "non-existing-environment",
+            _explicitEnvironmentFilePath);
+
+        Equal(1, result);
+
+        var exists = environmentsRegistry.TryGetEnvironment("non-existing-environment", out var found);
+
+        False(exists);
+        Null(found);
+    }
+
+    [Fact]
+    public async Task RegisterAllAvailableEnvironments()
+    {
+        PrepareServices(out var pipeline, out var provider, out _, out var environmentsRegistry, out var appContextBuilder);
         await RunApplicationPipeline(pipeline, provider, appContextBuilder);
 
         CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
@@ -25,36 +100,70 @@ public class InitializeEnvironmentStepShould
     }
 
     [Fact]
-    public async Task SetDefaultEnvironmentIfNoEnvironmentIsGiven()
+    public async Task SetDefaultEnvironmentIfNoEnvironmentIsGivenAndImplicitEnvironmentFileIsUsed()
     {
-        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        PrepareServices(
+            out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+
         await RunApplicationPipeline(pipeline, provider, appContextBuilder);
 
         CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
-        Assert.Equal("/customers", variables.GlobalVariables.Get<string>("ApiCustomersSection"));
-        Assert.Equal("/cars", variables.GlobalVariables.Get<string>("ApiCarsSection"));
-        Assert.Equal("/rental", variables.GlobalVariables.Get<string>("ApiCarRentalSection"));
-        Assert.Equal("/customers", variables.EnvironmentVariables.Get<string>("ApiCustomersSection"));
-        Assert.Equal("/cars", variables.EnvironmentVariables.Get<string>("ApiCarsSection"));
-        Assert.Equal("/rental", variables.EnvironmentVariables.Get<string>("ApiCarRentalSection"));
-        Assert.Equal("/customers", variables.GetVariable<string>("ApiCustomersSection"));
-        Assert.Equal("/cars", variables.GetVariable<string>("ApiCarsSection"));
-        Assert.Equal("/rental", variables.GetVariable<string>("ApiCarRentalSection"));
+        CheckDefaultEnvironmentVariables(variables, true);
     }
 
     [Fact]
-    public async Task SetGivenEnvironment()
+    public async Task SetDefaultEnvironmentIfNoEnvironmentIsGivenAndExplicitEnvironmentFileIsUsed()
     {
-        PrepareServices(out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+        PrepareServices(
+            out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+
+        await RunApplicationPipeline(
+            pipeline,
+            provider,
+            appContextBuilder,
+            string.Empty,
+            _explicitEnvironmentFilePath);
+
+        CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
+        CheckDefaultEnvironmentVariables(variables, true);
+    }
+
+    [Fact]
+    public async Task SetGivenEnvironmentIfUsingImplicitEnvironmentFile()
+    {
+        PrepareServices(
+            out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+
         await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab");
 
-        CheckExistenceOfEnvironment("test-lab", environmentsRegistry);
-        Assert.Equal("http://localhost:3001", variables.EnvironmentVariables.Get<string>("ApiBaseUrl"));
-        Assert.Equal("stringValue", variables.EnvironmentVariables.Get<string>("StringVar"));
-        Assert.True(variables.EnvironmentVariables.Get<bool>("BooleanVar"));
-        Assert.Equal(25.6m, variables.EnvironmentVariables.Get<decimal>("DoubleVar"));
-        Assert.Equal(199, variables.EnvironmentVariables.Get<int>("IntVar"));
-        Assert.Equal(["one", "two", "three"], variables.EnvironmentVariables.Get<List<object>>("ListVar"));
+        CheckTestlab(variables, environmentsRegistry);
+    }
+
+    [Fact]
+    public async Task SetGivenEnvironmentIfUsingExplicitEnvironmentFile()
+    {
+        PrepareServices(
+            out var pipeline, out var provider, out var variables, out var environmentsRegistry, out var appContextBuilder);
+
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab", _explicitEnvironmentFilePath);
+
+        CheckTestlab(variables, environmentsRegistry);
+    }
+
+    [Fact]
+    public async Task SetGivenEnvironmentIfImplicitEnvironmentFileIsNotOnTheZeroLevel()
+    {
+        PrepareServices(
+            out var pipeline,
+            out var provider,
+            out var variables,
+            out var environmentsRegistry,
+            out var appContextBuilder,
+            _collectionWithNestedEnvironmentFilePath);
+
+        await RunApplicationPipeline(pipeline, provider, appContextBuilder, "test-lab");
+
+        CheckTestlab(variables, environmentsRegistry);
     }
 
     [Fact]
@@ -65,12 +174,7 @@ public class InitializeEnvironmentStepShould
 
         CheckExistenceOfEnvironment("test-lab", environmentsRegistry);
         CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
-        Assert.Equal("/customers", variables.GlobalVariables.Get<string>("ApiCustomersSection"));
-        Assert.Equal("/cars", variables.GlobalVariables.Get<string>("ApiCarsSection"));
-        Assert.Equal("/rental", variables.GlobalVariables.Get<string>("ApiCarRentalSection"));
-        Assert.Equal("/customers", variables.GetVariable<string>("ApiCustomersSection"));
-        Assert.Equal("/cars", variables.GetVariable<string>("ApiCarsSection"));
-        Assert.Equal("/rental", variables.GetVariable<string>("ApiCarRentalSection"));
+        CheckDefaultEnvironmentVariables(variables, false);
     }
 
     [Fact]
@@ -81,14 +185,15 @@ public class InitializeEnvironmentStepShould
 
         CheckExistenceOfEnvironment("test-lab", environmentsRegistry);
         CheckExistenceOfEnvironment(Constants.DefaultEnvironmentName, environmentsRegistry);
-        Assert.Equal("http://localhost:3001", variables.GetVariable<string>("ApiBaseUrl"));
+        Equal("http://localhost:3001", variables.GetVariable<string>("ApiBaseUrl"));
     }
 
-    private static async Task RunApplicationPipeline(
+    private static async Task<int> RunApplicationPipeline(
         IPipeline pipeline,
         IServiceProvider provider,
         ApplicationContextBuilder appContextBuilder,
-        string environmentName = "")
+        string environmentName = "",
+        string environmentFilePath = "")
     {
         var structureExplorationStep = provider.GetStep<ExploreStructureStep>();
         var step = provider.GetStep<InitializeEnvironmentsStep>();
@@ -101,9 +206,14 @@ public class InitializeEnvironmentStepShould
             appContextBuilder = appContextBuilder.WithEnvironment(environmentName);
         }
 
+        if (!environmentFilePath.Equals(string.Empty))
+        {
+            appContextBuilder = appContextBuilder.WithEnvironmentFilePath(environmentFilePath);
+        }
+
         var appContext = appContextBuilder.Build();
 
-        await pipeline.Run(appContext, CancellationToken.None);
+        return await pipeline.Run(appContext, CancellationToken.None);
     }
 
     private static void PrepareServices(
@@ -111,7 +221,8 @@ public class InitializeEnvironmentStepShould
         out IServiceProvider provider,
         out IVariables variables,
         out IEnvironmentsRegistry environmentsRegistry,
-        out ApplicationContextBuilder appContextBuilder)
+        out ApplicationContextBuilder appContextBuilder,
+        string collectionPath = "")
     {
         var services = new ServiceCollection();
         services.AddScoped<ExploreStructureStep>();
@@ -130,7 +241,7 @@ public class InitializeEnvironmentStepShould
         environmentsRegistry = provider.GetRequiredService<IEnvironmentsRegistry>();
 
         appContextBuilder = new ApplicationContextBuilder()
-            .WithPath(_collectionPath)
+            .WithPath(string.IsNullOrEmpty(collectionPath) ? _collectionPath : collectionPath)
             .WithServiceProvider(provider);
     }
 
@@ -138,7 +249,35 @@ public class InitializeEnvironmentStepShould
     {
         var hasEnv = environmentsRegistry.TryGetEnvironment(environmentName, out var foundEnv);
 
-        Assert.True(hasEnv);
-        Assert.NotNull(foundEnv);
+        True(hasEnv);
+        NotNull(foundEnv);
+    }
+
+    private static void CheckDefaultEnvironmentVariables(IVariables variables, bool setAsEnvironment)
+    {
+        Equal("/customers", variables.GlobalVariables.Get<string>("ApiCustomersSection"));
+        Equal("/cars", variables.GlobalVariables.Get<string>("ApiCarsSection"));
+        Equal("/rental", variables.GlobalVariables.Get<string>("ApiCarRentalSection"));
+        Equal("/customers", variables.GetVariable<string>("ApiCustomersSection"));
+        Equal("/cars", variables.GetVariable<string>("ApiCarsSection"));
+        Equal("/rental", variables.GetVariable<string>("ApiCarRentalSection"));
+
+        if (setAsEnvironment)
+        {
+            Equal("/customers", variables.EnvironmentVariables.Get<string>("ApiCustomersSection"));
+            Equal("/cars", variables.EnvironmentVariables.Get<string>("ApiCarsSection"));
+            Equal("/rental", variables.EnvironmentVariables.Get<string>("ApiCarRentalSection"));
+        }
+    }
+
+    private static void CheckTestlab(IVariables variables, IEnvironmentsRegistry environmentsRegistry)
+    {
+        CheckExistenceOfEnvironment("test-lab", environmentsRegistry);
+        Equal("http://localhost:3001", variables.EnvironmentVariables.Get<string>("ApiBaseUrl"));
+        Equal("stringValue", variables.EnvironmentVariables.Get<string>("StringVar"));
+        True(variables.EnvironmentVariables.Get<bool>("BooleanVar"));
+        Equal(25.6m, variables.EnvironmentVariables.Get<decimal>("DoubleVar"));
+        Equal(199, variables.EnvironmentVariables.Get<int>("IntVar"));
+        Equal(["one", "two", "three"], variables.EnvironmentVariables.Get<List<object>>("ListVar"));
     }
 }

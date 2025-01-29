@@ -212,8 +212,7 @@ public class HttpRequestParserShould
 
         var folder =
             new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);
-        var file =
-            new File(path, path.TrimRootPath(RequestsIndex.RootFolderFullPath), Path.GetFileName(path), folder);
+        var file = File.Create(path, folder);
 
         var requestContext = new RequestExecutionContext(file)
         {
