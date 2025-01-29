@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using TeaPie.Json;
 using TeaPie.Pipelines;
 using TeaPie.Variables;
 
@@ -13,6 +14,13 @@ internal class InitializeEnvironmentsStep(
     private readonly IVariables _variables = variables;
     private readonly IEnvironmentsRegistry _environmentsRegistry = environmentsRegistry;
     private readonly IPipeline _pipeline = pipeline;
+
+    private static readonly Lazy<JsonSerializerOptions> _jsonSerializerOptions = new(() =>
+    {
+        var options = new JsonSerializerOptions();
+        options.Converters.Add(new JsonElementTypeConverter());
+        return options;
+    });
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -40,7 +48,8 @@ internal class InitializeEnvironmentsStep(
     private static async Task<Dictionary<string, Dictionary<string, object?>>> ParseEnvironmentFile(string environmentFilePath)
     {
         await using var environmentFile = File.OpenRead(environmentFilePath);
-        return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, object?>>>(environmentFile) ?? [];
+        return JsonSerializer
+            .Deserialize<Dictionary<string, Dictionary<string, object?>>>(environmentFile, _jsonSerializerOptions.Value) ?? [];
     }
 
     private void RegisterEnvironmentsAndApplyDefault(

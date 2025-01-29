@@ -1,27 +1,47 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace TeaPie.Variables;
+namespace TeaPie.Json;
 
-internal static class VariableTypeResolver
+internal class JsonElementTypeConverter : JsonConverter<Dictionary<string, object?>>
 {
-    public static object? Resolve(object? variableValue)
+    public override Dictionary<string, object?> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (variableValue is null)
+        var dictionary = new Dictionary<string, object?>();
+
+        using (var document = JsonDocument.ParseValue(ref reader))
+        {
+            foreach (var element in document.RootElement.EnumerateObject())
+            {
+                dictionary[element.Name] = Convert(element.Value);
+            }
+        }
+
+        return dictionary;
+    }
+
+    public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
+        => JsonSerializer.Serialize(writer, value, options);
+
+    public static object? Convert(object? value)
+    {
+        if (value is null)
         {
             return null;
         }
 
-        if (variableValue is JsonElement element)
+        if (value is JsonElement element)
         {
             return ResolveJsonElement(element);
         }
 
-        return variableValue;
+        return value;
     }
 
     private static object? ResolveJsonElement(JsonElement element)
         => element.ValueKind switch
         {
+            JsonValueKind.Null => null,
             JsonValueKind.String => ResolveString(element),
             JsonValueKind.True or JsonValueKind.False => element.GetBoolean(),
             JsonValueKind.Number => ResolveNumber(element),
@@ -43,7 +63,7 @@ internal static class VariableTypeResolver
         var list = new List<object?>();
         foreach (var item in element.EnumerateArray())
         {
-            list.Add(Resolve(item));
+            list.Add(Convert(item));
         }
 
         return list;
