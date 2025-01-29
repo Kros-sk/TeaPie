@@ -6,6 +6,8 @@ internal interface IReadOnlyCollectionStructure
 {
     Folder? Root { get; }
 
+    File? EnvironmentFile { get; }
+
     bool HasEnvironmentFile { get; }
 
     IReadOnlyCollection<Folder> Folders { get; }

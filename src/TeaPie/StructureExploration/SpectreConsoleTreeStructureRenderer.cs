@@ -12,17 +12,17 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         var folders = collectionStructure.Folders;
         var foldersByParent = GroupFoldersByParent(folders);
         var testCasesByParent = GroupTestCasesByParent(collectionStructure.TestCases);
-
         var rootFolder = collectionStructure.Root
             ?? throw new InvalidOperationException("Unable to find root of structure.");
 
-        return BuildTree(foldersByParent, testCasesByParent, rootFolder);
+        return BuildTree(rootFolder, foldersByParent, testCasesByParent, collectionStructure.EnvironmentFile);
     }
 
     private static Tree BuildTree(
+        Folder rootFolder,
         Dictionary<string, List<Folder>> foldersByParent,
         Dictionary<string, List<TestCase>> testCasesByParent,
-        Folder rootFolder)
+        File? environmentFile)
     {
         var tree = new Tree($"[white]{rootFolder.Name}[/]");
         var queue = new Queue<Node>();
@@ -31,6 +31,7 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         while (queue.Count > 0)
         {
             var parentNode = queue.Dequeue();
+            ResolveEnvironmentFile(environmentFile, parentNode.RelativePath, parentNode.TreeNode);
             ResolveFolders(foldersByParent, queue, parentNode.RelativePath, parentNode.TreeNode);
             ResolveTestCases(testCasesByParent, parentNode.RelativePath, parentNode.TreeNode);
         }
@@ -54,6 +55,14 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         }
     }
 
+    private static void ResolveEnvironmentFile(File? environmentFile, string parentRelativePath, IHasTreeNodes parentNode)
+    {
+        if (environmentFile is not null && parentRelativePath.Equals(environmentFile.ParentFolder.RelativePath))
+        {
+            parentNode.AddNode(GetEnvironmentFileReport(environmentFile));
+        }
+    }
+
     private static void ResolveTestCases(
         Dictionary<string, List<TestCase>> testCasesByParent,
         string parentRelativePath,
@@ -72,6 +81,12 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
     {
         var emoji = _supportsEmojis ? Emoji.Known.OpenFileFolder : "[grey italic]FO[/]";
         return $"{emoji} [white]{name}[/]";
+    }
+
+    private static string GetEnvironmentFileReport(File environmentFile)
+    {
+        var emoji = _supportsEmojis ? Emoji.Known.LeafFlutteringInWind : "[grey italic]EN[/]";
+        return $"{emoji} [purple]{environmentFile.Name}[/]";
     }
 
     private static string GetTestCaseReport(TestCase testCase)
