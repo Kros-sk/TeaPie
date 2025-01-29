@@ -110,7 +110,9 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     {
         if (_environmentFileName is not null && !collectionStructure.HasEnvironmentFile)
         {
-            var envFile = files.FirstOrDefault(f => Path.GetFileName(f).Equals(_environmentFileName));
+            var envFile = files.FirstOrDefault(
+                f => Path.GetFileName(f).Equals(_environmentFileName, StringComparison.OrdinalIgnoreCase));
+
             if (envFile is not null)
             {
                 collectionStructure.SetEnvironmentFile(GetFile(envFile, parentFolder));

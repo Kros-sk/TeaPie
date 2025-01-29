@@ -42,5 +42,13 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     }
 
     [MemberNotNull(nameof(EnvironmentFile))]
-    internal void SetEnvironmentFile(File file) { EnvironmentFile = file; }
+    internal void SetEnvironmentFile(File? file)
+    {
+        if (file is null)
+        {
+            throw new InvalidOperationException("Unable to set environment file to null.");
+        }
+
+        EnvironmentFile = file;
+    }
 }

@@ -35,7 +35,8 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         public string? Environment { get; init; }
 
         [CommandOption("--env-file|--environment-file")]
-        [Description("Path to file, which contains definitions of available environments.")]
+        [Description("Path to file, which contains definitions of available environments. If this option is not used, " +
+            "first found file within collection with name '<collection-name>-env.json' is used.")]
         public string? EnvironmentFile { get; init; }
     }
 }

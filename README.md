@@ -292,7 +292,7 @@ Each environment is defined by its **name** and **set of variables**.
 
 ### Default Environment (`$shared`)
 
-Each environment file **must include** a `$shared` environment, which serves as the **default environment**. Key points about `$shared`:
+Each environment file **should include** a `$shared` environment, which serves as the **default environment**. Key points about `$shared`:
 
 - **Global Variables**: Variables from `$shared` are always stored in `tp.GlobalVariables`.
 - **Environment Variables**: Variables from `$shared` are added to `tp.EnvironmentVariables` only if `$shared` is **selected as the active environment**.
@@ -305,7 +305,7 @@ This approach was inspired by [Rest Client for Visual Studio Code](https://marke
 To specify the environment for running tests, use the `-e` option followed by the environment name:
 
 ```sh
--e <name-of-environment>
+-e local
 ```
 
 > You can also use aliases `--env` and `--environment` for the same purpose.

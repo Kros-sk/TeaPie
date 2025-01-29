@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Demo\Environments\environments-env.json">
+    <None Update="Demo\Environments\Environments-env.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Demo\Requests\DELETE.http">
@@ -211,10 +211,6 @@
     <None Update="Demo\Structure\ZeroLevelTest-test.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Demo\Environments\" />
   </ItemGroup>
 
 </Project>
