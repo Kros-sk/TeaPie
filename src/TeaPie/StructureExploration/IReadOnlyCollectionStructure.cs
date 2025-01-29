@@ -1,4 +1,6 @@
-﻿namespace TeaPie.StructureExploration;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TeaPie.StructureExploration;
 
 internal interface IReadOnlyCollectionStructure
 {
@@ -9,4 +11,8 @@ internal interface IReadOnlyCollectionStructure
     IReadOnlyCollection<Folder> Folders { get; }
 
     IReadOnlyCollection<TestCase> TestCases { get; }
+
+    bool TryGetFolder(string path, [NotNullWhen(true)] out Folder? folder);
+
+    bool TryGetTestCase(string path, [NotNullWhen(true)] out TestCase? testCase);
 }

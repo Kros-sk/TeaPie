@@ -69,8 +69,10 @@ internal sealed class PreProcessScriptStep(
         out IPipelineStep[] steps)
     {
         relativePath = scriptPath.TrimRootPath(context.Path, true);
-        var folder = context.CollectionStructure.Folders.FirstOrDefault(x => x.Path == Path.GetDirectoryName(scriptPath))
-            ?? throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
+        if (!context.CollectionStructure.TryGetFolder(Path.GetDirectoryName(scriptPath) ?? string.Empty, out var folder))
+        {
+            throw new DirectoryNotFoundException($"One of the directories in the path: {scriptPath} wasn't found");
+        }
 
         script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
         var scriptContext = new ScriptExecutionContext(script);

@@ -105,7 +105,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
     private void SearchForEnvironmentFileIfNeeded(
         Folder parentFolder,
-        IOrderedEnumerable<string> files,
+        IList<string> files,
         CollectionStructure collectionStructure)
     {
         if (_environmentFileName is not null && !collectionStructure.HasEnvironmentFile)
@@ -123,7 +123,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     private static void ExploreTestCases(
         CollectionStructure collectionStructure,
         Folder currentFolder,
-        IEnumerable<string> files)
+        IList<string> files)
     {
         var preRequestScripts = GetScripts(currentFolder, Constants.PreRequestSuffix, files);
         var postResponseScripts = GetScripts(currentFolder, Constants.PostResponseSuffix, files);
@@ -180,14 +180,13 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     {
         if (_environmentFileName is null)
         {
-            var folder = collectionStructure.Folders.FirstOrDefault(x => x.Path.Equals(Path.GetDirectoryName(environmentFilePath)));
-            if (folder is null)
+            if (collectionStructure.TryGetFolder(Path.GetDirectoryName(environmentFilePath) ?? string.Empty, out var folder))
             {
-                throw new InvalidOperationException("Unable to set environment file to file outside collection.");
+                collectionStructure.SetEnvironmentFile(GetFile(environmentFilePath, folder));
             }
             else
             {
-                collectionStructure.SetEnvironmentFile(GetFile(environmentFilePath, folder));
+                throw new InvalidOperationException("Unable to set environment file to file outside collection.");
             }
         }
     }
@@ -218,13 +217,11 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         return new TestCase(requestFileObj);
     }
 
-    private static IOrderedEnumerable<string> GetFiles(Folder currentFolder)
-        => Directory.GetFiles(currentFolder.Path).Order()
-            .OrderBy(path => path, StringComparer.OrdinalIgnoreCase);
+    private static IList<string> GetFiles(Folder currentFolder)
+        => [.. Directory.GetFiles(currentFolder.Path).OrderBy(path => path, StringComparer.OrdinalIgnoreCase)];
 
-    private static IOrderedEnumerable<string> GetFolders(Folder currentFolder)
-        => Directory.GetDirectories(currentFolder.Path)
-            .OrderBy(path => path, StringComparer.OrdinalIgnoreCase);
+    private static IList<string> GetFolders(Folder currentFolder)
+        => [.. Directory.GetDirectories(currentFolder.Path).OrderBy(path => path, StringComparer.OrdinalIgnoreCase)];
 
     private static Dictionary<string, Script> GetScripts(
         Folder folder,
