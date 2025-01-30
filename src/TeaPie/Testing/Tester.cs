@@ -1,14 +1,19 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using TeaPie.Logging;
+using TeaPie.Reporting;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
 
-internal partial class Tester(ICurrentTestCaseExecutionContextAccessor accessor, ILogger<Tester> logger) : ITester
+internal partial class Tester(
+    ICurrentTestCaseExecutionContextAccessor accessor,
+    ITestsResultsSummaryReporter resultsSummaryReporter,
+    ILogger<Tester> logger) : ITester
 {
     private readonly ILogger<Tester> _logger = logger;
     private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
+    private readonly ITestsResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
     private readonly Stopwatch _stopWatch = new();
 
     #region Determined tests
@@ -49,7 +54,9 @@ internal partial class Tester(ICurrentTestCaseExecutionContextAccessor accessor,
     {
         _stopWatch.Stop();
 
-        test = test with { Result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) };
+        var result = new TestResult.Failed(test.Name, _stopWatch.ElapsedMilliseconds, ex.Message, ex);
+        test = test with { Result = result };
+        _resultsSummaryReporter.RegisterTestResult(result);
 
         LogTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
         return test;
@@ -71,7 +78,9 @@ internal partial class Tester(ICurrentTestCaseExecutionContextAccessor accessor,
 
         _stopWatch.Stop();
 
-        test = test with { Result = new TestResult.Succeed(_stopWatch.ElapsedMilliseconds) };
+        var result = new TestResult.Passed(test.Name, _stopWatch.ElapsedMilliseconds);
+        test = test with { Result = result };
+        _resultsSummaryReporter.RegisterTestResult(result);
 
         LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
         return test;

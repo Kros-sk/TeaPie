@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
+using TeaPie.Reporting;
 using TeaPie.TestCases;
 
 namespace TeaPie.Tests;
@@ -13,6 +14,7 @@ internal class ApplicationContextBuilder
     private static ILogger? _logger;
     private static IServiceProvider? _serviceProvider;
     private static ICurrentTestCaseExecutionContextAccessor? _currentTestCaseExecutionContextAccessor;
+    private static ITestsResultsSummaryReporter? _testsResultsSummaryReporter;
 
     public ApplicationContextBuilder()
     {
@@ -23,6 +25,7 @@ internal class ApplicationContextBuilder
         _logger = null;
         _serviceProvider = null;
         _currentTestCaseExecutionContextAccessor = null;
+        _testsResultsSummaryReporter = null;
     }
 
     public ApplicationContextBuilder WithPath(string path)
@@ -68,11 +71,18 @@ internal class ApplicationContextBuilder
         return this;
     }
 
+    public ApplicationContextBuilder WithReporter(ITestsResultsSummaryReporter reporter)
+    {
+        _testsResultsSummaryReporter = reporter;
+        return this;
+    }
+
     public ApplicationContext Build()
         => new(
             _path ?? string.Empty,
             _serviceProvider ?? Substitute.For<IServiceProvider>(),
             _currentTestCaseExecutionContextAccessor ?? Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
+            _testsResultsSummaryReporter ?? Substitute.For<ITestsResultsSummaryReporter>(),
             _logger ?? Substitute.For<ILogger>(),
             _tempFolderPath ?? string.Empty,
             _environmentName ?? string.Empty,

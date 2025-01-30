@@ -2,9 +2,10 @@
 
 internal interface IReporter
 {
-    void ReportTestStart(string testName, string path);
+    void Report();
+}
 
-    void ReportTestSuccess(string testName, long duration);
-
-    void ReportTestFailure(string testName, string errorMessage, long duration);
+internal interface IReporter<TReportedObject>
+{
+    void Report(TReportedObject report);
 }

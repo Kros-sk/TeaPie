@@ -4,6 +4,7 @@ using TeaPie.Environments;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
@@ -101,6 +102,7 @@ public sealed class ApplicationBuilder
             string.IsNullOrEmpty(_path) ? Directory.GetCurrentDirectory() : _path,
             provider,
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            provider.GetRequiredService<ITestsResultsSummaryReporter>(),
             provider.GetRequiredService<ILogger<ApplicationContext>>(),
             string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath,
             string.IsNullOrEmpty(_environment) ? string.Empty : _environment,
@@ -116,6 +118,7 @@ public sealed class ApplicationBuilder
         _services.AddVariables();
         _services.AddTesting();
         _services.AddPipelines();
+        _services.AddReporting();
         _services.AddLogging(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
     }
 

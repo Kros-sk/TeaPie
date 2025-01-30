@@ -6,6 +6,6 @@ namespace TeaPie.Testing;
 internal partial record TestResult
 {
     public partial record NotRun;
-    public partial record Succeed(long Duration);
-    public partial record Failed(long Duration, string ErrorMessage, Exception? Exception);
+    public partial record Passed(string TestName, long Duration);
+    public partial record Failed(string TestName, long Duration, string ErrorMessage, Exception? Exception);
 }

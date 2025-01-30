@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -27,7 +28,10 @@ public class TesterShould
             Context = _mockTestCaseExecutionContext
         };
 
-        _tester = new Tester(_currentTestCaseExecutionContextAccessor, Substitute.For<ILogger<Tester>>());
+        _tester = new Tester(
+            _currentTestCaseExecutionContextAccessor,
+            Substitute.For<ITestsResultsSummaryReporter>(),
+            Substitute.For<ILogger<Tester>>());
     }
 
     [Fact]
@@ -54,7 +58,7 @@ public class TesterShould
             true.Should().BeTrue();
         }
 
-        var test = new Test(testName, () => Task.FromResult(testFunction), new TestResult.Succeed(10));
+        var test = new Test(testName, () => Task.FromResult(testFunction), new TestResult.Passed(testName, 10));
 
         _tester.Test(testName, testFunction);
 
@@ -73,7 +77,7 @@ public class TesterShould
             await Task.CompletedTask;
         }
 
-        var test = new Test(testName, testFunction, new TestResult.Succeed(10));
+        var test = new Test(testName, testFunction, new TestResult.Passed(testName, 10));
 
         await _tester.Test(testName, testFunction);
 

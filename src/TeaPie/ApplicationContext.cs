@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 
@@ -8,6 +9,7 @@ internal class ApplicationContext(
     string path,
     IServiceProvider serviceProvider,
     ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
+    ITestsResultsSummaryReporter reporter,
     ILogger logger,
     string tempFolderPath,
     string environment = "",
@@ -38,4 +40,6 @@ internal class ApplicationContext(
         get => _currentTestCaseExecutionContextAccessor.Context;
         set => _currentTestCaseExecutionContextAccessor.Context = value;
     }
+
+    public ITestsResultsSummaryReporter Reporter { get; } = reporter;
 }

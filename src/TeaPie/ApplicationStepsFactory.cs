@@ -1,5 +1,6 @@
 ﻿using TeaPie.Environments;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 
@@ -12,7 +13,8 @@ internal static class ApplicationStepsFactory
             provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<PrepareTemporaryFolderStep>(),
             provider.GetStep<InitializeApplicationStep>(),
-            provider.GetStep<GenerateStepsForTestCasesStep>()];
+            provider.GetStep<GenerateStepsForTestCasesStep>(),
+            provider.GetStep<ReportTestResultsSummaryStep>()];
 
     public static IPipelineStep[] CreateStructureExplorationSteps(IServiceProvider provider)
         => [provider.GetStep<ExploreStructureStep>(),
