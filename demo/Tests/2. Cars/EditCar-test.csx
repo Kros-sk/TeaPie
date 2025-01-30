@@ -1,9 +1,13 @@
-tp.Test("Status code of car retrieval should be 200 (OK)", () => {
+﻿// Purposely fail the test (status code should be 200 [OK]), to demonstrate how test
+// results are logged and displayed in the final summary.
+tp.Test("Status code of car retrieval should be 201 (Created)", () =>
+{
     var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode();
-    Equal(statusCode, 200);
+    Equal(201, statusCode);
 });
 
-tp.Test("Engine type and people capacity should match after edit.", () => {
+tp.Test("Engine type and people capacity should match after edit.", () =>
+{
     const string comparedField1 = "EngineType";
     const string comparedField2 = "PeopleCapacity";
 

@@ -5,9 +5,9 @@
 tp.Test("Car should be rented successfully.", () =>
 {
     // Access a named response.
-    Equal(tp.Responses["RentCarRequest"].StatusCode(), 201);
+    Equal(201, tp.Responses["RentCarRequest"].StatusCode());
     // Access the response from the most recently executed request.
-    Equal(tp.Response.StatusCode(), 200);
+    Equal(200, tp.Response.StatusCode());
 });
 
 // If you have variable in JSON string, it can be easily converted to reference type, by using 'To<TResult>()' method.
@@ -19,9 +19,9 @@ await tp.Test($"Rented car should be '{car}'.", async () =>
     // Body content in form of given reference type. (Works only for JSON structured bodies).
     var retrievedCar = await tp.Response.GetBodyAsync<Car>();
 
-    Equal(retrievedCar.Brand, car.Brand);
-    Equal(retrievedCar.Model, car.Model);
-    Equal(retrievedCar.Year, car.Year);
+    Equal(car.Brand, retrievedCar.Brand);
+    Equal(car.Model, retrievedCar.Model);
+    Equal(car.Year, retrievedCar.Year);
 });
 
 ClearVariables();
