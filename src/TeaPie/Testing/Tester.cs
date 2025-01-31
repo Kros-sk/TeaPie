@@ -17,23 +17,39 @@ internal partial class Tester(
     private readonly Stopwatch _stopWatch = new();
 
     #region Determined tests
-    public void Test(string testName, Action testFunction)
-        => TestBase(testName, () => { testFunction(); return Task.CompletedTask; })
+    public void Test(string testName, Action testFunction, bool skipTest = false)
+        => TestBase(testName, () => { testFunction(); return Task.CompletedTask; }, skipTest)
             .ConfigureAwait(false).GetAwaiter().GetResult();
 
-    public async Task Test(string testName, Func<Task> testFunction)
+    public async Task Test(string testName, Func<Task> testFunction, bool skipTest = false)
         => await TestBase(testName, testFunction);
 
-    private async Task TestBase(string testName, Func<Task> testFunction)
+    private async Task TestBase(string testName, Func<Task> testFunction, bool skipTest = false)
     {
         var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
             ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
 
-        var test = new Test(testName, testFunction, new TestResult.NotRun());
+        var test = new Test(testName, testFunction, new TestResult.NotRun() { TestName = testName });
 
-        test = await ExecuteTest(test, testCaseExecutionContext);
+        test = await ExecuteOrSkipTest(testName, skipTest, testCaseExecutionContext, test);
 
         testCaseExecutionContext.RegisterTest(test);
+    }
+
+    private async Task<Test> ExecuteOrSkipTest(
+        string testName, bool skipTest, TestCaseExecutionContext testCaseExecutionContext, Test test)
+    {
+        if (skipTest)
+        {
+            LogTestSkip(testName, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
+            _resultsSummaryReporter.RegisterTestResult(test.Result);
+        }
+        else
+        {
+            test = await ExecuteTest(test, testCaseExecutionContext);
+        }
+
+        return test;
     }
 
     private async Task<Test> ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext)
@@ -54,7 +70,7 @@ internal partial class Tester(
     {
         _stopWatch.Stop();
 
-        var result = new TestResult.Failed(test.Name, _stopWatch.ElapsedMilliseconds, ex.Message, ex);
+        var result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) { TestName = test.Name };
         test = test with { Result = result };
         _resultsSummaryReporter.RegisterTestResult(result);
 
@@ -78,7 +94,7 @@ internal partial class Tester(
 
         _stopWatch.Stop();
 
-        var result = new TestResult.Passed(test.Name, _stopWatch.ElapsedMilliseconds);
+        var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds) { TestName = test.Name };
         test = test with { Result = result };
         _resultsSummaryReporter.RegisterTestResult(result);
 
@@ -86,6 +102,9 @@ internal partial class Tester(
         return test;
     }
     #endregion
+
+    [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]
+    partial void LogTestSkip(string Name, string Path);
 
     [LoggerMessage(Message = "Running test: '{Name}' ({Path})", Level = LogLevel.Information)]
     partial void LogTestStart(string Name, string Path);

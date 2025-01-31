@@ -1,23 +1,48 @@
-﻿namespace TeaPie.Reporting;
+﻿using System.Text;
+
+namespace TeaPie.Reporting;
 
 internal static class CompatibilityChecker
 {
-    public static bool SupportsEmojis()
+    public static readonly bool SupportsEmoji = SupportsEmojis();
+
+    private static bool SupportsEmojis()
     {
-        var isUtf8 = Console.OutputEncoding.WebName.Contains("utf", StringComparison.OrdinalIgnoreCase);
-        if (!isUtf8)
+        if (!Console.OutputEncoding.Equals(Encoding.UTF8))
         {
             return false;
         }
 
+        if (OperatingSystem.IsWindows() && Environment.UserInteractive && Console.Title == "Command Prompt")
+        {
+            return false;
+        }
+
+        return TestEmojiRendering();
+    }
+
+    private static bool TestEmojiRendering()
+    {
         const string emoji = "😀";
-        var cursorLeftBefore = Console.CursorLeft;
 
-        Console.Write(emoji);
-        Console.SetCursorPosition(cursorLeftBefore, Console.CursorTop);
-        Console.Write(" ");
-        Console.SetCursorPosition(cursorLeftBefore, Console.CursorTop);
+        var originalOutput = Console.Out;
 
-        return Console.CursorLeft - cursorLeftBefore == 1;
+        try
+        {
+            using (var testOutput = new StringWriter())
+            {
+                Console.SetOut(testOutput);
+
+                Console.Write(emoji);
+
+                var result = testOutput.ToString();
+
+                return result.Contains(emoji);
+            }
+        }
+        finally
+        {
+            Console.SetOut(originalOutput);
+        }
     }
 }

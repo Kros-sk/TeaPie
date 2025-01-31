@@ -10,8 +10,10 @@ public static class TeaPieTestingExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="testName">The name of the test.</param>
     /// <param name="testFunction">The testing function to execute.</param>
-    public static void Test(this TeaPie teaPie, string testName, Action testFunction)
-        => teaPie._tester.Test(testName, testFunction);
+    /// <param name="skipTest">Indicates whether the test should be skipped (<see langword="true"/>) or
+    /// normally executed (<see langword="false"/>). Defaults to <see langword="false"/>.</param>
+    public static void Test(this TeaPie teaPie, string testName, Action testFunction, bool skipTest = false)
+        => teaPie._tester.Test(testName, testFunction, skipTest);
 
     /// <summary>
     /// Executes the specified asynchronous <paramref name="testFunction"/> as a test method. If <paramref name="testFunction"/>
@@ -21,6 +23,8 @@ public static class TeaPieTestingExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="testName">The name of the test.</param>
     /// <param name="testFunction">The asynchronous testing function to execute.</param>
-    public static async Task Test(this TeaPie teaPie, string testName, Func<Task> testFunction)
-        => await teaPie._tester.Test(testName, testFunction);
+    /// <param name="skipTest">Indicates whether the test should be skipped (<see langword="true"/>) or
+    /// normally executed (<see langword="false"/>). Defaults to <see langword="false"/>.</param>
+    public static async Task Test(this TeaPie teaPie, string testName, Func<Task> testFunction, bool skipTest = false)
+        => await teaPie._tester.Test(testName, testFunction, skipTest);
 }

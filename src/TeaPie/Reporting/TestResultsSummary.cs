@@ -5,6 +5,7 @@ namespace TeaPie.Reporting;
 internal class TestResultsSummary
 {
     public bool AllTestsPassed => NumberOfPassedTests == NumberOfExecutedTests;
+    public bool HasSkippedTests => NumberOfSkippedTests > 0;
 
     public int NumberOfSkippedTests { get; private set; }
     public int NumberOfPassedTests { get; private set; }
@@ -18,7 +19,17 @@ internal class TestResultsSummary
     public double PercentageOfPassedTests => (double)NumberOfPassedTests / NumberOfTests * 100;
     public double PercentageOfFailedTests => (double)NumberOfFailedTests / NumberOfTests * 100;
 
-    public void AddSkippedTest() => NumberOfSkippedTests++;
+    private readonly List<TestResult.NotRun> _skippedTests = [];
+    public IReadOnlyList<TestResult.NotRun> SkippedTests => _skippedTests;
+
+    private readonly List<TestResult.Failed> _failedTests = [];
+    public IReadOnlyList<TestResult.Failed> FailedTests => _failedTests;
+
+    public void AddSkippedTest(TestResult.NotRun skippedTestResult)
+    {
+        NumberOfSkippedTests++;
+        _skippedTests.Add(skippedTestResult);
+    }
 
     public void AddPassedTest(TestResult.Passed passedTestResult)
     {
@@ -32,8 +43,4 @@ internal class TestResultsSummary
         TimeElapsedDuringTesting += failedTestResult.Duration;
         _failedTests.Add(failedTestResult);
     }
-
-    private readonly List<TestResult.Failed> _failedTests = [];
-
-    public IReadOnlyList<TestResult.Failed> FailedTests => _failedTests;
 }

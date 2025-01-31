@@ -58,7 +58,7 @@ public class TesterShould
             true.Should().BeTrue();
         }
 
-        var test = new Test(testName, () => Task.FromResult(testFunction), new TestResult.Passed(testName, 10));
+        var test = new Test(testName, () => Task.FromResult(testFunction), new TestResult.Passed(10) { TestName = testName });
 
         _tester.Test(testName, testFunction);
 
@@ -77,7 +77,7 @@ public class TesterShould
             await Task.CompletedTask;
         }
 
-        var test = new Test(testName, testFunction, new TestResult.Passed(testName, 10));
+        var test = new Test(testName, testFunction, new TestResult.Passed(10) { TestName = testName });
 
         await _tester.Test(testName, testFunction);
 

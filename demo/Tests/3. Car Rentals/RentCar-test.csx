@@ -2,13 +2,15 @@
 #load "../ClearVariables.csx"
 #load "../2. Cars/Definitions/Car.csx"
 
+// Sometimes, during tests writing it can be useful to skip some tests to fasten the process
+// and prevent unecessary code commenting/deletion.
 tp.Test("Car should be rented successfully.", () =>
 {
     // Access a named response.
     Equal(201, tp.Responses["RentCarRequest"].StatusCode());
     // Access the response from the most recently executed request.
     Equal(200, tp.Response.StatusCode());
-});
+}, true); // To skip test, just add optional parameter to 'true'.
 
 // If you have variable in JSON string, it can be easily converted to reference type, by using 'To<TResult>()' method.
 var car = tp.GetVariable<string>("NewCar").To<Car>();

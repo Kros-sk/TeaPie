@@ -14,7 +14,7 @@ internal class TestsResultsSummaryReporter : ITestsResultsSummaryReporter
     {
         switch (testResult)
         {
-            case TestResult.NotRun: _summary.AddSkippedTest(); break;
+            case TestResult.NotRun skipped: _summary.AddSkippedTest(skipped); break;
             case TestResult.Passed passed: _summary.AddPassedTest(passed); break;
             case TestResult.Failed failed: _summary.AddFailedTest(failed); break;
         }
