@@ -12,14 +12,11 @@
     - [Logging options](#logging-options)
     - [Pre-request Script](#pre-request-script)
     - [Request File](#request-file)
-    - [Post-response Script](#post-response-script)
-    - [JSON Handling](#json-handling)
+    - [Post-Response Script](#post-response-script)
+    - [Environments](#environments)
+    - [Reporting](#reporting)
   - [How to install locally](#how-to-install-locally)
     - [Setting up a Local NuGet Feed](#setting-up-a-local-nuget-feed)
-  - [Environments](#environments)
-    - [Environment File](#environment-file)
-    - [Default Environment (`$shared`)](#default-environment-shared)
-    - [Active Environment](#active-environment)
 
 ## Getting started
 
@@ -163,11 +160,12 @@ For **named requests**, you can access request and response data using the follo
 
 This gives you comprehensive access to headers and body content of named requests.
 
-### Post-response Script
+### Post-Response Script
 
-The **post-response script** is used to define tests. A test is considered **failed** if an exception is thrown within the test body, which aligns with common practices in testing frameworks. This approach allows you to **use any assertion library** referenced via NuGet.
+The **post-response script** is used to **define tests**. A test is considered **failed** if an exception is thrown within the test body, following standard testing framework practices. This approach allows you to **use any assertion library** referenced via NuGet.
 
-Example of a simple test:
+<!-- omit from toc -->
+#### Example Test
 
 ```csharp
 tp.Test("Status code should be 201.", () =>
@@ -177,18 +175,58 @@ tp.Test("Status code should be 201.", () =>
 });
 ```
 
-- Use `tp.Requests` and `tp.Responses` to access requests and responses objects of named requests.
-- For a single request in the file or the most recently executed request, you can directly use `tp.Request` and `tp.Response`.
+<!-- omit from toc -->
+#### Accessing Requests and Responses
 
-Both `HttpRequestMessage` and `HttpResponseMessage` objects are enriched with these handy methods for work with body content:
+- For **single requests** or the **most recently executed request**, use `tp.Request` and `tp.Response`.
+- For **multiple requests** in a `.http` file, use `tp.Requests` and `tp.Responses` to access named requests and responses.
 
-- `GetBody()`/`GetBodyAsync()` - retrieves `string` representation of the body.
-- `GetBody<TResult>()`/`GetBodyAsync<TResult>()` - retrieves **deserialized object** of `TResult` type from JSON string in the body.
-- `GetBodyAsExpando()`/`GetBodyAsExpandoAsync()` - retrieves `dynamic` **case-insensitive expando object**, which easifies access to properties. This method works only for bodies, which are in JSON form. Note, that for proper using of this type, variable in which it is stored, has to be explicitly typed as `dynamic`.
+<!-- omit from toc -->
+#### Skipping Tests
 
-Moreover, response object is extended by `StatusCode()` method, which easifies work with status codes by returning its **integer** value.
+During development or debugging, you may need to skip certain tests. To do this, set the optional `skipTest` parameter to `true`:
 
-### JSON Handling
+```csharp
+tp.Test("Status code should be 201.", () =>
+{
+    var statusCode = tp.Response.StatusCode();
+    Equal(statusCode, 201);
+}, true); // Skip this test
+```
+
+<!-- omit from toc -->
+#### Asynchronous Tests
+
+Asynchronous tests are fully supported:
+
+```csharp
+await tp.Test($"Newly added car should have '{brand}' brand.", async () =>
+{
+    var body = tp.GetVariable<string>("NewCar");
+    dynamic obj = body.ToExpando();
+
+    dynamic responseJson = await tp.Responses["GetNewCarRequest"].GetBodyAsExpandoAsync();
+    Equal(obj.Brand, responseJson.brand);
+});
+```
+
+<!-- omit from toc -->
+#### Working with Body Content
+
+Both `HttpRequestMessage` and `HttpResponseMessage` objects include convenient methods for handling body content:
+
+- **`GetBody()` / `GetBodyAsync()`** - Retrieves the body as a `string`.
+- **`GetBody<TResult>()` / `GetBodyAsync<TResult>()`** - Deserializes the JSON body into an object of type `TResult`.
+- **`GetBodyAsExpando()` / `GetBodyAsExpandoAsync()`** - Retrieves the body as a **case-insensitive `dynamic` expando object**, making property access easier.
+  - *Note*: To use an expando object correctly, explicitly declare it as `dynamic`.
+
+<!-- omit from toc -->
+#### Status Code Handling
+
+The response object includes a `StatusCode()` method that simplifies status code handling by returning its **integer** value.
+
+<!-- omit from toc -->
+#### JSON Handling
 
 For requests that handle `application/json` payloads, a **extension methods** `ToExpando()` and `ToJson()` can simplify access to JSON properties:
 
@@ -210,6 +248,109 @@ tp.Test("Identifier should be a positive integer.", () =>
 ```
 
 This makes working with JSON responses straightforward and efficient.
+
+### Environments
+
+Environments are a crucial part of automating tests, allowing you to define variables for different scenarios. **TeaPie** supports environments to enhance flexibility and efficiency.
+
+<!-- omit from toc -->
+#### Environment File
+
+To use environments, you need to define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
+
+```sh
+--env-file <path-to-environment-file>
+```
+
+> You can use alias `--environment-file`, too.
+
+This is example, of how environment file can look like:
+
+```json
+{
+    "$shared": {
+        "ApiBaseUrl": "http://my-car-rental-company.com",
+        "ApiCustomersSection": "/customers",
+        "ApiCarsSection": "/cars",
+        "ApiCarRentalSection": "/rental"
+    },
+    "local": {
+        "ApiBaseUrl": "http://localhost:3001", // Override $shared's variable
+        "DebugMode": true // Environment-specific variable
+    }
+}
+```
+
+Each environment is defined by its **name** and **set of variables**.
+
+<!-- omit from toc -->
+#### Default Environment (`$shared`)
+
+Each environment file **should include** a `$shared` environment, which serves as the **default environment**. Key points about `$shared`:
+
+- **Global Variables**: Variables from `$shared` are always stored in `tp.GlobalVariables`.
+- **Environment Variables**: Variables from `$shared` are added to `tp.EnvironmentVariables` only if `$shared` is **selected as the active environment**.
+- **Overwriting**: Other environments can override variables defined in `$shared`.
+
+This approach was inspired by [Rest Client for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=humao.rest-client#environments).
+
+<!-- omit from toc -->
+#### Active Environment
+
+To specify the environment for running tests, use the `-e` option followed by the environment name:
+
+```sh
+-e local
+```
+
+> You can also use aliases `--env` and `--environment` for the same purpose.
+
+There are some scenarios where you want to **switch environment in the code** (`.csx` scripts). There you can use:
+
+```csharp
+tp.SetEnvironment("local");
+```
+
+### Reporting
+
+At the end of a collection testing run, a summary report of tests' results is generated. Here is an example:
+
+![Report example](./assets/images/report-example.png)
+
+<!-- omit from toc -->
+#### Custom Reporters
+
+The default console reporter, powered by `AnsiConsole` from `Spectre.Console`, provides all essential tests' results details. However, users can **add custom reporters**, either by defining them **inline**:
+
+```csharp
+tp.RegisterReporter((summary) =>
+{
+    if (summary.AllTestsPassed)
+    {
+        Console.WriteLine($"Success! All {summary.NumberOfExecutedTests} tests passed.");
+    }
+    else
+    {
+        Console.WriteLine($"Failure: {summary.PercentageOfFailedTests}% of tests failed.");
+    }
+});
+```
+
+Or for more advanced and customizable reporting, by implementing a custom reporter class that implements the `IReporter<TestsResultsSummary>` interface:
+
+```csharp
+public class MyReporter : IReporter<TestsResultsSummary>
+{
+    public void Report(TestsResultsSummary summary)
+    {
+        // Custom reporting logic...
+    }
+}
+
+tp.RegisterReporter(new MyReporter());
+```
+
+> All necessary information about results of tests can be found within [TestsResultsSummary](./src/TeaPie/Reporting/TestsResultsSummary.cs) object. The summary contains properties with access to commonly evaluated statistics as `AllTestsPassed`, `NumberOfFailedTests`, `PercentageOfSkippedTests`, `FailedTests`, ...
 
 ## How to install locally
 
@@ -256,62 +397,3 @@ If you don’t have a local NuGet feed already, you can set one up as follows:
    ```sh
    dotnet nuget add source "path/to/your/local/feed" --name NameOfYourLocalFeed
    ```
-
-## Environments
-
-Environments are a crucial part of automating tests, allowing you to define variables for different scenarios. **TeaPie** supports environments to enhance flexibility and efficiency.
-
-### Environment File
-
-To use environments, you need to define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
-
-```sh
---env-file <path-to-environment-file>
-```
-
-> You can use alias `--environment-file`, too.
-
-This is example, of how environment file can look like:
-
-```json
-{
-    "$shared": {
-        "ApiBaseUrl": "http://my-car-rental-company.com",
-        "ApiCustomersSection": "/customers",
-        "ApiCarsSection": "/cars",
-        "ApiCarRentalSection": "/rental"
-    },
-    "local": {
-        "ApiBaseUrl": "http://localhost:3001", // Override $shared's variable
-        "DebugMode": true // Environment-specific variable
-    }
-}
-```
-
-Each environment is defined by its **name** and **set of variables**.
-
-### Default Environment (`$shared`)
-
-Each environment file **should include** a `$shared` environment, which serves as the **default environment**. Key points about `$shared`:
-
-- **Global Variables**: Variables from `$shared` are always stored in `tp.GlobalVariables`.
-- **Environment Variables**: Variables from `$shared` are added to `tp.EnvironmentVariables` only if `$shared` is **selected as the active environment**.
-- **Overwriting**: Other environments can override variables defined in `$shared`.
-
-This approach was inspired by [Rest Client for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=humao.rest-client#environments).
-
-### Active Environment
-
-To specify the environment for running tests, use the `-e` option followed by the environment name:
-
-```sh
--e local
-```
-
-> You can also use aliases `--env` and `--environment` for the same purpose.
-
-There are some scenarios where you want to **switch environment in the code** (`.csx` scripts). There you can use:
-
-```csharp
-tp.SetEnvironment("local");
-```

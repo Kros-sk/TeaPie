@@ -30,19 +30,19 @@ public class TestsResultsSummary
     private readonly List<TestResult.Failed> _failedTests = [];
     public IReadOnlyList<TestResult.Failed> FailedTests => _failedTests;
 
-    public void AddSkippedTest(TestResult.NotRun skippedTestResult)
+    internal void AddSkippedTest(TestResult.NotRun skippedTestResult)
     {
         NumberOfSkippedTests++;
         _skippedTests.Add(skippedTestResult);
     }
 
-    public void AddPassedTest(TestResult.Passed passedTestResult)
+    internal void AddPassedTest(TestResult.Passed passedTestResult)
     {
         NumberOfPassedTests++;
         TimeElapsedDuringTesting += passedTestResult.Duration;
     }
 
-    public void AddFailedTest(TestResult.Failed failedTestResult)
+    internal void AddFailedTest(TestResult.Failed failedTestResult)
     {
         NumberOfFailedTests++;
         TimeElapsedDuringTesting += failedTestResult.Duration;
