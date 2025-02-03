@@ -2,7 +2,7 @@
 
 namespace TeaPie.Reporting;
 
-internal class TestResultsSummary
+public class TestsResultsSummary
 {
     public bool AllTestsPassed => NumberOfPassedTests == NumberOfExecutedTests;
     public bool HasSkippedTests => NumberOfSkippedTests > 0;

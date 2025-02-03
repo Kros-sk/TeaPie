@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
@@ -15,9 +16,12 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
-        IPipeline pipeline)
+        IPipeline pipeline,
+        ITestsResultsSummaryReporter reporter)
     {
-        Instance = new(variables, logger, tester, currentTestCaseExecutionContextAccessor, applicationContext, pipeline);
+        Instance =
+            new(variables, logger, tester, currentTestCaseExecutionContextAccessor, applicationContext, pipeline, reporter);
+
         return Instance;
     }
 
@@ -29,7 +33,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
-        IPipeline pipeline)
+        IPipeline pipeline,
+        ITestsResultsSummaryReporter reporter)
     {
         _variables = variables;
         Logger = logger;
@@ -37,12 +42,15 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
         _applicationContext = applicationContext;
         _pipeline = pipeline;
+        _reporter = reporter;
     }
 
     private readonly ApplicationContext _applicationContext;
     private readonly IPipeline _pipeline;
 
+    #region Logging
     public ILogger Logger { get; }
+    #endregion
 
     #region Variables
     internal readonly IVariables _variables;
@@ -121,5 +129,9 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _applicationContext.EnvironmentName = name;
         _pipeline.InsertSteps(null, _applicationContext.ServiceProvider.GetStep<SetEnvironmentStep>());
     }
+    #endregion
+
+    #region Reporting
+    internal readonly ITestsResultsSummaryReporter _reporter;
     #endregion
 }

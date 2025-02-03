@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Reporting;
 
-internal interface ICompositeReporter<TReporterType, TReportedObject> : IReporter
+public interface ICompositeReporter<TReporterType, TReportedObject> : IReporter
     where TReporterType : IReporter<TReportedObject>
 {
     void RegisterReporter(TReporterType reporter);

@@ -23,6 +23,7 @@ internal static class ScriptsConstants
     ];
 
     public static readonly IEnumerable<string> DefaultImports = [
+        "Microsoft.Extensions.Logging",
         "System",
         "System.Collections.Generic",
         "System.IO",
@@ -30,13 +31,13 @@ internal static class ScriptsConstants
         "System.Net.Http",
         "System.Threading",
         "System.Threading.Tasks",
-        "Microsoft.Extensions.Logging",
-        "Xunit.Assert",
-        "TeaPie.Testing",
-        "TeaPie.Variables",
+        "TeaPie",
         "TeaPie.Http",
         "TeaPie.Json",
-        "TeaPie"
+        "TeaPie.Reporting",
+        "TeaPie.Testing",
+        "TeaPie.Variables",
+        "Xunit.Assert"
     ];
 
     public static readonly string[] FrameworksPriorityList =

@@ -4,11 +4,11 @@ namespace TeaPie.Reporting;
 
 internal class TestsResultsSummaryReporter : ITestsResultsSummaryReporter
 {
-    private readonly List<IReporter<TestResultsSummary>> _reporters = [];
-    private TestResultsSummary _summary = new();
+    private readonly List<IReporter<TestsResultsSummary>> _reporters = [];
+    private TestsResultsSummary _summary = new();
 
-    public void RegisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Add(reporter);
-    public void UnregisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Remove(reporter);
+    public void RegisterReporter(IReporter<TestsResultsSummary> reporter) => _reporters.Add(reporter);
+    public void UnregisterReporter(IReporter<TestsResultsSummary> reporter) => _reporters.Remove(reporter);
 
     public void RegisterTestResult(TestResult testResult)
     {
@@ -30,5 +30,5 @@ internal class TestsResultsSummaryReporter : ITestsResultsSummaryReporter
 
     public void Reset() => _summary = new();
 
-    public TestResultsSummary GetTestResultsSummary() => _summary;
+    public TestsResultsSummary GetTestResultsSummary() => _summary;
 }

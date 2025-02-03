@@ -1,11 +1,11 @@
 ﻿namespace TeaPie.Reporting;
 
-internal interface IReporter
+public interface IReporter
 {
     void Report();
 }
 
-internal interface IReporter<TReportedObject>
+public interface IReporter<TReportedObject>
 {
     void Report(TReportedObject report);
 }

@@ -4,9 +4,9 @@ using TeaPie.Testing;
 
 namespace TeaPie.Reporting;
 
-internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSummary>
+internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSummary>
 {
-    public void Report(TestResultsSummary report)
+    public void Report(TestsResultsSummary report)
     {
         var table = PrepareMainTable(report);
 
@@ -17,7 +17,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
         AnsiConsole.Write(table);
     }
 
-    private static Table PrepareMainTable(TestResultsSummary summary)
+    private static Table PrepareMainTable(TestsResultsSummary summary)
     {
         var table = new Table();
         table.Border(TableBorder.Rounded);
@@ -26,7 +26,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
         return table;
     }
 
-    private static void ReportSkippedTestsIfAny(TestResultsSummary summary, Table table)
+    private static void ReportSkippedTestsIfAny(TestsResultsSummary summary, Table table)
         => ReportTestsGroup(
             table,
             summary.HasSkippedTests,
@@ -34,7 +34,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
             summary.SkippedTests,
             (result) => $"[bold orange1]Test skipped: [/][bold yellow]\"{result.TestName}\"[/]");
 
-    private static void ReportFailedTestsIfAny(TestResultsSummary summary, Table table)
+    private static void ReportFailedTestsIfAny(TestsResultsSummary summary, Table table)
         => ReportTestsGroup(
             table,
             !summary.AllTestsPassed,
@@ -99,7 +99,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
         table.AddEmptyRow();
     }
 
-    private static void ReportSummary(TestResultsSummary summary, Table table)
+    private static void ReportSummary(TestsResultsSummary summary, Table table)
     {
         var chart = GetBreakdownChart(summary);
         var panel = new Panel(chart);
@@ -115,9 +115,9 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
         table.AddEmptyRow();
     }
 
-    private static string GetOverallResult(TestResultsSummary report)
+    private static string GetOverallResult(TestsResultsSummary summary)
     {
-        if (report.AllTestsPassed)
+        if (summary.AllTestsPassed)
         {
             const string message = "[bold green]SUCCESS[/]";
             return CompatibilityChecker.SupportsEmoji ? message + " " + Emoji.Known.CheckMarkButton : message;
@@ -129,20 +129,20 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSumm
         }
     }
 
-    private static BreakdownChart GetBreakdownChart(TestResultsSummary report)
+    private static BreakdownChart GetBreakdownChart(TestsResultsSummary summary)
         => new BreakdownChart()
             .FullSize()
             .Expand()
-            .AddItem(GetPassedTestsTag(report), report.NumberOfPassedTests, Color.Green)
-            .AddItem(GetSkippedTestsTag(report), report.NumberOfSkippedTests, Color.Orange1)
-            .AddItem(GetFailedTestsTag(report), report.NumberOfFailedTests, Color.Red);
+            .AddItem(GetPassedTestsTag(summary), summary.NumberOfPassedTests, Color.Green)
+            .AddItem(GetSkippedTestsTag(summary), summary.NumberOfSkippedTests, Color.Orange1)
+            .AddItem(GetFailedTestsTag(summary), summary.NumberOfFailedTests, Color.Red);
 
-    private static string GetPassedTestsTag(TestResultsSummary report)
-        => $"Passed Tests [{report.PercentageOfPassedTests:f2}%]:";
+    private static string GetPassedTestsTag(TestsResultsSummary summary)
+        => $"Passed Tests [{summary.PercentageOfPassedTests:f2}%]:";
 
-    private static string GetSkippedTestsTag(TestResultsSummary report)
-        => $"Skipped Tests [{report.PercentageOfSkippedTests:f2}%]:";
+    private static string GetSkippedTestsTag(TestsResultsSummary summary)
+        => $"Skipped Tests [{summary.PercentageOfSkippedTests:f2}%]:";
 
-    private static string GetFailedTestsTag(TestResultsSummary report)
-        => $"Failed Tests [{report.PercentageOfFailedTests:f2}%]:";
+    private static string GetFailedTestsTag(TestsResultsSummary summary)
+        => $"Failed Tests [{summary.PercentageOfFailedTests:f2}%]:";
 }

@@ -129,7 +129,8 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<ITester>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             applicationContext,
-            provider.GetRequiredService<IPipeline>());
+            provider.GetRequiredService<IPipeline>(),
+            provider.GetRequiredService<ITestsResultsSummaryReporter>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

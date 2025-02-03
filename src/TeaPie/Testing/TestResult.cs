@@ -3,7 +3,7 @@
 namespace TeaPie.Testing;
 
 [Union]
-internal partial record TestResult
+public partial record TestResult
 {
     public partial record NotRun;
     public partial record Passed(long Duration);
