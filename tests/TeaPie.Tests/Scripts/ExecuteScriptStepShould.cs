@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -38,13 +39,7 @@ public class ExecuteScriptStepShould
         var step = new ExecuteScriptStep(accessor);
         var appContext = new ApplicationContextBuilder().Build();
 
-        TeaPie.Create(
-            Substitute.For<IVariables>(),
-            logger,
-            Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-            appContext,
-            Substitute.For<IPipeline>());
+        PrepareTeaPieInstance(logger, appContext);
 
         await ScriptHelper.PrepareScriptForExecution(context);
 
@@ -65,13 +60,7 @@ public class ExecuteScriptStepShould
         var step = new ExecuteScriptStep(accessor);
         var appContext = new ApplicationContextBuilder().Build();
 
-        TeaPie.Create(
-            variables,
-            logger,
-            Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-            appContext,
-            Substitute.For<IPipeline>());
+        PrepareTeaPieInstance(logger, appContext, variables);
 
         await ScriptHelper.PrepareScriptForExecution(context);
 
@@ -84,4 +73,14 @@ public class ExecuteScriptStepShould
         variables.Received(1).SetVariable("VariableWithDeleteTag", "anyValue", "delete");
         variables.Received(1).RemoveVariablesWithTag("delete");
     }
+
+    private static void PrepareTeaPieInstance(ILogger logger, ApplicationContext appContext, IVariables? variables = null)
+        => TeaPie.Create(
+            variables ?? Substitute.For<IVariables>(),
+            logger,
+            Substitute.For<ITester>(),
+            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
+            appContext,
+            Substitute.For<IPipeline>(),
+            Substitute.For<ITestsResultsSummaryReporter>());
 }

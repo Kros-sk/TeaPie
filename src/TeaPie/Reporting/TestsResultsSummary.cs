@@ -15,9 +15,14 @@ public class TestsResultsSummary
     public int NumberOfTests => NumberOfSkippedTests + NumberOfPassedTests + NumberOfFailedTests;
     public int NumberOfExecutedTests => NumberOfPassedTests + NumberOfFailedTests;
 
-    public double PercentageOfSkippedTests => (double)NumberOfSkippedTests / NumberOfTests * 100;
-    public double PercentageOfPassedTests => (double)NumberOfPassedTests / NumberOfTests * 100;
-    public double PercentageOfFailedTests => (double)NumberOfFailedTests / NumberOfTests * 100;
+    public double PercentageOfSkippedTests
+        => NumberOfTests > 0 ? (double)NumberOfSkippedTests / NumberOfTests * 100 : 0.00;
+
+    public double PercentageOfPassedTests
+        => NumberOfTests > 0 ? (double)NumberOfPassedTests / NumberOfTests * 100 : 0.00;
+
+    public double PercentageOfFailedTests
+        => NumberOfTests > 0 ? (double)NumberOfFailedTests / NumberOfTests * 100 : 0.00;
 
     private readonly List<TestResult.NotRun> _skippedTests = [];
     public IReadOnlyList<TestResult.NotRun> SkippedTests => _skippedTests;
