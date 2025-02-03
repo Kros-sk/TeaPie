@@ -22,7 +22,7 @@ internal partial class Tester(
             .ConfigureAwait(false).GetAwaiter().GetResult();
 
     public async Task Test(string testName, Func<Task> testFunction, bool skipTest = false)
-        => await TestBase(testName, testFunction);
+        => await TestBase(testName, testFunction, skipTest);
 
     private async Task TestBase(string testName, Func<Task> testFunction, bool skipTest = false)
     {
