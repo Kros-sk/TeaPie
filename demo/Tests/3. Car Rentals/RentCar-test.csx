@@ -2,8 +2,8 @@
 #load "../ClearVariables.csx"
 #load "../2. Cars/Definitions/Car.csx"
 
-// Sometimes, during tests writing it can be useful to skip some tests to fasten the process
-// and prevent unecessary code commenting/deletion.
+// Sometimes, when writing tests, it may be useful to skip certain tests 
+// to speed up development and avoid unnecessary code commenting or deletion.
 tp.Test("Car should be rented successfully.", () =>
 {
     // Access a named response.

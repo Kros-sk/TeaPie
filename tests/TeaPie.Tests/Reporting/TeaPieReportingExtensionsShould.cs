@@ -46,7 +46,7 @@ public class TeaPieReportingExtensionsShould
             Substitute.For<ILogger>(),
             Substitute.For<ITester>(),
             Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-             new ApplicationContextBuilder().Build(),
+            new ApplicationContextBuilder().Build(),
             Substitute.For<IPipeline>(),
             reporter);
 }

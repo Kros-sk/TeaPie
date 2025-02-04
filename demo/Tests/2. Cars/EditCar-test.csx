@@ -1,5 +1,5 @@
 ﻿// Purposely fail the test (status code should be 200 [OK]), to demonstrate how test
-// results are logged and displayed in the final summary.
+// results are logged and displayed in the final summary report.
 tp.Test("Status code of car retrieval should be 201 (Created)", () =>
 {
     var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode();

@@ -55,13 +55,13 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
         {
             table.AddEmptyRow();
 
-            var text = BuildTheTextFromCollectionElements(testsCollection, firstLineGetter, secondLineGetter);
+            var text = BuildTextFromCollectionElements(testsCollection, firstLineGetter, secondLineGetter);
 
             AddTestsGroup(table, sectionName, text);
         }
     }
 
-    private static string BuildTheTextFromCollectionElements(
+    private static string BuildTextFromCollectionElements(
         IReadOnlyList<TestResult> testsCollection,
         Func<TestResult, string> firstLineGetter,
         Func<TestResult, string>? secondLineGetter)
@@ -102,6 +102,15 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
     private static void ReportSummary(TestResultsSummary summary, Table table)
     {
         var chart = GetBreakdownChart(summary);
+        var panel = GetPanelWithChart(chart);
+
+        table.AddEmptyRow();
+        table.AddRow(panel);
+        table.AddEmptyRow();
+    }
+
+    private static Panel GetPanelWithChart(BreakdownChart chart)
+    {
         var panel = new Panel(chart);
         panel.Header("[bold aqua] " +
             (CompatibilityChecker.SupportsEmoji ? Emoji.Known.BarChart + " " : string.Empty) +
@@ -109,10 +118,7 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 
         panel.Expand();
         panel.PadTop(1);
-
-        table.AddEmptyRow();
-        table.AddRow(panel);
-        table.AddEmptyRow();
+        return panel;
     }
 
     private static string GetOverallResult(TestResultsSummary summary)

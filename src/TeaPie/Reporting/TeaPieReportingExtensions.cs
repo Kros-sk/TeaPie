@@ -17,7 +17,7 @@ public static class TeaPieReportingExtensions
     }
 
     /// <summary>
-    /// Registers an inline reporter that report a test results summary using the specified <paramref name="onReportAction"/>.
+    /// Registers an inline reporter that reports a test results summary using the specified <paramref name="onReportAction"/>.
     /// The report is generated at the end of the pipeline run.
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>

@@ -17,7 +17,7 @@
         if (summary.AllTestsPassed)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Success! All ({summary.NumberOfExecutedTests}) test passed.");
+            Console.WriteLine($"Success! All ({summary.NumberOfExecutedTests}) tests passed.");
         }
         else
         {
