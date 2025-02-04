@@ -3,7 +3,7 @@ await tp.Test("Customer should be created successfully.", async () =>
 {
     // Assertions use XUnit.Assert by default, but you can use any assertion library.
     // 'Assert.' qualifier is optional with XUnit. StatusCode() returns an int => no casting needed.
-    Equal(201, tp.Response.StatusCode()); // Equivalent to Assert.Equal((int)tp.Response.StatusCode, 201);
+    Equal(201, tp.Response.StatusCode()); // Equivalent to Assert.Equal(201, (int)tp.Response.StatusCode);
 
     // For easier access to content body, there are few handy methods in sync and async form.
     // To use dynamic expando objects, explicitly declare them as 'dynamic' (not 'var').

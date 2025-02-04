@@ -4,7 +4,7 @@ using TeaPie.Testing;
 
 namespace TeaPie.Reporting;
 
-internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSummary>
+internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsSummary>
 {
     public void Report(TestResultsSummary report)
     {

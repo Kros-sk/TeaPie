@@ -46,6 +46,8 @@ To get started, **create your first test case** using the command:
 teapie generate <test-case-name> [path] [-i|--init|--pre-request] [-t|--test|--post-response]
 ```
 
+> 💁‍♂️ You can use aliases `gen` or `g` to run the same command.
+
 This command generates three files in the specified path (or the current directory if no path is provided):
 
 - [**Pre-request script**](#pre-request-script): `<test-case-name>-init.csx`
@@ -68,6 +70,8 @@ This command **runs all test cases** found in the current folder and its subfold
 teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
 ```
 
+> 💁‍♂️ You can use alias `t` or **completely omit command name**, since `test` command is considered as **default command** when launching `teapie`.
+
 To view detailed information about each argument and option, use:
 
 ```sh
@@ -87,6 +91,8 @@ If you only want to **inspect the collection structure** without running the tes
 ```sh
 teapie explore [path-to-collection] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
 ```
+
+> 💁‍♂️ You can use aliases `exp` or `e` to run the same command.
 
 ### Logging options
 
@@ -113,9 +119,9 @@ The **pre-request script** is used to set variables and initialize any required 
 - Access the **test runner context** using the globally available `tp` identifier:
 
   ```csharp
-  tp.SetVariable("CurrentTime", DateTime.UtcNow);
+  tp.SetVariable("TimeOfExecution", DateTime.UtcNow);
   ...
-  var time = tp.GetVariable("CurrentTime");
+  var time = tp.GetVariable("TimeOfExecution");
   ```
 
 - Reference other scripts using the `#load` directive. You can provide either an absolute or a relative path.
@@ -164,6 +170,8 @@ This gives you comprehensive access to headers and body content of named request
 
 The **post-response script** is used to **define tests**. A test is considered **failed** if an exception is thrown within the test body, following standard testing framework practices. This approach allows you to **use any assertion library** referenced via NuGet.
 
+> 💁‍♂️ However, the **natively supported assertion library** is `Xunit.Assert`, which is statically imported in all script files. This means you don't need the `Assert.` prefix to access its methods.
+
 <!-- omit from toc -->
 #### Example Test
 
@@ -171,7 +179,7 @@ The **post-response script** is used to **define tests**. A test is considered *
 tp.Test("Status code should be 201.", () =>
 {
     var statusCode = tp.Response.StatusCode();
-    Equal(statusCode, 201);
+    Equal(201, statusCode);
 });
 ```
 
@@ -189,15 +197,15 @@ During development or debugging, you may need to skip certain tests. To do this,
 ```csharp
 tp.Test("Status code should be 201.", () =>
 {
-    var statusCode = tp.Response.StatusCode();
-    Equal(statusCode, 201);
+    var statusCode = tp.Responses["CreateCarRequest"].StatusCode();
+    Equal(201, statusCode);
 }, true); // Skip this test
 ```
 
 <!-- omit from toc -->
 #### Asynchronous Tests
 
-Asynchronous tests are fully supported:
+Asynchronous tests are also fully supported:
 
 ```csharp
 await tp.Test($"Newly added car should have '{brand}' brand.", async () =>
@@ -215,10 +223,10 @@ await tp.Test($"Newly added car should have '{brand}' brand.", async () =>
 
 Both `HttpRequestMessage` and `HttpResponseMessage` objects include convenient methods for handling body content:
 
-- **`GetBody()` / `GetBodyAsync()`** - Retrieves the body as a `string`.
-- **`GetBody<TResult>()` / `GetBodyAsync<TResult>()`** - Deserializes the JSON body into an object of type `TResult`.
-- **`GetBodyAsExpando()` / `GetBodyAsExpandoAsync()`** - Retrieves the body as a **case-insensitive `dynamic` expando object**, making property access easier.
-  - *Note*: To use an expando object correctly, explicitly declare it as `dynamic`.
+- `GetBody()` / `GetBodyAsync()` - Retrieves the body as a `string`.
+- `GetBody<TResult>()` / `GetBodyAsync<TResult>()` - Deserializes the JSON body into an object of type `TResult`.
+- `GetBodyAsExpando()` / `GetBodyAsExpandoAsync()` - Retrieves the body as a **case-insensitive `dynamic` expando object**, making property access easier.
+  - **IMPORTANT**: To use an expando object correctly, **explicitly declare containing variable** as `dynamic`.
 
 <!-- omit from toc -->
 #### Status Code Handling
@@ -228,7 +236,7 @@ The response object includes a `StatusCode()` method that simplifies status code
 <!-- omit from toc -->
 #### JSON Handling
 
-For requests that handle `application/json` payloads, a **extension methods** `ToExpando()` and `ToJson()` can simplify access to JSON properties:
+For requests that handle `application/json` payloads, a **extension method** `ToExpando()` can simplify access to JSON properties:
 
 ```csharp
 // Using case-insensitive expando object
@@ -237,13 +245,6 @@ tp.Test("Identifier should be a positive integer.", () =>
     // Expando object has to be marked epxlicitly as 'dynamic'
     dynamic responseBody = tp.Response.GetBody().ToExpando();
     True(responseBody.id > 0);
-});
-
-// Using JObject
-tp.Test("Identifier should be a positive integer.", () =>
-{
-    var responseBody = tp.Response.GetBody().ToJson();
-    True(responseBody["id"].As<int>() > 0);
 });
 ```
 
@@ -256,7 +257,7 @@ Environments are a crucial part of automating tests, allowing you to define vari
 <!-- omit from toc -->
 #### Environment File
 
-To use environments, you need to define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
+To use environments, firstly you must define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
 
 ```sh
 --env-file <path-to-environment-file>
@@ -305,7 +306,7 @@ To specify the environment for running tests, use the `-e` option followed by th
 
 > You can also use aliases `--env` and `--environment` for the same purpose.
 
-There are some scenarios where you want to **switch environment in the code** (`.csx` scripts). There you can use:
+There are some scenarios where you want to **switch environments in the code** (`.csx` scripts). There you can use:
 
 ```csharp
 tp.SetEnvironment("local");
@@ -313,14 +314,14 @@ tp.SetEnvironment("local");
 
 ### Reporting
 
-At the end of a collection testing run, a summary report of tests' results is generated. Here is an example:
+At the end of a collection testing run, a summary report of test results is generated. Here is an example:
 
 ![Report example](./assets/images/report-example.png)
 
 <!-- omit from toc -->
 #### Custom Reporters
 
-The default console reporter, powered by `AnsiConsole` from `Spectre.Console`, provides all essential tests' results details. However, users can **add custom reporters**, either by defining them **inline**:
+The **default console reporter**, powered by `AnsiConsole` from `Spectre.Console`, provides all essential test results details. However, users can **add custom reporters**, either by defining them **inline**:
 
 ```csharp
 tp.RegisterReporter((summary) =>
@@ -350,7 +351,7 @@ public class MyReporter : IReporter<TestsResultsSummary>
 tp.RegisterReporter(new MyReporter());
 ```
 
-> All necessary information about results of tests can be found within [TestsResultsSummary](./src/TeaPie/Reporting/TestsResultsSummary.cs) object. The summary contains properties with access to commonly evaluated statistics as `AllTestsPassed`, `NumberOfFailedTests`, `PercentageOfSkippedTests`, `FailedTests`, ...
+> All necessary information about results of tests can be found within [TestResultSummary](./src/TeaPie/Reporting/TestResultSummary.cs) object. The summary contains properties with access to commonly evaluated statistics as `AllTestsPassed`, `NumberOfFailedTests`, `PercentageOfSkippedTests`, `FailedTests`, ...
 
 ## How to install locally
 

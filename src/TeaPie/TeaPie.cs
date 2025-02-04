@@ -10,6 +10,8 @@ namespace TeaPie;
 
 public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 {
+    public static TeaPie? Instance { get; private set; }
+
     internal static TeaPie Create(
         IVariables variables,
         ILogger logger,
@@ -24,8 +26,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
         return Instance;
     }
-
-    public static TeaPie? Instance { get; private set; }
 
     private TeaPie(
         IVariables variables,

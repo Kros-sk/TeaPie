@@ -7,10 +7,12 @@ app.Configure(config =>
     config.SetApplicationName("teapie");
 
     config.AddCommand<TestCommand>("test")
+        .WithAlias("t")
         .WithDescription("Runs tests from the collection at the specified path. " +
         "If no path is provided, the current directory is used.")
         .WithExample("test", "[pathToCollection]")
-        .WithExample("test", "\"path\\to\\collection\"");
+        .WithExample("test", "\"path\\to\\collection\"")
+        .WithExample("t", "\"path\\to\\collection\"");
 
     config.AddCommand<GenerateCommand>("generate")
         .WithAlias("gen")

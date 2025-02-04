@@ -14,6 +14,6 @@ internal class ReportTestResultsSummaryStep : IPipelineStep
 
     private static void RegisterAllAvailableReporters(ITestResultsSummaryReporter reporter)
     {
-        reporter.RegisterReporter(new SpectreConsoleTestCaseSummaryReporter());
+        reporter.RegisterReporter(new SpectreConsoleTestResultsSummaryReporter());
     }
 }
