@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 
 namespace TeaPie;
 
@@ -8,6 +9,7 @@ internal class ApplicationPipeline : IPipeline
     private readonly StepsCollection _pipelineSteps = [];
     private bool _errorOccured;
     private IPipelineStep? _currentStep;
+    private bool _reported;
 
     public async Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -33,7 +35,7 @@ internal class ApplicationPipeline : IPipeline
 
             if (_errorOccured)
             {
-                context.Logger.LogError("Error occured during pipeline run - terminated with exit code 1.");
+                await ResolveErrorState(context, cancellationToken);
                 return 1;
             }
         }
@@ -44,16 +46,36 @@ internal class ApplicationPipeline : IPipeline
         return 0;
     }
 
+    private async Task ResolveErrorState(ApplicationContext context, CancellationToken cancellationToken)
+    {
+        if (context.Reporter.GetTestResultsSummary().NumberOfTests > 0 && !_reported)
+        {
+            var step = context.ServiceProvider.GetStep<ReportTestResultsSummaryStep>();
+            await ExecuteStep(step, context, cancellationToken);
+        }
+
+        context.Logger.LogError("Error occured during pipeline run - terminated with exit code 1.");
+    }
+
     private async Task ExecuteStep(IPipelineStep step, ApplicationContext context, CancellationToken cancellationToken)
     {
         try
         {
             await step.Execute(context, cancellationToken);
+            AfterStepExecution(step);
         }
         catch (Exception ex)
         {
             _errorOccured = true;
             ExceptionHandler.Handle(ex, step.GetType(), context.Logger);
+        }
+    }
+
+    private void AfterStepExecution(IPipelineStep step)
+    {
+        if (step is ReportTestResultsSummaryStep)
+        {
+            _reported = true;
         }
     }
 

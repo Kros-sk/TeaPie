@@ -2,6 +2,7 @@
 using TeaPie.Environments;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.Variables;
 using static Xunit.Assert;
@@ -211,7 +212,10 @@ public class InitializeEnvironmentStepShould
             appContextBuilder = appContextBuilder.WithEnvironmentFilePath(environmentFilePath);
         }
 
-        var appContext = appContextBuilder.Build();
+        var appContext = appContextBuilder
+            .WithServiceProvider(provider)
+            .WithReporter(provider.GetRequiredService<ITestResultsSummaryReporter>())
+            .Build();
 
         return await pipeline.Run(appContext, CancellationToken.None);
     }
@@ -228,10 +232,12 @@ public class InitializeEnvironmentStepShould
         services.AddScoped<ExploreStructureStep>();
         services.AddScoped<InitializeEnvironmentsStep>();
         services.AddScoped<SetEnvironmentStep>();
+        services.AddScoped<ReportTestResultsSummaryStep>();
         services.AddSingleton<IVariables, global::TeaPie.Variables.Variables>();
         services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
         services.AddSingleton<IPipeline, ApplicationPipeline>();
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
+        services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
         services.AddLogging();
 
         provider = services.BuildServiceProvider();
