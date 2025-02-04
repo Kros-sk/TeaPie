@@ -4,7 +4,7 @@ namespace TeaPie.Reporting;
 
 public interface ITestResultsSummaryReporter : ICompositeReporter<IReporter<TestResultsSummary>, TestResultsSummary>
 {
-    void RegisterTestResult(TestResult testResult);
+    void RegisterTestResult(string testCaseName, TestResult testResult);
 
-    TestResultsSummary GetTestResultsSummary();
+    void StartCollectionRun(string name);
 }

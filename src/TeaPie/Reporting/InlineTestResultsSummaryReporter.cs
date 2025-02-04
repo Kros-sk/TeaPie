@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Reporting;
+﻿using TeaPie.Testing;
+
+namespace TeaPie.Reporting;
 
 internal class InlineTestResultsSummaryReporter(Action<TestResultsSummary> reportAction) : IReporter<TestResultsSummary>
 {

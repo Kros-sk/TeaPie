@@ -48,7 +48,8 @@ internal class ApplicationPipeline : IPipeline
 
     private async Task ResolveErrorState(ApplicationContext context, CancellationToken cancellationToken)
     {
-        if (context.Reporter.GetTestResultsSummary().NumberOfTests > 0 && !_reported)
+        // TODO: Complete condition with number of tests > 0
+        if (!_reported)
         {
             var step = context.ServiceProvider.GetStep<ReportTestResultsSummaryStep>();
             await ExecuteStep(step, context, cancellationToken);

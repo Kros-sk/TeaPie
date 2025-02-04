@@ -16,6 +16,8 @@ internal partial class Tester(
     private readonly ITestResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
     private readonly Stopwatch _stopWatch = new();
 
+    private TestCaseExecutionContext? _previousTestCase;
+
     #region Determined tests
     public void Test(string testName, Action testFunction, bool skipTest = false)
         => TestBase(testName, () => { testFunction(); return Task.CompletedTask; }, skipTest)
@@ -28,6 +30,12 @@ internal partial class Tester(
     {
         var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
             ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
+
+        if (_previousTestCase is null)
+        {
+            _resultsSummaryReporter.StartCollectionRun("demo");
+            _previousTestCase = testCaseExecutionContext;
+        }
 
         var test = new Test(testName, testFunction, new TestResult.NotRun() { TestName = testName });
 
@@ -42,7 +50,7 @@ internal partial class Tester(
         if (skipTest)
         {
             LogTestSkip(testName, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
-            _resultsSummaryReporter.RegisterTestResult(test.Result);
+            _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, test.Result);
         }
         else
         {
@@ -62,17 +70,17 @@ internal partial class Tester(
         }
         catch (Exception ex)
         {
-            return TestFailure(test, ex);
+            return TestFailure(test, ex, testCaseExecutionContext);
         }
     }
 
-    private Test TestFailure(Test test, Exception ex)
+    private Test TestFailure(Test test, Exception ex, TestCaseExecutionContext testCaseExecutionContext)
     {
         _stopWatch.Stop();
 
         var result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) { TestName = test.Name };
         test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(result);
+        _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, result);
 
         LogTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
         return test;
@@ -96,7 +104,7 @@ internal partial class Tester(
 
         var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds) { TestName = test.Name };
         test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(result);
+        _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, result);
 
         LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
         return test;

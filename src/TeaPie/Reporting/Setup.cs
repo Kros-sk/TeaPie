@@ -5,5 +5,5 @@ namespace TeaPie.Reporting;
 internal static class Setup
 {
     public static IServiceCollection AddReporting(this IServiceCollection services)
-        => services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
+        => services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
 }

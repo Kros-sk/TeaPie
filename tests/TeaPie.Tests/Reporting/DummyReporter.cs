@@ -1,4 +1,5 @@
 ﻿using TeaPie.Reporting;
+using TeaPie.Testing;
 
 namespace TeaPie.Tests.Reporting;
 

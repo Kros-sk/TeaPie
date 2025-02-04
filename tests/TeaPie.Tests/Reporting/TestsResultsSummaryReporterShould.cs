@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using TeaPie.Reporting;
+using TeaPie.Testing;
 using static Xunit.Assert;
 using TestResult = TeaPie.Testing.TestResult;
 
@@ -10,7 +11,7 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void NotTriggerReportMethodOnUnregisteredReporter()
     {
-        var compositeReporter = new TestResultsSummaryReporter();
+        var compositeReporter = new CollectionTestResultsSummaryReporter();
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -28,7 +29,7 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void TriggerReportMethodOnAllRegisteredReporters()
     {
-        var compositeReporter = new TestResultsSummaryReporter();
+        var compositeReporter = new CollectionTestResultsSummaryReporter();
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -44,7 +45,7 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void ChangeTheStateOfSummaryWhenRegisteringTestResults()
     {
-        var reporter = new TestResultsSummaryReporter();
+        var reporter = new CollectionTestResultsSummaryReporter();
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
@@ -53,7 +54,7 @@ public partial class TestResultsSummaryReporterShould
         reporter.RegisterTestResult(passedTestResult);
         reporter.RegisterTestResult(failedTestResult);
 
-        var summary = reporter.GetTestResultsSummary();
+        var summary = reporter.GetSummary();
 
         CheckSummary(skippedTestResult, failedTestResult, summary);
     }
@@ -61,7 +62,7 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void ResetTheStateOfSummaryWhenResetMethodIsCalled()
     {
-        var reporter = new TestResultsSummaryReporter();
+        var reporter = new CollectionTestResultsSummaryReporter();
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
@@ -71,7 +72,7 @@ public partial class TestResultsSummaryReporterShould
         reporter.RegisterTestResult(failedTestResult);
 
         reporter.Reset();
-        var emptySummary = reporter.GetTestResultsSummary();
+        var emptySummary = reporter.GetSummary();
 
         CheckEmptySummary(emptySummary);
     }

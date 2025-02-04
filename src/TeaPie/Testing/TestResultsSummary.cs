@@ -1,6 +1,4 @@
-﻿using TeaPie.Testing;
-
-namespace TeaPie.Reporting;
+﻿namespace TeaPie.Testing;
 
 public class TestResultsSummary
 {
@@ -27,6 +25,9 @@ public class TestResultsSummary
     private readonly List<TestResult.NotRun> _skippedTests = [];
     public IReadOnlyList<TestResult.NotRun> SkippedTests => _skippedTests;
 
+    private readonly List<TestResult.Passed> _passedTests = [];
+    public IReadOnlyList<TestResult.Passed> PassedTests => _passedTests;
+
     private readonly List<TestResult.Failed> _failedTests = [];
     public IReadOnlyList<TestResult.Failed> FailedTests => _failedTests;
 
@@ -40,6 +41,7 @@ public class TestResultsSummary
     {
         NumberOfPassedTests++;
         TimeElapsedDuringTesting += passedTestResult.Duration;
+        _passedTests.Add(passedTestResult);
     }
 
     internal void AddFailedTest(TestResult.Failed failedTestResult)
