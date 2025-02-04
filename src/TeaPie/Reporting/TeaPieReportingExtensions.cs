@@ -9,7 +9,7 @@ public static class TeaPieReportingExtensions
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="reporter">The reporter instance to be added to the collection of reporters.</param>
-    public static void RegisterReporter(this TeaPie teaPie, IReporter<TestsResultsSummary> reporter)
+    public static void RegisterReporter(this TeaPie teaPie, IReporter<TestResultsSummary> reporter)
     {
         teaPie._reporter.RegisterReporter(reporter);
         teaPie.Logger.LogInformation(
@@ -22,13 +22,13 @@ public static class TeaPieReportingExtensions
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="onReportAction">The action to be executed for test results summary report.</param>
-    public static void RegisterReporter(this TeaPie teaPie, Action<TestsResultsSummary> onReportAction)
+    public static void RegisterReporter(this TeaPie teaPie, Action<TestResultsSummary> onReportAction)
     {
-        teaPie._reporter.RegisterReporter(new InlineTestsResultsSummaryReporter(onReportAction));
+        teaPie._reporter.RegisterReporter(new InlineTestResultsSummaryReporter(onReportAction));
         teaPie.Logger.LogInformation("Custom reporter was successfully registered.");
     }
 
-    private static string GetReportertTypeName(IReporter<TestsResultsSummary> reporter)
+    private static string GetReportertTypeName(IReporter<TestResultsSummary> reporter)
     {
         var type = reporter.GetType();
         return type.IsGenericType

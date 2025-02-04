@@ -82,7 +82,7 @@ public class TeaPieTestingExtensionsShould
 
         return new(
             accessor,
-            Substitute.For<ITestsResultsSummaryReporter>(),
+            Substitute.For<ITestResultsSummaryReporter>(),
             Substitute.For<ILogger<Tester>>());
     }
 
@@ -94,5 +94,5 @@ public class TeaPieTestingExtensionsShould
             Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
              new ApplicationContextBuilder().Build(),
             Substitute.For<IPipeline>(),
-            Substitute.For<ITestsResultsSummaryReporter>());
+            Substitute.For<ITestResultsSummaryReporter>());
 }

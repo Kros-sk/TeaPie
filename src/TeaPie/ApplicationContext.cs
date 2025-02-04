@@ -9,7 +9,7 @@ internal class ApplicationContext(
     string path,
     IServiceProvider serviceProvider,
     ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
-    ITestsResultsSummaryReporter reporter,
+    ITestResultsSummaryReporter reporter,
     ILogger logger,
     string tempFolderPath,
     string environment = "",
@@ -41,5 +41,5 @@ internal class ApplicationContext(
         set => _currentTestCaseExecutionContextAccessor.Context = value;
     }
 
-    public ITestsResultsSummaryReporter Reporter { get; } = reporter;
+    public ITestResultsSummaryReporter Reporter { get; } = reporter;
 }

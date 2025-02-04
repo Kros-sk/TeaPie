@@ -2,9 +2,9 @@
 
 namespace TeaPie.Reporting;
 
-public interface ITestsResultsSummaryReporter : ICompositeReporter<IReporter<TestsResultsSummary>, TestsResultsSummary>
+public interface ITestResultsSummaryReporter : ICompositeReporter<IReporter<TestResultsSummary>, TestResultsSummary>
 {
     void RegisterTestResult(TestResult testResult);
 
-    TestsResultsSummary GetTestResultsSummary();
+    TestResultsSummary GetTestResultsSummary();
 }

@@ -12,7 +12,7 @@ internal class ReportTestResultsSummaryStep : IPipelineStep
         await Task.CompletedTask;
     }
 
-    private static void RegisterAllAvailableReporters(ITestsResultsSummaryReporter reporter)
+    private static void RegisterAllAvailableReporters(ITestResultsSummaryReporter reporter)
     {
         reporter.RegisterReporter(new SpectreConsoleTestCaseSummaryReporter());
     }

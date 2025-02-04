@@ -102,7 +102,7 @@ public sealed class ApplicationBuilder
             string.IsNullOrEmpty(_path) ? Directory.GetCurrentDirectory() : _path,
             provider,
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
-            provider.GetRequiredService<ITestsResultsSummaryReporter>(),
+            provider.GetRequiredService<ITestResultsSummaryReporter>(),
             provider.GetRequiredService<ILogger<ApplicationContext>>(),
             string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath,
             string.IsNullOrEmpty(_environment) ? string.Empty : _environment,
@@ -130,7 +130,7 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             applicationContext,
             provider.GetRequiredService<IPipeline>(),
-            provider.GetRequiredService<ITestsResultsSummaryReporter>());
+            provider.GetRequiredService<ITestResultsSummaryReporter>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

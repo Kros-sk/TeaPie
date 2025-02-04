@@ -8,12 +8,12 @@ namespace TeaPie.Testing;
 
 internal partial class Tester(
     ICurrentTestCaseExecutionContextAccessor accessor,
-    ITestsResultsSummaryReporter resultsSummaryReporter,
+    ITestResultsSummaryReporter resultsSummaryReporter,
     ILogger<Tester> logger) : ITester
 {
     private readonly ILogger<Tester> _logger = logger;
     private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
-    private readonly ITestsResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
+    private readonly ITestResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
     private readonly Stopwatch _stopWatch = new();
 
     #region Determined tests

@@ -4,9 +4,9 @@ using TeaPie.Testing;
 
 namespace TeaPie.Reporting;
 
-internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSummary>
+internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestResultsSummary>
 {
-    public void Report(TestsResultsSummary report)
+    public void Report(TestResultsSummary report)
     {
         var table = PrepareMainTable(report);
 
@@ -17,7 +17,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
         AnsiConsole.Write(table);
     }
 
-    private static Table PrepareMainTable(TestsResultsSummary summary)
+    private static Table PrepareMainTable(TestResultsSummary summary)
     {
         var table = new Table();
         table.Border(TableBorder.Rounded);
@@ -26,7 +26,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
         return table;
     }
 
-    private static void ReportSkippedTestsIfAny(TestsResultsSummary summary, Table table)
+    private static void ReportSkippedTestsIfAny(TestResultsSummary summary, Table table)
         => ReportTestsGroup(
             table,
             summary.HasSkippedTests,
@@ -34,7 +34,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
             summary.SkippedTests,
             (result) => $"[bold orange1]Test skipped: [/][bold yellow]\"{result.TestName}\"[/]");
 
-    private static void ReportFailedTestsIfAny(TestsResultsSummary summary, Table table)
+    private static void ReportFailedTestsIfAny(TestResultsSummary summary, Table table)
         => ReportTestsGroup(
             table,
             !summary.AllTestsPassed,
@@ -99,7 +99,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
         table.AddEmptyRow();
     }
 
-    private static void ReportSummary(TestsResultsSummary summary, Table table)
+    private static void ReportSummary(TestResultsSummary summary, Table table)
     {
         var chart = GetBreakdownChart(summary);
         var panel = new Panel(chart);
@@ -115,7 +115,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
         table.AddEmptyRow();
     }
 
-    private static string GetOverallResult(TestsResultsSummary summary)
+    private static string GetOverallResult(TestResultsSummary summary)
     {
         if (summary.AllTestsPassed)
         {
@@ -129,7 +129,7 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
         }
     }
 
-    private static BreakdownChart GetBreakdownChart(TestsResultsSummary summary)
+    private static BreakdownChart GetBreakdownChart(TestResultsSummary summary)
         => new BreakdownChart()
             .FullSize()
             .Expand()
@@ -137,12 +137,12 @@ internal class SpectreConsoleTestCaseSummaryReporter : IReporter<TestsResultsSum
             .AddItem(GetSkippedTestsTag(summary), summary.NumberOfSkippedTests, Color.Orange1)
             .AddItem(GetFailedTestsTag(summary), summary.NumberOfFailedTests, Color.Red);
 
-    private static string GetPassedTestsTag(TestsResultsSummary summary)
+    private static string GetPassedTestsTag(TestResultsSummary summary)
         => $"Passed Tests [{summary.PercentageOfPassedTests:f2}%]:";
 
-    private static string GetSkippedTestsTag(TestsResultsSummary summary)
+    private static string GetSkippedTestsTag(TestResultsSummary summary)
         => $"Skipped Tests [{summary.PercentageOfSkippedTests:f2}%]:";
 
-    private static string GetFailedTestsTag(TestsResultsSummary summary)
+    private static string GetFailedTestsTag(TestResultsSummary summary)
         => $"Failed Tests [{summary.PercentageOfFailedTests:f2}%]:";
 }

@@ -30,7 +30,7 @@ public class TesterShould
 
         _tester = new Tester(
             _currentTestCaseExecutionContextAccessor,
-            Substitute.For<ITestsResultsSummaryReporter>(),
+            Substitute.For<ITestResultsSummaryReporter>(),
             Substitute.For<ILogger<Tester>>());
     }
 

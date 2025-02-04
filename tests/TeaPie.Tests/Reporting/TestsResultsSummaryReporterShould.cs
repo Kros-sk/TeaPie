@@ -5,13 +5,13 @@ using TestResult = TeaPie.Testing.TestResult;
 
 namespace TeaPie.Tests.Reporting;
 
-public partial class TestsResultsSummaryReporterShould
+public partial class TestResultsSummaryReporterShould
 {
     [Fact]
     public void NotTriggerReportMethodOnUnregisteredReporter()
     {
-        var compositeReporter = new TestsResultsSummaryReporter();
-        var reporter1 = Substitute.For<IReporter<TestsResultsSummary>>();
+        var compositeReporter = new TestResultsSummaryReporter();
+        var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
         compositeReporter.RegisterReporter(reporter1);
@@ -21,15 +21,15 @@ public partial class TestsResultsSummaryReporterShould
 
         compositeReporter.Report();
 
-        reporter1.Received(1).Report(Arg.Any<TestsResultsSummary>());
+        reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
         False(reporter2.Reported);
     }
 
     [Fact]
     public void TriggerReportMethodOnAllRegisteredReporters()
     {
-        var compositeReporter = new TestsResultsSummaryReporter();
-        var reporter1 = Substitute.For<IReporter<TestsResultsSummary>>();
+        var compositeReporter = new TestResultsSummaryReporter();
+        var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
         compositeReporter.RegisterReporter(reporter1);
@@ -37,14 +37,14 @@ public partial class TestsResultsSummaryReporterShould
 
         compositeReporter.Report();
 
-        reporter1.Received(1).Report(Arg.Any<TestsResultsSummary>());
+        reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
         True(reporter2.Reported);
     }
 
     [Fact]
     public void ChangeTheStateOfSummaryWhenRegisteringTestResults()
     {
-        var reporter = new TestsResultsSummaryReporter();
+        var reporter = new TestResultsSummaryReporter();
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
@@ -61,7 +61,7 @@ public partial class TestsResultsSummaryReporterShould
     [Fact]
     public void ResetTheStateOfSummaryWhenResetMethodIsCalled()
     {
-        var reporter = new TestsResultsSummaryReporter();
+        var reporter = new TestResultsSummaryReporter();
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
@@ -79,7 +79,7 @@ public partial class TestsResultsSummaryReporterShould
     private static void CheckSummary(
         TestResult.NotRun skippedTestResult,
         TestResult.Failed failedTestResult,
-        TestsResultsSummary summary)
+        TestResultsSummary summary)
     {
         False(summary.AllTestsPassed);
         True(summary.HasSkippedTests);
@@ -104,7 +104,7 @@ public partial class TestsResultsSummaryReporterShould
         Single(summary.FailedTests);
     }
 
-    private static void CheckEmptySummary(TestsResultsSummary summary)
+    private static void CheckEmptySummary(TestResultsSummary summary)
     {
         True(summary.AllTestsPassed);
         False(summary.HasSkippedTests);

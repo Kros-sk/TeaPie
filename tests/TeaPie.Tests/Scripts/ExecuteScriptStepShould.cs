@@ -82,5 +82,5 @@ public class ExecuteScriptStepShould
             Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
             appContext,
             Substitute.For<IPipeline>(),
-            Substitute.For<ITestsResultsSummaryReporter>());
+            Substitute.For<ITestResultsSummaryReporter>());
 }

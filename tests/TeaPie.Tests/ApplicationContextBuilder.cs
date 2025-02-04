@@ -14,7 +14,7 @@ internal class ApplicationContextBuilder
     private static ILogger? _logger;
     private static IServiceProvider? _serviceProvider;
     private static ICurrentTestCaseExecutionContextAccessor? _currentTestCaseExecutionContextAccessor;
-    private static ITestsResultsSummaryReporter? _testsResultsSummaryReporter;
+    private static ITestResultsSummaryReporter? _testResultsSummaryReporter;
 
     public ApplicationContextBuilder()
     {
@@ -25,7 +25,7 @@ internal class ApplicationContextBuilder
         _logger = null;
         _serviceProvider = null;
         _currentTestCaseExecutionContextAccessor = null;
-        _testsResultsSummaryReporter = null;
+        _testResultsSummaryReporter = null;
     }
 
     public ApplicationContextBuilder WithPath(string path)
@@ -71,9 +71,9 @@ internal class ApplicationContextBuilder
         return this;
     }
 
-    public ApplicationContextBuilder WithReporter(ITestsResultsSummaryReporter reporter)
+    public ApplicationContextBuilder WithReporter(ITestResultsSummaryReporter reporter)
     {
-        _testsResultsSummaryReporter = reporter;
+        _testResultsSummaryReporter = reporter;
         return this;
     }
 
@@ -82,7 +82,7 @@ internal class ApplicationContextBuilder
             _path ?? string.Empty,
             _serviceProvider ?? Substitute.For<IServiceProvider>(),
             _currentTestCaseExecutionContextAccessor ?? Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-            _testsResultsSummaryReporter ?? Substitute.For<ITestsResultsSummaryReporter>(),
+            _testResultsSummaryReporter ?? Substitute.For<ITestResultsSummaryReporter>(),
             _logger ?? Substitute.For<ILogger>(),
             _tempFolderPath ?? string.Empty,
             _environmentName ?? string.Empty,

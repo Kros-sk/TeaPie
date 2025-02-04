@@ -17,7 +17,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
         IPipeline pipeline,
-        ITestsResultsSummaryReporter reporter)
+        ITestResultsSummaryReporter reporter)
     {
         Instance =
             new(variables, logger, tester, currentTestCaseExecutionContextAccessor, applicationContext, pipeline, reporter);
@@ -34,7 +34,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
         IPipeline pipeline,
-        ITestsResultsSummaryReporter reporter)
+        ITestResultsSummaryReporter reporter)
     {
         _variables = variables;
         Logger = logger;
@@ -132,6 +132,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     #endregion
 
     #region Reporting
-    internal readonly ITestsResultsSummaryReporter _reporter;
+    internal readonly ITestResultsSummaryReporter _reporter;
     #endregion
 }

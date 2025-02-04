@@ -2,9 +2,9 @@
 
 namespace TeaPie.Tests.Reporting;
 
-public class DummyReporter : IReporter<TestsResultsSummary>
+public class DummyReporter : IReporter<TestResultsSummary>
 {
     public bool Reported { get; private set; }
 
-    public void Report(TestsResultsSummary report) => Reported = true;
+    public void Report(TestResultsSummary report) => Reported = true;
 }
