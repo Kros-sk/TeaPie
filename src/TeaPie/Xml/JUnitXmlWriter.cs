@@ -148,7 +148,7 @@ public class JUnitXmlWriter : IDisposable
     }
 
     private static string? GetTimeInSeconds(double time)
-    => (time / 1000).ToString("f2");
+    => time.ToString("f2");
 
     public void Dispose()
     {
