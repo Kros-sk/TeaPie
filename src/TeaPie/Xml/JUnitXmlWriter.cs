@@ -32,7 +32,7 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteAttributeString("tests", tests.ToString());
         _writer.WriteAttributeString("skipped", skipped.ToString());
         _writer.WriteAttributeString("failures", failures.ToString());
-        _writer.WriteAttributeString("time", time.ToString("0.###"));
+        _writer.WriteAttributeString("time", GetTimeInSeconds(time));
 
         if (timestamp is not null)
         {
@@ -74,7 +74,7 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteAttributeString("tests", totalTests.ToString());
         _writer.WriteAttributeString("skipped", skipped.ToString());
         _writer.WriteAttributeString("failures", failures.ToString());
-        _writer.WriteAttributeString("time", time.ToString("0.###"));
+        _writer.WriteAttributeString("time", GetTimeInSeconds(time));
 
         if (timestamp is not null)
         {
@@ -101,7 +101,7 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteStartElement("testcase");
         _writer.WriteAttributeString("classname", className);
         _writer.WriteAttributeString("name", testName);
-        _writer.WriteAttributeString("time", time.ToString("0.###"));
+        _writer.WriteAttributeString("time", GetTimeInSeconds(time));
 
         if (skipped)
         {
@@ -146,6 +146,9 @@ public class JUnitXmlWriter : IDisposable
             throw new InvalidOperationException("Unable to end <testsuites> element, if there is no <testsuites> element.");
         }
     }
+
+    private static string? GetTimeInSeconds(double time)
+    => (time / 1000).ToString("f2");
 
     public void Dispose()
     {

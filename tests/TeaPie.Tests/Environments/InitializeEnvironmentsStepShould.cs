@@ -237,7 +237,7 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
         services.AddSingleton<IPipeline, ApplicationPipeline>();
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
-        services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
+        services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddLogging();
 
         provider = services.BuildServiceProvider();

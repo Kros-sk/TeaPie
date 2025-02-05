@@ -50,31 +50,14 @@ public partial class TestResultsSummaryReporterShould
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
 
-        reporter.RegisterTestResult(skippedTestResult);
-        reporter.RegisterTestResult(passedTestResult);
-        reporter.RegisterTestResult(failedTestResult);
+        reporter.Start("demo");
+        reporter.RegisterTestResult("test-case", skippedTestResult);
+        reporter.RegisterTestResult("test-case", passedTestResult);
+        reporter.RegisterTestResult("test-case", failedTestResult);
 
         var summary = reporter.GetSummary();
 
         CheckSummary(skippedTestResult, failedTestResult, summary);
-    }
-
-    [Fact]
-    public void ResetTheStateOfSummaryWhenResetMethodIsCalled()
-    {
-        var reporter = new CollectionTestResultsSummaryReporter();
-        var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
-        var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
-        var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
-
-        reporter.RegisterTestResult(skippedTestResult);
-        reporter.RegisterTestResult(passedTestResult);
-        reporter.RegisterTestResult(failedTestResult);
-
-        reporter.Reset();
-        var emptySummary = reporter.GetSummary();
-
-        CheckEmptySummary(emptySummary);
     }
 
     private static void CheckSummary(
@@ -103,27 +86,5 @@ public partial class TestResultsSummaryReporterShould
 
         Contains(failedTestResult, summary.FailedTests);
         Single(summary.FailedTests);
-    }
-
-    private static void CheckEmptySummary(TestResultsSummary summary)
-    {
-        True(summary.AllTestsPassed);
-        False(summary.HasSkippedTests);
-
-        Equal(0, summary.NumberOfPassedTests);
-        Equal(0, summary.NumberOfFailedTests);
-        Equal(0, summary.NumberOfSkippedTests);
-
-        Equal(0, summary.PercentageOfPassedTests);
-        Equal(0, summary.PercentageOfFailedTests);
-        Equal(0, summary.PercentageOfSkippedTests);
-
-        Equal(0, summary.NumberOfExecutedTests);
-        Equal(0, summary.NumberOfTests);
-
-        Equal(0, summary.TimeElapsedDuringTesting);
-
-        Empty(summary.SkippedTests);
-        Empty(summary.FailedTests);
     }
 }
