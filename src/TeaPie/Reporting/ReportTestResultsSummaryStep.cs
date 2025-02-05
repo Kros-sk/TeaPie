@@ -6,14 +6,19 @@ internal class ReportTestResultsSummaryStep : IPipelineStep
 {
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        RegisterAllAvailableReporters(context.Reporter);
+        RegisterReporters(context.ReportFilePath, context.Reporter);
         context.Reporter.Report();
 
         await Task.CompletedTask;
     }
 
-    private static void RegisterAllAvailableReporters(ITestResultsSummaryReporter reporter)
+    private static void RegisterReporters(string reportFilePath, ITestResultsSummaryReporter reporter)
     {
         reporter.RegisterReporter(new SpectreConsoleTestResultsSummaryReporter());
+
+        if (!string.IsNullOrEmpty(reportFilePath))
+        {
+            reporter.RegisterReporter(new JUnitXmlTestResultsSummaryReporter(reportFilePath));
+        }
     }
 }

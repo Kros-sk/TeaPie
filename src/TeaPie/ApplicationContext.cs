@@ -13,7 +13,8 @@ internal class ApplicationContext(
     ILogger logger,
     string tempFolderPath,
     string environment = "",
-    string environmentFilePath = "")
+    string environmentFilePath = "",
+    string reportFilePath = "")
 {
     public string Path { get; } = path.NormalizePath();
     public string TempFolderPath { get; set; } = tempFolderPath.NormalizePath();
@@ -42,4 +43,6 @@ internal class ApplicationContext(
     }
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
+
+    public readonly string ReportFilePath = reportFilePath;
 }

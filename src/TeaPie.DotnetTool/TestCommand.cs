@@ -16,6 +16,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithEnvironment(settings.Environment ?? string.Empty)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFile, string.Empty))
+            .WithReportFile(PathResolver.Resolve(settings.ReportFile, string.Empty))
             .WithDefaultPipeline();
     }
 
@@ -38,5 +39,10 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         [Description("Path to file, which contains definitions of available environments. If this option is not used, " +
             "first found file within collection with name '<collection-name>-env.json' is used.")]
         public string? EnvironmentFile { get; init; }
+
+        [CommandOption("-r|--report-file")]
+        [Description("Path to file, which will be used for test results summary report generation. " +
+            "If this option is not used, no report to file is generated.")]
+        public string? ReportFile { get; init; }
     }
 }
