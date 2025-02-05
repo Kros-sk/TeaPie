@@ -2,34 +2,45 @@
 
 namespace TeaPie.Reporting;
 
-internal class CollectionTestResultsSummaryReporter : ITestResultsSummaryReporter
+internal class CollectionTestResultsSummaryReporter(ITestResultsSummaryAccessor accessor) : ITestResultsSummaryReporter
 {
     private readonly List<IReporter<TestResultsSummary>> _reporters = [];
+    private readonly ITestResultsSummaryAccessor _accessor = accessor;
     private CollectionTestResultsSummary _summary = new();
     private bool _started;
 
     public void RegisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Add(reporter);
     public void UnregisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Remove(reporter);
 
-    public void Start(string name)
+    public void Initialize()
     {
-        _summary = new(name);
+        _summary = GetSummary();
         _summary.Start();
         _started = true;
     }
 
     public void RegisterTestResult(string testCaseName, TestResult testResult)
     {
-        if (!_started)
-        {
-            throw new InvalidOperationException("Unable to register test result, if collection run didn't start.");
-        }
+        CheckCurrentState();
 
         switch (testResult)
         {
             case TestResult.NotRun skipped: _summary.AddSkippedTest(testCaseName, skipped); break;
             case TestResult.Passed passed: _summary.AddPassedTest(testCaseName, passed); break;
             case TestResult.Failed failed: _summary.AddFailedTest(testCaseName, failed); break;
+        }
+    }
+
+    private void CheckCurrentState()
+    {
+        if (!_started)
+        {
+            throw new InvalidOperationException("Unable to register test result, if collection run didn't start yet.");
+        }
+
+        if (_summary is null)
+        {
+            throw new InvalidOperationException("Unable to register test result, if there is no summary object.");
         }
     }
 
@@ -41,5 +52,18 @@ internal class CollectionTestResultsSummaryReporter : ITestResultsSummaryReporte
         }
     }
 
-    public CollectionTestResultsSummary GetSummary() => _summary;
+    private CollectionTestResultsSummary GetSummary()
+    {
+        if (_accessor.Summary is null)
+        {
+            throw new InvalidOperationException("Unable to start collection run, if no summary object is available.");
+        }
+
+        if (_accessor.Summary is not CollectionTestResultsSummary summary)
+        {
+            throw new InvalidOperationException("Collection reporter has to work with collecton test results summary.");
+        }
+
+        return summary;
+    }
 }

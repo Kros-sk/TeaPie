@@ -44,7 +44,7 @@ internal partial class Tester(
     {
         if (!_hasExecutedAnyTest)
         {
-            _resultsSummaryReporter.Start("demo");
+            _resultsSummaryReporter.Initialize();
             _hasExecutedAnyTest = true;
         }
     }

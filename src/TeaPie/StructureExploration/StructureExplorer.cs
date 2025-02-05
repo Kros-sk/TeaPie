@@ -18,7 +18,8 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
         LogStartOfCollectionExploration(applicationContext.Path);
 
-        InitializeStructure(applicationContext.Path, out var rootFolder, out var collectionStructure);
+        InitializeStructure(
+            applicationContext.Path, applicationContext.CollectionName, out var rootFolder, out var collectionStructure);
 
         Explore(rootFolder, applicationContext.EnvironmentFilePath, collectionStructure);
 
@@ -57,10 +58,13 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     private static string GetEnvironmentFileName(string path)
         => Path.GetFileNameWithoutExtension(path) + Constants.EnvironmentFileSuffix + Constants.EnvironmentFileExtension;
 
-    private static void InitializeStructure(string rootPath, out Folder rootFolder, out CollectionStructure collectionStructure)
+    private static void InitializeStructure(
+        string rootPath,
+        string collectionName,
+        out Folder rootFolder,
+        out CollectionStructure collectionStructure)
     {
-        var folderName = Path.GetFileName(rootPath.TrimEnd(Path.DirectorySeparatorChar));
-        rootFolder = new(rootPath, folderName, folderName, null);
+        rootFolder = new(rootPath, collectionName, collectionName, null);
         collectionStructure = new CollectionStructure(rootFolder);
     }
 
@@ -147,7 +151,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     #region Registration methods
     private static Folder RegisterFolder(Folder currentFolder, CollectionStructure collectionStructure, string subFolderPath)
     {
-        var subFolderName = Path.GetFileName(subFolderPath.TrimEnd(Path.DirectorySeparatorChar));
+        var subFolderName = Path.GetFileName(subFolderPath.RemoveSlashAtTheEnd());
         Folder subFolder = new(subFolderPath, GetRelativePath(currentFolder, subFolderName), subFolderName, currentFolder);
 
         collectionStructure.TryAddFolder(subFolder);

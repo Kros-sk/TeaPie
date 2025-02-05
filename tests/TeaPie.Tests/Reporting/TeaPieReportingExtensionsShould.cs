@@ -15,7 +15,8 @@ public class TeaPieReportingExtensionsShould
     [Fact]
     public void RegisterReporterCorrectly()
     {
-        var reporter = new CollectionTestResultsSummaryReporter();
+        var accessor = new TestResultsSummaryAccessor() { Summary = new() };
+        var reporter = new CollectionTestResultsSummaryReporter(accessor);
         var teaPie = PrepareTeaPieInstance(reporter);
         var dummyReporter = new DummyReporter();
 
@@ -29,7 +30,8 @@ public class TeaPieReportingExtensionsShould
     [Fact]
     public void RegisterInlineReporterCorrectly()
     {
-        var reporter = new CollectionTestResultsSummaryReporter();
+        var accessor = new TestResultsSummaryAccessor() { Summary = new() };
+        var reporter = new CollectionTestResultsSummaryReporter(accessor);
         var teaPie = PrepareTeaPieInstance(reporter);
         var reported = false;
 

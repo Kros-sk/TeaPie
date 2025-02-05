@@ -22,6 +22,8 @@ internal class ApplicationContext(
     public string EnvironmentName { get; set; } = environment;
     public string EnvironmentFilePath { get; set; } = environmentFilePath;
 
+    public string CollectionName => System.IO.Path.GetFileName(Path);
+
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
     public IReadOnlyCollection<TestCase> TestCases => CollectionStructure.TestCases;
 

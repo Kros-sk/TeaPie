@@ -11,7 +11,8 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void NotTriggerReportMethodOnUnregisteredReporter()
     {
-        var compositeReporter = new CollectionTestResultsSummaryReporter();
+        var accessor = new TestResultsSummaryAccessor() { Summary = new() };
+        var compositeReporter = new CollectionTestResultsSummaryReporter(accessor);
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -29,7 +30,8 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void TriggerReportMethodOnAllRegisteredReporters()
     {
-        var compositeReporter = new CollectionTestResultsSummaryReporter();
+        var accessor = new TestResultsSummaryAccessor() { Summary = new() };
+        var compositeReporter = new CollectionTestResultsSummaryReporter(accessor);
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -45,19 +47,18 @@ public partial class TestResultsSummaryReporterShould
     [Fact]
     public void ChangeTheStateOfSummaryWhenRegisteringTestResults()
     {
-        var reporter = new CollectionTestResultsSummaryReporter();
+        var accessor = new TestResultsSummaryAccessor() { Summary = new CollectionTestResultsSummary() };
+        var reporter = new CollectionTestResultsSummaryReporter(accessor);
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };
 
-        reporter.Start("demo");
+        reporter.Initialize();
         reporter.RegisterTestResult("test-case", skippedTestResult);
         reporter.RegisterTestResult("test-case", passedTestResult);
         reporter.RegisterTestResult("test-case", failedTestResult);
 
-        var summary = reporter.GetSummary();
-
-        CheckSummary(skippedTestResult, failedTestResult, summary);
+        CheckSummary(skippedTestResult, failedTestResult, accessor.Summary);
     }
 
     private static void CheckSummary(

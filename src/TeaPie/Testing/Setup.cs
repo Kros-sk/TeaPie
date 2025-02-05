@@ -7,6 +7,7 @@ internal static class Setup
     public static IServiceCollection AddTesting(this IServiceCollection services)
     {
         services.AddSingleton<ITester, Tester>();
+        services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
         return services;
     }
 }

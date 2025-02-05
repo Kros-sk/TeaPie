@@ -6,5 +6,5 @@ public interface ITestResultsSummaryReporter : ICompositeReporter<IReporter<Test
 {
     void RegisterTestResult(string testCaseName, TestResult testResult);
 
-    void Start(string name);
+    void Initialize();
 }
