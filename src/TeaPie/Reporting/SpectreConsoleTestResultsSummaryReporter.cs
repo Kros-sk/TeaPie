@@ -101,7 +101,7 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
     private static void AddTestsGroup(Table table, string sectionName, string text)
     {
         var markup = new Markup(text).LeftJustified();
-        var paddedMarkup = new Padder(markup, new Padding(1, 1, 0, 0));
+        var paddedMarkup = new Padder(markup, new Padding(1, 1, 1, 0));
 
         var panel = new Panel(paddedMarkup)
             .Border(BoxBorder.Rounded)
@@ -124,7 +124,9 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 
     private static Panel GetPanelWithChart(BreakdownChart chart)
     {
-        var panel = new Panel(chart);
+        var paddedChart = new Padder(chart, new Padding(1, 0));
+
+        var panel = new Panel(paddedChart);
         panel.Header("[bold aqua] " +
             (CompatibilityChecker.SupportsEmoji ? Emoji.Known.BarChart + " " : string.Empty) +
             "Summary [/]");

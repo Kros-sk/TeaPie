@@ -67,7 +67,7 @@ teapie
 This command **runs all test cases** found in the current folder and its subfolders. For more advanced usage, the full command specification is:
 
 ```sh
-teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
+teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>]
 ```
 
 > 💁‍♂️ You can use alias `t` or **completely omit command name**, since `test` command is considered as **default command** when launching `teapie`.
@@ -314,9 +314,57 @@ tp.SetEnvironment("local");
 
 ### Reporting
 
-At the end of a collection testing run, a summary report of test results is generated. Here is an example:
+<!-- omit from toc -->
+#### Console report
+
+At the end of a collection testing run, a summary report of test results is **automatically displayed to console** using `Spectre.Console` components. Here is an example:
 
 ![Report example](./assets/images/report-example.png)
+
+<!-- omit from toc -->
+#### Reporting to File
+
+TeaPie includes a built-in **JUnit XML file reporter**, which can be enabled by adding the `-r|--report-file` **option** with a valid path to an `.xml` file where the report will be generated.
+
+This **widely accepted format** is supported natively by **GitHub Actions** and **Microsoft Azure DevOps**. However, it is not fully standardized, and different CI tools may use modified versions of this format. For more details, refer to this [post](https://github.com/testmoapp/junitxml).
+
+Example JUnit XML Report:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites tests="8" skipped="1" failures="1" time="0.089" timestamp="2025-02-05T13:32:35">
+  <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="0.041">
+    <testcase name="Customer should be created successfully." time="0.041" classname="AddCustomer" />
+  </testsuite>
+  ...
+  <testsuite name="EditCar" tests="2" skipped="0" failures="1" time="0.012">
+    <testcase name="Status code of car retrieval should be 201 (Created)" time="0.002" classname="EditCar">
+      <failure message="Assert.Equal() Failure: Values differ" type="AssertionError">
+        Assert.Equal() Failure: Values differ
+        Expected: 201
+        Actual:   200
+        at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
+    ...
+      </failure>
+    </testcase>
+    ...
+  </testsuite>
+  <testsuite name="RentCar" tests="2" skipped="1" failures="0" time="0.001">
+    <testcase name="Car should be rented successfully." time="0.001" classname="RentCar">
+      <skipped />
+    </testcase>
+    ...
+  </testsuite>
+</testsuites>
+```
+
+Mapping to TeaPie Terminology:
+
+- **`testsuites`** → **Collection**
+- **`testsuite`** → **Test Case**
+- **`testcase`** → **Test**
+
+Time is automatically converted to **seconds** (a common practice) with **three decimal places**, using **dot notation**.
 
 <!-- omit from toc -->
 #### Custom Reporters
