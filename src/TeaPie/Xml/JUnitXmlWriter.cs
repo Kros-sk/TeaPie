@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Globalization;
+using System.Xml;
 
 namespace TeaPie.Xml;
 
@@ -132,7 +133,12 @@ public class JUnitXmlWriter : IDisposable
     }
 
     private static string ConvertTimeToSeconds(double timeMs)
-        => (timeMs / 1000.0).ToString("f3");
+    {
+        var timeSeconds = timeMs / 1000.0;
+        return timeSeconds < 0.001
+            ? "0.001"
+            : timeSeconds.ToString("0.000", CultureInfo.InvariantCulture);
+    }
 
     private void EnsureRootNotWritten()
     {
