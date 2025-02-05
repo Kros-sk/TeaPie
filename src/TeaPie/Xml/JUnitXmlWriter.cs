@@ -132,7 +132,7 @@ public class JUnitXmlWriter : IDisposable
     }
 
     private static string ConvertTimeToSeconds(double timeMs)
-        => (timeMs / 1000.0).ToString("f2");
+        => (timeMs / 1000.0).ToString("f3");
 
     private void EnsureRootNotWritten()
     {

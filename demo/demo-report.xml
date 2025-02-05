@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<testsuites tests="8" skipped="1" failures="1" time="0,35" timestamp="2025-02-05T12:37:33">
-  <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="0,13">
-    <testcase name="Customer should be created successfully." time="0,13" classname="AddCustomer" />
+<testsuites tests="8" skipped="1" failures="1" time="0,373" timestamp="2025-02-05T12:42:46">
+  <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="0,135">
+    <testcase name="Customer should be created successfully." time="0,135" classname="AddCustomer" />
   </testsuite>
-  <testsuite name="AddCar" tests="3" skipped="0" failures="0" time="0,14">
-    <testcase name="Status code of car addition should be 201 (Created)." time="0,00" classname="AddCar" />
-    <testcase name="Newly added car should have 'Tesla' brand." time="0,08" classname="AddCar" />
-    <testcase name="Identifiers of added and retrieved cars should match." time="0,06" classname="AddCar" />
+  <testsuite name="AddCar" tests="3" skipped="0" failures="0" time="0,146">
+    <testcase name="Status code of car addition should be 201 (Created)." time="0,000" classname="AddCar" />
+    <testcase name="Newly added car should have 'Ford' brand." time="0,086" classname="AddCar" />
+    <testcase name="Identifiers of added and retrieved cars should match." time="0,060" classname="AddCar" />
   </testsuite>
-  <testsuite name="EditCar" tests="2" skipped="0" failures="1" time="0,08">
-    <testcase name="Status code of car retrieval should be 201 (Created)" time="0,07" classname="EditCar">
+  <testsuite name="EditCar" tests="2" skipped="0" failures="1" time="0,091">
+    <testcase name="Status code of car retrieval should be 201 (Created)" time="0,081" classname="EditCar">
       <failure message="Assert.Equal() Failure: Values differ&#xD;&#xA;Expected: 201&#xD;&#xA;Actual:   200" type="AssertionError">Assert.Equal() Failure: Values differ
 Expected: 201
 Actual:   200
@@ -20,12 +20,12 @@ Actual:   200
    at TeaPie.Testing.Tester.ExecuteTest(Test test, Func`1 testFunction, TestCaseExecutionContext testCaseExecutionContext) in C:\Projects\Topics\Diploma thesis\Repository\TeaPie\src\TeaPie\Testing\Tester.cs:line 106
    at TeaPie.Testing.Tester.ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext) in C:\Projects\Topics\Diploma thesis\Repository\TeaPie\src\TeaPie\Testing\Tester.cs:line 74</failure>
     </testcase>
-    <testcase name="Engine type and people capacity should match after edit." time="0,01" classname="EditCar" />
+    <testcase name="Engine type and people capacity should match after edit." time="0,010" classname="EditCar" />
   </testsuite>
-  <testsuite name="RentCar" tests="2" skipped="1" failures="0" time="0,00">
-    <testcase name="Car should be rented successfully." time="0,00" classname="RentCar">
+  <testsuite name="RentCar" tests="2" skipped="1" failures="0" time="0,001">
+    <testcase name="Car should be rented successfully." time="0,000" classname="RentCar">
       <skipped />
     </testcase>
-    <testcase name="Rented car should be 'Tesla Model X, 2019'." time="0,00" classname="RentCar" />
+    <testcase name="Rented car should be 'Ford Focus, 2017'." time="0,001" classname="RentCar" />
   </testsuite>
 </testsuites>
