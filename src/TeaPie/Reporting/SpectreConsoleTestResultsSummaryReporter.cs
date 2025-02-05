@@ -8,21 +8,34 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 {
     public void Report(TestResultsSummary report)
     {
-        var table = PrepareMainTable(report);
+        if (report.NumberOfTests > 0)
+        {
+            ReportTestResultsSummary(report);
+        }
+        else
+        {
+            ReportZeroTests();
+        }
+    }
 
-        ReportSkippedTestsIfAny(report, table);
-        ReportFailedTestsIfAny(report, table);
-        ReportSummary(report, table);
+    private static void ReportTestResultsSummary(TestResultsSummary summary)
+    {
+        var table = PrepareMainTable("[bold yellow]Test Results:[/] " + GetOverallResult(summary));
+
+        ReportSkippedTestsIfAny(summary, table);
+        ReportFailedTestsIfAny(summary, table);
+        ReportSummary(summary, table);
 
         AnsiConsole.Write(table);
     }
 
-    private static Table PrepareMainTable(TestResultsSummary summary)
+    private static Table PrepareMainTable(string heading)
     {
         var table = new Table();
         table.Border(TableBorder.Rounded);
+        table.Expand();
 
-        table.AddColumn("[bold yellow]Test Results:[/] " + GetOverallResult(summary));
+        table.AddColumn(heading);
         return table;
     }
 
@@ -151,4 +164,16 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 
     private static string GetFailedTestsTag(TestResultsSummary summary)
         => $"Failed Tests [{summary.PercentageOfFailedTests:f2}%]:";
+
+    private static void ReportZeroTests()
+    {
+        var table = PrepareMainTable(GetZeroTestsReportMessage());
+        AnsiConsole.Write(table);
+    }
+
+    private static string GetZeroTestsReportMessage()
+    {
+        const string message = "[bold yellow]Test Results: [/][bold orange1]NO TESTS PERFORMED[/]";
+        return CompatibilityChecker.SupportsEmoji ? message + " " + Emoji.Known.ThinkingFace : message;
+    }
 }

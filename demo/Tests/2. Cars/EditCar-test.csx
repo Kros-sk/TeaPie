@@ -1,5 +1,6 @@
 ﻿// Purposely fail the test (status code should be 200 [OK]), to demonstrate how test
-// results are logged and displayed in the final summary report.
+// results are logged and displayed in the final summary report. More comprehensive test results report
+// in 'JUnit XML' format is available in the file 'demo-report.xml'.
 tp.Test("Status code of car retrieval should be 201 (Created)", () =>
 {
     var statusCode = tp.Responses["GetEditedCarRequest"].StatusCode();

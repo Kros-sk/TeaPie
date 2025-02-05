@@ -16,7 +16,7 @@ internal partial class Tester(
     private readonly ITestResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
     private readonly Stopwatch _stopWatch = new();
 
-    private TestCaseExecutionContext? _previousTestCase;
+    private bool _hasExecutedAnyTest;
 
     #region Determined tests
     public void Test(string testName, Action testFunction, bool skipTest = false)
@@ -31,17 +31,22 @@ internal partial class Tester(
         var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
             ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
 
-        if (_previousTestCase is null)
-        {
-            _resultsSummaryReporter.StartCollectionRun("demo");
-            _previousTestCase = testCaseExecutionContext;
-        }
+        StartRunIfFirstTest();
 
         var test = new Test(testName, testFunction, new TestResult.NotRun() { TestName = testName });
 
         test = await ExecuteOrSkipTest(testName, skipTest, testCaseExecutionContext, test);
 
         testCaseExecutionContext.RegisterTest(test);
+    }
+
+    private void StartRunIfFirstTest()
+    {
+        if (!_hasExecutedAnyTest)
+        {
+            _resultsSummaryReporter.Start("demo");
+            _hasExecutedAnyTest = true;
+        }
     }
 
     private async Task<Test> ExecuteOrSkipTest(

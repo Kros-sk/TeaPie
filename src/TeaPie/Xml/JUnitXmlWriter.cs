@@ -20,7 +20,8 @@ public class JUnitXmlWriter : IDisposable
         int tests = 0,
         int skipped = 0,
         int failures = 0,
-        double time = 0.0)
+        double time = 0.0,
+        DateTime? timestamp = null)
     {
         if (_rootWritten)
         {
@@ -32,6 +33,11 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteAttributeString("skipped", skipped.ToString());
         _writer.WriteAttributeString("failures", failures.ToString());
         _writer.WriteAttributeString("time", time.ToString("0.###"));
+
+        if (timestamp is not null)
+        {
+            _writer.WriteAttributeString("timestamp", timestamp.Value.ToString("yyyy-MM-ddTHH:mm:ss"));
+        }
 
         _rootWritten = true;
     }
@@ -48,9 +54,10 @@ public class JUnitXmlWriter : IDisposable
     public void WriteTestSuite(
         string name,
         int totalTests = 0,
+        int skipped = 0,
         int failures = 0,
-        int errors = 0,
-        double time = 0.0)
+        double time = 0.0,
+        DateTime? timestamp = null)
     {
         if (!_rootWritten)
         {
@@ -65,9 +72,14 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteStartElement("testsuite");
         _writer.WriteAttributeString("name", name);
         _writer.WriteAttributeString("tests", totalTests.ToString());
+        _writer.WriteAttributeString("skipped", skipped.ToString());
         _writer.WriteAttributeString("failures", failures.ToString());
-        _writer.WriteAttributeString("errors", errors.ToString());
         _writer.WriteAttributeString("time", time.ToString("0.###"));
+
+        if (timestamp is not null)
+        {
+            _writer.WriteAttributeString("timestamp", timestamp.ToString());
+        }
 
         _inTestSuite = true;
     }
@@ -76,8 +88,10 @@ public class JUnitXmlWriter : IDisposable
         string className,
         string testName,
         double time,
+        bool skipped,
         string? failureMessage = null,
-        string failureType = "AssertionError")
+        string failureType = "AssertionError",
+        string? stackTrace = null)
     {
         if (!_inTestSuite)
         {
@@ -89,12 +103,23 @@ public class JUnitXmlWriter : IDisposable
         _writer.WriteAttributeString("name", testName);
         _writer.WriteAttributeString("time", time.ToString("0.###"));
 
-        if (!string.IsNullOrEmpty(failureMessage))
+        if (skipped)
+        {
+            _writer.WriteStartElement("skipped");
+            _writer.WriteEndElement();
+        }
+        else if (!string.IsNullOrEmpty(failureMessage))
         {
             _writer.WriteStartElement("failure");
             _writer.WriteAttributeString("message", failureMessage);
             _writer.WriteAttributeString("type", failureType);
             _writer.WriteString(failureMessage);
+
+            if (!string.IsNullOrEmpty(stackTrace))
+            {
+                _writer.WriteString(stackTrace);
+            }
+
             _writer.WriteEndElement();
         }
 
@@ -110,17 +135,23 @@ public class JUnitXmlWriter : IDisposable
         }
     }
 
+    public void EndTestSuitesRoot()
+    {
+        if (_rootWritten)
+        {
+            _writer.WriteEndElement();
+        }
+        else
+        {
+            throw new InvalidOperationException("Unable to end <testsuites> element, if there is no <testsuites> element.");
+        }
+    }
+
     public void Dispose()
     {
         if (!_disposed)
         {
             EndTestSuite();
-
-            if (_rootWritten)
-            {
-                _writer.WriteEndElement();
-            }
-
             _writer.WriteEndDocument();
             _writer.Dispose();
             _disposed = true;

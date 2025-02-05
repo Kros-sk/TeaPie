@@ -4,12 +4,8 @@ public class CollectionTestResultsSummary(string name = "") : TestResultsSummary
 {
     public string Name { get; } = name;
 
-    public string Timestamp { get; private set; } = string.Empty;
-
     private readonly Dictionary<string, TestCaseTestResultsSummary> _testCases = [];
     public IReadOnlyDictionary<string, TestCaseTestResultsSummary> TestCases => _testCases;
-
-    internal void StartCollectionRun() => Timestamp = DateTime.Now.ToString();
 
     internal void AddSkippedTest(string testCaseName, TestResult.NotRun skippedTestResult)
     {

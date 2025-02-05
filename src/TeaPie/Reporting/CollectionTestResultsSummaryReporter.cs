@@ -11,10 +11,10 @@ internal class CollectionTestResultsSummaryReporter : ITestResultsSummaryReporte
     public void RegisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Add(reporter);
     public void UnregisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Remove(reporter);
 
-    public void StartCollectionRun(string name)
+    public void Start(string name)
     {
         _summary = new(name);
-        _summary.StartCollectionRun();
+        _summary.Start();
         _started = true;
     }
 

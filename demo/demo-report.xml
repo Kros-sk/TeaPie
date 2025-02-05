@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testsuites tests="8" skipped="1" failures="1" time="345" timestamp="2025-02-05T09:48:25">
+  <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="134">
+    <testcase classname="AddCustomer" name="Customer should be created successfully." time="134" />
+  </testsuite>
+  <testsuite name="AddCar" tests="3" skipped="0" failures="0" time="130">
+    <testcase classname="AddCar" name="Status code of car addition should be 201 (Created)." time="0" />
+    <testcase classname="AddCar" name="Newly added car should have 'Tesla' brand." time="75" />
+    <testcase classname="AddCar" name="Identifiers of added and retrieved cars should match." time="55" />
+  </testsuite>
+  <testsuite name="EditCar" tests="2" skipped="0" failures="1" time="80">
+    <testcase classname="EditCar" name="Status code of car retrieval should be 201 (Created)" time="72">
+      <failure message="Assert.Equal() Failure: Values differ&#xD;&#xA;Expected: 201&#xD;&#xA;Actual:   200" type="AssertionError">Assert.Equal() Failure: Values differ
+Expected: 201
+Actual:   200   at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
+   at Xunit.Assert.Equal[T](T expected, T actual) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 89
+   at Submission#0.&lt;&lt;Initialize&gt;&gt;b__0_0()
+   at TeaPie.Testing.Tester.&lt;&gt;c__DisplayClass6_0.&lt;Test&gt;b__0() in C:\Projects\Topics\Diploma thesis\Repository\TeaPie\src\TeaPie\Testing\Tester.cs:line 23
+   at TeaPie.Testing.Tester.ExecuteTest(Test test, Func`1 testFunction, TestCaseExecutionContext testCaseExecutionContext) in C:\Projects\Topics\Diploma thesis\Repository\TeaPie\src\TeaPie\Testing\Tester.cs:line 106
+   at TeaPie.Testing.Tester.ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext) in C:\Projects\Topics\Diploma thesis\Repository\TeaPie\src\TeaPie\Testing\Tester.cs:line 74</failure>
+    </testcase>
+    <testcase classname="EditCar" name="Engine type and people capacity should match after edit." time="8" />
+  </testsuite>
+  <testsuite name="RentCar" tests="2" skipped="1" failures="0" time="1">
+    <testcase classname="RentCar" name="Car should be rented successfully." time="0">
+      <skipped />
+    </testcase>
+    <testcase classname="RentCar" name="Rented car should be 'Tesla Model S, 2020'." time="1" />
+  </testsuite>
+</testsuites>
