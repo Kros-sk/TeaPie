@@ -13,6 +13,6 @@ internal class InitializeApplicationStep(ITestResultsSummaryAccessor summaryAcce
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         await _nuGetPackageHandler.HandleNuGetPackages(ScriptsConstants.DefaultNuGetPackages);
-        _summaryAccessor.Summary = new CollectionTestResultsSummary();
+        _summaryAccessor.Summary = new CollectionTestResultsSummary(context.CollectionName);
     }
 }

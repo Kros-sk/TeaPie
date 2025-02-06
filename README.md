@@ -332,7 +332,7 @@ Example JUnit XML Report:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<testsuites tests="8" skipped="1" failures="1" time="0.089" timestamp="2025-02-05T13:32:35">
+<testsuites name="demo" tests="8" skipped="1" failures="1" time="0.089" timestamp="2025-02-05T13:32:35">
   <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="0.041">
     <testcase name="Customer should be created successfully." time="0.041" classname="AddCustomer" />
   </testsuite>
@@ -358,7 +358,7 @@ Example JUnit XML Report:
 </testsuites>
 ```
 
-Mapping to TeaPie Terminology:
+Mapping to TeaPie terminology:
 
 - **`testsuites`** → **Collection**
 - **`testsuite`** → **Test Case**

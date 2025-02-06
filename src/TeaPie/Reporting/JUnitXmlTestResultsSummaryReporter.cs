@@ -22,6 +22,7 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
         CollectionTestResultsSummary collectionSummary)
     {
         writer.WriteTestSuitesRoot(
+            collectionSummary.Name,
             collectionSummary.NumberOfTests,
             collectionSummary.NumberOfSkippedTests,
             collectionSummary.NumberOfFailedTests,
