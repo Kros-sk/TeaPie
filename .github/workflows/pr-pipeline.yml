@@ -34,3 +34,16 @@ jobs:
     # Run unit tests
     - name: Run Unit tests
       run: dotnet test --no-build --verbosity normal --configuration Release
+
+  validate-test-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Upload JUnit XML Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: JUnit XML Validation Test
+          path: 'demo/demo-report.xml'
+          reporter: java-junit
