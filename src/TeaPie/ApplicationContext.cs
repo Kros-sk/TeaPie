@@ -22,6 +22,8 @@ internal class ApplicationContext(
     public string EnvironmentName { get; set; } = environment;
     public string EnvironmentFilePath { get; set; } = environmentFilePath;
 
+    public readonly string ReportFilePath = reportFilePath;
+
     public string CollectionName => System.IO.Path.GetFileName(Path);
 
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
@@ -45,6 +47,4 @@ internal class ApplicationContext(
     }
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
-
-    public readonly string ReportFilePath = reportFilePath;
 }

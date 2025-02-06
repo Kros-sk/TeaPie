@@ -31,6 +31,14 @@ internal class CollectionTestResultsSummaryReporter(ITestResultsSummaryAccessor 
         }
     }
 
+    public void Report()
+    {
+        foreach (var reporter in _reporters)
+        {
+            reporter.Report(_summary);
+        }
+    }
+
     private void CheckCurrentState()
     {
         if (!_started)
@@ -41,14 +49,6 @@ internal class CollectionTestResultsSummaryReporter(ITestResultsSummaryAccessor 
         if (_summary is null)
         {
             throw new InvalidOperationException("Unable to register test result, if there is no summary object.");
-        }
-    }
-
-    public void Report()
-    {
-        foreach (var reporter in _reporters)
-        {
-            reporter.Report(_summary);
         }
     }
 

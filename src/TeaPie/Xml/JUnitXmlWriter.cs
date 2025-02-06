@@ -18,6 +18,7 @@ public class JUnitXmlWriter : IDisposable
     }
 
     public void WriteTestSuitesRoot(
+        string name = "",
         int tests = 0,
         int skipped = 0,
         int failures = 0,
@@ -27,6 +28,7 @@ public class JUnitXmlWriter : IDisposable
         EnsureRootNotWritten();
 
         _writer.WriteStartElement("testsuites");
+        WriteNameAttribute(name);
         WriteCommonAttributes(tests, skipped, failures, timeMs, timestamp);
 
         _rootWritten = true;
