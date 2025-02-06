@@ -11,19 +11,15 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 {
     private readonly ILogger<StructureExplorer> _logger = logger;
     private string? _environmentFileName;
+    private string? _initializationScriptName;
 
     public IReadOnlyCollectionStructure ExploreCollectionStructure(ApplicationContext applicationContext)
     {
-        CheckArguments(applicationContext);
+        CheckAndResolveArguments(applicationContext);
 
         LogStartOfCollectionExploration(applicationContext.Path);
 
-        InitializeStructure(
-            applicationContext.Path, applicationContext.CollectionName, out var rootFolder, out var collectionStructure);
-
-        Explore(rootFolder, applicationContext.EnvironmentFilePath, collectionStructure);
-
-        UpdateContext(applicationContext, collectionStructure);
+        var collectionStructure = Explore(applicationContext);
 
         LogEndOfCollectionExploration(collectionStructure.TestCases.Count);
 
@@ -31,27 +27,55 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     }
 
     #region Helping methods
-    private void CheckArguments(ApplicationContext applicationContext)
+    private void CheckAndResolveArguments(ApplicationContext applicationContext)
     {
-        if (string.IsNullOrEmpty(applicationContext.Path))
+        CheckCollectionPath(applicationContext.Path);
+        CheckAndResolveEnvironmentFile(applicationContext.Path, applicationContext.EnvironmentFilePath);
+        CheckAndResolveInitializationScript(applicationContext.InitializationScriptPath);
+    }
+
+    private static void CheckCollectionPath(string collectionPath)
+    {
+        if (string.IsNullOrEmpty(collectionPath))
         {
             throw new InvalidOperationException("Unable to explore collection structure, if path is empty or missing.");
         }
 
-        if (!Directory.Exists(applicationContext.Path))
+        if (!Directory.Exists(collectionPath))
         {
-            throw new InvalidOperationException($"Unable to explore collection on path '{applicationContext.Path}' " +
-                "because such a collection path doesn't exist.");
+            throw new InvalidOperationException($"Unable to explore collection on path '{collectionPath}' " +
+                "because such a path doesn't exist.");
         }
+    }
 
-        if (string.IsNullOrEmpty(applicationContext.EnvironmentFilePath))
+    private void CheckAndResolveEnvironmentFile(string collectionPath, string environmentFilePath)
+        => CheckAndResolveOptionalFile(
+            ref _environmentFileName,
+            GetEnvironmentFileName(collectionPath),
+            environmentFilePath,
+            "environment file");
+
+    private void CheckAndResolveInitializationScript(string initializationScriptPath)
+        => CheckAndResolveOptionalFile(
+            ref _initializationScriptName,
+            Constants.DefaultInitializationScriptName + Constants.ScriptFileExtension,
+            initializationScriptPath,
+            "initialization script");
+
+    private static void CheckAndResolveOptionalFile(
+        ref string? fieldToUpdate,
+        string updatedValue,
+        string filePath,
+        string fileName)
+    {
+        if (string.IsNullOrEmpty(filePath))
         {
-            _environmentFileName = GetEnvironmentFileName(applicationContext.Path);
+            fieldToUpdate = updatedValue;
         }
-        else if (!System.IO.File.Exists(applicationContext.EnvironmentFilePath))
+        else if (!System.IO.File.Exists(filePath))
         {
-            throw new InvalidOperationException("Specified environment file on path " +
-                $"'{applicationContext.EnvironmentFilePath}' does not exist.");
+            throw new InvalidOperationException($"Specified {fileName} on path " +
+                $"'{filePath}' does not exist.");
         }
     }
 
@@ -74,14 +98,30 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         {
             applicationContext.EnvironmentFilePath = collectionStructure.EnvironmentFile.Path;
         }
+
+        if (collectionStructure.HasInitializationScript)
+        {
+            applicationContext.InitializationScriptPath = collectionStructure.InitializationScript.File.Path;
+        }
     }
     #endregion
 
     #region Exploration methods
-    private void Explore(Folder rootFolder, string environmentFilePath, CollectionStructure collectionStructure)
+    private CollectionStructure Explore(ApplicationContext applicationContext)
+    {
+        InitializeStructure(
+            applicationContext.Path, applicationContext.CollectionName, out var rootFolder, out var collectionStructure);
+
+        Explore(rootFolder, applicationContext, collectionStructure);
+
+        UpdateContext(applicationContext, collectionStructure);
+        return collectionStructure;
+    }
+
+    private void Explore(Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
         ExploreFolder(rootFolder, collectionStructure);
-        RegisterEnvironmentFileIfNeeded(environmentFilePath, collectionStructure);
+        RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
     }
 
     /// <summary>
@@ -97,7 +137,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         var subFolderPaths = GetFolders(currentFolder);
         var files = GetFiles(currentFolder);
 
-        SearchForEnvironmentFileIfNeeded(currentFolder, files, collectionStructure);
+        SearchForOptionalFilesIfNeeded(currentFolder, collectionStructure, files);
 
         foreach (var subFolderPath in subFolderPaths)
         {
@@ -108,19 +148,52 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
         ExploreTestCases(collectionStructure, currentFolder, files);
     }
 
+    private void SearchForOptionalFilesIfNeeded(
+        Folder currentFolder,
+        CollectionStructure collectionStructure,
+        IList<string> files)
+    {
+        SearchForEnvironmentFileIfNeeded(currentFolder, files, collectionStructure);
+        SearchForInitializationScriptIfNeeded(currentFolder, files, collectionStructure);
+    }
+
     private void SearchForEnvironmentFileIfNeeded(
         Folder parentFolder,
         IList<string> files,
         CollectionStructure collectionStructure)
-    {
-        if (_environmentFileName is not null && !collectionStructure.HasEnvironmentFile)
-        {
-            var envFile = files.FirstOrDefault(
-                f => Path.GetFileName(f).Equals(_environmentFileName, StringComparison.OrdinalIgnoreCase));
+        => SearchForOptionalFileIfNeeded(
+            _environmentFileName,
+            collectionStructure.HasEnvironmentFile,
+            parentFolder,
+            files,
+            collectionStructure.SetEnvironmentFile);
 
-            if (envFile is not null)
+    private void SearchForInitializationScriptIfNeeded(
+        Folder parentFolder,
+        IList<string> files,
+        CollectionStructure collectionStructure)
+        => SearchForOptionalFileIfNeeded(
+            _initializationScriptName,
+            collectionStructure.HasInitializationScript,
+            parentFolder,
+            files,
+            file => collectionStructure.SetInitializationScript(new Script(file)));
+
+    private static void SearchForOptionalFileIfNeeded(
+        string? fileName,
+        bool fileExistsInCollection,
+        Folder parentFolder,
+        IList<string> files,
+        Action<File> setFileAction)
+    {
+        if (fileName is not null && !fileExistsInCollection)
+        {
+            var foundFile = files.FirstOrDefault(
+                f => Path.GetFileName(f).Equals(fileName, StringComparison.OrdinalIgnoreCase));
+
+            if (foundFile is not null)
             {
-                collectionStructure.SetEnvironmentFile(File.Create(envFile, parentFolder));
+                setFileAction(File.Create(foundFile, parentFolder));
             }
         }
     }
@@ -181,17 +254,46 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
                 ? [script]
                 : [];
 
-    private void RegisterEnvironmentFileIfNeeded(string environmentFilePath, CollectionStructure collectionStructure)
+    private void RegisterOptionalFilesIfNeeded(ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
-        if (_environmentFileName is null)
+        RegisterEnvironmentFileIfNeeded(applicationContext.EnvironmentFilePath, collectionStructure);
+        RegisterInitializationScriptFileIfNeeded(applicationContext.InitializationScriptPath, collectionStructure);
+    }
+
+    private void RegisterEnvironmentFileIfNeeded(string environmentFilePath, CollectionStructure collectionStructure)
+        => RegisterOptionalFileIfNeeded(
+            _environmentFileName,
+            environmentFilePath,
+            collectionStructure,
+            collectionStructure.SetEnvironmentFile,
+            "environment file");
+
+    private void RegisterInitializationScriptFileIfNeeded(
+        string initializationScriptPath,
+        CollectionStructure collectionStructure)
+        => RegisterOptionalFileIfNeeded(
+            _initializationScriptName,
+            initializationScriptPath,
+            collectionStructure,
+            file => collectionStructure.SetInitializationScript(new Script(file)),
+            "initialization script");
+
+    private static void RegisterOptionalFileIfNeeded(
+        string? fileName,
+        string filePath,
+        CollectionStructure collectionStructure,
+        Action<File> setFileAction,
+        string fileNameForErrorMessag)
+    {
+        if (fileName is null)
         {
-            if (collectionStructure.TryGetFolder(Path.GetDirectoryName(environmentFilePath) ?? string.Empty, out var folder))
+            if (collectionStructure.TryGetFolder(Path.GetDirectoryName(filePath) ?? string.Empty, out var folder))
             {
-                collectionStructure.SetEnvironmentFile(File.Create(environmentFilePath, folder));
+                setFileAction(File.Create(filePath, folder));
             }
             else
             {
-                throw new InvalidOperationException("Unable to set environment file to file outside collection.");
+                throw new InvalidOperationException($"Unable to set {fileNameForErrorMessag} to file outside collection.");
             }
         }
     }

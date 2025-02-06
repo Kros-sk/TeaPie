@@ -49,7 +49,7 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     public File? EnvironmentFile { get; private set; }
 
     [MemberNotNullWhen(true, nameof(EnvironmentFile))]
-    public bool HasEnvironmentFile => EnvironmentFile != null;
+    public bool HasEnvironmentFile => EnvironmentFile is not null;
 
     [MemberNotNull(nameof(EnvironmentFile))]
     internal void SetEnvironmentFile(File? file)
@@ -60,6 +60,24 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
         }
 
         EnvironmentFile = file;
+    }
+    #endregion
+
+    #region Initialization Script
+    public Script? InitializationScript { get; private set; }
+
+    [MemberNotNullWhen(true, nameof(InitializationScript))]
+    public bool HasInitializationScript => InitializationScript is not null;
+
+    [MemberNotNull(nameof(EnvironmentFile))]
+    internal void SetInitializationScript(Script? script)
+    {
+        if (script is null)
+        {
+            throw new InvalidOperationException("Unable to set initialization script to null.");
+        }
+
+        InitializationScript = script;
     }
     #endregion
 }

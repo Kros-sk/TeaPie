@@ -17,5 +17,7 @@ internal static class Constants
 
     public const string ApplicationName = "TeaPie";
 
+    public const string DefaultInitializationScriptName = "init";
+
     public static readonly string DefaultTemporaryFolderPath = Path.Combine(Path.GetTempPath(), ApplicationName);
 }

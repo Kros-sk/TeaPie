@@ -1,5 +1,3 @@
-// Notice, that this test case doesn't have any pre-request script. ('<test-case-name>-init.csx')
-
 ### Add New Car
 // Name the request using the metadata line to access its contents later.
 # @name AddCarRequest

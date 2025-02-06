@@ -23,6 +23,7 @@ public sealed class ApplicationBuilder
     private string? _environment;
     private string? _environmentFilePath;
     private string? _reportFilePath;
+    private string? _initializationScriptPath;
 
     private LogLevel _minimumLogLevel = LogLevel.None;
     private string _pathToLogFile = string.Empty;
@@ -90,6 +91,12 @@ public sealed class ApplicationBuilder
         return this;
     }
 
+    public ApplicationBuilder WithInitializationScript(string initializationScriptPath)
+    {
+        _initializationScriptPath = initializationScriptPath;
+        return this;
+    }
+
     public Application Build()
     {
         ConfigureServices();
@@ -114,7 +121,8 @@ public sealed class ApplicationBuilder
             string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath,
             string.IsNullOrEmpty(_environment) ? string.Empty : _environment,
             string.IsNullOrEmpty(_environmentFilePath) ? string.Empty : _environmentFilePath,
-            string.IsNullOrEmpty(_reportFilePath) ? string.Empty : _reportFilePath);
+            string.IsNullOrEmpty(_reportFilePath) ? string.Empty : _reportFilePath,
+            string.IsNullOrEmpty(_initializationScriptPath) ? string.Empty : _initializationScriptPath);
 
     private void ConfigureServices()
     {

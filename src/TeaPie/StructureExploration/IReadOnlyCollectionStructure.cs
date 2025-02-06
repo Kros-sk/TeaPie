@@ -8,7 +8,13 @@ internal interface IReadOnlyCollectionStructure
 
     File? EnvironmentFile { get; }
 
+    [MemberNotNullWhen(true, nameof(EnvironmentFile))]
     bool HasEnvironmentFile { get; }
+
+    Script? InitializationScript { get; }
+
+    [MemberNotNullWhen(true, nameof(InitializationScript))]
+    bool HasInitializationScript { get; }
 
     IReadOnlyCollection<Folder> Folders { get; }
 

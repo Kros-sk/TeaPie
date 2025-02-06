@@ -1,3 +1,5 @@
+// Notice, that this test case doesn't have any pre-request script. ('<test-case-name>-init.csx')
+
 # Comments in .http file can start with either '# ' or '// ' prefix.
 // Variable's string value can be accessed by following notation.
 POST {{ApiBaseUrl}}{{ApiCustomersSection}}
