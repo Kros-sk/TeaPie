@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # User-defined
 *launchSettings*.json
+demo/reports/
