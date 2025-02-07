@@ -6,7 +6,6 @@ namespace TeaPie.Xml;
 public class JUnitXmlWriter : IDisposable
 {
     private readonly XmlWriter _writer;
-    private bool _disposed;
     private bool _rootWritten;
     private bool _inTestSuite;
 
@@ -174,13 +173,5 @@ public class JUnitXmlWriter : IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        if (!_disposed)
-        {
-            _writer.Dispose();
-            _disposed = true;
-            GC.SuppressFinalize(this);
-        }
-    }
+    public void Dispose() => _writer.Dispose();
 }
