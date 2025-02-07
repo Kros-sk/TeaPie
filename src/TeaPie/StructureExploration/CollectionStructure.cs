@@ -69,7 +69,7 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     [MemberNotNullWhen(true, nameof(InitializationScript))]
     public bool HasInitializationScript => InitializationScript is not null;
 
-    [MemberNotNull(nameof(EnvironmentFile))]
+    [MemberNotNull(nameof(InitializationScript))]
     internal void SetInitializationScript(Script? script)
     {
         if (script is null)
