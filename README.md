@@ -9,7 +9,8 @@
     - [Test case](#test-case)
     - [Running Tests](#running-tests)
     - [Exploring Collection Structure](#exploring-collection-structure)
-    - [Logging options](#logging-options)
+    - [Logging](#logging)
+    - [Initialization script](#initialization-script)
     - [Pre-request Script](#pre-request-script)
     - [Request File](#request-file)
     - [Post-Response Script](#post-response-script)
@@ -94,7 +95,17 @@ teapie explore [path-to-collection] [-d|--debug] [-v|--verbose] [-q|--quiet] [--
 
 > 💁‍♂️ You can use aliases `exp` or `e` to run the same command.
 
-### Logging options
+### Logging
+
+Logging is essential part of any application. The main logger is exposed as `ILogger` from `Microsoft.Extensions.Logging` and user can use it easily by accessing it via `tp` instance:
+
+```csharp
+tp.Logger.LogInformation("I understand logging in TeaPie! Yee!");
+```
+
+By default, `TeaPie` uses `Serilog` as the logging provider.
+
+Users can adjust logging levels during application run by using these options:
 
 - **Debug Output (`-d | --debug`)**: Displays more detailed logging.
 - **Verbose Output (`-v | --verbose`)**: Displays the most detailed logging.
@@ -103,6 +114,16 @@ teapie explore [path-to-collection] [-d|--debug] [-v|--verbose] [-q|--quiet] [--
   - **`--log-level`** - Sets the minimal log level for console output.
   - **`--log-file`** - Specifies a path to save logs.
   - **`--log-file-log-level`** - Sets the minimal log level for the log file.
+
+### Initialization script
+
+Before the first test case is executed, users have the opportunity to run an **initialization script**. This script is intended for **pre-test setup** tasks such as *setting environment variables, defining reporters, configuring logging,* and more.
+
+By default, **first found** script **within collection** with name `init.csx` is used. However, users can **explicitly specify** a different script by using the following option:
+
+```sh
+-i|--init-script|--initialization-script <path-to-script>
+```
 
 ### Pre-request Script
 
