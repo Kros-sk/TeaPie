@@ -345,41 +345,11 @@ At the end of a collection testing run, a summary report of test results is **au
 <!-- omit from toc -->
 #### Reporting to File
 
-TeaPie includes a built-in **JUnit XML file reporter**, which can be enabled by adding the `-r|--report-file` **option** with a valid path to an `.xml` file where the report will be generated.
+TeaPie includes a built-in **`JUnit XML` file reporter**, which can be enabled by adding the `-r|--report-file` **option** with a valid path to an `.xml` file where the report will be generated.
 
 This **widely accepted format** is supported natively by **GitHub Actions** and **Microsoft Azure DevOps**. However, it is not fully standardized, and different CI tools may use modified versions of this format. For more details, refer to this [post](https://github.com/testmoapp/junitxml).
 
-Example JUnit XML Report:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<testsuites name="demo" tests="8" skipped="1" failures="1" time="0.089" timestamp="2025-02-05T13:32:35">
-  <testsuite name="AddCustomer" tests="1" skipped="0" failures="0" time="0.041">
-    <testcase name="Customer should be created successfully." time="0.041" classname="AddCustomer" />
-  </testsuite>
-  ...
-  <testsuite name="EditCar" tests="2" skipped="0" failures="1" time="0.012">
-    <testcase name="Status code of car retrieval should be 201 (Created)" time="0.002" classname="EditCar">
-      <failure message="Assert.Equal() Failure: Values differ" type="AssertionError">
-        Assert.Equal() Failure: Values differ
-        Expected: 201
-        Actual:   200
-        at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
-    ...
-      </failure>
-    </testcase>
-    ...
-  </testsuite>
-  <testsuite name="RentCar" tests="2" skipped="1" failures="0" time="0.001">
-    <testcase name="Car should be rented successfully." time="0.001" classname="RentCar">
-      <skipped />
-    </testcase>
-    ...
-  </testsuite>
-</testsuites>
-```
-
-Mapping to TeaPie terminology:
+Since `JUnit XML` uses **different terminology** than `TeaPie`, here is the mapping:
 
 - **`testsuites`** → **Collection**
 - **`testsuite`** → **Test Case**

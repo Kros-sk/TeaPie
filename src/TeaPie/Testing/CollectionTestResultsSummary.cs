@@ -30,7 +30,7 @@ public class CollectionTestResultsSummary(string name = "") : TestResultsSummary
         if (!_testCases.TryGetValue(testCaseName, out var testCase))
         {
             testCase = new TestCaseTestResultsSummary(testCaseName);
-            _testCases.TryAdd(testCaseName, testCase);
+            _testCases[testCaseName] = testCase;
         }
 
         return testCase;
