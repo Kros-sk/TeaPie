@@ -25,7 +25,8 @@ internal class HttpRequestParser(
     private readonly IEnumerable<ILineParser> _lineParsers =
     [
         new CommentLineParser(),
-        new RetryStrategyParser(),
+        new RetryStrategyLineParser(),
+        new RetryUntilStatusCodesLineParser(),
         new EmptyLineParser(),
         new MethodAndUriParser(),
         new HeaderParser(),

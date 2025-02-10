@@ -25,6 +25,10 @@ internal static class HttpFileParserConstants
     public const string RetryStrategySelectorDirectivePattern =
         @"^##\s*" + RetryStrategyDirectiveName + @":\s*(?<StrategyName>.+?)\s*$";
 
+    public const string RetryUntilStatusCodesDirectiveName = "RETRY-UNTIL-STATUS";
+    public const string RetryUntilStatusCodesDirectivePattern =
+        @"^##\s*" + RetryUntilStatusCodesDirectiveName + @":\s*\[(?<StatusCodes>[0-9,\s]+)\]\s*$";
+
     public const string RequestVariablePattern =
         "^" + SimpleNamePattern + @"\" + RequestVariableSeparator +
         "(" + RequestSelector + "|" + ResponseSelector + @")\" + RequestVariableSeparator +

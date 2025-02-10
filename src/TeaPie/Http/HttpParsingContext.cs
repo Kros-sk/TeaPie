@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace TeaPie.Http;
@@ -19,4 +20,5 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
     public bool IsBody { get; set; }
     public bool IsMethodAndUriResolved { get; set; }
     public string RetryStrategyName { get; set; } = string.Empty;
+    public IList<HttpStatusCode> RetryUntilStatusCodes { get; set; } = [];
 }

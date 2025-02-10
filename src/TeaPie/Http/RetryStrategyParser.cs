@@ -2,7 +2,7 @@
 
 namespace TeaPie.Http;
 
-internal partial class RetryStrategyParser : ILineParser
+internal partial class RetryStrategyLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
         => RetryStrategySelectorRegex().IsMatch(line);

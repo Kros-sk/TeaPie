@@ -29,8 +29,8 @@ internal class HeadersHandler : IHeadersHandler
 
     public void SetHeaders(HttpRequestMessage source, HttpRequestMessage target)
     {
-        CopySpecificHeaders(source, target);
         CopyBasicHeaders(source, target);
+        CopySpecificHeaders(source, target);
     }
 
     private static void CopyBasicHeaders(HttpRequestMessage source, HttpRequestMessage target)
@@ -49,10 +49,10 @@ internal class HeadersHandler : IHeadersHandler
         foreach (var handler in _handlers)
         {
             var header = handler.GetHeader(source);
-            HeaderNameValidator.CheckValue(header);
 
             if (!string.IsNullOrEmpty(header))
             {
+                HeaderNameValidator.CheckValue(header);
                 handler.SetHeader(header, target);
             }
         }
