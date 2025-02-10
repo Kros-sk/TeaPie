@@ -3,14 +3,14 @@ using Polly.Retry;
 
 namespace TeaPie.Http.Retrying;
 
-internal interface IRetryingStrategiesRegistry
+internal interface IRetryingPoliciesRegistry
 {
-    void RegisterStrategy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy);
+    void RegisterPolicy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy);
 
-    ResiliencePipeline<HttpResponseMessage> GetStrategy(string name);
+    ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(string name);
 }
 
-internal class RetryingStrategiesRegistry : IRetryingStrategiesRegistry
+internal class RetryingStrategiesRegistry : IRetryingPoliciesRegistry
 {
     private readonly Dictionary<string, ResiliencePipeline<HttpResponseMessage>> _registry =
         new()
@@ -18,7 +18,7 @@ internal class RetryingStrategiesRegistry : IRetryingStrategiesRegistry
             { string.Empty, ResiliencePipeline<HttpResponseMessage>.Empty }
         };
 
-    public void RegisterStrategy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
+    public void RegisterPolicy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
     {
         var pipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
             .AddRetry(retryStrategy)
@@ -27,5 +27,5 @@ internal class RetryingStrategiesRegistry : IRetryingStrategiesRegistry
         _registry.Add(name, pipeline);
     }
 
-    public ResiliencePipeline<HttpResponseMessage> GetStrategy(string name) => _registry[name];
+    public ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(string name) => _registry[name];
 }

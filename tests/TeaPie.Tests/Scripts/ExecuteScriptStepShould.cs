@@ -84,5 +84,5 @@ public class ExecuteScriptStepShould
             appContext,
             Substitute.For<IPipeline>(),
             Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<IRetryingStrategiesRegistry>());
+            Substitute.For<IRetryingPoliciesRegistry>());
 }

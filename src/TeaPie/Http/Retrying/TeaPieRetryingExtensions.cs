@@ -4,7 +4,7 @@ namespace TeaPie.Http.Retrying;
 
 public static class TeaPieRetryingExtensions
 {
-    public static void RegisterRetryStrategy(
+    public static void RegisterRetryPolicy(
         this TeaPie teaPie, string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
-        => teaPie._retryingStrategiesRegistry.RegisterStrategy(name, retryStrategy);
+        => teaPie._retryingStrategiesRegistry.RegisterPolicy(name, retryStrategy);
 }

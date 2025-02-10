@@ -13,6 +13,7 @@
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="NuGet.Protocol" Version="6.12.1" />
     <PackageVersion Include="Polly" Version="8.5.2" />
+    <PackageVersion Include="Polly.Core" Version="8.5.2" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.13.0" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />

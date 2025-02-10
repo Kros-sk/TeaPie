@@ -137,7 +137,7 @@ public class ExecuteRequestStepShould
         var headersResolver = new HeadersHandler();
 
         return new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, Substitute.For<IRetryingStrategiesRegistry>());
+            headersProvider, variablesResolver, headersResolver, Substitute.For<IRetryingPoliciesRegistry>());
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler

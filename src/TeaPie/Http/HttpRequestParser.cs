@@ -14,13 +14,13 @@ internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
     IVariablesResolver variablesResolver,
     IHeadersHandler headersResolver,
-    IRetryingStrategiesRegistry retryingStrategiesRegistry)
+    IRetryingPoliciesRegistry retryingStrategiesRegistry)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
     private readonly IHeadersHandler _headersResolver = headersResolver;
-    private readonly IRetryingStrategiesRegistry _retryingStrategiesRegistry = retryingStrategiesRegistry;
+    private readonly IRetryingPoliciesRegistry _retryingStrategiesRegistry = retryingStrategiesRegistry;
 
     private readonly IEnumerable<ILineParser> _lineParsers =
     [
@@ -79,7 +79,7 @@ internal class HttpRequestParser(
         }
 
         requestExecutionContext.ResiliencePipeline =
-            _retryingStrategiesRegistry.GetStrategy(parsingContext.RetryStrategyName);
+            _retryingStrategiesRegistry.GetResiliencePipeline(parsingContext.RetryStrategyName);
     }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)
