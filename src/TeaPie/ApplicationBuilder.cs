@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
 using TeaPie.Http;
+using TeaPie.Http.Retrying;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
@@ -146,7 +147,8 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             applicationContext,
             provider.GetRequiredService<IPipeline>(),
-            provider.GetRequiredService<ITestResultsSummaryReporter>());
+            provider.GetRequiredService<ITestResultsSummaryReporter>(),
+            provider.GetRequiredService<IRetryingStrategiesRegistry>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

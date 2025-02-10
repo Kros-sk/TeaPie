@@ -24,6 +24,8 @@ internal static class ScriptsConstants
 
     public static readonly IEnumerable<string> DefaultImports = [
         "Microsoft.Extensions.Logging",
+        "Polly",
+        "Polly.Retry",
         "System",
         "System.Collections.Generic",
         "System.IO",
@@ -33,6 +35,7 @@ internal static class ScriptsConstants
         "System.Threading.Tasks",
         "TeaPie",
         "TeaPie.Http",
+        "TeaPie.Http.Retrying",
         "TeaPie.Json",
         "TeaPie.Reporting",
         "TeaPie.Testing",

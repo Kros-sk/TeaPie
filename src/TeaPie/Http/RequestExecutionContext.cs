@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Polly;
+using System.Diagnostics;
 using TeaPie.TestCases;
 using File = TeaPie.StructureExploration.File;
 
@@ -13,4 +14,5 @@ internal class RequestExecutionContext(File requestFile, TestCaseExecutionContex
     public string? RawContent { get; set; }
     public HttpRequestMessage? Request { get; set; }
     public HttpResponseMessage? Response { get; set; }
+    public ResiliencePipeline? ResiliencePipeline { get; set; }
 }

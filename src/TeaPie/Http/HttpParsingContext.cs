@@ -18,4 +18,5 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
     public StringBuilder BodyBuilder { get; } = new();
     public bool IsBody { get; set; }
     public bool IsMethodAndUriResolved { get; set; }
+    public string RetryStrategyName { get; set; } = string.Empty;
 }

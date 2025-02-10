@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
@@ -82,5 +83,6 @@ public class ExecuteScriptStepShould
             Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
             appContext,
             Substitute.For<IPipeline>(),
-            Substitute.For<ITestResultsSummaryReporter>());
+            Substitute.For<ITestResultsSummaryReporter>(),
+            Substitute.For<IRetryingStrategiesRegistry>());
 }

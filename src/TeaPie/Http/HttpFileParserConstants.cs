@@ -21,6 +21,10 @@ internal static class HttpFileParserConstants
     public const string HeadersSelector = "headers";
     public const string WholeBodySelector = "*";
 
+    public const string RetryStrategyDirectiveName = "RETRY-STRATEGY";
+    public const string RetryStrategySelectorDirectivePattern =
+        @"^##\s*" + RetryStrategyDirectiveName + @":\s*(?<StrategyName>.+?)\s*$";
+
     public const string RequestVariablePattern =
         "^" + SimpleNamePattern + @"\" + RequestVariableSeparator +
         "(" + RequestSelector + "|" + ResponseSelector + @")\" + RequestVariableSeparator +

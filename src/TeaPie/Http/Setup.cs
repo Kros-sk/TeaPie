@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Retrying;
 
 namespace TeaPie.Http;
 
@@ -14,6 +15,8 @@ internal static class Setup
         services.AddSingleton<IHeadersHandler, HeadersHandler>();
         services.AddSingleton<IHttpRequestParser, HttpRequestParser>();
         services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
+
+        services.AddSingleton<IRetryingStrategiesRegistry, RetryingStrategiesRegistry>();
 
         return services;
     }

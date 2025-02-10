@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
+using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.TestCases;
@@ -50,5 +51,6 @@ public class TeaPieReportingExtensionsShould
             Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
             new ApplicationContextBuilder().Build(),
             Substitute.For<IPipeline>(),
-            reporter);
+            reporter,
+            Substitute.For<IRetryingStrategiesRegistry>());
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
+using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.TestCases;
@@ -19,10 +20,18 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
         IPipeline pipeline,
-        ITestResultsSummaryReporter reporter)
+        ITestResultsSummaryReporter reporter,
+        IRetryingStrategiesRegistry retryingStrategiesRegistry)
     {
-        Instance =
-            new(variables, logger, tester, currentTestCaseExecutionContextAccessor, applicationContext, pipeline, reporter);
+        Instance = new(
+            variables,
+            logger,
+            tester,
+            currentTestCaseExecutionContextAccessor,
+            applicationContext,
+            pipeline,
+            reporter,
+            retryingStrategiesRegistry);
 
         return Instance;
     }
@@ -34,7 +43,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
         IPipeline pipeline,
-        ITestResultsSummaryReporter reporter)
+        ITestResultsSummaryReporter reporter,
+        IRetryingStrategiesRegistry retryingStrategiesRegistry)
     {
         _variables = variables;
         Logger = logger;
@@ -43,6 +53,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _applicationContext = applicationContext;
         _pipeline = pipeline;
         _reporter = reporter;
+        _retryingStrategiesRegistry = retryingStrategiesRegistry;
     }
 
     private readonly ApplicationContext _applicationContext;
@@ -133,5 +144,9 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Reporting
     internal readonly ITestResultsSummaryReporter _reporter;
+    #endregion
+
+    #region Re-trying
+    internal readonly IRetryingStrategiesRegistry _retryingStrategiesRegistry;
     #endregion
 }

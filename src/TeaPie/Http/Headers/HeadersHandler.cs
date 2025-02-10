@@ -27,6 +27,37 @@ internal class HeadersHandler : IHeadersHandler
         }
     }
 
+    public void SetHeaders(HttpRequestMessage source, HttpRequestMessage target)
+    {
+        CopySpecificHeaders(source, target);
+        CopyBasicHeaders(source, target);
+    }
+
+    private static void CopyBasicHeaders(HttpRequestMessage source, HttpRequestMessage target)
+    {
+        foreach (var header in source.Headers)
+        {
+            if (!target.Headers.TryAddWithoutValidation(header.Key, header.Value))
+            {
+                throw new InvalidOperationException($"Unable to add header with name {header.Value}");
+            }
+        }
+    }
+
+    private void CopySpecificHeaders(HttpRequestMessage source, HttpRequestMessage target)
+    {
+        foreach (var handler in _handlers)
+        {
+            var header = handler.GetHeader(source);
+            HeaderNameValidator.CheckValue(header);
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                handler.SetHeader(header, target);
+            }
+        }
+    }
+
     private void SetHeader(KeyValuePair<string, string> header, HttpRequestMessage requestMessage)
     {
         var handler = GetHandler(header.Key);
@@ -67,4 +98,5 @@ internal class HeadersHandler : IHeadersHandler
     public static void CheckIfContentExists(string headerName, [NotNull] HttpContent? content)
         => _ = content
             ?? throw new InvalidOperationException($"Unable to set header '{headerName}' when body's content is null.");
+
 }
