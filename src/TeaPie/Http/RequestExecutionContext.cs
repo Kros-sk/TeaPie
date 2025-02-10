@@ -14,5 +14,5 @@ internal class RequestExecutionContext(File requestFile, TestCaseExecutionContex
     public string? RawContent { get; set; }
     public HttpRequestMessage? Request { get; set; }
     public HttpResponseMessage? Response { get; set; }
-    public ResiliencePipeline? ResiliencePipeline { get; set; }
+    public ResiliencePipeline<HttpResponseMessage>? ResiliencePipeline { get; set; }
 }

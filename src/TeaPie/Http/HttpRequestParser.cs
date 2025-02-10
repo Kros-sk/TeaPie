@@ -78,11 +78,8 @@ internal class HttpRequestParser(
             requestExecutionContext.Name = parsingContext.RequestName;
         }
 
-        if (!string.IsNullOrEmpty(parsingContext.RetryStrategyName))
-        {
-            requestExecutionContext.ResiliencePipeline =
-                _retryingStrategiesRegistry.GetStrategy(parsingContext.RetryStrategyName);
-        }
+        requestExecutionContext.ResiliencePipeline =
+            _retryingStrategiesRegistry.GetStrategy(parsingContext.RetryStrategyName);
     }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)

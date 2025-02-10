@@ -15,9 +15,9 @@ internal class ExecuteRequestStep(
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        ValidateContext(out var requestExecutionContext, out var request);
+        ValidateContext(out var requestExecutionContext, out var request, out var resiliencePipeline);
 
-        var response = await ExecuteRequest(context, requestExecutionContext, request, cancellationToken);
+        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
         requestExecutionContext.Response = response;
         requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
@@ -26,13 +26,14 @@ internal class ExecuteRequestStep(
     private async Task<HttpResponseMessage> ExecuteRequest(
         ApplicationContext context,
         RequestExecutionContext requestExecutionContext,
+        ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)
     {
         context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request!.RequestUri);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequest(requestExecutionContext, request, client, cancellationToken);
+        var response = await ExecuteRequest(requestExecutionContext, resiliencePipeline, request, client, cancellationToken);
 
         await LogResponse(context.Logger, response);
 
@@ -41,17 +42,7 @@ internal class ExecuteRequestStep(
 
     private async Task<HttpResponseMessage> ExecuteRequest(
         RequestExecutionContext requestExecutionContext,
-        HttpRequestMessage request,
-        HttpClient client,
-        CancellationToken cancellationToken)
-        => requestExecutionContext.ResiliencePipeline is not null
-            ? await ExecuteWithResiliencePipeline(
-                requestExecutionContext, requestExecutionContext.ResiliencePipeline, request, client, cancellationToken)
-            : await client.SendAsync(request, cancellationToken);
-
-    private async Task<HttpResponseMessage> ExecuteWithResiliencePipeline(
-        RequestExecutionContext requestExecutionContext,
-        ResiliencePipeline resiliencePipeline,
+        ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
         HttpClient client,
         CancellationToken cancellationToken)
@@ -65,7 +56,6 @@ internal class ExecuteRequestStep(
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-
             return await client.SendAsync(request, token);
         }, cancellationToken);
     }
@@ -111,11 +101,16 @@ internal class ExecuteRequestStep(
         logger.LogTrace("Body: {NewLine}{BodyContent}", Environment.NewLine, await response.GetBodyAsync());
     }
 
-    private void ValidateContext(out RequestExecutionContext requestExecutionContext, out HttpRequestMessage request)
+    private void ValidateContext(
+        out RequestExecutionContext requestExecutionContext,
+        out HttpRequestMessage request,
+        out ResiliencePipeline<HttpResponseMessage> resiliencePipeline)
     {
         const string activityName = "execute request";
         ExecutionContextValidator.Validate(_requestExecutionContextAccessor, out requestExecutionContext, activityName);
         ExecutionContextValidator.ValidateParameter(
             requestExecutionContext.Request, out request, activityName, "request message");
+        ExecutionContextValidator.ValidateParameter(
+            requestExecutionContext.ResiliencePipeline, out resiliencePipeline, activityName, "resilience pipeline");
     }
 }

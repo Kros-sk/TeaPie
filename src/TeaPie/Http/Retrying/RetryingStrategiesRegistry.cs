@@ -5,23 +5,27 @@ namespace TeaPie.Http.Retrying;
 
 internal interface IRetryingStrategiesRegistry
 {
-    void RegisterStrategy(string name, RetryStrategyOptions retryStrategy);
+    void RegisterStrategy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy);
 
-    ResiliencePipeline GetStrategy(string name);
+    ResiliencePipeline<HttpResponseMessage> GetStrategy(string name);
 }
 
 internal class RetryingStrategiesRegistry : IRetryingStrategiesRegistry
 {
-    private readonly Dictionary<string, ResiliencePipeline> _registry = [];
+    private readonly Dictionary<string, ResiliencePipeline<HttpResponseMessage>> _registry =
+        new()
+        {
+            { string.Empty, ResiliencePipeline<HttpResponseMessage>.Empty }
+        };
 
-    public void RegisterStrategy(string name, RetryStrategyOptions retryStrategy)
+    public void RegisterStrategy(string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
     {
-        var pipeline = new ResiliencePipelineBuilder()
+        var pipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
             .AddRetry(retryStrategy)
             .Build();
 
         _registry.Add(name, pipeline);
     }
 
-    public ResiliencePipeline GetStrategy(string name) => _registry[name];
+    public ResiliencePipeline<HttpResponseMessage> GetStrategy(string name) => _registry[name];
 }
