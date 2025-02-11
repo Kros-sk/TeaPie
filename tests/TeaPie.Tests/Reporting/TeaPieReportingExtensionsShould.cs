@@ -52,5 +52,5 @@ public class TeaPieReportingExtensionsShould
             new ApplicationContextBuilder().Build(),
             Substitute.For<IPipeline>(),
             reporter,
-            Substitute.For<IRetryingPoliciesRegistry>());
+            Substitute.For<IRetryStrategiesRegistry>());
 }

@@ -16,7 +16,7 @@ internal static class Setup
         services.AddSingleton<IHttpRequestParser, HttpRequestParser>();
         services.AddSingleton<IHttpRequestHeadersProvider, HttpRequestHeadersProvider>();
 
-        services.AddSingleton<IRetryingPoliciesRegistry, RetryingStrategiesRegistry>();
+        services.AddSingleton<IRetryStrategiesRegistry, RetryStrategiesRegistry>();
 
         return services;
     }

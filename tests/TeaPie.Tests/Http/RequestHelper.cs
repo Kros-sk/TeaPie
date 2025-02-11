@@ -13,7 +13,8 @@ internal static class RequestHelper
 
         return new RequestExecutionContext(file)
         {
-            RawContent = readFile ? System.IO.File.ReadAllText(path) : null
+            RawContent = readFile ? System.IO.File.ReadAllText(path) : null,
+            ResiliencePipeline = Polly.ResiliencePipeline<HttpResponseMessage>.Empty
         };
     }
 

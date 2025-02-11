@@ -96,5 +96,5 @@ public class TeaPieTestingExtensionsShould
              new ApplicationContextBuilder().Build(),
             Substitute.For<IPipeline>(),
             Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<IRetryingPoliciesRegistry>());
+            Substitute.For<IRetryStrategiesRegistry>());
 }

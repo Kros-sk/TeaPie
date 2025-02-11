@@ -211,7 +211,7 @@ public class HttpRequestParserShould
         var headersResolver = new HeadersHandler();
 
         var parser = new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, Substitute.For<IRetryingPoliciesRegistry>());
+            headersProvider, variablesResolver, headersResolver, Substitute.For<IRetryingHandler>());
 
         var folder =
             new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);

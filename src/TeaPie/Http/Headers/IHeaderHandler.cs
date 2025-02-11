@@ -2,7 +2,11 @@
 
 internal interface IHeaderHandler
 {
-    bool CanResolve(string name);
+    string HeaderName { get; }
+
+    bool CanResolve(string name, HttpRequestMessage responseMessage);
+
+    bool CanResolve(string name, HttpResponseMessage requestMessage);
 
     void SetHeader(string value, HttpRequestMessage requestMessage);
 

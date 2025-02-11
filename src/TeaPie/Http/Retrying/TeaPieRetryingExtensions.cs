@@ -6,5 +6,5 @@ public static class TeaPieRetryingExtensions
 {
     public static void RegisterRetryPolicy(
         this TeaPie teaPie, string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
-        => teaPie._retryingStrategiesRegistry.RegisterPolicy(name, retryStrategy);
+        => teaPie._retryingStrategiesRegistry.RegisterStrategy(name, retryStrategy);
 }
