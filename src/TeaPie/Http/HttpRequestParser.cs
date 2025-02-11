@@ -14,13 +14,13 @@ internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
     IVariablesResolver variablesResolver,
     IHeadersHandler headersResolver,
-    IRetryingPoliciesRegistry retryingStrategiesRegistry)
+    IRetryingHandler retryingHandler)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
     private readonly IHeadersHandler _headersResolver = headersResolver;
-    private readonly IRetryingPoliciesRegistry _retryingStrategiesRegistry = retryingStrategiesRegistry;
+    private readonly IRetryingHandler _retryingHandler = retryingHandler;
 
     private readonly IEnumerable<ILineParser> _lineParsers =
     [
@@ -79,8 +79,21 @@ internal class HttpRequestParser(
             requestExecutionContext.Name = parsingContext.RequestName;
         }
 
-        requestExecutionContext.ResiliencePipeline =
-            _retryingStrategiesRegistry.GetResiliencePipeline(parsingContext.RetryStrategyName);
+        ResolveRetryOptions(requestExecutionContext, parsingContext);
+    }
+
+    private void ResolveRetryOptions(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+    {
+        if (parsingContext.RetryUntilStatusCodes.Any())
+        {
+            requestExecutionContext.ResiliencePipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(
+                parsingContext.RetryUntilStatusCodes, parsingContext.RetryStrategyName);
+        }
+        else
+        {
+            requestExecutionContext.ResiliencePipeline =
+                _retryingHandler.GetResiliencePipeline(parsingContext.RetryStrategyName);
+        }
     }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)
