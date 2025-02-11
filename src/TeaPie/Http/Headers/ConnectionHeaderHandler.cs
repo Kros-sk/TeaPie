@@ -6,12 +6,6 @@ internal class ConnectionHeaderHandler : IHeaderHandler
 {
     public string HeaderName => "Connection";
 
-    public bool CanResolve(string name, HttpRequestMessage responseMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
-    public bool CanResolve(string name, HttpResponseMessage requestMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
     public void SetHeader(string value, HttpRequestMessage requestMessage)
     {
         foreach (var val in value.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))

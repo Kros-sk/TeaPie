@@ -4,9 +4,11 @@ internal interface IHeaderHandler
 {
     string HeaderName { get; }
 
-    bool CanResolve(string name, HttpRequestMessage responseMessage);
+    bool CanResolve(string name, HttpRequestMessage responseMessage)
+        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
 
-    bool CanResolve(string name, HttpResponseMessage requestMessage);
+    bool CanResolve(string name, HttpResponseMessage requestMessage)
+        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
 
     void SetHeader(string value, HttpRequestMessage requestMessage);
 

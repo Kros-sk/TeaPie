@@ -6,12 +6,6 @@ internal class DefaultHeaderHandler(string headerName) : IHeaderHandler
 {
     public string HeaderName { get; } = headerName;
 
-    public bool CanResolve(string name, HttpRequestMessage responseMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
-    public bool CanResolve(string name, HttpResponseMessage requestMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
     public void SetHeader(string value, HttpRequestMessage requestMessage)
     {
         if (!requestMessage.Headers.TryAddWithoutValidation(HeaderName, value))
