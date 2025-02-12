@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using TeaPie.Http;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Parsing;
 
 namespace TeaPie.Variables;
 

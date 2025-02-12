@@ -1,6 +1,7 @@
 ﻿using Polly;
 using Polly.Retry;
 using System.Net;
+using TeaPie.Http.Parsing;
 using ResiliencePipeline = Polly.ResiliencePipeline<System.Net.Http.HttpResponseMessage>;
 using RetryStrategy = Polly.Retry.RetryStrategyOptions<System.Net.Http.HttpResponseMessage>;
 

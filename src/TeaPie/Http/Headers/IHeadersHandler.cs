@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http.Headers;
+﻿using TeaPie.Http.Parsing;
+
+namespace TeaPie.Http.Headers;
 
 internal interface IHeadersHandler
 {

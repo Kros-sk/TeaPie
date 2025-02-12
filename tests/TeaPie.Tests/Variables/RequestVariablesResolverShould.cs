@@ -5,7 +5,7 @@ using TeaPie.Http;
 using TeaPie.Http.Headers;
 using TeaPie.TestCases;
 using TeaPie.Variables;
-using Consts = TeaPie.Http.HttpFileParserConstants;
+using Consts = TeaPie.Http.Parsing.HttpFileParserConstants;
 
 namespace TeaPie.Tests.Variables;
 

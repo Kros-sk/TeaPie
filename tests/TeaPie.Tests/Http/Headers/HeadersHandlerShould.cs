@@ -3,6 +3,7 @@ using System.Data;
 using System.Net.Http.Headers;
 using TeaPie.Http;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Parsing;
 
 namespace TeaPie.Tests.Http.Headers;
 

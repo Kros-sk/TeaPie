@@ -41,3 +41,12 @@ tp.RegisterReporter((summary) =>
 
 // Logger implementing Microsoft's ILogger is accessible everywhere in the scripts.
 tp.Logger.LogInformation("Start of demo collection testing.");
+
+tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseMessage>
+{
+    MaxRetryAttempts = 3,
+    Delay = TimeSpan.FromMilliseconds(500),
+    BackoffType = DelayBackoffType.Exponential,
+    ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+        .HandleResult(response => true)
+});

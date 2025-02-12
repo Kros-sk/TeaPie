@@ -16,6 +16,6 @@ Content-Type: application/json
 
 ###
 # @name GetCarRequest
+## RETRY-STRATEGY: Default retry
+## RETRY-UNTIL-STATUS: [ 200, 201 ]
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
-
-

@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Parsing;
 
 internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
 {
