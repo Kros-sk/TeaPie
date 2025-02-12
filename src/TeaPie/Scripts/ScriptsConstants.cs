@@ -30,6 +30,7 @@ internal static class ScriptsConstants
         "System.Collections.Generic",
         "System.IO",
         "System.Linq",
+        "System.Net",
         "System.Net.Http",
         "System.Threading",
         "System.Threading.Tasks",

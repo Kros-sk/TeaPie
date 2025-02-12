@@ -74,17 +74,17 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
         RetryStrategy overwriteBy)
         => new()
         {
-            Name = overwriteBy.Name?.Equals("Retry") != true
+            Name = overwriteBy.Name?.Equals(RetryingConstants.DefaultName) != true
                 ? overwriteBy.Name
                 : toBeOverwritten.Name,
 
-            MaxRetryAttempts = overwriteBy.MaxRetryAttempts != 3
+            MaxRetryAttempts = overwriteBy.MaxRetryAttempts != RetryingConstants.MaxRetryCount
                 ? overwriteBy.MaxRetryAttempts
                 : toBeOverwritten.MaxRetryAttempts,
 
             UseJitter = overwriteBy.UseJitter,
 
-            Delay = overwriteBy.Delay != TimeSpan.FromSeconds(2)
+            Delay = overwriteBy.Delay != RetryingConstants.DefaultBaseDelay
                 ? overwriteBy.Delay
                 : toBeOverwritten.Delay,
 
@@ -92,7 +92,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
 
             DelayGenerator = overwriteBy.DelayGenerator ?? toBeOverwritten.DelayGenerator,
 
-            BackoffType = overwriteBy.BackoffType != Polly.DelayBackoffType.Constant
+            BackoffType = overwriteBy.BackoffType != RetryingConstants.DefaultBackoffType
                 ? overwriteBy.BackoffType
                 : toBeOverwritten.BackoffType,
 
