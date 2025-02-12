@@ -96,39 +96,59 @@ public class RetryingHandlerShould
         Equal(1, attempts);
     }
 
-    //[Fact]
-    //public async Task StopRetryingWhenStatusCodeIsNotInList()
-    //{
-    //    var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
+    [Fact]
+    public async Task RetryMaximumNumberOfAttemptsWhenStatusCodeIsNotInList()
+    {
+        var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
+        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes);
 
-    //    var baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
-    //    {
-    //        Name = "BaseRetry",
-    //        MaxRetryAttempts = 5, // Should NOT matter since 404 isn't in retry conditions
-    //        Delay = TimeSpan.FromMilliseconds(50),
-    //        ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-    //            .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError) // 500
-    //    };
+        var executionCount = 0;
 
-    //    _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+        async ValueTask<HttpResponseMessage> SimulatedHttpCall(CancellationToken token)
+        {
+            executionCount++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.NotFound); // 404 (should not retry)
+        }
 
-    //    var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes, "BaseRetry");
+        var response = await pipeline.ExecuteAsync(SimulatedHttpCall, CancellationToken.None);
 
-    //    int executionCount = 0;
+        Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Equal(RetryingConstants.DefaultRetryCount + 1, executionCount);
+    }
 
-    //    async ValueTask<HttpResponseMessage> SimulatedHttpCall(CancellationToken token)
-    //    {
-    //        executionCount++;
-    //        await Task.CompletedTask;
-    //        return new HttpResponseMessage(HttpStatusCode.NotFound); // 404 (should not retry)
-    //    }
+    [Fact]
+    public async Task RetryMaximumNumberOfAttemptsWhenStatusCodeIsNotInListAndRetryStrategyIsMerged()
+    {
+        var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
 
-    //    var response = await pipeline.ExecuteAsync(SimulatedHttpCall, default);
+        var baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
+        {
+            Name = "BaseRetry",
+            MaxRetryAttempts = 5,
+            Delay = TimeSpan.FromMilliseconds(50),
+            ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+                .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError)
+        };
 
-    //    // ✅ Assertions
-    //    Equal(HttpStatusCode.NotFound, response.StatusCode); // Final response should be 404
-    //    Equal(1, executionCount); // ❗ The pipeline should NOT retry
-    //}
+        _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+
+        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes, "BaseRetry");
+
+        var executionCount = 0;
+
+        async ValueTask<HttpResponseMessage> SimulatedHttpCall(CancellationToken token)
+        {
+            executionCount++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.NotFound); // 404 (should not retry)
+        }
+
+        var response = await pipeline.ExecuteAsync(SimulatedHttpCall, CancellationToken.None);
+
+        Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Equal(5 + 1, executionCount);
+    }
 
     [Fact]
     public async Task RetryUntilStatusCodesAreMatched()
