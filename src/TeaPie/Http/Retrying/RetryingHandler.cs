@@ -78,7 +78,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
                 ? overwriteBy.Name
                 : toBeOverwritten.Name,
 
-            MaxRetryAttempts = overwriteBy.MaxRetryAttempts != RetryingConstants.MaxRetryCount
+            MaxRetryAttempts = overwriteBy.MaxRetryAttempts != RetryingConstants.DefaultRetryCount
                 ? overwriteBy.MaxRetryAttempts
                 : toBeOverwritten.MaxRetryAttempts,
 
