@@ -29,6 +29,18 @@ internal static class HttpFileParserConstants
     public const string RetryUntilStatusCodesDirectivePattern =
         @"^##\s*" + RetryUntilStatusCodesDirectiveName + @":\s*\[(?<StatusCodes>[0-9,\s]+)\]\s*$";
 
+    public const string RetryMaxAttemptsDirectiveName = "RETRY-MAX-ATTEMPTS";
+    public const string RetryMaxAttemptsDirectivePattern =
+        @"^##\s*" + RetryMaxAttemptsDirectiveName + @":\s*(?<MaxAttempts>\d+)\s*$";
+
+    public const string RetryBackoffTypeDirectiveName = "RETRY-BACKOFF-TYPE";
+    public const string RetryBackoffTypeDirectivePattern =
+        @"^##\s*" + RetryBackoffTypeDirectiveName + @":\s*(?<BackoffType>\w+)\s*$";
+
+    public const string RetryMaxDelayDirectiveName = "RETRY-MAX-DELAY";
+    public const string RetryMaxDelayDirectivePattern =
+        @"^##\s*" + RetryMaxDelayDirectiveName + @":\s*(?<MaxDelay>\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s*$";
+
     public const string RequestVariablePattern =
         "^" + SimpleNamePattern + @"\" + RequestVariableSeparator +
         "(" + RequestSelector + "|" + ResponseSelector + @")\" + RequestVariableSeparator +

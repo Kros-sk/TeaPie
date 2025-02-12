@@ -16,7 +16,7 @@ internal interface IRetryingHandler
     ResiliencePipeline GetResiliencePipeline(RetryStrategy retryStrategy);
 
     ResiliencePipeline GetRetryUntilStatusCodesResiliencePipeline(
-        IList<HttpStatusCode> statusCodes, string nameOfRetryStrategy = "");
+        IReadOnlyList<HttpStatusCode> statusCodes, string nameOfRetryStrategy = "");
 }
 
 internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHandler
@@ -108,7 +108,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
             .Build();
 
     public ResiliencePipeline GetRetryUntilStatusCodesResiliencePipeline(
-        IList<HttpStatusCode> statusCodes,
+        IReadOnlyList<HttpStatusCode> statusCodes,
         string baseRetryStrategyName = "")
     {
         var strategyName = GetStrategyName(statusCodes, baseRetryStrategyName);
@@ -117,7 +117,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
         return BuildPipeline(retryStrategy);
     }
 
-    private RetryStrategy GetRetryStrategy(IList<HttpStatusCode> statusCodes, string strategyName)
+    private RetryStrategy GetRetryStrategy(IReadOnlyList<HttpStatusCode> statusCodes, string strategyName)
     {
         var retryStrategy = _retryStrategiesRegistry.GetStrategy(strategyName);
         var retryStrategyWithCondition = new RetryStrategy()
@@ -129,7 +129,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
         return MergeRetryStrategies(retryStrategy, retryStrategyWithCondition);
     }
 
-    private string GetStrategyName(IList<HttpStatusCode> statusCodes, string baseStrategyName)
+    private string GetStrategyName(IReadOnlyList<HttpStatusCode> statusCodes, string baseStrategyName)
     {
         if (baseStrategyName.Equals(string.Empty))
         {
@@ -158,6 +158,6 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
             return previousCondition || newCondition;
         };
 
-    private static string GetNameForRetryUntilStatusCodes(IList<HttpStatusCode> statusCodes)
+    private static string GetNameForRetryUntilStatusCodes(IReadOnlyList<HttpStatusCode> statusCodes)
         => HttpFileParserConstants.RetryStrategyDirectiveName + "-" + string.Join('-', statusCodes.Select(sc => (int)sc));
 }
