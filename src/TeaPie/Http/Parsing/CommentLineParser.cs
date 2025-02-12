@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Parsing;
 
 internal partial class CommentLineParser : ILineParser
 {

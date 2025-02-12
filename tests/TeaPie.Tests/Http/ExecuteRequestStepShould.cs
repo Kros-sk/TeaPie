@@ -4,6 +4,7 @@ using NSubstitute;
 using System.Net;
 using TeaPie.Http;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
 using TeaPie.TestCases;
 using TeaPie.Variables;

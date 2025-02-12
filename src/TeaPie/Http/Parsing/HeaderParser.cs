@@ -1,6 +1,6 @@
 ﻿using TeaPie.Http.Headers;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Parsing;
 
 internal class HeaderParser : ILineParser
 {

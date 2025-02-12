@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Http;
+﻿namespace TeaPie.Http.Parsing;
 
 internal class LineWithDirectiveParser : ILineParser
 {

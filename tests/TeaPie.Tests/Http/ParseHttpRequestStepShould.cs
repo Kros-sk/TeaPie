@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using TeaPie.Http;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
 using TeaPie.TestCases;
 using TeaPie.Variables;

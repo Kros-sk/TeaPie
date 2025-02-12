@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http.Headers;
+using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
 
 namespace TeaPie.Http;

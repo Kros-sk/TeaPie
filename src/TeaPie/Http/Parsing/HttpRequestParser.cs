@@ -3,7 +3,7 @@ using TeaPie.Http.Headers;
 using TeaPie.Http.Retrying;
 using TeaPie.Variables;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Parsing;
 
 internal interface IHttpRequestParser
 {
