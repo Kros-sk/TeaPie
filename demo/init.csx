@@ -1,4 +1,4 @@
-// Any script named 'init.csx' within the collection is treated as an initialization script
+﻿// Any script named 'init.csx' within the collection is treated as an initialization script
 // and is automatically executed before the first test case.
 //
 // Users can specify a custom initialization script using the --init-script option.
@@ -29,7 +29,7 @@ tp.RegisterReporter((summary) =>
     else
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Fail :( {summary.PercentageOfFailedTests}% tests failed.");
+        Console.WriteLine($"Fail :( {summary.PercentageOfFailedTests.ToString("f2")}% tests failed.");
     }
 
     Console.ResetColor();
@@ -42,11 +42,13 @@ tp.RegisterReporter((summary) =>
 // Logger implementing Microsoft's ILogger is accessible everywhere in the scripts.
 tp.Logger.LogInformation("Start of demo collection testing.");
 
+// Users can register custom retry strategies that can be reused across multiple requests by referencing them by name.
 tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseMessage>
 {
     MaxRetryAttempts = 3,
     Delay = TimeSpan.FromMilliseconds(500),
+    MaxDelay = TimeSpan.FromSeconds(2),
     BackoffType = DelayBackoffType.Exponential,
     ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-        .HandleResult(response => true)
+        .HandleResult(response => true)    // Condition determining whether a request should be retried. This one retries always.
 });

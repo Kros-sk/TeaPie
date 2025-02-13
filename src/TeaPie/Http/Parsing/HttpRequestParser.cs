@@ -78,21 +78,11 @@ internal class HttpRequestParser(
             requestExecutionContext.Name = parsingContext.RequestName;
         }
 
-        ResolveRetryOptions(requestExecutionContext, parsingContext);
-    }
-
-    private void ResolveRetryOptions(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
-    {
-        if (parsingContext.RetryUntilStatusCodes.Any())
-        {
-            requestExecutionContext.ResiliencePipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(
-                parsingContext.RetryUntilStatusCodes, parsingContext.RetryStrategyName);
-        }
-        else
-        {
-            requestExecutionContext.ResiliencePipeline =
-                _retryingHandler.GetResiliencePipeline(parsingContext.RetryStrategyName);
-        }
+        requestExecutionContext.ResiliencePipeline =
+            _retryingHandler.GetResiliencePipeline(
+                parsingContext.RetryStrategyName,
+                parsingContext.ExplicitRetryStrategy,
+                parsingContext.RetryUntilStatusCodes);
     }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)

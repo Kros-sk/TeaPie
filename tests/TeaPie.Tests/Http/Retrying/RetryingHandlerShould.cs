@@ -1,6 +1,7 @@
 ﻿using Polly;
 using Polly.Retry;
 using System.Net;
+using System.Runtime.CompilerServices;
 using TeaPie.Http.Retrying;
 using static Xunit.Assert;
 
@@ -40,7 +41,8 @@ public class RetryingHandlerShould
     [Fact]
     public void ThrowExceptionWhenFetchingNonexistentResiliencePipeline()
     {
-        var exception = Throws<InvalidOperationException>(() => _retryingHandler.GetResiliencePipeline("NonexistentStrategy"));
+        var exception = Throws<InvalidOperationException>(()
+            => _retryingHandler.GetResiliencePipeline("NonexistentStrategy", null, []));
 
         Equal("Unable to find retry strategy with name 'NonexistentStrategy'.", exception.Message);
     }
@@ -51,16 +53,16 @@ public class RetryingHandlerShould
         var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = "ExistingRetry" };
         _retryingHandler.RegisterRetryStrategy(retryStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline("ExistingRetry");
+        var pipeline = _retryingHandler.GetResiliencePipeline("ExistingRetry", null, []);
 
         NotNull(pipeline);
     }
 
     [Fact]
-    public async Task RetryUntilMatchingStatusCodeWhenUsingRetryUntilStatusCodesPipeline()
+    public async Task RetryUntilMatchingStatusCodes()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Created };
-        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes);
+        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
 
         var attempts = 0;
         var failingResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -80,7 +82,7 @@ public class RetryingHandlerShould
     public async Task StopRetryingWhenMatchingStatusCodeIsReceived()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
-        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes);
+        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
 
         var attempts = 0;
         var successResponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -100,7 +102,7 @@ public class RetryingHandlerShould
     public async Task RetryMaximumNumberOfAttemptsWhenStatusCodeIsNotInList()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
-        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes);
+        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
 
         var executionCount = 0;
 
@@ -108,7 +110,7 @@ public class RetryingHandlerShould
         {
             executionCount++;
             await Task.CompletedTask;
-            return new HttpResponseMessage(HttpStatusCode.NotFound); // 404 (should not retry)
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
         var response = await pipeline.ExecuteAsync(SimulatedHttpCall, CancellationToken.None);
@@ -133,7 +135,7 @@ public class RetryingHandlerShould
 
         _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
 
-        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes, "BaseRetry");
+        var pipeline = _retryingHandler.GetResiliencePipeline("BaseRetry", null, statusCodes);
 
         var executionCount = 0;
 
@@ -141,7 +143,7 @@ public class RetryingHandlerShould
         {
             executionCount++;
             await Task.CompletedTask;
-            return new HttpResponseMessage(HttpStatusCode.NotFound); // 404 (should not retry)
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
         var response = await pipeline.ExecuteAsync(SimulatedHttpCall, CancellationToken.None);
@@ -166,7 +168,7 @@ public class RetryingHandlerShould
 
         _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
 
-        var pipeline = _retryingHandler.GetRetryUntilStatusCodesResiliencePipeline(statusCodes, "BaseRetry");
+        var pipeline = _retryingHandler.GetResiliencePipeline("BaseRetry", null, statusCodes);
 
         var executionCount = 0;
 
@@ -188,4 +190,274 @@ public class RetryingHandlerShould
         Equal(HttpStatusCode.OK, response.StatusCode);
         Equal(3, executionCount);
     }
+
+    [Theory]
+    [MemberData(nameof(GetVariousCombinationsOfEntryParameters))]
+    public async Task CreateResiliencePipelineCorrectlyFromMergedRetryStrategies(
+        string baseStrategyName,
+        RetryStrategyOptions<HttpResponseMessage>? explicitRetryStrategy,
+        IReadOnlyList<HttpStatusCode> statusCodes,
+        int expectedNumberOfExecutions,
+        HttpStatusCode expectedStatusCode)
+    {
+        var baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
+        {
+            Name = "BaseRetry",
+            MaxRetryAttempts = 5,
+            Delay = TimeSpan.FromMilliseconds(50)
+        };
+
+        _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+
+        var pipeline = _retryingHandler.GetResiliencePipeline(baseStrategyName, explicitRetryStrategy, statusCodes);
+
+        var executionCount = 0;
+
+        async ValueTask<HttpResponseMessage> SimulatedHttpCall(CancellationToken token)
+        {
+            executionCount++;
+            await Task.CompletedTask;
+            return executionCount switch
+            {
+                1 => new HttpResponseMessage(HttpStatusCode.InternalServerError),
+                2 => new HttpResponseMessage(HttpStatusCode.BadGateway),
+                3 => new HttpResponseMessage(HttpStatusCode.OK),
+                _ => new HttpResponseMessage(HttpStatusCode.OK)
+            };
+        }
+
+        var response = await pipeline.ExecuteAsync(SimulatedHttpCall, default);
+
+        Equal(expectedStatusCode, response.StatusCode);
+        Equal(expectedNumberOfExecutions, executionCount);
+    }
+
+    public static IEnumerable<object?[]> GetVariousCombinationsOfEntryParameters()
+        =>
+        [
+            [
+                string.Empty,
+                null,
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                null,
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                2,
+                HttpStatusCode.BadGateway
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+                        [
+                string.Empty,
+                null,
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                null,
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                2,
+                HttpStatusCode.BadGateway
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                string.Empty,
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                null,
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                null,
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                2,
+                HttpStatusCode.BadGateway
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                null,
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                null,
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>(),
+                1,
+                HttpStatusCode.InternalServerError
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxRetryAttempts = 1 },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                2,
+                HttpStatusCode.BadGateway
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { MaxDelay = TimeSpan.FromMilliseconds(100) },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+            [
+                "BaseRetry",
+                new RetryStrategyOptions<HttpResponseMessage>() { BackoffType = DelayBackoffType.Linear },
+                new List<HttpStatusCode>() { HttpStatusCode.OK },
+                3,
+                HttpStatusCode.OK
+            ],
+        ];
 }

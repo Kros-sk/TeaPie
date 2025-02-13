@@ -3,7 +3,9 @@
 internal class MethodAndUriParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
-        => !context.IsMethodAndUriResolved && !context.IsBody && !string.IsNullOrWhiteSpace(line);
+        => !context.IsMethodAndUriResolved && !context.IsBody && !string.IsNullOrWhiteSpace(line)
+        && !line.TrimStart().StartsWith(HttpFileParserConstants.HttpCommentPrefix)
+        && !line.TrimStart().StartsWith(HttpFileParserConstants.HttpCommentAltPrefix);
 
     public void Parse(string line, HttpParsingContext context)
     {

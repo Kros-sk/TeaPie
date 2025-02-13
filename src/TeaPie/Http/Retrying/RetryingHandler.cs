@@ -11,12 +11,8 @@ internal interface IRetryingHandler
 {
     void RegisterRetryStrategy(RetryStrategy retryStrategy);
 
-    ResiliencePipeline GetResiliencePipeline(string name);
-
-    ResiliencePipeline GetResiliencePipeline(RetryStrategy retryStrategy);
-
-    ResiliencePipeline GetRetryUntilStatusCodesResiliencePipeline(
-        IReadOnlyList<HttpStatusCode> statusCodes, string nameOfRetryStrategy = "");
+    ResiliencePipeline GetResiliencePipeline(
+        string nameOfBaseStrategy, RetryStrategy? explicitlyOverridenStrategy, IReadOnlyList<HttpStatusCode> statusCodes);
 }
 
 internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHandler
@@ -35,39 +31,52 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
         _retryStrategiesRegistry.RegisterStrategy(name, retryStrategy);
     }
 
-    private static void CheckName(RetryStrategy retryStrategy, out string name, string errorMessage)
-        => name = retryStrategy.Name ?? throw new InvalidOperationException(errorMessage);
-
-    public ResiliencePipeline GetResiliencePipeline(string name)
+    public ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(
+        string nameOfBaseRetryStrategy, RetryStrategy? overridRetryStrategy, IReadOnlyList<HttpStatusCode> statusCodes)
     {
-        if (!_retryStrategiesRegistry.IsStrategyRegisterd(name))
-        {
-            throw new InvalidOperationException($"Unable to find retry strategy with name '{name}'.");
-        }
+        CheckAndResolveBaseRetryStrategy(nameOfBaseRetryStrategy, out var finalRetryStrategy, out var nameOfFinalStrategy);
+        ApplyExplicitOverridesIfAny(overridRetryStrategy, ref finalRetryStrategy, ref nameOfFinalStrategy);
+        ApplyRetryUntilStatusCodesConditionIfAny(statusCodes, ref finalRetryStrategy, ref nameOfFinalStrategy);
 
-        var retryStrategy = _retryStrategiesRegistry.GetStrategy(name);
-
-        if (!_resiliencePipelines.TryGetValue(name, out var pipeline))
-        {
-            pipeline = BuildPipeline(retryStrategy);
-
-            _resiliencePipelines[name] = pipeline;
-        }
-
-        return pipeline;
+        return GetResiliencePipeline(nameOfFinalStrategy, finalRetryStrategy);
     }
 
-    public ResiliencePipeline GetResiliencePipeline(RetryStrategy retryStrategy)
+    private void ApplyRetryUntilStatusCodesConditionIfAny(
+        IReadOnlyList<HttpStatusCode> statusCodes,
+        ref RetryStrategy finalRetryStrategy,
+        ref string nameOfFinalStrategy)
     {
-        CheckName(retryStrategy, out var name, "Unable to get the resilience pipeline, if retry strategy doesn't have any name.");
+        if (statusCodes.Any())
+        {
+            nameOfFinalStrategy = GetRetryUntilStatusCodesStrategyName(statusCodes, nameOfFinalStrategy);
+            finalRetryStrategy = GetRetryStrategy(statusCodes, finalRetryStrategy);
+        }
+    }
 
-        _retryStrategiesRegistry.RegisterStrategy(name, retryStrategy);
+    private static void ApplyExplicitOverridesIfAny(
+        RetryStrategy? overrideRetryStrategy,
+        ref RetryStrategy finalRetryStrategy,
+        ref string nameOfFinalStrategy)
+    {
+        if (overrideRetryStrategy is not null)
+        {
+            finalRetryStrategy = MergeRetryStrategies(finalRetryStrategy, overrideRetryStrategy);
+            nameOfFinalStrategy = finalRetryStrategy.Name!;
+        }
+    }
 
-        var pipeline = BuildPipeline(retryStrategy);
+    private void CheckAndResolveBaseRetryStrategy(
+        string nameOfBaseStrategy,
+        out RetryStrategy finalRetryStrategy,
+        out string nameOfFinalStrategy)
+    {
+        if (!_retryStrategiesRegistry.IsStrategyRegisterd(nameOfBaseStrategy))
+        {
+            throw new InvalidOperationException($"Unable to find retry strategy with name '{nameOfBaseStrategy}'.");
+        }
 
-        _resiliencePipelines[name] = pipeline;
-
-        return pipeline;
+        finalRetryStrategy = _retryStrategiesRegistry.GetStrategy(nameOfBaseStrategy);
+        nameOfFinalStrategy = nameOfBaseStrategy;
     }
 
     private static RetryStrategy MergeRetryStrategies(
@@ -99,7 +108,7 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
 
             ShouldHandle = AddNewRetryCondition(toBeOverwritten, overwriteBy),
 
-            OnRetry = overwriteBy.OnRetry ?? toBeOverwritten.OnRetry,
+            OnRetry = overwriteBy.OnRetry ?? toBeOverwritten.OnRetry
         };
 
     private static ResiliencePipeline BuildPipeline(RetryStrategy retryStrategy)
@@ -107,29 +116,18 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
             .AddRetry(retryStrategy)
             .Build();
 
-    public ResiliencePipeline GetRetryUntilStatusCodesResiliencePipeline(
-        IReadOnlyList<HttpStatusCode> statusCodes,
-        string baseRetryStrategyName = "")
+    private static RetryStrategy GetRetryStrategy(IReadOnlyList<HttpStatusCode> statusCodes, RetryStrategy baseRetryStrategy)
     {
-        var strategyName = GetStrategyName(statusCodes, baseRetryStrategyName);
-        var retryStrategy = GetRetryStrategy(statusCodes, strategyName);
-
-        return BuildPipeline(retryStrategy);
-    }
-
-    private RetryStrategy GetRetryStrategy(IReadOnlyList<HttpStatusCode> statusCodes, string strategyName)
-    {
-        var retryStrategy = _retryStrategiesRegistry.GetStrategy(strategyName);
         var retryStrategyWithCondition = new RetryStrategy()
         {
             ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
                 .HandleResult(response => !statusCodes.Contains(response.StatusCode))
         };
 
-        return MergeRetryStrategies(retryStrategy, retryStrategyWithCondition);
+        return MergeRetryStrategies(baseRetryStrategy, retryStrategyWithCondition);
     }
 
-    private string GetStrategyName(IReadOnlyList<HttpStatusCode> statusCodes, string baseStrategyName)
+    private string GetRetryUntilStatusCodesStrategyName(IReadOnlyList<HttpStatusCode> statusCodes, string baseStrategyName)
     {
         if (baseStrategyName.Equals(string.Empty))
         {
@@ -160,4 +158,19 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry) : IRetryingHan
 
     private static string GetNameForRetryUntilStatusCodes(IReadOnlyList<HttpStatusCode> statusCodes)
         => HttpFileParserConstants.RetryStrategyDirectiveName + "-" + string.Join('-', statusCodes.Select(sc => (int)sc));
+
+    private ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(string name, RetryStrategy retryStrategy)
+    {
+        if (!_resiliencePipelines.TryGetValue(name, out var pipeline))
+        {
+            pipeline = BuildPipeline(retryStrategy);
+
+            _resiliencePipelines[name] = pipeline;
+        }
+
+        return pipeline;
+    }
+
+    private static void CheckName(RetryStrategy retryStrategy, out string name, string errorMessage)
+        => name = retryStrategy.Name ?? throw new InvalidOperationException(errorMessage);
 }
