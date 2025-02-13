@@ -13,6 +13,7 @@
     - [Initialization script](#initialization-script)
     - [Pre-request Script](#pre-request-script)
     - [Request File](#request-file)
+    - [Retrying](#retrying)
     - [Post-Response Script](#post-response-script)
     - [Environments](#environments)
     - [Reporting](#reporting)
@@ -186,6 +187,48 @@ For **named requests**, you can access request and response data using the follo
 ```
 
 This gives you comprehensive access to headers and body content of named requests.
+
+### Retrying
+
+TeaPie allows users to **register named retry strategies**, which can be referenced later for request retrying. These strategies define **how and when** requests should be retried. The structure of the retry strategy is defined by the object `RetryStrategyOptions<HttpResponseMessage>` from [Polly.Core](https://github.com/App-vNext/Polly) library.
+
+<!-- omit from toc -->
+#### Registering a Retry Strategy
+
+To create a reusable retry strategy, register it in a script:
+
+```csharp
+tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseMessage>
+{
+    MaxRetryAttempts = 3, // Maximum number of retry attempts
+    Delay = TimeSpan.FromMilliseconds(500),  // Default delay between retries.
+    BackoffType = DelayBackoffType.Exponential, // Defines how delay increases (e.g., Linear, Exponential)
+    ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+        .HandleResult(response => true) // Condition determining whether a request should be retried
+
+    // More properties can be configured (see 'Polly.Core.Retry.RetryStrategyOptions<TResult>' for more information)
+});
+```
+
+<!-- omit from toc -->
+#### Using Retry Directives in `.http` Files
+
+Within `.http` files, you can apply a retry strategy using **retry directives**. These directives allow fine-tuning of request retrying behavior.
+
+```http
+# @name GetCarRequest
+# Applying a named retry strategy and overriding specific properties.
+## RETRY-STRATEGY: Default retry   # Uses the predefined "Default retry" strategy
+## RETRY-MAX-ATTEMPTS: 5           # Overrides max retry attempts
+## RETRY-BACKOFF-TYPE: Linear      # Changes backoff strategy for this request
+## RETRY-MAX-DELAY: 00:00:03       # Limits the maximum delay between retries
+## RETRY-UNTIL-STATUS: [200, 201]  # Retries until one of these status codes is received
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
+```
+
+>💁‍♂️ These **modifications apply only to the current request** and do not alter the registered retry strategy.
+
+Using retry strategies ensures **more resilient test execution**, handling **temporary failures** gracefully while preventing unnecessary retries.
 
 ### Post-Response Script
 
