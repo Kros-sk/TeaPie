@@ -1,7 +1,6 @@
 ﻿using Polly;
 using Polly.Retry;
 using System.Net;
-using System.Runtime.CompilerServices;
 using TeaPie.Http.Retrying;
 using static Xunit.Assert;
 
@@ -62,7 +61,12 @@ public class RetryingHandlerShould
     public async Task RetryUntilMatchingStatusCodes()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Created };
-        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+
+        _retryStrategyRegistry.RegisterStrategy(baseRetryStrategyName, baseRetryStrategy);
+
+        var pipeline = _retryingHandler.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
 
         var attempts = 0;
         var failingResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -102,7 +106,13 @@ public class RetryingHandlerShould
     public async Task RetryMaximumNumberOfAttemptsWhenStatusCodeIsNotInList()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
-        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+
+        _retryStrategyRegistry.RegisterStrategy(baseRetryStrategyName, baseRetryStrategy);
+
+        var pipeline = _retryingHandler.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
 
         var executionCount = 0;
 
@@ -200,12 +210,7 @@ public class RetryingHandlerShould
         int expectedNumberOfExecutions,
         HttpStatusCode expectedStatusCode)
     {
-        var baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
-        {
-            Name = "BaseRetry",
-            MaxRetryAttempts = 5,
-            Delay = TimeSpan.FromMilliseconds(50)
-        };
+        var baseStrategy = GetBaseRetryStrategy(ref baseStrategyName);
 
         _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
 
@@ -230,6 +235,34 @@ public class RetryingHandlerShould
 
         Equal(expectedStatusCode, response.StatusCode);
         Equal(expectedNumberOfExecutions, executionCount);
+    }
+
+    private static RetryStrategyOptions<HttpResponseMessage> GetBaseRetryStrategy(ref string baseStrategyName)
+    {
+        RetryStrategyOptions<HttpResponseMessage> baseStrategy;
+        if (baseStrategyName.Equals(string.Empty))
+        {
+            // Normally, this should be only default retry-strategy-options object, but since
+            // Polly uses delay of 2 seconds... the tests execution takes around 30 seconds...
+            baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
+            {
+                Name = "BaseRetry",
+                Delay = TimeSpan.FromMilliseconds(50)
+            };
+
+            baseStrategyName = baseStrategy.Name;
+        }
+        else
+        {
+            baseStrategy = new RetryStrategyOptions<HttpResponseMessage>
+            {
+                Name = "BaseRetry",
+                MaxRetryAttempts = 5,
+                Delay = TimeSpan.FromMilliseconds(50)
+            };
+        }
+
+        return baseStrategy;
     }
 
     public static IEnumerable<object?[]> GetVariousCombinationsOfEntryParameters()
@@ -291,7 +324,7 @@ public class RetryingHandlerShould
                 3,
                 HttpStatusCode.OK
             ],
-                        [
+            [
                 string.Empty,
                 null,
                 new List<HttpStatusCode>(),

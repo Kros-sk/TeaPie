@@ -9,7 +9,7 @@ using TeaPie.StructureExploration;
 using TeaPie.Variables;
 using File = TeaPie.StructureExploration.File;
 
-namespace TeaPie.Tests.Http;
+namespace TeaPie.Tests.Http.Parsing;
 
 public class HttpRequestParserShould
 {
