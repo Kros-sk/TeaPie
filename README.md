@@ -204,7 +204,7 @@ tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseM
     Delay = TimeSpan.FromMilliseconds(500),  // Default delay between retries.
     BackoffType = DelayBackoffType.Exponential, // Defines how delay increases (e.g., Linear, Exponential)
     ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-        .HandleResult(response => true) // Condition determining whether a request should be retried
+        .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError) // Condition determining whether a request should be retried (Retry, when status code is 500).
 
     // More properties can be configured (see 'Polly.Core.Retry.RetryStrategyOptions<TResult>' for more information)
 });
