@@ -109,6 +109,6 @@ public class ParseHttpRequestStepShould
         var headersResolver = new HeadersHandler();
 
         return new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, Substitute.For<IRetryingHandler>());
+            headersProvider, variablesResolver, headersResolver, Substitute.For<IResiliencePipelineProvider>());
     }
 }

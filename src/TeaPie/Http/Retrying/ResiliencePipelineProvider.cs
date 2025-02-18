@@ -9,42 +9,37 @@ using RetryStrategy = Polly.Retry.RetryStrategyOptions<System.Net.Http.HttpRespo
 
 namespace TeaPie.Http.Retrying;
 
-internal interface IRetryingHandler
+internal interface IResiliencePipelineProvider
 {
-    void RegisterRetryStrategy(RetryStrategy retryStrategy);
-
     ResiliencePipeline GetResiliencePipeline(
         string nameOfBaseStrategy, RetryStrategy? explicitlyOverridenStrategy, IReadOnlyList<HttpStatusCode> statusCodes);
 }
 
-internal class RetryingHandler(IRetryStrategiesRegistry registry, ILogger<RetryingHandler> logger) : IRetryingHandler
+internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogger<ResiliencePipelineProvider> logger)
+    : IResiliencePipelineProvider
 {
-    private readonly IRetryStrategiesRegistry _retryStrategiesRegistry = registry;
-    private readonly ILogger<RetryingHandler> _logger = logger;
+    private readonly IRetryStrategyRegistry _retryStrategyRegistry = registry;
+    private readonly ILogger<ResiliencePipelineProvider> _logger = logger;
 
-    public static ResiliencePipeline DefaultResiliencePipeline =
+    public static readonly ResiliencePipeline DefaultResiliencePipeline =
         ResiliencePipeline.Empty;
 
     private readonly Dictionary<string, ResiliencePipeline> _resiliencePipelines =
         new() { { string.Empty, DefaultResiliencePipeline } };
 
-    public void RegisterRetryStrategy(RetryStrategy retryStrategy)
-    {
-        CheckName(retryStrategy, out var name, "Unable to register retry strategy with 'null' name.");
-        _retryStrategiesRegistry.RegisterStrategy(name, retryStrategy);
-    }
-
     public ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(
         string nameOfBaseRetryStrategy, RetryStrategy? overridRetryStrategy, IReadOnlyList<HttpStatusCode> statusCodes)
     {
-        var altered = false;
+        var isBaseRetryStrategyAltered = false;
         CheckAndResolveBaseRetryStrategy(nameOfBaseRetryStrategy, out var finalRetryStrategy, out var nameOfFinalStrategy);
-        ApplyExplicitOverridesIfAny(overridRetryStrategy, ref finalRetryStrategy, ref nameOfFinalStrategy, ref altered);
-        ApplyRetryUntilStatusCodesConditionIfAny(statusCodes, ref finalRetryStrategy, ref nameOfFinalStrategy, ref altered);
+        ApplyExplicitOverridesIfAny(
+            overridRetryStrategy, ref finalRetryStrategy, ref nameOfFinalStrategy, ref isBaseRetryStrategyAltered);
+        ApplyRetryUntilStatusCodesConditionIfAny(
+            statusCodes, ref finalRetryStrategy, ref nameOfFinalStrategy, ref isBaseRetryStrategyAltered);
 
-        LogUsageOfRetryStrategy(nameOfFinalStrategy, finalRetryStrategy, altered);
+        LogUsageOfRetryStrategy(nameOfFinalStrategy, finalRetryStrategy, isBaseRetryStrategyAltered);
 
-        return GetResiliencePipeline(nameOfFinalStrategy, finalRetryStrategy, altered);
+        return GetResiliencePipeline(nameOfFinalStrategy, finalRetryStrategy, isBaseRetryStrategyAltered);
     }
 
     private void ApplyRetryUntilStatusCodesConditionIfAny(
@@ -80,12 +75,12 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry, ILogger<Retryi
         out RetryStrategy finalRetryStrategy,
         out string nameOfFinalStrategy)
     {
-        if (!_retryStrategiesRegistry.IsStrategyRegisterd(nameOfBaseStrategy))
+        if (!_retryStrategyRegistry.IsRetryStrategyRegistered(nameOfBaseStrategy))
         {
             throw new InvalidOperationException($"Unable to find retry strategy with name '{nameOfBaseStrategy}'.");
         }
 
-        finalRetryStrategy = _retryStrategiesRegistry.GetStrategy(nameOfBaseStrategy);
+        finalRetryStrategy = _retryStrategyRegistry.GetRetryStrategy(nameOfBaseStrategy);
         nameOfFinalStrategy = nameOfBaseStrategy;
     }
 
@@ -143,9 +138,9 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry, ILogger<Retryi
         {
             baseStrategyName = GetNameForRetryUntilStatusCodes(statusCodes);
 
-            if (!_retryStrategiesRegistry.IsStrategyRegisterd(baseStrategyName))
+            if (!_retryStrategyRegistry.IsRetryStrategyRegistered(baseStrategyName))
             {
-                _retryStrategiesRegistry.RegisterStrategy(baseStrategyName, new() { Name = baseStrategyName });
+                _retryStrategyRegistry.RegisterRetryStrategy(baseStrategyName, new() { Name = baseStrategyName });
             }
         }
 
@@ -185,9 +180,6 @@ internal class RetryingHandler(IRetryStrategiesRegistry registry, ILogger<Retryi
 
         return pipeline;
     }
-
-    private static void CheckName(RetryStrategy retryStrategy, out string name, string errorMessage)
-        => name = retryStrategy.Name ?? throw new InvalidOperationException(errorMessage);
 
     private void LogUsageOfRetryStrategy(string nameOfFinalStrategy, RetryStrategy finalRetryStrategy, bool altered)
     {

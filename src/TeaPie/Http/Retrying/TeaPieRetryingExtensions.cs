@@ -9,7 +9,7 @@ public static class TeaPieRetryingExtensions
     {
         CheckAndResolveRealNameOfRetryStrategy(name, retryStrategy, out var realName);
 
-        teaPie._retryingStrategiesRegistry.RegisterStrategy(realName, retryStrategy);
+        teaPie._retryStrategyRegistry.RegisterRetryStrategy(realName, retryStrategy);
     }
 
     private static void CheckAndResolveRealNameOfRetryStrategy(

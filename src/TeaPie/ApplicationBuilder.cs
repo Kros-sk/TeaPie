@@ -148,7 +148,7 @@ public sealed class ApplicationBuilder
             applicationContext,
             provider.GetRequiredService<IPipeline>(),
             provider.GetRequiredService<ITestResultsSummaryReporter>(),
-            provider.GetRequiredService<IRetryStrategiesRegistry>());
+            provider.GetRequiredService<IRetryStrategyRegistry>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

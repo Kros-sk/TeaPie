@@ -6,12 +6,6 @@ internal class AuthorizationHeaderHandler : IHeaderHandler
 {
     public string HeaderName => "Authorization";
 
-    public bool CanResolve(string name, HttpRequestMessage responseMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
-    public bool CanResolve(string name, HttpResponseMessage requestMessage)
-        => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase);
-
     public void SetHeader(string value, HttpRequestMessage requestMessage)
     {
         var parts = value.Split(' ', 2);

@@ -226,7 +226,7 @@ Within `.http` files, you can apply a retry strategy using **retry directives**.
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
 ```
 
->💁‍♂️ These **modifications apply only to the current request** and do not alter the registered retry strategy. If no retry strategy is selected, default one (from `Polly.Core`) is taken.
+>💁‍♂️ These **modifications apply only to the current request** and do not alter the registered retry strategy. If **no retry strategy is selected, default one** (from `Polly.Core`) is taken and modified accordingly.
 
 Using retry strategies ensures **more resilient test execution**, handling **temporary failures** gracefully while preventing unnecessary retries.
 

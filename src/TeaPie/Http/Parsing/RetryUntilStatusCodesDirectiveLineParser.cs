@@ -25,7 +25,7 @@ internal partial class RetryUntilStatusCodesLineParser : ILineParser
         }
         else
         {
-            throw new InvalidOperationException($"Unable to parse {HttpFileParserConstants.RetryUntilStatusCodesDirectiveName} "
+            throw new InvalidOperationException($"Unable to parse '{HttpFileParserConstants.RetryUntilStatusCodesDirectiveName}' "
                 + "if directive doesn't match the structure.");
         }
     }

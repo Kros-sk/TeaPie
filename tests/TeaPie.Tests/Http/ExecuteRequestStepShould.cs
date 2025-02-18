@@ -137,11 +137,12 @@ public class ExecuteRequestStepShould
         var variables = new global::TeaPie.Variables.Variables();
         var variablesResolver = new VariablesResolver(variables, serviceProvider);
         var headersResolver = new HeadersHandler();
-        var retryStrategiesRegistry = new RetryStrategiesRegistry();
-        var retryingHandler = new RetryingHandler(retryStrategiesRegistry, Substitute.For<ILogger<RetryingHandler>>());
+        var retryStrategyRegistry = new RetryStrategyRegistry();
+        var resiliencePipelineProvider = new ResiliencePipelineProvider(
+            retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
 
         return new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, retryingHandler);
+            headersProvider, variablesResolver, headersResolver, resiliencePipelineProvider);
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler

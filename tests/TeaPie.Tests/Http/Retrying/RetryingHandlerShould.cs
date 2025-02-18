@@ -8,42 +8,23 @@ using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Retrying;
 
-public class RetryingHandlerShould
+public class ResiliencePipelineProviderShould
 {
-    private readonly IRetryStrategiesRegistry _retryStrategyRegistry;
-    private readonly RetryingHandler _retryingHandler;
+    private readonly IRetryStrategyRegistry _retryStrategyRegistry;
+    private readonly ResiliencePipelineProvider _resiliencePipelineProvider;
 
-    public RetryingHandlerShould()
+    public ResiliencePipelineProviderShould()
     {
-        _retryStrategyRegistry = new RetryStrategiesRegistry();
-        _retryingHandler = new RetryingHandler(_retryStrategyRegistry, Substitute.For<ILogger<RetryingHandler>>());
-    }
-
-    [Fact]
-    public void ThrowExceptionWhenRegisteringRetryStrategyWithoutName()
-    {
-        var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = null };
-
-        var exception = Throws<InvalidOperationException>(() => _retryingHandler.RegisterRetryStrategy(retryStrategy));
-
-        Equal("Unable to register retry strategy with 'null' name.", exception.Message);
-    }
-
-    [Fact]
-    public void RegisterRetryStrategyWhenValidStrategyProvided()
-    {
-        var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = "TestRetry" };
-
-        _retryingHandler.RegisterRetryStrategy(retryStrategy);
-
-        True(_retryStrategyRegistry.IsStrategyRegisterd("TestRetry"));
+        _retryStrategyRegistry = new RetryStrategyRegistry();
+        _resiliencePipelineProvider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
     }
 
     [Fact]
     public void ThrowExceptionWhenFetchingNonexistentResiliencePipeline()
     {
         var exception = Throws<InvalidOperationException>(()
-            => _retryingHandler.GetResiliencePipeline("NonexistentStrategy", null, []));
+            => _resiliencePipelineProvider.GetResiliencePipeline("NonexistentStrategy", null, []));
 
         Equal("Unable to find retry strategy with name 'NonexistentStrategy'.", exception.Message);
     }
@@ -52,9 +33,9 @@ public class RetryingHandlerShould
     public void ReturnExistingPipelineWhenFetchingResiliencePipelineByName()
     {
         var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = "ExistingRetry" };
-        _retryingHandler.RegisterRetryStrategy(retryStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy("ExistingRetry", retryStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline("ExistingRetry", null, []);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline("ExistingRetry", null, []);
 
         NotNull(pipeline);
     }
@@ -66,9 +47,9 @@ public class RetryingHandlerShould
         var baseRetryStrategyName = string.Empty;
         var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
 
-        _retryStrategyRegistry.RegisterStrategy(baseRetryStrategyName, baseRetryStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy(baseRetryStrategyName, baseRetryStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
 
         var attempts = 0;
         var failingResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -88,7 +69,7 @@ public class RetryingHandlerShould
     public async Task StopRetryingWhenMatchingStatusCodeIsReceived()
     {
         var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
-        var pipeline = _retryingHandler.GetResiliencePipeline(string.Empty, null, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline(string.Empty, null, statusCodes);
 
         var attempts = 0;
         var successResponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -112,9 +93,9 @@ public class RetryingHandlerShould
         var baseRetryStrategyName = string.Empty;
         var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
 
-        _retryStrategyRegistry.RegisterStrategy(baseRetryStrategyName, baseRetryStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy(baseRetryStrategyName, baseRetryStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes);
 
         var executionCount = 0;
 
@@ -145,9 +126,9 @@ public class RetryingHandlerShould
                 .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError)
         };
 
-        _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy("BaseRetry", baseStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline("BaseRetry", null, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline("BaseRetry", null, statusCodes);
 
         var executionCount = 0;
 
@@ -178,9 +159,9 @@ public class RetryingHandlerShould
                 .HandleResult(response => response.StatusCode == HttpStatusCode.InternalServerError)
         };
 
-        _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy("BaseRetry", baseStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline("BaseRetry", null, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline("BaseRetry", null, statusCodes);
 
         var executionCount = 0;
 
@@ -214,9 +195,9 @@ public class RetryingHandlerShould
     {
         var baseStrategy = GetBaseRetryStrategy(ref baseStrategyName);
 
-        _retryStrategyRegistry.RegisterStrategy("BaseRetry", baseStrategy);
+        _retryStrategyRegistry.RegisterRetryStrategy("BaseRetry", baseStrategy);
 
-        var pipeline = _retryingHandler.GetResiliencePipeline(baseStrategyName, explicitRetryStrategy, statusCodes);
+        var pipeline = _resiliencePipelineProvider.GetResiliencePipeline(baseStrategyName, explicitRetryStrategy, statusCodes);
 
         var executionCount = 0;
 

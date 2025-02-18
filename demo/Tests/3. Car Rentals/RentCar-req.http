@@ -15,9 +15,10 @@ Content-Type: application/json
 }
 
 ###
-# Example of all available retry directives. A RETRY-STRATEGY must be registered first (in the script).
+# Example of all available retry directives. Selected RETRY-STRATEGY must be registered first (via script, see 'demo/init.csx').
 # - RETRY-UNTIL-STATUS adds a condition specifying until which status codes retrying should continue.
 # - Other retry directives override specific properties of the selected retry strategy.
+# - If no retry strategy is explicitly selected, default strategy (possibly overriden by other directives) is used.
 
 ## RETRY-STRATEGY: Custom retry
 ## RETRY-MAX-ATTEMPTS: 5

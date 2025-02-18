@@ -21,7 +21,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
-        IRetryStrategiesRegistry retryingStrategiesRegistry)
+        IRetryStrategyRegistry retryStrategyRegistry)
     {
         Instance = new(
             variables,
@@ -31,7 +31,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             applicationContext,
             pipeline,
             reporter,
-            retryingStrategiesRegistry);
+            retryStrategyRegistry);
 
         return Instance;
     }
@@ -44,7 +44,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
-        IRetryStrategiesRegistry retryingStrategiesRegistry)
+        IRetryStrategyRegistry retryStrategiesRegistry)
     {
         _variables = variables;
         Logger = logger;
@@ -53,7 +53,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _applicationContext = applicationContext;
         _pipeline = pipeline;
         _reporter = reporter;
-        _retryingStrategiesRegistry = retryingStrategiesRegistry;
+        _retryStrategyRegistry = retryStrategiesRegistry;
     }
 
     private readonly ApplicationContext _applicationContext;
@@ -147,6 +147,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     #endregion
 
     #region Re-trying
-    internal readonly IRetryStrategiesRegistry _retryingStrategiesRegistry;
+    internal readonly IRetryStrategyRegistry _retryStrategyRegistry;
     #endregion
 }

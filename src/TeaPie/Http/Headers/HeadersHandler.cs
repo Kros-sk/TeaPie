@@ -40,7 +40,7 @@ internal class HeadersHandler : IHeadersHandler
         {
             if (!target.Headers.TryAddWithoutValidation(header.Key, header.Value))
             {
-                throw new InvalidOperationException($"Unable to add header with name {header.Value}");
+                throw new InvalidOperationException($"Unable to add header with name '{header.Value}'");
             }
         }
     }
