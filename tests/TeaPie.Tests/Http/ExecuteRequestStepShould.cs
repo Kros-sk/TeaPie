@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Net;
 using TeaPie.Http;
@@ -137,7 +138,7 @@ public class ExecuteRequestStepShould
         var variablesResolver = new VariablesResolver(variables, serviceProvider);
         var headersResolver = new HeadersHandler();
         var retryStrategiesRegistry = new RetryStrategiesRegistry();
-        var retryingHandler = new RetryingHandler(retryStrategiesRegistry);
+        var retryingHandler = new RetryingHandler(retryStrategiesRegistry, Substitute.For<ILogger<RetryingHandler>>());
 
         return new HttpRequestParser(
             headersProvider, variablesResolver, headersResolver, retryingHandler);

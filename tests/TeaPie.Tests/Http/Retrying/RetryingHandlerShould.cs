@@ -1,4 +1,6 @@
-﻿using Polly;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
+using Polly;
 using Polly.Retry;
 using System.Net;
 using TeaPie.Http.Retrying;
@@ -14,7 +16,7 @@ public class RetryingHandlerShould
     public RetryingHandlerShould()
     {
         _retryStrategyRegistry = new RetryStrategiesRegistry();
-        _retryingHandler = new RetryingHandler(_retryStrategyRegistry);
+        _retryingHandler = new RetryingHandler(_retryStrategyRegistry, Substitute.For<ILogger<RetryingHandler>>());
     }
 
     [Fact]
