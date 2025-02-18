@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using TeaPie.Http;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 

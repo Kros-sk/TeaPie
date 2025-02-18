@@ -111,5 +111,4 @@ internal class HeadersHandler : IHeadersHandler
     public static void CheckIfContentExists(string headerName, [NotNull] HttpContent? content)
         => _ = content
             ?? throw new InvalidOperationException($"Unable to set header '{headerName}' when body's content is null.");
-
 }

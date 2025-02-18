@@ -222,7 +222,7 @@ Within `.http` files, you can apply a retry strategy using **retry directives**.
 ## RETRY-MAX-ATTEMPTS: 5           # Overrides max retry attempts
 ## RETRY-BACKOFF-TYPE: Linear      # Changes backoff strategy for this request
 ## RETRY-MAX-DELAY: 00:00:03       # Limits the maximum delay between retries
-## RETRY-UNTIL-STATUS: [200, 201]  # Adds condition - retries until one of these status codes is received
+## RETRY-UNTIL-STATUS: [200, 201]  # Adds condition - retry until one of given status codes is received
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
 ```
 

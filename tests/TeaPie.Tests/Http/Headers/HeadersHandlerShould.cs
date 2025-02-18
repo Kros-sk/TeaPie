@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using System.Data;
 using System.Net.Http.Headers;
-using TeaPie.Http;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 
