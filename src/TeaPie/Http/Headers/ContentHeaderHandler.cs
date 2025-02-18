@@ -12,6 +12,8 @@ internal abstract class ContentHeaderHandler : IHeaderHandler
         => name.Equals(HeaderName, StringComparison.OrdinalIgnoreCase) && requestMessage.Content is not null;
 
     public abstract string GetHeader(HttpRequestMessage responseMessage);
+
     public abstract string GetHeader(HttpResponseMessage requestMessage);
+
     public abstract void SetHeader(string value, HttpRequestMessage requestMessage);
 }
