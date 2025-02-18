@@ -33,7 +33,8 @@ internal class ExecuteRequestStep(
         context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request!.RequestUri);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequest(requestExecutionContext, resiliencePipeline, request, client, cancellationToken);
+        var response = await ExecuteRequest(
+            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
 
         await LogResponse(context.Logger, response);
 
@@ -45,6 +46,7 @@ internal class ExecuteRequestStep(
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
         HttpClient client,
+        ILogger logger,
         CancellationToken cancellationToken)
     {
         var originalMessage = request;
@@ -52,12 +54,25 @@ internal class ExecuteRequestStep(
             ? await originalMessage.Content.ReadAsStringAsync(cancellationToken)
             : string.Empty;
         var messageUsed = false;
+        var retryAttemptNumber = -1;
 
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
+            retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
             return await client.SendAsync(request, token);
         }, cancellationToken);
+    }
+
+    private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)
+    {
+        retryAttempt++;
+        if (retryAttempt > 0)
+        {
+            logger.LogDebug("Retry attempt number {Number}.", retryAttempt);
+        }
+
+        return retryAttempt;
     }
 
     private HttpRequestMessage GetMessage(

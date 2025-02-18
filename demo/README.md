@@ -33,12 +33,12 @@ If you want to **change the port** or modify other server properties, you can:
 If you have [already installed](../README.md#how-to-install-locally) `TeaPie.Tool` just run (in demo folder):
 
 ```sh
-teapie
+teapie -i "./init.csx"
 ```
 
 If not, use:
 
 ```sh
 cd ./src/TeaPie.DotnetTool
-dotnet run test "../../demo"
+dotnet run test "../../demo" -i "../../demo/init.csx"
 ```

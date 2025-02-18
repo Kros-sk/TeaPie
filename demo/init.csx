@@ -52,3 +52,5 @@ tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseM
     ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
         .HandleResult(response => true)    // Condition determining whether a request should be retried. This one retries always.
 });
+
+tp.RegisterRetryStrategy("Custom retry", new() { MaxRetryAttempts = 2 });

@@ -18,8 +18,8 @@ Content-Type: application/json
 # Example of all available retry directives. A RETRY-STRATEGY must be registered first (in the script).
 # - RETRY-UNTIL-STATUS adds a condition specifying until which status codes retrying should continue.
 # - Other retry directives override specific properties of the selected retry strategy.
-#
-## RETRY-STRATEGY: Default retry
+
+## RETRY-STRATEGY: Custom retry
 ## RETRY-MAX-ATTEMPTS: 5
 ## RETRY-BACKOFF-TYPE: Linear
 ## RETRY-MAX-DELAY: 00:00:03

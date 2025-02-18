@@ -37,5 +37,6 @@ Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 
 ### Get new car
 # @name GetEditedCarRequest
+# Following directive selects which (already registered) retry strategy should be used.
 ## RETRY-STRATEGY: Default retry
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}

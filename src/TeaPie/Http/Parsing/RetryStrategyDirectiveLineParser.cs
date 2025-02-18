@@ -3,7 +3,7 @@ using TeaPie.Http.Parsing;
 
 namespace TeaPie.Http;
 
-internal partial class RetryStrategyLineParser : ILineParser
+internal partial class RetryStrategyDirectiveLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
         => RetryStrategySelectorRegex().IsMatch(line);

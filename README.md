@@ -218,15 +218,15 @@ Within `.http` files, you can apply a retry strategy using **retry directives**.
 ```http
 # @name GetCarRequest
 # Applying a named retry strategy and overriding specific properties.
-## RETRY-STRATEGY: Default retry   # Uses the predefined "Default retry" strategy
+## RETRY-STRATEGY: Default retry   # Uses already registered "Default retry" strategy
 ## RETRY-MAX-ATTEMPTS: 5           # Overrides max retry attempts
 ## RETRY-BACKOFF-TYPE: Linear      # Changes backoff strategy for this request
 ## RETRY-MAX-DELAY: 00:00:03       # Limits the maximum delay between retries
-## RETRY-UNTIL-STATUS: [200, 201]  # Retries until one of these status codes is received
+## RETRY-UNTIL-STATUS: [200, 201]  # Adds condition - retries until one of these status codes is received
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
 ```
 
->💁‍♂️ These **modifications apply only to the current request** and do not alter the registered retry strategy.
+>💁‍♂️ These **modifications apply only to the current request** and do not alter the registered retry strategy. If no retry strategy is selected, default one (from `Polly.Core`) is taken.
 
 Using retry strategies ensures **more resilient test execution**, handling **temporary failures** gracefully while preventing unnecessary retries.
 

@@ -7,7 +7,7 @@ namespace TeaPie.Tests.Http.Parsing;
 public class RetryStrategyLineParserShould
 {
     private readonly HttpParsingContext _context = new(new HttpClient().DefaultRequestHeaders);
-    private readonly RetryStrategyLineParser _parser = new();
+    private readonly RetryStrategyDirectiveLineParser _parser = new();
 
     [Fact]
     public void ParseRetryStrategyDirective()

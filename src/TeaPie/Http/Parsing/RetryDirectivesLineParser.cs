@@ -4,7 +4,7 @@ namespace TeaPie.Http.Parsing;
 internal class RetryDirectivesLineParser : ILineParser
 {
     private readonly IEnumerable<ILineParser> _parsers = [
-        new RetryStrategyLineParser(),
+        new RetryStrategyDirectiveLineParser(),
         new RetryUntilStatusCodesLineParser(),
         new RetryExplicitPropertiesDirectiveLineParser()
     ];
