@@ -4,6 +4,12 @@ namespace TeaPie.Http.Retrying;
 
 public static class TeaPieRetryingExtensions
 {
+    /// <summary>
+    /// Registers <paramref name="retryStrategy"/> with given <paramref name="name"/>.
+    /// </summary>
+    /// <param name="teaPie">The current context instance.</param>
+    /// <param name="name">Name by which retry strategy will be registered.</param>
+    /// <param name="retryStrategy">Retry strategy to be registered.</param>
     public static void RegisterRetryStrategy(
         this TeaPie teaPie, string name, RetryStrategyOptions<HttpResponseMessage> retryStrategy)
     {

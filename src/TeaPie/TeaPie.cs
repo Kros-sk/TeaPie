@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
@@ -21,7 +22,9 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
-        IRetryStrategyRegistry retryStrategyRegistry)
+        IRetryStrategyRegistry retryStrategyRegistry,
+        IAuthProviderRegistry authenticationProviderRegistry,
+        IDefaultAuthProviderAccessor defaultAuthProviderAccessor)
     {
         Instance = new(
             variables,
@@ -31,7 +34,9 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             applicationContext,
             pipeline,
             reporter,
-            retryStrategyRegistry);
+            retryStrategyRegistry,
+            authenticationProviderRegistry,
+            defaultAuthProviderAccessor);
 
         return Instance;
     }
@@ -44,7 +49,9 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
-        IRetryStrategyRegistry retryStrategiesRegistry)
+        IRetryStrategyRegistry retryStrategiesRegistry,
+        IAuthProviderRegistry authenticationProviderRegistry,
+        IDefaultAuthProviderAccessor defaultAuthProviderAccessor)
     {
         _variables = variables;
         Logger = logger;
@@ -54,6 +61,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _pipeline = pipeline;
         _reporter = reporter;
         _retryStrategyRegistry = retryStrategiesRegistry;
+        _authenticationProviderRegistry = authenticationProviderRegistry;
+        _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
     }
 
     private readonly ApplicationContext _applicationContext;
@@ -148,5 +157,10 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Re-trying
     internal readonly IRetryStrategyRegistry _retryStrategyRegistry;
+    #endregion
+
+    #region Authentication
+    internal readonly IAuthProviderRegistry _authenticationProviderRegistry;
+    internal readonly IDefaultAuthProviderAccessor _defaultAuthProviderAccessor;
     #endregion
 }

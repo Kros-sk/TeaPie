@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Http.Auth;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
@@ -9,21 +10,30 @@ namespace TeaPie;
 internal class InitializeApplicationStep(
     IPipeline pipeline,
     ITestResultsSummaryAccessor summaryAccessor,
-    INuGetPackageHandler nuGetPackageHandler)
+    INuGetPackageHandler nuGetPackageHandler,
+    IDefaultAuthProviderAccessor defaultAuthProviderAccessor,
+    IAuthProviderRegistry authProviderRegistry)
     : IPipelineStep
 {
     private readonly IPipeline _pipeline = pipeline;
     private readonly INuGetPackageHandler _nuGetPackageHandler = nuGetPackageHandler;
     private readonly ITestResultsSummaryAccessor _summaryAccessor = summaryAccessor;
+    private readonly IDefaultAuthProviderAccessor _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
+    private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         await DownloadAndInstallGlobalNuGetPackages();
 
+        SetNoAuthProviderAsDefault();
+
         SetTestResultsSummaryObject(context.CollectionName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
     }
+
+    private void SetNoAuthProviderAsDefault()
+        => _defaultAuthProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
 
     private async Task DownloadAndInstallGlobalNuGetPackages()
         => await _nuGetPackageHandler.HandleNuGetPackages(ScriptsConstants.DefaultNuGetPackages);

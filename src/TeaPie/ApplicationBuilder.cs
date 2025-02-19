@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
 using TeaPie.Http;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
@@ -148,7 +149,9 @@ public sealed class ApplicationBuilder
             applicationContext,
             provider.GetRequiredService<IPipeline>(),
             provider.GetRequiredService<ITestResultsSummaryReporter>(),
-            provider.GetRequiredService<IRetryStrategyRegistry>());
+            provider.GetRequiredService<IRetryStrategyRegistry>(),
+            provider.GetRequiredService<IAuthProviderRegistry>(),
+            provider.GetRequiredService<IDefaultAuthProviderAccessor>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {
