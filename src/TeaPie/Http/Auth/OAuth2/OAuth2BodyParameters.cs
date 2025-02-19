@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Http.Auth;
+﻿namespace TeaPie.Http.Auth.OAuth2;
 
 public class OAuth2BodyParameters
 {

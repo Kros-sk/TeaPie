@@ -1,18 +1,19 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
 
-namespace TeaPie.Http.Auth;
+namespace TeaPie.Http.Auth.OAuth2;
 
-public class OAuth2Provider(HttpClient httpClient, IMemoryCache memoryCache)
+public class OAuth2Provider(IServiceProvider serviceProvider)
     : IAuthProvider
 {
     private const string AccessTokenCacheKey = "access_token";
     private const string RedirectUriParameterKey = "redirect_uri";
 
-    private readonly HttpClient _httpClient = httpClient;
-    private readonly IMemoryCache _cache = memoryCache;
+    private readonly IHttpClientFactory _httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+    private readonly IMemoryCache _cache = serviceProvider.GetRequiredService<IMemoryCache>();
     private readonly AuthorizationHeaderHandler _authorizationHeaderHandler = new();
     private OAuth2Configuration _configuration = new();
 
@@ -45,7 +46,8 @@ public class OAuth2Provider(HttpClient httpClient, IMemoryCache memoryCache)
 
     private async Task<OAuth2TokenResponse> SendRequest(FormUrlEncodedContent requestContent, string requestUri)
     {
-        var response = await _httpClient.PostAsync(requestUri, requestContent);
+        var client = _httpClientFactory.CreateClient(nameof(OAuth2Provider));
+        var response = await client.PostAsync(requestUri, requestContent);
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<OAuth2TokenResponse>();
