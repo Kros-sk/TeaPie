@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using TeaPie.Application;
 using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
@@ -76,13 +77,9 @@ public class ExecuteScriptStepShould
     }
 
     private static void PrepareTeaPieInstance(ILogger logger, ApplicationContext appContext, IVariables? variables = null)
-        => TeaPie.Create(
-            variables ?? Substitute.For<IVariables>(),
-            logger,
-            Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-            appContext,
-            Substitute.For<IPipeline>(),
-            Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<IRetryStrategyRegistry>());
+        => new TeaPieBuilder()
+            .WithApplicationContext(appContext)
+            .WithService(variables ?? Substitute.For<IVariables>())
+            .WithService(logger)
+            .Build();
 }

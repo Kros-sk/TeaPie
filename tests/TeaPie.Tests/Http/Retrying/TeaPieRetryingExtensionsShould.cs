@@ -1,12 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using NSubstitute;
-using Polly.Retry;
+﻿using Polly.Retry;
 using TeaPie.Http.Retrying;
-using TeaPie.Pipelines;
-using TeaPie.Reporting;
-using TeaPie.TestCases;
-using TeaPie.Testing;
-using TeaPie.Variables;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Retrying;
@@ -39,13 +32,5 @@ public class TeaPieRetryingExtensionsShould
     }
 
     private static TeaPie PrepareTeaPieInstance(IRetryStrategyRegistry retryStrategyRegistry)
-        => TeaPie.Create(
-            Substitute.For<IVariables>(),
-            Substitute.For<ILogger>(),
-            Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-             new ApplicationContextBuilder().Build(),
-            Substitute.For<IPipeline>(),
-            Substitute.For<ITestResultsSummaryReporter>(),
-            retryStrategyRegistry);
+        => new TeaPieBuilder().WithService(retryStrategyRegistry).Build();
 }

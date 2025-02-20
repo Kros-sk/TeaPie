@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using TeaPie.Application;
 
 namespace TeaPie.DotnetTool;
 

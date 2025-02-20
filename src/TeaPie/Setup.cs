@@ -1,0 +1,32 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using TeaPie.Environments;
+using TeaPie.Http;
+using TeaPie.Logging;
+using TeaPie.Pipelines;
+using TeaPie.Reporting;
+using TeaPie.Scripts;
+using TeaPie.StructureExploration;
+using TeaPie.TestCases;
+using TeaPie.Testing;
+using TeaPie.Variables;
+
+namespace TeaPie;
+
+internal static class Setup
+{
+    public static IServiceCollection AddTeaPie(this IServiceCollection services, Action loggingConfiguration)
+    {
+        services.AddStructureExploration();
+        services.AddHttp();
+        services.AddEnvironments();
+        services.AddTestCases();
+        services.AddScripts();
+        services.AddVariables();
+        services.AddTesting();
+        services.AddPipelines();
+        services.AddReporting();
+        services.AddLogging(loggingConfiguration);
+
+        return services;
+    }
+}

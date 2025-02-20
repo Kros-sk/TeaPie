@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TeaPie.Application;
 using TeaPie.Environments;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
@@ -15,49 +17,45 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     public static TeaPie? Instance { get; private set; }
 
     internal static TeaPie Create(
-        IVariables variables,
-        ILogger logger,
-        ITester tester,
-        ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ApplicationContext applicationContext,
-        IPipeline pipeline,
-        ITestResultsSummaryReporter reporter,
-        IRetryStrategyRegistry retryStrategyRegistry,
-        IAuthProviderRegistry authenticationProviderRegistry,
-        IDefaultAuthProviderAccessor defaultAuthProviderAccessor)
+        IServiceProvider serviceProvider)
     {
         Instance = new(
-            variables,
-            logger,
-            tester,
-            currentTestCaseExecutionContextAccessor,
             applicationContext,
-            pipeline,
-            reporter,
-            retryStrategyRegistry,
-            authenticationProviderRegistry,
-            defaultAuthProviderAccessor);
+            serviceProvider,
+            serviceProvider.GetRequiredService<IVariables>(),
+            serviceProvider.GetRequiredService<ILogger<TeaPie>>(),
+            serviceProvider.GetRequiredService<ITester>(),
+            serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            serviceProvider.GetRequiredService<IPipeline>(),
+            serviceProvider.GetRequiredService<ITestResultsSummaryReporter>(),
+            serviceProvider.GetRequiredService<IRetryStrategyRegistry>(),
+            serviceProvider.GetRequiredService<IAuthProviderRegistry>(),
+            serviceProvider.GetRequiredService<IDefaultAuthProviderAccessor>());
 
         return Instance;
     }
 
     private TeaPie(
+        ApplicationContext applicationContext,
+        IServiceProvider serviceProvider,
         IVariables variables,
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
-        ApplicationContext applicationContext,
         IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
         IDefaultAuthProviderAccessor defaultAuthProviderAccessor)
     {
+        _applicationContext = applicationContext;
+        _serviceProvider = serviceProvider;
+
         _variables = variables;
         Logger = logger;
         _tester = tester;
         _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
-        _applicationContext = applicationContext;
         _pipeline = pipeline;
         _reporter = reporter;
         _retryStrategyRegistry = retryStrategiesRegistry;
@@ -65,8 +63,11 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
     }
 
-    private readonly ApplicationContext _applicationContext;
+    internal IServiceProvider _serviceProvider;
     private readonly IPipeline _pipeline;
+
+    private readonly ApplicationContext _applicationContext;
+    public IApplicationContext ApplicationContext => _applicationContext;
 
     #region Logging
     public ILogger Logger { get; }
@@ -147,7 +148,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     public void SetEnvironment(string name)
     {
         _applicationContext.EnvironmentName = name;
-        _pipeline.InsertSteps(null, _applicationContext.ServiceProvider.GetStep<SetEnvironmentStep>());
+        Task.Run(() => _applicationContext.ServiceProvider.GetStep<SetEnvironmentStep>().Execute(_applicationContext));
     }
     #endregion
 

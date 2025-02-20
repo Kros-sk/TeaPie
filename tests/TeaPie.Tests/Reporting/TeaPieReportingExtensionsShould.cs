@@ -1,11 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using NSubstitute;
-using TeaPie.Http.Retrying;
-using TeaPie.Pipelines;
-using TeaPie.Reporting;
-using TeaPie.TestCases;
+﻿using TeaPie.Reporting;
 using TeaPie.Testing;
-using TeaPie.Variables;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Reporting;
@@ -44,13 +38,5 @@ public class TeaPieReportingExtensionsShould
     }
 
     private static TeaPie PrepareTeaPieInstance(CollectionTestResultsSummaryReporter reporter)
-        => TeaPie.Create(
-            Substitute.For<IVariables>(),
-            Substitute.For<ILogger>(),
-            Substitute.For<ITester>(),
-            Substitute.For<ICurrentTestCaseExecutionContextAccessor>(),
-            new ApplicationContextBuilder().Build(),
-            Substitute.For<IPipeline>(),
-            reporter,
-            Substitute.For<IRetryStrategyRegistry>());
+        => new TeaPieBuilder().WithService<ITestResultsSummaryReporter>(reporter).Build();
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Application;
 using TeaPie.Pipelines;
 
 namespace TeaPie.Scripts;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Polly;
+using TeaPie.Application;
 using TeaPie.Http.Headers;
 using TeaPie.Pipelines;
 

@@ -1,12 +1,14 @@
 {
     "$shared": {
         "ApiBaseUrl": "http://my-car-rental-company.com",
+        "AuthServerUrl": "http://my-authentication-server.com/token",
         "ApiCustomersSection" : "/customers",
         "ApiCarsSection" : "/cars",
         "ApiCarRentalSection" : "/rental"
     },
     "local": {
         "ApiBaseUrl": "http://localhost:3001",
+        "AuthServerUrl": "http://localhost:3001/auth/token",
         "DebugMode": true
     }
 }

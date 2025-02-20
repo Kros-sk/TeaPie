@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
+using TeaPie.Application;
 using TeaPie.Http;
-using TeaPie.Http.Parsing;
 using TeaPie.Pipelines;
 
 namespace TeaPie.TestCases;

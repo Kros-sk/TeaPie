@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Http.Auth;
+using TeaPie.Http.Auth.OAuth2;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
@@ -12,7 +13,8 @@ internal class InitializeApplicationStep(
     ITestResultsSummaryAccessor summaryAccessor,
     INuGetPackageHandler nuGetPackageHandler,
     IDefaultAuthProviderAccessor defaultAuthProviderAccessor,
-    IAuthProviderRegistry authProviderRegistry)
+    IAuthProviderRegistry authProviderRegistry,
+    OAuth2Provider oAuth2Provider)
     : IPipelineStep
 {
     private readonly IPipeline _pipeline = pipeline;
@@ -20,6 +22,7 @@ internal class InitializeApplicationStep(
     private readonly ITestResultsSummaryAccessor _summaryAccessor = summaryAccessor;
     private readonly IDefaultAuthProviderAccessor _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
+    private readonly OAuth2Provider _oAuth2Provider = oAuth2Provider;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -33,7 +36,10 @@ internal class InitializeApplicationStep(
     }
 
     private void SetNoAuthProviderAsDefault()
-        => _defaultAuthProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
+    {
+        _defaultAuthProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
+        _authProviderRegistry.RegisterAuthProvider(AuthConstants.OAuth2Key, _oAuth2Provider);
+    }
 
     private async Task DownloadAndInstallGlobalNuGetPackages()
         => await _nuGetPackageHandler.HandleNuGetPackages(ScriptsConstants.DefaultNuGetPackages);

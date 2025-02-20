@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using TeaPie.Application;
 
 namespace TeaPie.Tests;
 

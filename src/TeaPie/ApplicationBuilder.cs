@@ -1,17 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Environments;
-using TeaPie.Http;
-using TeaPie.Http.Auth;
-using TeaPie.Http.Retrying;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
-using TeaPie.Reporting;
-using TeaPie.Scripts;
-using TeaPie.StructureExploration;
-using TeaPie.TestCases;
-using TeaPie.Testing;
-using TeaPie.Variables;
 
 namespace TeaPie;
 
@@ -114,44 +104,26 @@ public sealed class ApplicationBuilder
     }
 
     private ApplicationContext GetApplicationContext(IServiceProvider provider)
-        => new(
+    {
+        var options = new ApplicationContextOptionsBuilder()
+            .SetTempFolderPath(_tempPath)
+            .SetEnvironment(_environment)
+            .SetEnvironmentFilePath(_environmentFilePath)
+            .SetReportFilePath(_reportFilePath)
+            .SetInitializationScriptPath(_initializationScriptPath)
+            .Build();
+
+        return new ApplicationContext(
             string.IsNullOrEmpty(_path) ? Directory.GetCurrentDirectory() : _path,
             provider,
-            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
-            provider.GetRequiredService<ITestResultsSummaryReporter>(),
-            provider.GetRequiredService<ILogger<ApplicationContext>>(),
-            string.IsNullOrEmpty(_tempPath) ? Constants.DefaultTemporaryFolderPath : _tempPath,
-            string.IsNullOrEmpty(_environment) ? string.Empty : _environment,
-            string.IsNullOrEmpty(_environmentFilePath) ? string.Empty : _environmentFilePath,
-            string.IsNullOrEmpty(_reportFilePath) ? string.Empty : _reportFilePath,
-            string.IsNullOrEmpty(_initializationScriptPath) ? string.Empty : _initializationScriptPath);
-
-    private void ConfigureServices()
-    {
-        _services.AddStructureExploration();
-        _services.AddEnvironments();
-        _services.AddTestCases();
-        _services.AddScripts();
-        _services.AddHttp();
-        _services.AddVariables();
-        _services.AddTesting();
-        _services.AddPipelines();
-        _services.AddReporting();
-        _services.AddLogging(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
+            options);
     }
 
+    private void ConfigureServices()
+        => _services.AddTeaPie(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
+
     private static TeaPie CreateUserContext(IServiceProvider provider, ApplicationContext applicationContext)
-        => TeaPie.Create(
-            provider.GetRequiredService<IVariables>(),
-            provider.GetRequiredService<ILogger<TeaPie>>(),
-            provider.GetRequiredService<ITester>(),
-            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
-            applicationContext,
-            provider.GetRequiredService<IPipeline>(),
-            provider.GetRequiredService<ITestResultsSummaryReporter>(),
-            provider.GetRequiredService<IRetryStrategyRegistry>(),
-            provider.GetRequiredService<IAuthProviderRegistry>(),
-            provider.GetRequiredService<IDefaultAuthProviderAccessor>());
+        => TeaPie.Create(applicationContext, provider);
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

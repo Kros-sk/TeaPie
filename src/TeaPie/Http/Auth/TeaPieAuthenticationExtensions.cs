@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Http.Auth;
 
-internal static class TeaPieAuthenticationExtensions
+public static class TeaPieAuthenticationExtensions
 {
     /// <summary>
     /// Registers an authentication provider with the specified <paramref name="name"/>.
@@ -8,7 +8,8 @@ internal static class TeaPieAuthenticationExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">The name under which the authentication provider will be registered.</param>
     /// <param name="authenticationProvider">The authentication provider to register.</param>
-    public static void RegisterAuthProvider(this TeaPie teaPie, string name, IAuthProvider authenticationProvider)
+    public static void RegisterAuthProvider(
+        this TeaPie teaPie, string name, IAuthProvider authenticationProvider)
         => teaPie._authenticationProviderRegistry.RegisterAuthProvider(name, authenticationProvider);
 
     /// <summary>

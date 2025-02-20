@@ -7,7 +7,8 @@ internal static class Setup
     public static IServiceCollection AddOAuth2(this IServiceCollection services)
     {
         services.AddMemoryCache();
-        services.AddHttpClient<OAuth2Provider>();
+        services.AddSingleton<OAuth2Provider>();
+        services.AddHttpClient<IAuthProvider<OAuth2Options>, OAuth2Provider>();
 
         return services;
     }

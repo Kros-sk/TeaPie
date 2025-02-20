@@ -1,31 +1,41 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
 
 namespace TeaPie.Http.Auth.OAuth2;
 
-public class OAuth2Provider(IServiceProvider serviceProvider)
-    : IAuthProvider
+internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache memoryCache, ILogger<OAuth2Provider> logger)
+    : IAuthProvider<OAuth2Options>
 {
     private const string AccessTokenCacheKey = "access_token";
     private const string RedirectUriParameterKey = "redirect_uri";
 
-    private readonly IHttpClientFactory _httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
-    private readonly IMemoryCache _cache = serviceProvider.GetRequiredService<IMemoryCache>();
-    private readonly AuthorizationHeaderHandler _authorizationHeaderHandler = new();
-    private OAuth2Configuration _configuration = new();
+    private readonly IHttpClientFactory _httpClientFactory = clientFactory;
+    private readonly IMemoryCache _cache = memoryCache;
+    private readonly ILogger<OAuth2Provider> _logger = logger;
 
-    public void SetConfiguration(OAuth2Configuration configuration) => _configuration = configuration;
+    private readonly AuthorizationHeaderHandler _authorizationHeaderHandler = new();
+    private OAuth2Options _configuration = new();
 
     public async Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken)
         => _authorizationHeaderHandler.SetHeader($"Bearer {await GetToken()}", request);
 
+    public void ConfigureOptions(OAuth2Options configuration) => _configuration = configuration;
+
     private async Task<string> GetToken()
-        => _cache.TryGetValue(AccessTokenCacheKey, out string? token)
-            ? token!
-            : await GetTokenFromRequest();
+    {
+        var source = "cache";
+        if (!_cache.TryGetValue(AccessTokenCacheKey, out string? token))
+        {
+            token = await GetTokenFromRequest();
+            source = ResolveRequestUri();
+        }
+
+        _logger.LogTrace("{Subject} was fetched from {Source}.", "Access token", source);
+        return token!;
+    }
 
     private async Task<string> GetTokenFromRequest()
     {
@@ -40,13 +50,13 @@ public class OAuth2Provider(IServiceProvider serviceProvider)
 
     private void ResolveParameters(out FormUrlEncodedContent requestContent, out string requestUri)
     {
-        requestContent = new FormUrlEncodedContent(_configuration.BodyParameters.AsReadOnlyDictionary());
+        requestContent = new FormUrlEncodedContent([_configuration.GrantType, _configuration.OtherBodyParameters]);
         requestUri = ResolveRequestUri();
     }
 
     private async Task<OAuth2TokenResponse> SendRequest(FormUrlEncodedContent requestContent, string requestUri)
     {
-        var client = _httpClientFactory.CreateClient(nameof(OAuth2Provider));
+        var client = _httpClientFactory.CreateClient(nameof(IAuthProvider<OAuth2Options>));
         var response = await client.PostAsync(requestUri, requestContent);
         response.EnsureSuccessStatusCode();
 
@@ -71,8 +81,8 @@ public class OAuth2Provider(IServiceProvider serviceProvider)
     }
 
     private string ResolveRequestUri()
-        => _configuration.BodyParameters.HasParameter(RedirectUriParameterKey)
-             ? _configuration.BodyParameters.GetParameter(RedirectUriParameterKey)
+        => _configuration.OtherBodyParameters.HasParameter(RedirectUriParameterKey)
+             ? _configuration.OtherBodyParameters.GetParameter(RedirectUriParameterKey)
              : _configuration.OAuthUrl;
 }
 
@@ -83,10 +93,4 @@ internal class OAuth2TokenResponse
 
     [JsonPropertyName("expires_in")]
     public int ExpiresIn { get; set; }
-}
-
-public class OAuth2Configuration
-{
-    public string OAuthUrl { get; set; } = string.Empty;
-    public OAuth2BodyParameters BodyParameters { get; set; } = new();
 }

@@ -1,56 +1,107 @@
-﻿// Any script named 'init.csx' within the collection is treated as an initialization script
-// and is automatically executed before the first test case.
-//
-// Users can specify a custom initialization script using the --init-script option.
+﻿// INITIALIZATION SCRIPT
+
+// Initialization script is executed before the first test case.
+// To specify a custom initialization script, use the '--init-script <path-to-script>' option.
 // If no script is explicitly set, the first detected 'init.csx' script is used by default.
 // When an explicit script is provided, the default initialization script is ignored.
 
-// INITIALIZATON:
+// ENVIRONMENTS
 
-// By default, environments are defined in a <collection-name>-env.json file.
-// Use the option '--env-file <path-to-environment-file>' to specify a custom environment file.
+// By default, environments are defined in a '<collection-name>-env.json' file.
+// To specify a custom environment file, use '--env-file <path-to-environment-file>'.
 // If no environment file is found or specified, the collection runs without an environment.
 // The default environment ('$shared') is used if no specific environment is set.
 // Environments can be switched dynamically at runtime.
 tp.SetEnvironment("local");
 
+// LOGGER
+
+// The logger, implementing Microsoft's ILogger, is available in all scripts.
+tp.Logger.LogInformation("Starting demo collection testing...");
+
+// AUTHENTICATION
+
+// OAuth2 authentication is natively supported. To use this provider, configure it first.
+// Body parameters defined by RFC 6749 are supported.
+var authUrl = tp.GetVariable<string>("AuthServerUrl");
+tp.ConfigureOAuth2Provider(new OAuth2Options(
+    authUrl,
+    new("client_id", "test-client"),
+    new("grant_type", "client_credentials"),
+    new("client_secret", "test-secret")
+));
+
+// Custom authentication providers can also be registered.
+tp.RegisterAuthProvider(
+    "MyAuth",
+    new MyAuthProvider(tp).ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
+);
+
+// Set an authentication provider as the default.
+tp.SetDefaultAuthProvider("OAuth2"); // Sets OAuth2 as the default authentication provider.
+
+// RETRY STRATEGIES
+
+// Register custom retry strategies that can be referenced across multiple requests.
+tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseMessage>
+{
+    MaxRetryAttempts = 3,                         // Maximum retry attempts
+    Delay = TimeSpan.FromMilliseconds(500),       // Initial delay before retrying
+    MaxDelay = TimeSpan.FromSeconds(2),           // Maximum delay between retries
+    BackoffType = DelayBackoffType.Exponential,   // Backoff strategy (e.g., Linear, Exponential)
+    ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+        .HandleResult(response => true)          // Retries for all responses (adjust condition as needed)
+});
+
+// Another example with minimal configuration.
+tp.RegisterRetryStrategy("Custom retry", new() { MaxRetryAttempts = 2 });
+
+// REPORTING
+
 // At the end of the collection run, a test results report is generated.
-// You can add a custom reporting method that will be triggered automatically.
-tp.RegisterReporter((summary) =>
+// Users can add a custom reporting method that will be triggered automatically.
+tp.RegisterReporter(summary =>
 {
     Console.Write("Custom reporter report: ");
 
-    // Tests results summary object has handy properties, which help with reporting.
+    // The summary object provides useful properties for reporting.
     if (summary.AllTestsPassed)
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"Success! All ({summary.NumberOfExecutedTests}) tests passed.");
+        Console.WriteLine($"Success! All {summary.NumberOfExecutedTests} tests passed.");
     }
     else
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Fail :( {summary.PercentageOfFailedTests.ToString("f2")}% tests failed.");
+        Console.WriteLine($"Failure: {summary.PercentageOfFailedTests:F2}% of tests failed.");
     }
 
     Console.ResetColor();
 });
 
-// For more advanced and customized reporting, use the following approach:
+// For more advanced and customized reporting, use:
 // tp.RegisterReporter(IReporter<TestsResultsSummary> reporter);
-// The reporter must implement the public interface IReporter<TestsResultsSummary>.
+// The reporter must implement the IReporter<TestsResultsSummary> interface.
 
-// Logger implementing Microsoft's ILogger is accessible everywhere in the scripts.
-tp.Logger.LogInformation("Start of demo collection testing.");
+// CUSTOM CLASS DEFINITIONS
 
-// Users can register custom retry strategies that can be reused across multiple requests by referencing them by name.
-tp.RegisterRetryStrategy("Default retry", new RetryStrategyOptions<HttpResponseMessage>
+// Custom authentication provider definition
+public class MyAuthProvider(TeaPie context) : IAuthProvider<MyAuthProviderOptions>
 {
-    MaxRetryAttempts = 3,
-    Delay = TimeSpan.FromMilliseconds(500),
-    MaxDelay = TimeSpan.FromSeconds(2),
-    BackoffType = DelayBackoffType.Exponential,
-    ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-        .HandleResult(response => true)    // Condition determining whether a request should be retried. This one retries always.
-});
+    private readonly TeaPie _context = context;
+    private MyAuthProviderOptions _options = new();
 
-tp.RegisterRetryStrategy("Custom retry", new() { MaxRetryAttempts = 2 });
+    public async Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        _context.Logger.LogInformation("Authentication completed via '{AuthUrl}'", _options.AuthUrl);
+        await Task.CompletedTask;
+    }
+
+    public void ConfigureOptions(MyAuthProviderOptions options) => _options = options;
+}
+
+// Custom authentication provider options definition
+public class MyAuthProviderOptions : IAuthProviderOptions
+{
+    public string AuthUrl { get; set; } = string.Empty;
+}

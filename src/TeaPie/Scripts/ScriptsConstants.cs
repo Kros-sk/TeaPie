@@ -36,9 +36,12 @@ internal static class ScriptsConstants
         "System.Threading.Tasks",
         "TeaPie",
         "TeaPie.Http",
+        "TeaPie.Http.Auth",
+        "TeaPie.Http.Auth.OAuth2",
         "TeaPie.Http.Retrying",
         "TeaPie.Json",
         "TeaPie.Reporting",
+        "TeaPie.TeaPie",
         "TeaPie.Testing",
         "TeaPie.Variables",
         "Xunit.Assert"

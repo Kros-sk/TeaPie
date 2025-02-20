@@ -10,7 +10,7 @@ internal static class Setup
         var defaultAuthProviderAccessor = new DefaultAuthProviderAccessor();
 
         services.AddHttpClient<ExecuteRequestStep>()
-            .AddHttpMessageHandler(_ => new AuthHttpMessageHandler(defaultAuthProviderAccessor));
+            .AddHttpMessageHandler(serviceProvider => new AuthHttpMessageHandler(defaultAuthProviderAccessor, serviceProvider));
 
         services.AddSingleton<IAuthProviderRegistry, AuthProviderRegistry>();
         services.AddSingleton<IDefaultAuthProviderAccessor>(defaultAuthProviderAccessor);
