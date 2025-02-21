@@ -4,30 +4,22 @@ using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Parsing;
 
-public class RetryStrategyLineParserShould
+public class AuthProviderDirectiveLineParserShould
 {
     private readonly HttpRequestHeaders _headers = new HttpClient().DefaultRequestHeaders;
-    private readonly RetryStrategyDirectiveLineParser _parser = new();
+    private readonly AuthProviderDirectiveLineParser _parser = new();
 
     [Fact]
-    public void ParseRetryStrategyDirective()
+    public void ParseAuthProviderDirectiveCorrectly()
     {
-        const string line = "## RETRY-STRATEGY: FastRetry";
-        HttpParsingContext context = new(_headers);
+        const string line = "## AUTH-PROVIDER: OAuth2";
+        var context = new HttpParsingContext(_headers);
 
-        True(_parser.CanParse(line, context));
+        var canParse = _parser.CanParse(line, context);
         _parser.Parse(line, context);
 
-        Equal("FastRetry", context.RetryStrategyName);
-    }
-
-    [Fact]
-    public void ThrowExceptionOnInvalidRetryStrategyDirective()
-    {
-        const string line = "## INVALID-STRATEGY: SomethingElse";
-        HttpParsingContext context = new(_headers);
-
-        False(_parser.CanParse(line, context));
+        True(canParse);
+        Equal("OAuth2", context.AuthProviderName);
     }
 
     [Fact]

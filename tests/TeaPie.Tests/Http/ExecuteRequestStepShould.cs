@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Net;
 using TeaPie.Http;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
@@ -34,7 +35,10 @@ public class ExecuteRequestStepShould
         var accessor = new RequestExecutionContextAccessor() { Context = context };
 
         var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor, Substitute.For<IHeadersHandler>());
+            serviceProvider.GetRequiredService<IHttpClientFactory>(),
+            accessor,
+            Substitute.For<IHeadersHandler>(),
+            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<InvalidOperationException>();
     }
@@ -56,7 +60,10 @@ public class ExecuteRequestStepShould
         parser.Parse(context);
 
         var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor, Substitute.For<IHeadersHandler>());
+            serviceProvider.GetRequiredService<IHttpClientFactory>(),
+            accessor,
+            Substitute.For<IHeadersHandler>(),
+            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
 
         await step.Execute(appContext);
 
@@ -94,7 +101,10 @@ public class ExecuteRequestStepShould
         parser.Parse(context);
 
         var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(), accessor, Substitute.For<IHeadersHandler>());
+            serviceProvider.GetRequiredService<IHttpClientFactory>(),
+            accessor,
+            Substitute.For<IHeadersHandler>(),
+            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
 
         await step.Execute(appContext);
 
@@ -142,7 +152,11 @@ public class ExecuteRequestStepShould
             retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
 
         return new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, resiliencePipelineProvider);
+            headersProvider,
+            variablesResolver,
+            headersResolver,
+            resiliencePipelineProvider,
+            Substitute.For<IAuthProviderRegistry>());
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler

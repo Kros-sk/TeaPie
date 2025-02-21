@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using TeaPie.Http;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
@@ -109,6 +110,10 @@ public class ParseHttpRequestStepShould
         var headersResolver = new HeadersHandler();
 
         return new HttpRequestParser(
-            headersProvider, variablesResolver, headersResolver, Substitute.For<IResiliencePipelineProvider>());
+            headersProvider,
+            variablesResolver,
+            headersResolver,
+            Substitute.For<IResiliencePipelineProvider>(),
+            Substitute.For<IAuthProviderRegistry>());
     }
 }
