@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
-using TeaPie.Http.Parsing;
 
-namespace TeaPie.Http;
+namespace TeaPie.Http.Parsing;
 
 internal partial class RetryUntilStatusCodesLineParser : ILineParser
 {

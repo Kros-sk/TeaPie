@@ -12,7 +12,7 @@ internal class InitializeApplicationStep(
     IPipeline pipeline,
     ITestResultsSummaryAccessor summaryAccessor,
     INuGetPackageHandler nuGetPackageHandler,
-    IDefaultAuthProviderAccessor defaultAuthProviderAccessor,
+    ICurrentAndDefaultAuthProviderAccessor defaultAndCurrentAuthProviderAccessor,
     IAuthProviderRegistry authProviderRegistry,
     OAuth2Provider oAuth2Provider)
     : IPipelineStep
@@ -20,7 +20,7 @@ internal class InitializeApplicationStep(
     private readonly IPipeline _pipeline = pipeline;
     private readonly INuGetPackageHandler _nuGetPackageHandler = nuGetPackageHandler;
     private readonly ITestResultsSummaryAccessor _summaryAccessor = summaryAccessor;
-    private readonly IDefaultAuthProviderAccessor _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
+    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = defaultAndCurrentAuthProviderAccessor;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
     private readonly OAuth2Provider _oAuth2Provider = oAuth2Provider;
 
@@ -28,16 +28,17 @@ internal class InitializeApplicationStep(
     {
         await DownloadAndInstallGlobalNuGetPackages();
 
-        SetNoAuthProviderAsDefault();
+        SetNoAuthProviderAsDefaultAndCurrent();
 
         SetTestResultsSummaryObject(context.CollectionName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
     }
 
-    private void SetNoAuthProviderAsDefault()
+    private void SetNoAuthProviderAsDefaultAndCurrent()
     {
-        _defaultAuthProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
+        _authProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
+        _authProviderAccessor.SetCurrentProviderToDefault();
         _authProviderRegistry.RegisterAuthProvider(AuthConstants.OAuth2Key, _oAuth2Provider);
     }
 

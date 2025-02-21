@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Retrying;
 using TeaPie.Variables;
@@ -14,18 +15,21 @@ internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
     IVariablesResolver variablesResolver,
     IHeadersHandler headersResolver,
-    IResiliencePipelineProvider resiliencePipelineProvider)
+    IResiliencePipelineProvider resiliencePipelineProvider,
+    IAuthProviderRegistry authProviderRegistry)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IResiliencePipelineProvider _resiliencePipelineProvider = resiliencePipelineProvider;
+    private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
 
     private readonly IEnumerable<ILineParser> _lineParsers =
     [
         new CommentLineParser(),
-        new RetryDirectivesLineParser(),
+        new DirectivesLineParser(),
+        new AuthProviderDirectiveLineParser(),
         new EmptyLineParser(),
         new MethodAndUriParser(),
         new HeaderParser(),
@@ -47,7 +51,7 @@ internal class HttpRequestParser(
             ParseLine(resolvedLine, parsingContext);
         }
 
-        ApplyChanges(requestExecutionContext, parsingContext);
+        UpdateRequestExecutionContext(requestExecutionContext, parsingContext);
     }
 
     private void ParseLine(string line, HttpParsingContext context)
@@ -62,12 +66,18 @@ internal class HttpRequestParser(
         }
     }
 
-    private void ApplyChanges(
-        RequestExecutionContext requestExecutionContext,
-        HttpParsingContext parsingContext)
+    private void UpdateRequestExecutionContext(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
     {
         var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
+        UpdateRequestMessage(requestExecutionContext, parsingContext, requestMessage);
+        UpdateAuthentication(requestExecutionContext, parsingContext);
+        UpdateResiliencePipeline(requestExecutionContext, parsingContext);
+    }
+
+    private void UpdateRequestMessage(
+        RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext, HttpRequestMessage requestMessage)
+    {
         CreateMessageContent(parsingContext, requestMessage);
         _headersResolver.SetHeaders(parsingContext, requestMessage);
 
@@ -77,13 +87,22 @@ internal class HttpRequestParser(
         {
             requestExecutionContext.Name = parsingContext.RequestName;
         }
+    }
 
-        requestExecutionContext.ResiliencePipeline =
+    private void UpdateAuthentication(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+    {
+        if (!parsingContext.AuthProviderName.Equals(string.Empty))
+        {
+            requestExecutionContext.AuthProvider = _authProviderRegistry.GetAuthProvider(parsingContext.AuthProviderName);
+        }
+    }
+
+    private void UpdateResiliencePipeline(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+        => requestExecutionContext.ResiliencePipeline =
             _resiliencePipelineProvider.GetResiliencePipeline(
                 parsingContext.RetryStrategyName,
                 parsingContext.ExplicitRetryStrategy,
                 parsingContext.RetryUntilStatusCodes);
-    }
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)
     {

@@ -1,8 +1,8 @@
 ﻿namespace TeaPie.Http.Auth;
 
-internal class AuthHttpMessageHandler(IDefaultAuthProviderAccessor accessor) : DelegatingHandler
+internal class AuthHttpMessageHandler(ICurrentAndDefaultAuthProviderAccessor accessor) : DelegatingHandler
 {
-    private readonly IDefaultAuthProviderAccessor _authProviderAccessor = accessor;
+    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = accessor;
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -11,6 +11,6 @@ internal class AuthHttpMessageHandler(IDefaultAuthProviderAccessor accessor) : D
     }
 
     private IAuthProvider GetAuthProvider()
-        => _authProviderAccessor.DefaultProvider
-            ?? throw new InvalidOperationException("Unable to work with 'null' default authentication provider.");
+        => _authProviderAccessor.CurrentProvider
+            ?? throw new InvalidOperationException("Unable to authenticate with 'null' authentication provider.");
 }

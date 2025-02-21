@@ -1,29 +1,34 @@
 ﻿using Microsoft.Extensions.Logging;
 using Polly;
+using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Pipelines;
 
 namespace TeaPie.Http;
 
 internal class ExecuteRequestStep(
-    IHttpClientFactory clientFactory, IRequestExecutionContextAccessor contextAccessor, IHeadersHandler headersHandler)
+    IHttpClientFactory clientFactory,
+    IRequestExecutionContextAccessor contextAccessor,
+    IHeadersHandler headersHandler,
+    ICurrentAndDefaultAuthProviderAccessor defaultAuthProviderAccessor)
     : IPipelineStep
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory;
     private readonly IRequestExecutionContextAccessor _requestExecutionContextAccessor = contextAccessor;
     private readonly IHeadersHandler _headersHandler = headersHandler;
+    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var requestExecutionContext, out var request, out var resiliencePipeline);
 
-        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
+        var response = await Execute(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
         requestExecutionContext.Response = response;
         requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
     }
 
-    private async Task<HttpResponseMessage> ExecuteRequest(
+    private async Task<HttpResponseMessage> Execute(
         ApplicationContext context,
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
@@ -32,13 +37,36 @@ internal class ExecuteRequestStep(
     {
         context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request!.RequestUri);
 
-        var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequest(
-            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
+        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
         await LogResponse(context.Logger, response);
 
         return response;
+    }
+
+    private async Task<HttpResponseMessage> ExecuteRequest(
+        ApplicationContext context,
+        RequestExecutionContext requestExecutionContext,
+        ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
+        HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+        ResolveAuthProvider(requestExecutionContext);
+
+        var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
+        var response = await ExecuteRequest(
+            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
+
+        _authProviderAccessor.SetCurrentProviderToDefault();
+        return response;
+    }
+
+    private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)
+    {
+        if (requestExecutionContext.AuthProvider is not null)
+        {
+            _authProviderAccessor.CurrentProvider = requestExecutionContext.AuthProvider;
+        }
     }
 
     private async Task<HttpResponseMessage> ExecuteRequest(

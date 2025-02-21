@@ -24,4 +24,6 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
     public string RetryStrategyName { get; set; } = string.Empty;
     public IReadOnlyList<HttpStatusCode> RetryUntilStatusCodes { get; set; } = [];
     public RetryStrategyOptions<HttpResponseMessage>? ExplicitRetryStrategy { get; set; }
+
+    public string AuthProviderName { get; set; } = string.Empty;
 }

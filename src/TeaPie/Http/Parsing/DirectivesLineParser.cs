@@ -1,9 +1,9 @@
-﻿
-namespace TeaPie.Http.Parsing;
+﻿namespace TeaPie.Http.Parsing;
 
-internal class RetryDirectivesLineParser : ILineParser
+internal class DirectivesLineParser : ILineParser
 {
     private readonly IEnumerable<ILineParser> _parsers = [
+        new AuthProviderDirectiveLineParser(),
         new RetryStrategyDirectiveLineParser(),
         new RetryUntilStatusCodesLineParser(),
         new RetryExplicitPropertiesDirectiveLineParser()
@@ -19,8 +19,10 @@ internal class RetryDirectivesLineParser : ILineParser
             if (parser.CanParse(line, context))
             {
                 parser.Parse(line, context);
-                break;
+                return;
             }
         }
+
+        throw new InvalidOperationException("Unable to parse any of supported directive.");
     }
 }

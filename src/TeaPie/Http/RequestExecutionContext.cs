@@ -1,5 +1,6 @@
 ﻿using Polly;
 using System.Diagnostics;
+using TeaPie.Http.Auth;
 using TeaPie.TestCases;
 using File = TeaPie.StructureExploration.File;
 
@@ -15,4 +16,5 @@ internal class RequestExecutionContext(File requestFile, TestCaseExecutionContex
     public HttpRequestMessage? Request { get; set; }
     public HttpResponseMessage? Response { get; set; }
     public ResiliencePipeline<HttpResponseMessage>? ResiliencePipeline { get; set; }
+    public IAuthProvider? AuthProvider { get; set; }
 }
