@@ -1,13 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
-using TeaPie.Application;
-using TeaPie.Http.Retrying;
-using TeaPie.Pipelines;
-using TeaPie.Reporting;
 using TeaPie.Scripts;
-using TeaPie.TestCases;
-using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Scripts;

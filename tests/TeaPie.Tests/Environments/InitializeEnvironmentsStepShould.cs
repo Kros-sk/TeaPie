@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TeaPie.Application;
 using TeaPie.Environments;
 using TeaPie.Logging;
 using TeaPie.Pipelines;

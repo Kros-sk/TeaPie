@@ -24,17 +24,20 @@ tp.Logger.LogInformation("Starting demo collection testing...");
 // OAuth2 authentication is natively supported. To use this provider, configure it first.
 // Body parameters defined by RFC 6749 are supported.
 var authUrl = tp.GetVariable<string>("AuthServerUrl");
-tp.ConfigureOAuth2Provider(new OAuth2Options(
-    authUrl,
-    new("client_id", "test-client"),
-    new("grant_type", "client_credentials"),
-    new("client_secret", "test-secret")
-));
+tp.ConfigureOAuth2Provider(new OAuth2OptionsBuilder()
+    .WithAuthUrl(authUrl)
+    .WithClientId("test-client")
+    .WithGrantType("client_credentials")
+    .WithClientSecret("test-secret")
+    .AddParameter("custom_parameter", "true")
+    .Build()
+);
 
-// Custom authentication providers can also be registered.
+// Custom authentication providers can be also registered.
 tp.RegisterAuthProvider(
     "MyAuth",
-    new MyAuthProvider(tp).ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
+    new MyAuthProvider(tp.ApplicationContext)
+        .ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
 );
 
 // Set an authentication provider as the default.
@@ -86,9 +89,9 @@ tp.RegisterReporter(summary =>
 // CUSTOM CLASS DEFINITIONS
 
 // Custom authentication provider definition
-public class MyAuthProvider(TeaPie context) : IAuthProvider<MyAuthProviderOptions>
+public class MyAuthProvider(IApplicationContext context) : IAuthProvider<MyAuthProviderOptions>
 {
-    private readonly TeaPie _context = context;
+    private readonly IApplicationContext _context = context;
     private MyAuthProviderOptions _options = new();
 
     public async Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -97,11 +100,15 @@ public class MyAuthProvider(TeaPie context) : IAuthProvider<MyAuthProviderOption
         await Task.CompletedTask;
     }
 
-    public void ConfigureOptions(MyAuthProviderOptions options) => _options = options;
+    public IAuthProvider<MyAuthProviderOptions> ConfigureOptions(MyAuthProviderOptions options)
+    {
+        _options = options;
+        return this;
+    }
 }
 
 // Custom authentication provider options definition
-public class MyAuthProviderOptions : IAuthProviderOptions
+public class MyAuthProviderOptions : IAuthOptions
 {
     public string AuthUrl { get; set; } = string.Empty;
 }

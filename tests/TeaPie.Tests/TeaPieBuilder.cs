@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using TeaPie.Application;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;

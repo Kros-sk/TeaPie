@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TeaPie.Application;
 using TeaPie.Environments;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;

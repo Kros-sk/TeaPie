@@ -1,6 +1,4 @@
-﻿using TeaPie.Application;
-
-namespace TeaPie.Pipelines;
+﻿namespace TeaPie.Pipelines;
 
 internal class InlineStep(Func<ApplicationContext, CancellationToken, Task> lambdaFunction) : IPipelineStep
 {

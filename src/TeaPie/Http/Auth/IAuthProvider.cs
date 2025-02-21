@@ -2,10 +2,11 @@
 
 public interface IAuthProvider
 {
-    Task Authenticate(HttpRequestMessage request, IServiceProvider serviceProvider, CancellationToken cancellationToken);
+    Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken);
 }
 
-public interface IAuthProvider<TOptions> : IAuthProvider where TOptions : IAuthProviderOptions
+public interface IAuthProvider<TOptions> : IAuthProvider
+    where TOptions : IAuthOptions
 {
-    void ConfigureOptions(TOptions options);
+    IAuthProvider<TOptions> ConfigureOptions(TOptions options);
 }

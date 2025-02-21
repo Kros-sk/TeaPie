@@ -24,9 +24,6 @@ public static class TeaPieAuthenticationExtensions
         SetDefaultProvider(teaPie, name);
     }
 
-    private static void SetDefaultProvider(TeaPie teaPie, string name)
-        => teaPie._defaultAuthProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.GetAuthProvider(name);
-
     /// <summary>
     /// Sets the default authentication provider for all requests.
     /// A different authentication provider can still be specified for individual requests using a directive.
@@ -44,4 +41,7 @@ public static class TeaPieAuthenticationExtensions
 
         SetDefaultProvider(teaPie, name);
     }
+
+    private static void SetDefaultProvider(TeaPie teaPie, string name)
+        => teaPie._defaultAuthProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.GetAuthProvider(name);
 }

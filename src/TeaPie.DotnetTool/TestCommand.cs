@@ -1,6 +1,5 @@
 ﻿using Spectre.Console.Cli;
 using System.ComponentModel;
-using TeaPie.Application;
 
 namespace TeaPie.DotnetTool;
 

@@ -1,5 +1,4 @@
-﻿using TeaPie.Application;
-using TeaPie.Pipelines;
+﻿using TeaPie.Pipelines;
 
 namespace TeaPie.Reporting;
 

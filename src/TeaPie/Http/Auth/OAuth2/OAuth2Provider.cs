@@ -22,7 +22,11 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
     public async Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken)
         => _authorizationHeaderHandler.SetHeader($"Bearer {await GetToken()}", request);
 
-    public void ConfigureOptions(OAuth2Options configuration) => _configuration = configuration;
+    public IAuthProvider<OAuth2Options> ConfigureOptions(OAuth2Options configuration)
+    {
+        _configuration = configuration;
+        return this;
+    }
 
     private async Task<string> GetToken()
     {
@@ -50,7 +54,7 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
 
     private void ResolveParameters(out FormUrlEncodedContent requestContent, out string requestUri)
     {
-        requestContent = new FormUrlEncodedContent([_configuration.GrantType, _configuration.OtherBodyParameters]);
+        requestContent = new FormUrlEncodedContent(_configuration.GetParametersAsReadOnly());
         requestUri = ResolveRequestUri();
     }
 
@@ -81,9 +85,9 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
     }
 
     private string ResolveRequestUri()
-        => _configuration.OtherBodyParameters.HasParameter(RedirectUriParameterKey)
-             ? _configuration.OtherBodyParameters.GetParameter(RedirectUriParameterKey)
-             : _configuration.OAuthUrl;
+        => _configuration.HasParameter(RedirectUriParameterKey)
+             ? _configuration.GetParameter(RedirectUriParameterKey)
+             : _configuration.AuthUrl;
 }
 
 internal class OAuth2TokenResponse

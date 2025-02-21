@@ -1,5 +1,4 @@
 ﻿using NSubstitute;
-using TeaPie.Application;
 using TeaPie.Pipelines;
 using TeaPie.Tests.Pipelines;
 
