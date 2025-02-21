@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
-using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -26,7 +25,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             serviceProvider.GetRequiredService<ILogger<TeaPie>>(),
             serviceProvider.GetRequiredService<ITester>(),
             serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
-            serviceProvider.GetRequiredService<IPipeline>(),
             serviceProvider.GetRequiredService<ITestResultsSummaryReporter>(),
             serviceProvider.GetRequiredService<IRetryStrategyRegistry>(),
             serviceProvider.GetRequiredService<IAuthProviderRegistry>(),
@@ -42,7 +40,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
-        IPipeline pipeline,
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
@@ -55,7 +52,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         Logger = logger;
         _tester = tester;
         _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
-        _pipeline = pipeline;
         _reporter = reporter;
         _retryStrategyRegistry = retryStrategiesRegistry;
         _authenticationProviderRegistry = authenticationProviderRegistry;
@@ -63,7 +59,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     }
 
     internal IServiceProvider _serviceProvider;
-    private readonly IPipeline _pipeline;
 
     private readonly ApplicationContext _applicationContext;
     public IApplicationContext ApplicationContext => _applicationContext;

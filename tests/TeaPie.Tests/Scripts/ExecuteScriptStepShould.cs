@@ -12,15 +12,12 @@ public class ExecuteScriptStepShould
     [Fact]
     public async void ExecuteScriptWithNuGetPackageWithoutAnyProblem()
     {
-        var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
         await ScriptHelper.PrepareScriptForExecution(context);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContextBuilder()
-            .WithLogger(logger)
-            .Build();
+        var appContext = new ApplicationContextBuilder().Build();
 
         await step.Execute(appContext);
     }
@@ -28,7 +25,7 @@ public class ExecuteScriptStepShould
     [Fact]
     public async void AccessTeaPieLoggerDuringScriptExectutionWithoutAnyProblem()
     {
-        var logger = Substitute.For<ILogger>();
+        var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
 
@@ -40,8 +37,7 @@ public class ExecuteScriptStepShould
         await ScriptHelper.PrepareScriptForExecution(context);
 
         await step.Execute(appContext);
-
-        logger.Received(1).LogInformation("It is possible to access TeaPie instance!");
+        Assert.Equal("CustomEnvironment", TeaPie.Instance!.ApplicationContext.EnvironmentName);
     }
 
     [Fact]

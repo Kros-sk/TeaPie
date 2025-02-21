@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Environments;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.StructureExploration;
+using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Environments;
@@ -52,6 +55,9 @@ public class SetEnvironmentStepShould
         services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
         services.AddSingleton<IPipeline, ApplicationPipeline>();
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
+        services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
+        services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
+        services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddLogging();
 
         provider = services.BuildServiceProvider();

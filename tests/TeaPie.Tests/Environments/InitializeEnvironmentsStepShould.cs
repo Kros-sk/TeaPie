@@ -4,6 +4,7 @@ using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.StructureExploration;
+using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
 using static Xunit.Assert;
@@ -240,6 +241,7 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
         services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
+        services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
         services.AddLogging();
 
         provider = services.BuildServiceProvider();

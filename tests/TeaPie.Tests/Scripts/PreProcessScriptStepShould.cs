@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-using NSubstitute;
+﻿using NSubstitute;
 using TeaPie.Scripts;
 
 namespace TeaPie.Tests.Scripts;
@@ -9,7 +8,6 @@ public class PreProcessScriptStepShould
     [Fact]
     public async void CallPreProcessMethodOnPreProcessorDuringExecution()
     {
-        var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
         context.RawContent = await File.ReadAllTextAsync(context.Script.File.Path);
@@ -22,7 +20,6 @@ public class PreProcessScriptStepShould
         var pipeline = new ApplicationPipeline();
         var appContext = new ApplicationContextBuilder()
             .WithPath(rootPath)
-            .WithLogger(logger)
             .WithTempFolderPath(tempPath)
             .Build();
 

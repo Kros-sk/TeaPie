@@ -3,9 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using NuGet.Common;
 using TeaPie.Http;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Tests.Http;
 using TeaPie.Tests.Scripts;
 using File = TeaPie.StructureExploration.File;
@@ -97,6 +99,8 @@ public class InitializeTestCaseStepShould
         services.AddScripts();
         services.AddHttp();
         services.AddPipelines();
+        services.AddReporting();
+        services.AddTesting();
     }
 
     private static Script GetScript(string path)

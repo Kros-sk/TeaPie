@@ -12,16 +12,14 @@ public class CompileScriptStepShould
     [Fact]
     public async void CallCompileMethodOnCompilerDuringExecution()
     {
-        var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.PlainScriptPath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
         await ScriptHelper.PrepareScriptForCompilation(context);
 
         var compiler = Substitute.For<IScriptCompiler>();
 
-        var appContext = new ApplicationContextBuilder()
-            .WithLogger(logger)
-            .Build();
+        var appContext = new ApplicationContextBuilder().Build();
+
         var step = new CompileScriptStep(accessor, compiler);
 
         await step.Execute(appContext);
@@ -39,9 +37,7 @@ public class CompileScriptStepShould
 
         var compiler = new ScriptCompiler(Substitute.For<ILogger<ScriptCompiler>>());
 
-        var appContext = new ApplicationContextBuilder()
-            .WithLogger(logger)
-            .Build();
+        var appContext = new ApplicationContextBuilder().Build();
 
         var step = new CompileScriptStep(accessor, compiler);
 

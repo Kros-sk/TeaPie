@@ -12,7 +12,7 @@ internal class ApplicationContextBuilder
     private string _path = string.Empty;
     private readonly IServiceCollection _serviceCollection = new ServiceCollection();
     private IServiceProvider? _serviceProvider;
-    private ILogger? _logger;
+    private ILogger<ApplicationContext>? _logger;
     private ICurrentTestCaseExecutionContextAccessor? _currentTestCaseExecutionContextAccessor;
     private ITestResultsSummaryReporter? _testResultsSummaryReporter;
     private readonly ApplicationContextOptionsBuilder _optionsBuilder = new();
@@ -29,7 +29,7 @@ internal class ApplicationContextBuilder
         return this;
     }
 
-    public ApplicationContextBuilder WithLogger(ILogger logger)
+    public ApplicationContextBuilder WithLogger(ILogger<ApplicationContext> logger)
     {
         _logger = logger;
         return this;
@@ -87,7 +87,7 @@ internal class ApplicationContextBuilder
             _testResultsSummaryReporter ?? Substitute.For<ITestResultsSummaryReporter>());
 
         _serviceCollection.TryAddSingleton(_
-            => _logger ?? Substitute.For<ILogger>());
+            => _logger ?? Substitute.For<ILogger<ApplicationContext>>());
 
         var finalServiceProvider = _serviceProvider ?? _serviceCollection.BuildServiceProvider();
 
