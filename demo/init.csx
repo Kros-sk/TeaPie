@@ -40,8 +40,9 @@ tp.RegisterAuthProvider(
         .ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
 );
 
-// Set an authentication provider as the default.
-tp.SetDefaultAuthProvider("OAuth2"); // Sets OAuth2 as the default authentication provider.
+// Sets OAuth2 as the default authentication provider. This means that specified authentication provider will be
+// applied on all requests, unless explictly set otherwise (by ## AUTH-PROVIDER: AuthProvider directive in .http file).
+tp.SetDefaultAuthProvider("OAuth2");
 
 // RETRY STRATEGIES
 
@@ -96,7 +97,7 @@ public class MyAuthProvider(IApplicationContext context) : IAuthProvider<MyAuthP
 
     public async Task Authenticate(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        _context.Logger.LogInformation("Authentication completed via '{AuthUrl}'", _options.AuthUrl);
+        _context.Logger.LogInformation("{Provider}: Authentication completed via '{AuthUrl}'", nameof(MyAuthProvider), _options.AuthUrl);
         await Task.CompletedTask;
     }
 

@@ -1,5 +1,9 @@
 ### Add New Car
 # @name AddCarRequest
+// To use a different authentication provider instead of the default, specify it using the directive below.
+// The provider must be registered beforehand.
+// Implicitly registered providers: 'None' (no authentication) and 'OAuth2' (requires prior configuration).
+## AUTH-PROVIDER: MyAuth
 POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
 
