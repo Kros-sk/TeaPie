@@ -1,13 +1,15 @@
-﻿namespace TeaPie.Http.Auth.OAuth2;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace TeaPie.Http.Auth.OAuth2;
 
 public class OAuth2OptionsBuilder
 {
     private string _authUrl = string.Empty;
-    private string? _grantType;
+    private string _grantType = string.Empty;
     private string? _clientId;
+    private string? _clientSecret;
     private string? _username;
     private string? _password;
-    private string? _clientSecret;
     private readonly Dictionary<string, string> _additionalParameters = [];
 
     public OAuth2OptionsBuilder WithAuthUrl(string oauthUrl)
@@ -28,6 +30,12 @@ public class OAuth2OptionsBuilder
         return this;
     }
 
+    public OAuth2OptionsBuilder WithClientSecret(string clientSecret)
+    {
+        _clientSecret = clientSecret;
+        return this;
+    }
+
     public OAuth2OptionsBuilder WithUsername(string username)
     {
         _username = username;
@@ -37,12 +45,6 @@ public class OAuth2OptionsBuilder
     public OAuth2OptionsBuilder WithPassword(string password)
     {
         _password = password;
-        return this;
-    }
-
-    public OAuth2OptionsBuilder WithClientSecret(string clientSecret)
-    {
-        _clientSecret = clientSecret;
         return this;
     }
 
@@ -56,15 +58,32 @@ public class OAuth2OptionsBuilder
     }
 
     public OAuth2Options Build()
-        => _authUrl is not null
-            ? new(
-                _authUrl,
-                _grantType,
-                _clientId,
-                _username,
-                _password,
-                _clientSecret,
-                _additionalParameters.Count > 0 ? new Dictionary<string, string>(_additionalParameters) : null)
-            : throw new InvalidOperationException("Unable to create OAuth2 options, because " +
+    {
+        CheckRequiredParameters();
+        return new(
+            _authUrl,
+            _grantType,
+            _clientId,
+            _username,
+            _password,
+            _clientSecret,
+            _additionalParameters.Count > 0 ? new Dictionary<string, string>(_additionalParameters) : null);
+    }
+
+    [MemberNotNull(nameof(_authUrl))]
+    [MemberNotNull(nameof(_grantType))]
+    private void CheckRequiredParameters()
+    {
+        if (_authUrl is null)
+        {
+            throw new InvalidOperationException("Unable to create OAuth2 options, because " +
                 $"'{nameof(OAuth2Options.AuthUrl)}' is required parameter.");
+        }
+
+        if (_grantType is null)
+        {
+            throw new InvalidOperationException("Unable to create OAuth2 options, because " +
+                $"'{nameof(OAuth2Options.GrantType)}' is required parameter.");
+        }
+    }
 }

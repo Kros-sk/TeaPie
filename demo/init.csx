@@ -22,14 +22,13 @@ tp.Logger.LogInformation("Starting demo collection testing...");
 // AUTHENTICATION
 
 // OAuth2 authentication is natively supported. To use this provider, configure it first.
-// Body parameters defined by RFC 6749 are supported.
 var authUrl = tp.GetVariable<string>("AuthServerUrl");
 tp.ConfigureOAuth2Provider(new OAuth2OptionsBuilder()
-    .WithAuthUrl(authUrl)
+    .WithAuthUrl(authUrl) // Required parameter.
+    .WithGrantType("client_credentials") // Required parameter.
     .WithClientId("test-client")
-    .WithGrantType("client_credentials")
     .WithClientSecret("test-secret")
-    .AddParameter("custom_parameter", "true")
+    .AddParameter("custom_parameter", "true") // Add another/custom parameters.
     .Build()
 );
 
@@ -43,6 +42,10 @@ tp.RegisterAuthProvider(
 // Sets OAuth2 as the default authentication provider. This means that specified authentication provider will be
 // applied on all requests, unless explictly set otherwise (by ## AUTH-PROVIDER: AuthProvider directive in .http file).
 tp.SetDefaultAuthProvider("OAuth2");
+
+// There is also one useful method, which encapsulates registration process of authentication provider altogether 
+// with setting it as default provider:
+// tp.RegisterDefaultAuthProvider("MyAuth2", new MyAuth2(tp.ApplicationContext));
 
 // RETRY STRATEGIES
 
