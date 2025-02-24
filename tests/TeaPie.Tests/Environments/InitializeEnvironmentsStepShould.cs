@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using NSubstitute.ExceptionExtensions;
 using TeaPie.Environments;
 using TeaPie.Http.Auth;
 using TeaPie.Logging;
