@@ -73,7 +73,7 @@ internal class InitializeEnvironmentsStep(
     private bool RegisterEnvironmentAndApplyIfDefault(KeyValuePair<string, Dictionary<string, object?>> environmentToken)
     {
         var environment = new Environment(environmentToken.Key, environmentToken.Value);
-        _environmentsRegistry.RegisterEnvironment(environment);
+        _environmentsRegistry.Register(environment.Name, environment);
 
         if (environment.Name.Equals(Constants.DefaultEnvironmentName))
         {

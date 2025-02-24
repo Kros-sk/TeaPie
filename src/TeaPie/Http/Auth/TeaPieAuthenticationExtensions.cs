@@ -10,7 +10,7 @@ public static class TeaPieAuthenticationExtensions
     /// <param name="authenticationProvider">The authentication provider to register.</param>
     public static void RegisterAuthProvider(
         this TeaPie teaPie, string name, IAuthProvider authenticationProvider)
-        => teaPie._authenticationProviderRegistry.RegisterAuthProvider(name, authenticationProvider);
+        => teaPie._authenticationProviderRegistry.Register(name, authenticationProvider);
 
     /// <summary>
     /// Registers an authentication provider with the specified <paramref name="name"/> and sets it as the default provider.
@@ -24,6 +24,9 @@ public static class TeaPieAuthenticationExtensions
         SetDefaultProvider(teaPie, name);
     }
 
+    private static void SetDefaultProvider(TeaPie teaPie, string name)
+        => teaPie._defaultAuthProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.Get(name);
+
     /// <summary>
     /// Sets the default authentication provider for all requests.
     /// A different authentication provider can still be specified for individual requests using a directive.
@@ -34,14 +37,11 @@ public static class TeaPieAuthenticationExtensions
     /// <paramref name="name"/>.</exception>
     public static void SetDefaultAuthProvider(this TeaPie teaPie, string name)
     {
-        if (!teaPie._authenticationProviderRegistry.IsAuthProviderRegistered(name))
+        if (!teaPie._authenticationProviderRegistry.IsRegistered(name))
         {
             throw new InvalidOperationException("Cannot set the default authentication provider because it is not registered.");
         }
 
         SetDefaultProvider(teaPie, name);
     }
-
-    private static void SetDefaultProvider(TeaPie teaPie, string name)
-        => teaPie._defaultAuthProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.GetAuthProvider(name);
 }

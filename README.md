@@ -265,7 +265,8 @@ Content-Type: application/json
 <!-- omit from toc -->
 #### Disabling Authentication
 
-To **disable authentication** for a specific request, use the predefined authentication provider named `'None'`:
+By default, no authentication is performed. However, if a default authentication provider is set, it applies to all requests.
+To **disable authentication** for a specific request, use the pre-defined authentication provider 'None':
 
 ```http
 ## AUTH-PROVIDER: None

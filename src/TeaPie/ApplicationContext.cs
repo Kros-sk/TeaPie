@@ -34,7 +34,7 @@ internal class ApplicationContext(
     public IServiceProvider ServiceProvider { get; } = serviceProvider;
 
     private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor =
-         serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>();
+        serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>();
 
     public TestCaseExecutionContext? CurrentTestCase
     {

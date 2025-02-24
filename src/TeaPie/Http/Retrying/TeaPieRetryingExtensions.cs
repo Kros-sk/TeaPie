@@ -15,7 +15,7 @@ public static class TeaPieRetryingExtensions
     {
         CheckAndResolveRealNameOfRetryStrategy(name, retryStrategy, out var realName);
 
-        teaPie._retryStrategyRegistry.RegisterRetryStrategy(realName, retryStrategy);
+        teaPie._retryStrategyRegistry.Register(realName, retryStrategy);
     }
 
     private static void CheckAndResolveRealNameOfRetryStrategy(

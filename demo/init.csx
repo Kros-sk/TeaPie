@@ -43,7 +43,7 @@ tp.RegisterAuthProvider(
 // applied on all requests, unless explictly set otherwise (by ## AUTH-PROVIDER: AuthProvider directive in .http file).
 tp.SetOAuth2AsDefaultAuthProvider(); // equals to: tp.SetDefaultAuthProvider("OAuth2");
 
-// To set custom already registered authentication provider use method:
+// To set custom - already registered - authentication provider use method:
 // tp.SetDefaultAuthProvider("NameOfCustomAuthProvider");
 
 // There is also one useful method, which encapsulates registration process of authentication provider altogether
@@ -91,7 +91,6 @@ tp.RegisterReporter(summary =>
 
 // For more advanced and customized reporting, use:
 // tp.RegisterReporter(IReporter<TestsResultsSummary> reporter);
-// The reporter must implement the IReporter<TestsResultsSummary> interface.
 
 // CUSTOM CLASS DEFINITIONS
 

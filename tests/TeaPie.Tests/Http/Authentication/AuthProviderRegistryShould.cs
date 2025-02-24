@@ -12,11 +12,11 @@ public class AuthProviderRegistryShould
         const string name = "OAuth2";
         var registry = new AuthProviderRegistry();
         var mockProvider = Substitute.For<IAuthProvider>();
-        registry.RegisterAuthProvider(name, mockProvider);
+        registry.Register(name, mockProvider);
 
-        var result = registry.GetAuthProvider(name);
+        var result = registry.Get(name);
 
-        True(registry.IsAuthProviderRegistered(name));
+        True(registry.IsRegistered(name));
         Same(mockProvider, result);
     }
 
@@ -24,6 +24,6 @@ public class AuthProviderRegistryShould
     public void HaveRegisteredNoAuthProviderByDefault()
     {
         var registry = new AuthProviderRegistry();
-        True(registry.IsAuthProviderRegistered(AuthConstants.NoAuthKey));
+        True(registry.IsRegistered(AuthConstants.NoAuthKey));
     }
 }

@@ -1,21 +1,17 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace TeaPie.Environments;
 
-namespace TeaPie.Environments;
-
-internal interface IEnvironmentsRegistry
-{
-    void RegisterEnvironment(Environment environment);
-
-    bool TryGetEnvironment(string name, [NotNullWhen(true)] out Environment? environment);
-}
+internal interface IEnvironmentsRegistry : IRegistry<Environment>;
 
 internal class EnvironmentsRegistry : IEnvironmentsRegistry
 {
     private readonly Dictionary<string, Environment> _environments = [];
 
-    public bool TryGetEnvironment(string name, [NotNullWhen(true)] out Environment? environment)
-        => _environments.TryGetValue(name, out environment);
+    public Environment Get(string name)
+        => _environments[name];
 
-    public void RegisterEnvironment(Environment environment)
+    public void Register(string name, Environment environment)
         => _environments.Add(environment.Name, environment);
+
+    public bool IsRegistered(string name)
+        => _environments.ContainsKey(name);
 }

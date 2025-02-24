@@ -11,8 +11,9 @@ internal class SetEnvironmentStep(IVariables variables, IEnvironmentsRegistry en
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (_environmentsRegistry.TryGetEnvironment(context.EnvironmentName, out var environment))
+        if (_environmentsRegistry.IsRegistered(context.EnvironmentName))
         {
+            var environment = _environmentsRegistry.Get(context.EnvironmentName);
             environment.Apply(_variables.EnvironmentVariables);
             context.Logger.LogInformation("Running on {EnvironmentName} environment.", context.EnvironmentName);
         }

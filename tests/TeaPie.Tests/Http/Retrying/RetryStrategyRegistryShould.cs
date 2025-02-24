@@ -18,7 +18,7 @@ public class RetryStrategyRegistryShould
     {
         var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = null };
 
-        var exception = Throws<ArgumentNullException>(() => _retryStrategyRegistry.RegisterRetryStrategy(null!, retryStrategy));
+        var exception = Throws<ArgumentNullException>(() => _retryStrategyRegistry.Register(null!, retryStrategy));
 
         Equal("Value cannot be null. (Parameter 'key')", exception.Message);
     }
@@ -28,8 +28,8 @@ public class RetryStrategyRegistryShould
     {
         var retryStrategy = new RetryStrategyOptions<HttpResponseMessage> { Name = "TestRetry" };
 
-        _retryStrategyRegistry.RegisterRetryStrategy("TestRetry", retryStrategy);
+        _retryStrategyRegistry.Register("TestRetry", retryStrategy);
 
-        True(_retryStrategyRegistry.IsRetryStrategyRegistered("TestRetry"));
+        True(_retryStrategyRegistry.IsRegistered("TestRetry"));
     }
 }

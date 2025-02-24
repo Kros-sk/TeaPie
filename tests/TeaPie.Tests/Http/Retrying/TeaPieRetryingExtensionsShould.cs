@@ -28,7 +28,7 @@ public class TeaPieRetryingExtensionsShould
 
         teaPie.RegisterRetryStrategy("TestRetry", retryStrategy);
 
-        True(registry.IsRetryStrategyRegistered("TestRetry"));
+        True(registry.IsRegistered("TestRetry"));
     }
 
     private static TeaPie PrepareTeaPieInstance(IRetryStrategyRegistry retryStrategyRegistry)

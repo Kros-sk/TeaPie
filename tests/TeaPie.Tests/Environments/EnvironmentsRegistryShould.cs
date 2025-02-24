@@ -1,4 +1,5 @@
 ﻿using TeaPie.Environments;
+using static Xunit.Assert;
 
 namespace TeaPie.Tests.Environments;
 
@@ -12,11 +13,11 @@ public class EnvironmentsRegistryShould
         var environment = new global::TeaPie.Environments.Environment(environmentName,
             new Dictionary<string, object?>() { { "abc", "efg" }, { "hij", 654 }, { "klm", null } });
 
-        registry.RegisterEnvironment(environment);
+        registry.Register(environment.Name, environment);
 
-        var succeed = registry.TryGetEnvironment(environmentName, out var foundEnvironment);
+        True(registry.IsRegistered(environmentName));
 
-        Assert.True(succeed);
-        Assert.Equal(environment, foundEnvironment);
+        var foundEnvironment = registry.Get(environmentName);
+        Equal(environment, foundEnvironment);
     }
 }

@@ -93,7 +93,7 @@ internal class HttpRequestParser(
     {
         if (!parsingContext.AuthProviderName.Equals(string.Empty))
         {
-            requestExecutionContext.AuthProvider = _authProviderRegistry.GetAuthProvider(parsingContext.AuthProviderName);
+            requestExecutionContext.AuthProvider = _authProviderRegistry.Get(parsingContext.AuthProviderName);
         }
     }
 

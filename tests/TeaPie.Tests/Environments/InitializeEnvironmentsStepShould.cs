@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NSubstitute.ExceptionExtensions;
 using TeaPie.Environments;
+using TeaPie.Http.Auth;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
@@ -58,36 +60,34 @@ public class InitializeEnvironmentStepShould
     [Fact]
     public async Task FailIfImplicitEnvironmentFileDoesntContainSpecifiedEnvironment()
     {
+        const string envName = "non-existing-environment";
         PrepareServices(out var pipeline, out var provider, out _, out var environmentsRegistry, out var appContextBuilder);
 
-        var result = await RunApplicationPipeline(pipeline, provider, appContextBuilder, "non-existing-environment");
+        var result = await RunApplicationPipeline(pipeline, provider, appContextBuilder, envName);
 
         Equal(1, result);
 
-        var exists = environmentsRegistry.TryGetEnvironment("non-existing-environment", out var found);
-
-        False(exists);
-        Null(found);
+        False(environmentsRegistry.IsRegistered(envName));
+        Throws<KeyNotFoundException>(() => environmentsRegistry.Get(envName));
     }
 
     [Fact]
     public async Task FailIfExplicitEnvironmentFileDoesntContainSpecifiedEnvironment()
     {
+        const string envName = "non-existing-environment";
         PrepareServices(out var pipeline, out var provider, out _, out var environmentsRegistry, out var appContextBuilder);
 
         var result = await RunApplicationPipeline(
             pipeline,
             provider,
             appContextBuilder,
-            "non-existing-environment",
+            envName,
             _explicitEnvironmentFilePath);
 
         Equal(1, result);
 
-        var exists = environmentsRegistry.TryGetEnvironment("non-existing-environment", out var found);
-
-        False(exists);
-        Null(found);
+        False(environmentsRegistry.IsRegistered(envName));
+        Throws<KeyNotFoundException>(() => environmentsRegistry.Get(envName));
     }
 
     [Fact]
@@ -241,6 +241,7 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
         services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
+        services.AddSingleton<ICurrentAndDefaultAuthProviderAccessor, CurrentAndDefaultAuthProviderAccessor>();
         services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
         services.AddLogging();
 
@@ -255,11 +256,11 @@ public class InitializeEnvironmentStepShould
             .WithServiceProvider(provider);
     }
 
-    private static void CheckExistenceOfEnvironment(string environmentName, IEnvironmentsRegistry environmentsRegistry)
+    private static void CheckExistenceOfEnvironment(string environmentName, IEnvironmentsRegistry environmentRegistry)
     {
-        var hasEnv = environmentsRegistry.TryGetEnvironment(environmentName, out var foundEnv);
+        var foundEnv = environmentRegistry.Get(environmentName);
 
-        True(hasEnv);
+        True(environmentRegistry.IsRegistered(environmentName));
         NotNull(foundEnv);
     }
 

@@ -12,7 +12,7 @@ internal class InitializeApplicationStep(
     IPipeline pipeline,
     ITestResultsSummaryAccessor summaryAccessor,
     INuGetPackageHandler nuGetPackageHandler,
-    ICurrentAndDefaultAuthProviderAccessor defaultAndCurrentAuthProviderAccessor,
+    ICurrentAndDefaultAuthProviderAccessor defaultAuthProviderAccessor,
     IAuthProviderRegistry authProviderRegistry,
     OAuth2Provider oAuth2Provider)
     : IPipelineStep
@@ -20,7 +20,7 @@ internal class InitializeApplicationStep(
     private readonly IPipeline _pipeline = pipeline;
     private readonly INuGetPackageHandler _nuGetPackageHandler = nuGetPackageHandler;
     private readonly ITestResultsSummaryAccessor _summaryAccessor = summaryAccessor;
-    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = defaultAndCurrentAuthProviderAccessor;
+    private readonly ICurrentAndDefaultAuthProviderAccessor _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
     private readonly OAuth2Provider _oAuth2Provider = oAuth2Provider;
 
@@ -28,18 +28,18 @@ internal class InitializeApplicationStep(
     {
         await DownloadAndInstallGlobalNuGetPackages();
 
-        SetNoAuthProviderAsDefaultAndCurrent();
+        ResolveAuthProviders();
 
         SetTestResultsSummaryObject(context.CollectionName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
     }
 
-    private void SetNoAuthProviderAsDefaultAndCurrent()
+    private void ResolveAuthProviders()
     {
-        _authProviderAccessor.DefaultProvider = _authProviderRegistry.GetAuthProvider(AuthConstants.NoAuthKey);
-        _authProviderAccessor.SetCurrentProviderToDefault();
-        _authProviderRegistry.RegisterAuthProvider(AuthConstants.OAuth2Key, _oAuth2Provider);
+        _defaultAuthProviderAccessor.DefaultProvider = _authProviderRegistry.Get(AuthConstants.NoAuthKey);
+        _defaultAuthProviderAccessor.SetCurrentProviderToDefault();
+        _authProviderRegistry.Register(AuthConstants.OAuth2Key, _oAuth2Provider);
     }
 
     private async Task DownloadAndInstallGlobalNuGetPackages()

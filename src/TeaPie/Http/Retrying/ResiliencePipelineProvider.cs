@@ -75,12 +75,12 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
         out RetryStrategy finalRetryStrategy,
         out string nameOfFinalStrategy)
     {
-        if (!_retryStrategyRegistry.IsRetryStrategyRegistered(nameOfBaseStrategy))
+        if (!_retryStrategyRegistry.IsRegistered(nameOfBaseStrategy))
         {
             throw new InvalidOperationException($"Unable to find retry strategy with name '{nameOfBaseStrategy}'.");
         }
 
-        finalRetryStrategy = _retryStrategyRegistry.GetRetryStrategy(nameOfBaseStrategy);
+        finalRetryStrategy = _retryStrategyRegistry.Get(nameOfBaseStrategy);
         nameOfFinalStrategy = nameOfBaseStrategy;
     }
 
@@ -138,9 +138,9 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
         {
             baseStrategyName = GetNameForRetryUntilStatusCodes(statusCodes);
 
-            if (!_retryStrategyRegistry.IsRetryStrategyRegistered(baseStrategyName))
+            if (!_retryStrategyRegistry.IsRegistered(baseStrategyName))
             {
-                _retryStrategyRegistry.RegisterRetryStrategy(baseStrategyName, new() { Name = baseStrategyName });
+                _retryStrategyRegistry.Register(baseStrategyName, new() { Name = baseStrategyName });
             }
         }
 

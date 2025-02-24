@@ -9,7 +9,7 @@ public static class TeaPieOAuth2Extensions
     /// <param name="options">Options with which <b>OAuth2</b> authentication provider will be configured.</param>
     public static void ConfigureOAuth2Provider(this TeaPie teaPie, OAuth2Options options)
     {
-        var provider = teaPie._authenticationProviderRegistry.GetAuthProvider(AuthConstants.OAuth2Key);
+        var provider = teaPie._authenticationProviderRegistry.Get(AuthConstants.OAuth2Key);
         ((OAuth2Provider)provider).ConfigureOptions(options);
     }
 
