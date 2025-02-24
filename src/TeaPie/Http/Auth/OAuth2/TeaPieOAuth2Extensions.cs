@@ -12,4 +12,11 @@ public static class TeaPieOAuth2Extensions
         var provider = teaPie._authenticationProviderRegistry.GetAuthProvider(AuthConstants.OAuth2Key);
         ((OAuth2Provider)provider).ConfigureOptions(options);
     }
+
+    /// <summary>
+    /// Sets <b>OAuth2</b> authentication provider as default.
+    /// </summary>
+    /// <param name="teaPie">The current context instance.</param>
+    public static void SetOAuth2AsDefaultAuthProvider(this TeaPie teaPie)
+        => teaPie.SetDefaultAuthProvider(AuthConstants.OAuth2Key);
 }

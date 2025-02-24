@@ -204,7 +204,7 @@ Currently, **TeaPie** supports two authentication providers:
 To use **OAuth2**, it must be configured before executing requests:
 
 ```csharp
-tp.ConfigureOAuth2Provider(new OAuth2OptionsBuilder()
+tp.ConfigureOAuth2Provider(OAuth2OptionsBuilder.Create()
     .WithAuthUrl(tp.GetVariable<string>("AuthServerUrl")) // Required parameter.
     .WithGrantType("client_credentials") // Required parameter.
     .WithClientId("test-client")
@@ -251,11 +251,24 @@ tp.RegisterDefaultAuthProvider(
 <!-- omit from toc -->
 #### Using a Specific Authentication Provider for a Request
 
-Some requests may require a different authentication mechanism than the default.  
+Some requests may require a different authentication mechanism than the default.
 To **assign a specific authentication provider** for a request, use this directive in a `.http` file:
 
 ```http
 ## AUTH-PROVIDER: MyAuth
+POST {{ApiBaseUrl}}{{ApiCarsSection}}
+Content-Type: application/json
+
+...
+```
+
+<!-- omit from toc -->
+#### Disabling Authentication
+
+To **disable authentication** for a specific request, use the predefined authentication provider named `'None'`:
+
+```http
+## AUTH-PROVIDER: None
 POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
 

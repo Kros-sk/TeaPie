@@ -2,7 +2,7 @@
 
 namespace TeaPie.Http.Auth.OAuth2;
 
-public class OAuth2OptionsBuilder
+public sealed class OAuth2OptionsBuilder
 {
     private string _authUrl = string.Empty;
     private string _grantType = string.Empty;
@@ -11,6 +11,10 @@ public class OAuth2OptionsBuilder
     private string? _username;
     private string? _password;
     private readonly Dictionary<string, string> _additionalParameters = [];
+
+    private OAuth2OptionsBuilder() { }
+
+    public static OAuth2OptionsBuilder Create() => new();
 
     public OAuth2OptionsBuilder WithAuthUrl(string oauthUrl)
     {
