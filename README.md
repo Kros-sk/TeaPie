@@ -215,17 +215,6 @@ tp.ConfigureOAuth2Provider(OAuth2OptionsBuilder.Create()
 ```
 
 <!-- omit from toc -->
-#### Setting a Default Authentication Provider
-
-To specify which **registered authentication provider** should be used for all requests, set it as the default:
-
-```csharp
-tp.SetDefaultAuthProvider("OAuth2"); // Sets 'OAuth2' as the default authentication provider.
-```
-
-If no authentication provider is explicitly set as default, requests will **default to "None"**, meaning no authentication is applied.
-
-<!-- omit from toc -->
 #### Registering a Custom Authentication Provider
 
 To use a custom authentication provider, **register it before usage**:
@@ -247,6 +236,23 @@ tp.RegisterDefaultAuthProvider(
         .ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
 );
 ```
+
+<!-- omit from toc -->
+#### Setting a Default Authentication Provider
+
+To specify which **registered authentication provider** should be used for all requests, set it as the default:
+
+```csharp
+tp.SetDefaultAuthProvider("MyAuth"); // Sets 'MyAuth' as the default authentication provider.
+```
+
+For `OAuth2` there is built-in method:
+
+```csharp
+tp.SetOAuth2AsDefaultAuthProvider();
+```
+
+If no authentication provider is explicitly set as default, requests will **default to "None"**, meaning no authentication is applied.
 
 <!-- omit from toc -->
 #### Using a Specific Authentication Provider for a Request
