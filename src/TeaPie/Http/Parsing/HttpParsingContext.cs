@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using TeaPie.Testing;
 
 namespace TeaPie.Http.Parsing;
 
@@ -16,6 +17,7 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
     private readonly Dictionary<string, string> _headers =
         defaultHeaders.ToDictionary(x => x.Key, y => string.Join(", ", y.Value));
     public IReadOnlyDictionary<string, string> Headers => _headers;
+
     public void AddHeader(string name, string value) => _headers[name] = value;
 
     public bool IsBody { get; set; }
@@ -26,4 +28,9 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
     public RetryStrategyOptions<HttpResponseMessage>? ExplicitRetryStrategy { get; set; }
 
     public string AuthProviderName { get; set; } = string.Empty;
+
+    public Queue<PredefinedTestDescription> _scheduledTests = [];
+    public IReadOnlyList<PredefinedTestDescription> ScheduledTests => [.. _scheduledTests];
+
+    public void ScheduleTest(PredefinedTestDescription test) => _scheduledTests.Enqueue(test);
 }

@@ -64,9 +64,9 @@ internal class RetryExplicitPropertiesDirectiveLineParser : ILineParser
         string sectionName,
         Action<HttpParsingContext, string> assignFunction)
     {
-        var maxAttempts = match.Groups[sectionName].Value;
+        var value = match.Groups[sectionName].Value;
         context.ExplicitRetryStrategy ??= new RetryStrategyOptions<HttpResponseMessage>();
 
-        assignFunction(context, maxAttempts);
+        assignFunction(context, value);
     }
 }

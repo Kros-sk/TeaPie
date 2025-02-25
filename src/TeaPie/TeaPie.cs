@@ -28,7 +28,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             serviceProvider.GetRequiredService<ITestResultsSummaryReporter>(),
             serviceProvider.GetRequiredService<IRetryStrategyRegistry>(),
             serviceProvider.GetRequiredService<IAuthProviderRegistry>(),
-            serviceProvider.GetRequiredService<ICurrentAndDefaultAuthProviderAccessor>());
+            serviceProvider.GetRequiredService<IAuthProviderAccessor>());
 
         return Instance;
     }
@@ -43,7 +43,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
-        ICurrentAndDefaultAuthProviderAccessor defaultAuthProviderAccessor)
+        IAuthProviderAccessor defaultAuthProviderAccessor)
     {
         _applicationContext = applicationContext;
         _serviceProvider = serviceProvider;
@@ -156,6 +156,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Authentication
     internal readonly IAuthProviderRegistry _authenticationProviderRegistry;
-    internal readonly ICurrentAndDefaultAuthProviderAccessor _defaultAuthProviderAccessor;
+    internal readonly IAuthProviderAccessor _defaultAuthProviderAccessor;
     #endregion
 }

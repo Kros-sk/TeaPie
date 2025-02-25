@@ -3,6 +3,7 @@ using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Pipelines;
+using TeaPie.Testing;
 
 namespace TeaPie.Http;
 
@@ -10,13 +11,17 @@ internal class ExecuteRequestStep(
     IHttpClientFactory clientFactory,
     IRequestExecutionContextAccessor contextAccessor,
     IHeadersHandler headersHandler,
-    ICurrentAndDefaultAuthProviderAccessor defaultAuthProviderAccessor)
+    IAuthProviderAccessor defaultAuthProviderAccessor,
+    ITestScheduler testScheduler,
+    IPipeline pipeline)
     : IPipelineStep
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory;
     private readonly IRequestExecutionContextAccessor _requestExecutionContextAccessor = contextAccessor;
     private readonly IHeadersHandler _headersHandler = headersHandler;
-    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
+    private readonly IAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
+    private readonly IPipeline _pipeline = pipeline;
+    private readonly ITestScheduler _testScheduler = testScheduler;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -39,9 +44,19 @@ internal class ExecuteRequestStep(
 
         var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
+        InsertStepForScheduledTestsIfAny(context.ServiceProvider);
+
         await LogResponse(context.Logger, response);
 
         return response;
+    }
+
+    private void InsertStepForScheduledTestsIfAny(IServiceProvider serviceProvider)
+    {
+        if (_testScheduler.HasScheduledTest())
+        {
+            _pipeline.InsertSteps(this, serviceProvider.GetStep<ExecuteScheduledTestsStep>());
+        }
     }
 
     private async Task<HttpResponseMessage> ExecuteRequest(

@@ -20,6 +20,7 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="xunit.assert" />
   </ItemGroup>
 
   <ItemGroup>

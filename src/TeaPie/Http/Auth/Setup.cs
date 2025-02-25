@@ -7,13 +7,13 @@ internal static class Setup
 {
     public static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
-        var defaultAuthProviderAccessor = new CurrentAndDefaultAuthProviderAccessor();
+        var defaultAuthProviderAccessor = new AuthProviderAccessor();
 
         services.AddHttpClient<ExecuteRequestStep>()
             .AddHttpMessageHandler(_ => new AuthHttpMessageHandler(defaultAuthProviderAccessor));
 
         services.AddSingleton<IAuthProviderRegistry, AuthProviderRegistry>();
-        services.AddSingleton<ICurrentAndDefaultAuthProviderAccessor>(defaultAuthProviderAccessor);
+        services.AddSingleton<IAuthProviderAccessor>(defaultAuthProviderAccessor);
 
         services.AddOAuth2();
 

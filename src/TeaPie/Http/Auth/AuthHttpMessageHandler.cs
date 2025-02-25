@@ -1,8 +1,8 @@
 ﻿namespace TeaPie.Http.Auth;
 
-internal class AuthHttpMessageHandler(ICurrentAndDefaultAuthProviderAccessor accessor) : DelegatingHandler
+internal class AuthHttpMessageHandler(IAuthProviderAccessor accessor) : DelegatingHandler
 {
-    private readonly ICurrentAndDefaultAuthProviderAccessor _authProviderAccessor = accessor;
+    private readonly IAuthProviderAccessor _authProviderAccessor = accessor;
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {

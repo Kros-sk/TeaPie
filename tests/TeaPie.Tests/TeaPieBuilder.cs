@@ -28,7 +28,7 @@ internal class TeaPieBuilder
         _serviceCollection.AddSingleton(Substitute.For<IPipeline>());
         _serviceCollection.AddSingleton(Substitute.For<ITestResultsSummaryReporter>());
         _serviceCollection.AddSingleton(Substitute.For<IAuthProviderRegistry>());
-        _serviceCollection.AddSingleton(Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
+        _serviceCollection.AddSingleton(Substitute.For<IAuthProviderAccessor>());
         _serviceCollection.AddSingleton(Substitute.For<IRetryStrategyRegistry>());
     }
 

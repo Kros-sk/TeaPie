@@ -4,6 +4,7 @@ internal class DirectivesLineParser : ILineParser
 {
     private readonly IEnumerable<ILineParser> _parsers = [
         new AuthProviderDirectiveLineParser(),
+        new TestDirectivesLineParser(),
         new RetryStrategyDirectiveLineParser(),
         new RetryUntilStatusCodesLineParser(),
         new RetryExplicitPropertiesDirectiveLineParser()

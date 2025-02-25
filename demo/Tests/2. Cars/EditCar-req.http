@@ -1,6 +1,6 @@
 ### Add New Car
 # @name AddCarRequest
-// To use a different authentication provider instead of the default, specify it using the directive below.
+// To use a different authentication provider instead of the default one, specify it using the directive below.
 // The provider must be registered beforehand.
 // Implicitly registered providers: 'None' (no authentication) and 'OAuth2' (requires prior configuration).
 ## AUTH-PROVIDER: MyAuth
@@ -22,6 +22,8 @@ Content-Type: application/json
 
 ### Edit new car
 # @name EditCarRequest
+// Some test scenarios tend to repeat, therefore there are few directives for in-line testing
+## TEST-EXPECT-STATUS: [200, 201]
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 // You can use request variables also in headers.
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}

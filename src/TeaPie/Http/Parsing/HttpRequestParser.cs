@@ -2,6 +2,7 @@
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Retrying;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Http.Parsing;
@@ -16,7 +17,8 @@ internal class HttpRequestParser(
     IVariablesResolver variablesResolver,
     IHeadersHandler headersResolver,
     IResiliencePipelineProvider resiliencePipelineProvider,
-    IAuthProviderRegistry authProviderRegistry)
+    IAuthProviderRegistry authProviderRegistry,
+    ITestScheduler testScheduler)
     : IHttpRequestParser
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
@@ -24,12 +26,12 @@ internal class HttpRequestParser(
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IResiliencePipelineProvider _resiliencePipelineProvider = resiliencePipelineProvider;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
+    private readonly ITestScheduler _testScheduler = testScheduler;
 
     private readonly IEnumerable<ILineParser> _lineParsers =
     [
         new CommentLineParser(),
         new DirectivesLineParser(),
-        new AuthProviderDirectiveLineParser(),
         new EmptyLineParser(),
         new MethodAndUriParser(),
         new HeaderParser(),
@@ -51,7 +53,7 @@ internal class HttpRequestParser(
             ParseLine(resolvedLine, parsingContext);
         }
 
-        UpdateRequestExecutionContext(requestExecutionContext, parsingContext);
+        UpdateState(requestExecutionContext, parsingContext);
     }
 
     private void ParseLine(string line, HttpParsingContext context)
@@ -66,13 +68,32 @@ internal class HttpRequestParser(
         }
     }
 
-    private void UpdateRequestExecutionContext(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+    private void UpdateState(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+    {
+        UpdateRequestExecutionContext(requestExecutionContext, parsingContext);
+        UpdateScheduledTests(requestExecutionContext, parsingContext);
+    }
+
+    private void UpdateRequestExecutionContext(
+        RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
     {
         var requestMessage = new HttpRequestMessage(parsingContext.Method, parsingContext.RequestUri);
 
         UpdateRequestMessage(requestExecutionContext, parsingContext, requestMessage);
         UpdateAuthentication(requestExecutionContext, parsingContext);
         UpdateResiliencePipeline(requestExecutionContext, parsingContext);
+    }
+
+    private void UpdateScheduledTests(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
+    {
+        if (parsingContext.ScheduledTests.Count > 0)
+        {
+            foreach (var testDescription in parsingContext.ScheduledTests)
+            {
+                testDescription.SetRequestExecutionContext(requestExecutionContext);
+                _testScheduler.Schedule(PredefinedTestFactory.Create(testDescription));
+            }
+        }
     }
 
     private void UpdateRequestMessage(

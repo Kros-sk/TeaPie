@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Http.Auth;
 
-internal interface ICurrentAndDefaultAuthProviderAccessor
+internal interface IAuthProviderAccessor
 {
     IAuthProvider? CurrentProvider { get; set; }
     IAuthProvider? DefaultProvider { get; set; }
@@ -8,7 +8,7 @@ internal interface ICurrentAndDefaultAuthProviderAccessor
     void SetCurrentProviderToDefault();
 }
 
-internal class CurrentAndDefaultAuthProviderAccessor : ICurrentAndDefaultAuthProviderAccessor
+internal class AuthProviderAccessor : IAuthProviderAccessor
 {
     public IAuthProvider? CurrentProvider { get; set; }
     public IAuthProvider? DefaultProvider { get; set; }

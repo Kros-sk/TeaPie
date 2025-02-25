@@ -240,7 +240,7 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IStructureExplorer, StructureExplorer>();
         services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
-        services.AddSingleton<ICurrentAndDefaultAuthProviderAccessor, CurrentAndDefaultAuthProviderAccessor>();
+        services.AddSingleton<IAuthProviderAccessor, AuthProviderAccessor>();
         services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
         services.AddLogging();
 

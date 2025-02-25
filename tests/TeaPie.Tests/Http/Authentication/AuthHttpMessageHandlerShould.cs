@@ -8,7 +8,7 @@ public class AuthHttpMessageHandlerShould
     [Fact]
     public async Task AuthenticateRequestWithProvidedAuthProvider()
     {
-        var accessor = Substitute.For<ICurrentAndDefaultAuthProviderAccessor>();
+        var accessor = Substitute.For<IAuthProviderAccessor>();
         var mockAuthProvider = Substitute.For<IAuthProvider>();
         accessor.CurrentProvider = mockAuthProvider;
 
