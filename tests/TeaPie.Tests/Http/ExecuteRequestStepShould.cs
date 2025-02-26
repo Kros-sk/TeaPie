@@ -8,7 +8,9 @@ using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
+using TeaPie.Pipelines;
 using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Http;
@@ -38,7 +40,9 @@ public class ExecuteRequestStepShould
             serviceProvider.GetRequiredService<IHttpClientFactory>(),
             accessor,
             Substitute.For<IHeadersHandler>(),
-            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
+            Substitute.For<IAuthProviderAccessor>(),
+            Substitute.For<ITestScheduler>(),
+            Substitute.For<IPipeline>());
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<InvalidOperationException>();
     }
@@ -63,7 +67,9 @@ public class ExecuteRequestStepShould
             serviceProvider.GetRequiredService<IHttpClientFactory>(),
             accessor,
             Substitute.For<IHeadersHandler>(),
-            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
+            Substitute.For<IAuthProviderAccessor>(),
+            Substitute.For<ITestScheduler>(),
+            Substitute.For<IPipeline>());
 
         await step.Execute(appContext);
 
@@ -104,7 +110,9 @@ public class ExecuteRequestStepShould
             serviceProvider.GetRequiredService<IHttpClientFactory>(),
             accessor,
             Substitute.For<IHeadersHandler>(),
-            Substitute.For<ICurrentAndDefaultAuthProviderAccessor>());
+            Substitute.For<IAuthProviderAccessor>(),
+            Substitute.For<ITestScheduler>(),
+            Substitute.For<IPipeline>());
 
         await step.Execute(appContext);
 
@@ -156,7 +164,9 @@ public class ExecuteRequestStepShould
             variablesResolver,
             headersResolver,
             resiliencePipelineProvider,
-            Substitute.For<IAuthProviderRegistry>());
+            Substitute.For<IAuthProviderRegistry>(),
+            Substitute.For<IPredefinedTestFactory>(),
+            Substitute.For<ITestScheduler>());
     }
 
     private class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responseGenerator) : HttpMessageHandler

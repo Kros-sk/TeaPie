@@ -18,6 +18,7 @@ internal class HttpRequestParser(
     IHeadersHandler headersResolver,
     IResiliencePipelineProvider resiliencePipelineProvider,
     IAuthProviderRegistry authProviderRegistry,
+    IPredefinedTestFactory testFactory,
     ITestScheduler testScheduler)
     : IHttpRequestParser
 {
@@ -26,6 +27,7 @@ internal class HttpRequestParser(
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IResiliencePipelineProvider _resiliencePipelineProvider = resiliencePipelineProvider;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
+    private readonly IPredefinedTestFactory _testFactory = testFactory;
     private readonly ITestScheduler _testScheduler = testScheduler;
 
     private readonly IEnumerable<ILineParser> _lineParsers =
@@ -86,12 +88,12 @@ internal class HttpRequestParser(
 
     private void UpdateScheduledTests(RequestExecutionContext requestExecutionContext, HttpParsingContext parsingContext)
     {
-        if (parsingContext.ScheduledTests.Count > 0)
+        if (parsingContext.Tests.Count > 0)
         {
-            foreach (var testDescription in parsingContext.ScheduledTests)
+            foreach (var testDescription in parsingContext.Tests)
             {
                 testDescription.SetRequestExecutionContext(requestExecutionContext);
-                _testScheduler.Schedule(PredefinedTestFactory.Create(testDescription));
+                _testScheduler.Schedule(_testFactory.Create(testDescription));
             }
         }
     }

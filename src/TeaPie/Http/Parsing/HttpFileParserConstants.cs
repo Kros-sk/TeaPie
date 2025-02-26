@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace TeaPie.Http.Parsing;
+﻿namespace TeaPie.Http.Parsing;
 
 internal static class HttpFileParserConstants
 {
@@ -69,7 +67,7 @@ internal static class HttpFileParserConstants
     public const string TestHasBodyDirectiveSectionName = "Bool";
     public const string TestHasBodyDirectivePattern =
         DirectivePrefixPattern + TestHasBodyDirectiveName +
-        @"(?:\s*:\s*(?i)(?<" + TestHasHeaderDirectiveSectionName + @">true|false))?\s*$";
+        @"(?:\s*:\s*(?i)(?<" + TestHasBodyDirectiveSectionName + @">true|false))?\s*$";
 
     public const string TestHasHeaderDirectiveName = "TEST-HAS-HEADER";
     public const string TestHasHeaderDirectiveSectionName = "HeaderName";

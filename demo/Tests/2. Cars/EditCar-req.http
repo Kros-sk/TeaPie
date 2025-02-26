@@ -24,6 +24,10 @@ Content-Type: application/json
 # @name EditCarRequest
 // Some test scenarios tend to repeat, therefore there are few directives for in-line testing
 ## TEST-EXPECT-STATUS: [200, 201]
+## TEST-HAS-BODY
+// Equals to
+## TEST-HAS-BODY: True
+## TEST-HAS-HEADER: Content-Type
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 // You can use request variables also in headers.
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}

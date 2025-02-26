@@ -8,6 +8,7 @@ internal static class Setup
     {
         services.AddSingleton<ITester, Tester>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
+        services.AddSingleton<IPredefinedTestFactory, PredefinedTestFactory>();
         services.AddSingleton<ITestScheduler, TestScheduler>();
         return services;
     }

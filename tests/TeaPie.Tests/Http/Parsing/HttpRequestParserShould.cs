@@ -7,6 +7,7 @@ using TeaPie.Http.Headers;
 using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
 using TeaPie.StructureExploration;
+using TeaPie.Testing;
 using TeaPie.Variables;
 using File = TeaPie.StructureExploration.File;
 
@@ -217,7 +218,9 @@ public class HttpRequestParserShould
             variablesResolver,
             headersResolver,
             Substitute.For<IResiliencePipelineProvider>(),
-            Substitute.For<IAuthProviderRegistry>());
+            Substitute.For<IAuthProviderRegistry>(),
+            Substitute.For<IPredefinedTestFactory>(),
+            Substitute.For<ITestScheduler>());
 
         var folder =
             new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);
