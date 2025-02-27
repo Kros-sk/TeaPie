@@ -189,6 +189,21 @@ For **named requests**, you can access request and response data using the follo
 
 This gives you comprehensive access to headers and body content of named requests.
 
+<!-- omit from toc -->
+#### Predefined tests
+
+To easify test writing, **TeaPie** provides **predefined test directives**, which automatically schedule commonly used tests for execution after a request.
+
+```http
+## TEST-EXPECT-STATUS: [200, 201]   # Verifies the response status code matches one of the expected values.
+## TEST-HAS-BODY                    # Equivalent to ## TEST-HAS-BODY: True (Ensures the response has a body).
+## TEST-HAS-HEADER: Content-Type    # Checks if the response contains the specified header.
+PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
+Content-Type: {{AddCarRequest.request.headers.Content-Type}}
+
+...
+```
+
 ### Authentication
 
 To provide maximum flexibility, an **authentication interceptor** is applied to all outgoing HTTP requests. The **authentication provider** to be used within interceptor **can be specified in scripts** or directly within **request files**.
