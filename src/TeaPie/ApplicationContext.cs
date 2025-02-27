@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
@@ -7,7 +6,12 @@ using TeaPie.TestCases;
 namespace TeaPie;
 
 internal class ApplicationContext(
-    string path, IServiceProvider serviceProvider, ApplicationContextOptions options) : IApplicationContext
+    string path,
+    IServiceProvider serviceProvider,
+    ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
+    ITestResultsSummaryReporter reporter,
+    ILogger<ApplicationContext> logger,
+    ApplicationContextOptions options) : IApplicationContext
 {
     public string Path { get; } = path.NormalizePath();
 
@@ -29,12 +33,12 @@ internal class ApplicationContext(
     public IReadOnlyDictionary<string, Script> UserDefinedScripts => _userDefinedScripts;
     public void RegisterUserDefinedScript(string key, Script script) => _userDefinedScripts.Add(key, script);
 
-    public ILogger Logger { get; set; } = serviceProvider.GetRequiredService<ILogger<ApplicationContext>>();
+    public ILogger Logger { get; set; } = logger;
 
     public IServiceProvider ServiceProvider { get; } = serviceProvider;
 
     private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor =
-        serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>();
+        currentTestCaseExecutionContextAccessor;
 
     public TestCaseExecutionContext? CurrentTestCase
     {
@@ -42,5 +46,5 @@ internal class ApplicationContext(
         set => _currentTestCaseExecutionContextAccessor.Context = value;
     }
 
-    public ITestResultsSummaryReporter Reporter { get; } = serviceProvider.GetRequiredService<ITestResultsSummaryReporter>();
+    public ITestResultsSummaryReporter Reporter { get; } = reporter;
 }

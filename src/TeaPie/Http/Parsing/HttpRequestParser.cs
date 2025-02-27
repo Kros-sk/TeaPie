@@ -18,7 +18,7 @@ internal class HttpRequestParser(
     IHeadersHandler headersResolver,
     IResiliencePipelineProvider resiliencePipelineProvider,
     IAuthProviderRegistry authProviderRegistry,
-    IPredefinedTestFactory testFactory,
+    ITestFactory testFactory,
     ITestScheduler testScheduler)
     : IHttpRequestParser
 {
@@ -27,7 +27,7 @@ internal class HttpRequestParser(
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IResiliencePipelineProvider _resiliencePipelineProvider = resiliencePipelineProvider;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
-    private readonly IPredefinedTestFactory _testFactory = testFactory;
+    private readonly ITestFactory _testFactory = testFactory;
     private readonly ITestScheduler _testScheduler = testScheduler;
 
     private readonly IEnumerable<ILineParser> _lineParsers =

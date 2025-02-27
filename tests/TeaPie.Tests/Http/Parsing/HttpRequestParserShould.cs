@@ -219,7 +219,7 @@ public class HttpRequestParserShould
             headersResolver,
             Substitute.For<IResiliencePipelineProvider>(),
             Substitute.For<IAuthProviderRegistry>(),
-            Substitute.For<IPredefinedTestFactory>(),
+            Substitute.For<ITestFactory>(),
             Substitute.For<ITestScheduler>());
 
         var folder =

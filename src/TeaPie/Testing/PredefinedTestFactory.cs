@@ -4,15 +4,18 @@ using static Xunit.Assert;
 
 namespace TeaPie.Testing;
 
-internal interface IPredefinedTestFactory
+internal interface ITestFactory
 {
-    Test Create(PredefinedTestDescription testDescription);
+    Test Create(TestDescription testDescription);
+
+    void RegisterTestType(string testName, Func<HttpResponseMessage, object[], Task> testFunction);
 }
 
-internal class PredefinedTestFactory : IPredefinedTestFactory
+internal class PredefinedTestFactory : ITestFactory
 {
     private readonly IHeadersHandler _headersHandler;
-    private readonly Dictionary<PredefinedTestType, Func<PredefinedTestDescription, Test>> _factoryMethods;
+    private readonly Dictionary<TestType, Func<TestDescription, Test>> _factoryMethods;
+    private readonly Dictionary<string, Func<HttpResponseMessage, object[], Task>> _userDefinedFactoryMethods;
     private static int _factoryCount = 1;
 
     public PredefinedTestFactory(IHeadersHandler headersHandler)
@@ -20,18 +23,38 @@ internal class PredefinedTestFactory : IPredefinedTestFactory
         _headersHandler = headersHandler;
         _factoryMethods = new()
         {
-            { PredefinedTestType.ExpectStatusCodes, CreateExpectStatusCodesTest },
-            { PredefinedTestType.HasBody, CreateHasBodyTest },
-            { PredefinedTestType.HasHeader, CreateHasHeaderTest }
+            { TestType.ExpectStatusCodes, CreateExpectStatusCodesTest },
+            { TestType.HasBody, CreateHasBodyTest },
+            { TestType.HasHeader, CreateHasHeaderTest }
         };
+
+        _userDefinedFactoryMethods = [];
     }
 
-    public Test Create(PredefinedTestDescription testDescription)
-        => _factoryMethods.TryGetValue(testDescription.Type, out var factoryMethod)
-            ? factoryMethod(testDescription)
-            : throw new InvalidOperationException($"Unable to create test for unsupported test type '{testDescription.Type}'.");
+    public Test Create(TestDescription testDescription)
+    {
+        if (testDescription.Type == TestType.Custom)
+        {
+            return _userDefinedFactoryMethods.TryGetValue(testDescription.Directive, out var factoryMethod)
+                ? GenericFactoryMethod(testDescription, string.Empty, factoryMethod)
+                : throw new InvalidOperationException(
+                    $"Unable to create test for unsupported test type '{testDescription.Directive}'.");
+        }
+        else
+        {
+            return _factoryMethods.TryGetValue(testDescription.Type, out var factoryMethod)
+                ? factoryMethod(testDescription)
+                : throw new InvalidOperationException(
+                    $"Unable to create test for unsupported test type '{testDescription.Type}'.");
+        }
+    }
 
-    private Test CreateExpectStatusCodesTest(PredefinedTestDescription description)
+    public void RegisterTestType(
+        string testName,
+        Func<HttpResponseMessage, object[], Task> testFunction)
+        => _userDefinedFactoryMethods[testName] = testFunction;
+
+    private Test CreateExpectStatusCodesTest(TestDescription description)
     {
         CheckParameters(description.Type, description, out var requestExecutionContext);
         var statusCodes = (int[])description.Parameters[0];
@@ -50,7 +73,24 @@ internal class PredefinedTestFactory : IPredefinedTestFactory
         return CreateTest(testName, testFunction);
     }
 
-    private Test CreateHasBodyTest(PredefinedTestDescription description)
+    private static Test GenericFactoryMethod(
+        TestDescription description,
+        string testName,
+        Func<HttpResponseMessage, object[], Task> testFunction)
+    {
+        CheckParameters(description.Type, description, out var requestExecutionContext);
+        var parameters = description.Parameters;
+
+        var finalTestName = GetGenericTestName(
+            requestExecutionContext.TestCaseExecutionContext?.TestCase.Name,
+            requestExecutionContext.Name,
+            testName);
+
+        return CreateTest(finalTestName,
+            async () => await testFunction(requestExecutionContext.Response!, description.Parameters));
+    }
+
+    private Test CreateHasBodyTest(TestDescription description)
     {
         CheckParameters(description.Type, description, out var requestExecutionContext);
         var isTrue = (bool)description.Parameters[0];
@@ -76,7 +116,7 @@ internal class PredefinedTestFactory : IPredefinedTestFactory
         return CreateTest(testName, testFunction);
     }
 
-    private Test CreateHasHeaderTest(PredefinedTestDescription description)
+    private Test CreateHasHeaderTest(TestDescription description)
     {
         CheckParameters(description.Type, description, out var requestExecutionContext);
         var headerName = (string)description.Parameters[0];
@@ -103,8 +143,8 @@ internal class PredefinedTestFactory : IPredefinedTestFactory
     }
 
     private static void CheckParameters(
-        PredefinedTestType testType,
-        PredefinedTestDescription description,
+        TestType testType,
+        TestDescription description,
         out RequestExecutionContext requestExecutionContext)
     {
         if (description.Parameters.Length == 0)
@@ -133,6 +173,11 @@ internal class PredefinedTestFactory : IPredefinedTestFactory
     private static string GetHasHeaderTestName(string? testCaseName, string? requestName, string headerName)
         => $"[{_factoryCount}] " + GetTestNamePrefix(testCaseName, requestName) +
             $"Response should have header with name '{headerName}'.";
+
+    private static string GetGenericTestName(
+        string? testCaseName, string? requestName, string testName)
+        => $"[{_factoryCount}] " + GetTestNamePrefix(testCaseName, requestName) +
+            $"{testName}.";
 
     private static string GetTestNamePrefix(string? testCaseName, string? requestName)
         => string.IsNullOrEmpty(testCaseName)

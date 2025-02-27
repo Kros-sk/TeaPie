@@ -1,8 +1,9 @@
 ﻿namespace TeaPie.Testing;
 
-internal enum PredefinedTestType
+internal enum TestType
 {
     ExpectStatusCodes,
     HasBody,
-    HasHeader
+    HasHeader,
+    Custom
 }

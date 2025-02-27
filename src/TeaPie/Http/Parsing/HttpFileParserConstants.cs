@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http.Parsing;
+﻿using TeaPie.Testing;
+
+namespace TeaPie.Http.Parsing;
 
 internal static class HttpFileParserConstants
 {
@@ -57,23 +59,22 @@ internal static class HttpFileParserConstants
 
     #region Test Directives
 
-    public const string TestExpectStatusCodesDirectiveName = "TEST-EXPECT-STATUS";
-    public const string TestExpectStatusCodesSectionName = "StatusCodes";
-    public const string TestExpectStatusCodesDirectivePattern =
-        DirectivePrefixPattern + TestExpectStatusCodesDirectiveName +
-        @":\s*\[(?<" + TestExpectStatusCodesSectionName + @">[0-9,\s]+)\]\s*$";
+    public const string TestDirectivePrefix = "TEST-";
+    public const string TestDirectiveSectionName = "DirectiveName";
 
-    public const string TestHasBodyDirectiveName = "TEST-HAS-BODY";
-    public const string TestHasBodyDirectiveSectionName = "Bool";
-    public const string TestHasBodyDirectivePattern =
-        DirectivePrefixPattern + TestHasBodyDirectiveName +
-        @"(?:\s*:\s*(?i)(?<" + TestHasBodyDirectiveSectionName + @">true|false))?\s*$";
+    public const string TestDirectivePattern = @"^##\s*TEST-[A-Za-z0-9_-]+(?:\s*:\s*.+)?\s*$";
 
-    public const string TestHasHeaderDirectiveName = "TEST-HAS-HEADER";
-    public const string TestHasHeaderDirectiveSectionName = "HeaderName";
-    public const string TestHasHeaderDirectivePattern =
-        DirectivePrefixPattern + TestHasHeaderDirectiveName +
-        @"\s*:\s*(?<" + TestHasHeaderDirectiveSectionName + ">" + HeaderNameBasePattern + @")\s*$";
+    public const string TestExpectStatusCodesDirectiveName = "EXPECT-STATUS";
+    public static readonly string TestExpectStatusCodesDirectivePattern =
+        TestDirectivePatternBuilder.Create(TestExpectStatusCodesDirectiveName).AddStatusCodesParameter().Build();
+
+    public const string TestHasBodyDirectiveName = "HAS-BODY";
+    public static readonly string TestHasBodyDirectivePattern =
+        TestDirectivePatternBuilder.Create(TestHasBodyDirectiveName).AddBooleanParameter().Build();
+
+    public const string TestHasHeaderDirectiveName = "HAS-HEADER";
+    public static readonly string TestHasHeaderDirectivePattern =
+        TestDirectivePatternBuilder.Create(TestHasHeaderDirectiveName).AddHeaderNameParameter().Build();
 
     #endregion
 

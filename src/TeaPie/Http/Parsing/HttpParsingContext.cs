@@ -29,8 +29,8 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
 
     public string AuthProviderName { get; set; } = string.Empty;
 
-    public Queue<PredefinedTestDescription> _scheduledTests = [];
-    public IReadOnlyList<PredefinedTestDescription> Tests => [.. _scheduledTests];
+    public Queue<TestDescription> _scheduledTests = [];
+    public IReadOnlyList<TestDescription> Tests => [.. _scheduledTests];
 
-    public void RegiterTest(PredefinedTestDescription test) => _scheduledTests.Enqueue(test);
+    public void RegiterTest(TestDescription test) => _scheduledTests.Enqueue(test);
 }

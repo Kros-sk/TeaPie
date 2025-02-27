@@ -1,7 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TeaPie.Http.Auth;
+using TeaPie.Http.Retrying;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
+using TeaPie.TestCases;
+using TeaPie.Testing;
+using TeaPie.Variables;
 
 namespace TeaPie;
 
@@ -116,6 +122,9 @@ public sealed class ApplicationBuilder
         return new ApplicationContext(
             string.IsNullOrEmpty(_path) ? Directory.GetCurrentDirectory() : _path,
             provider,
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            provider.GetRequiredService<ITestResultsSummaryReporter>(),
+            provider.GetRequiredService<ILogger<ApplicationContext>>(),
             options);
     }
 
@@ -123,7 +132,18 @@ public sealed class ApplicationBuilder
         => _services.AddTeaPie(() => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile));
 
     private static TeaPie CreateUserContext(IServiceProvider provider, ApplicationContext applicationContext)
-        => TeaPie.Create(applicationContext, provider);
+        => TeaPie.Create(
+            applicationContext,
+            provider,
+            provider.GetRequiredService<IVariables>(),
+            provider.GetRequiredService<ILogger<TeaPie>>(),
+            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            provider.GetRequiredService<ITestResultsSummaryReporter>(),
+            provider.GetRequiredService<IRetryStrategyRegistry>(),
+            provider.GetRequiredService<IAuthProviderRegistry>(),
+            provider.GetRequiredService<IAuthProviderAccessor>(),
+            provider.GetRequiredService<ITestFactory>());
 
     private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
     {

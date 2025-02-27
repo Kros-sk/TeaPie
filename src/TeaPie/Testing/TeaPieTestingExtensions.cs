@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Testing;
+﻿using TeaPie.Http.Parsing;
+
+namespace TeaPie.Testing;
 
 public static class TeaPieTestingExtensions
 {
@@ -27,4 +29,14 @@ public static class TeaPieTestingExtensions
     /// normally executed (<see langword="false"/>). Defaults to <see langword="false"/>.</param>
     public static async Task Test(this TeaPie teaPie, string testName, Func<Task> testFunction, bool skipTest = false)
         => await teaPie._tester.Test(testName, testFunction, skipTest);
+
+    public static async Task RegisterTestDirective(
+        this TeaPie teaPie,
+        string directiveName,
+        string directivePattern,
+        string testName,
+        Func<HttpResponseMessage, object[], Task> testFunction)
+    {
+        teaPie._predefinedTestFactory.RegisterTestType(testName, testFunction);
+    }
 }

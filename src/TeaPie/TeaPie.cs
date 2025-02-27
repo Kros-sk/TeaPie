@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
@@ -16,19 +15,29 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     internal static TeaPie Create(
         ApplicationContext applicationContext,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider,
+        IVariables variables,
+        ILogger logger,
+        ITester tester,
+        ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
+        ITestResultsSummaryReporter reporter,
+        IRetryStrategyRegistry retryStrategiesRegistry,
+        IAuthProviderRegistry authenticationProviderRegistry,
+        IAuthProviderAccessor defaultAuthProviderAccessor,
+        ITestFactory predefinedTestFactory)
     {
         Instance = new(
             applicationContext,
             serviceProvider,
-            serviceProvider.GetRequiredService<IVariables>(),
-            serviceProvider.GetRequiredService<ILogger<TeaPie>>(),
-            serviceProvider.GetRequiredService<ITester>(),
-            serviceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
-            serviceProvider.GetRequiredService<ITestResultsSummaryReporter>(),
-            serviceProvider.GetRequiredService<IRetryStrategyRegistry>(),
-            serviceProvider.GetRequiredService<IAuthProviderRegistry>(),
-            serviceProvider.GetRequiredService<IAuthProviderAccessor>());
+            variables,
+            logger,
+            tester,
+            currentTestCaseExecutionContextAccessor,
+            reporter,
+            retryStrategiesRegistry,
+            authenticationProviderRegistry,
+            defaultAuthProviderAccessor,
+            predefinedTestFactory);
 
         return Instance;
     }
@@ -43,7 +52,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
-        IAuthProviderAccessor defaultAuthProviderAccessor)
+        IAuthProviderAccessor defaultAuthProviderAccessor,
+        ITestFactory predefinedTestFactory)
     {
         _applicationContext = applicationContext;
         _serviceProvider = serviceProvider;
@@ -56,6 +66,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _retryStrategyRegistry = retryStrategiesRegistry;
         _authenticationProviderRegistry = authenticationProviderRegistry;
         _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
+        _predefinedTestFactory = predefinedTestFactory;
     }
 
     internal IServiceProvider _serviceProvider;
@@ -132,6 +143,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Testing
     internal readonly ITester _tester;
+    internal readonly ITestFactory _predefinedTestFactory;
     #endregion
 
     #region Environments

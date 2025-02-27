@@ -165,7 +165,7 @@ public class ExecuteRequestStepShould
             headersResolver,
             resiliencePipelineProvider,
             Substitute.For<IAuthProviderRegistry>(),
-            Substitute.For<IPredefinedTestFactory>(),
+            Substitute.For<ITestFactory>(),
             Substitute.For<ITestScheduler>());
     }
 

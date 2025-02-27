@@ -28,6 +28,7 @@ Content-Type: application/json
 // Equals to
 ## TEST-HAS-BODY: True
 ## TEST-HAS-HEADER: Content-Type
+## TEST-CUSTOM-THING: [ "Parameters", "List" ]
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 // You can use request variables also in headers.
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}

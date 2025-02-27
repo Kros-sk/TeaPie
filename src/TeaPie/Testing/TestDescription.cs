@@ -2,7 +2,7 @@
 
 namespace TeaPie.Testing;
 
-internal record PredefinedTestDescription(PredefinedTestType Type, params object[] Parameters)
+internal record TestDescription(string Directive, TestType Type, params object[] Parameters)
 {
     public RequestExecutionContext? RequestExecutionContext { get; private set; }
     public void SetRequestExecutionContext(RequestExecutionContext requestExecutionContext)

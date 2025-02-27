@@ -13,7 +13,7 @@ public class PredefinedTestFactoryShould
     [Fact]
     public void ThrowExceptionForUnsupportedTestType()
     {
-        var description = new PredefinedTestDescription((PredefinedTestType)999);
+        var description = new PredefinedTestDescription((TestType)999);
 
         var exception = Throws<InvalidOperationException>(() => _factory.Create(description));
         Contains("Unable to create test for unsupported test type", exception.Message);
@@ -22,7 +22,7 @@ public class PredefinedTestFactoryShould
     [Fact]
     public void CreateReturnExpectStatusCodesTest()
     {
-        var description = new PredefinedTestDescription(PredefinedTestType.ExpectStatusCodes, new int[] { 200, 201 });
+        var description = new PredefinedTestDescription(TestType.ExpectStatusCodes, new int[] { 200, 201 });
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));
 
         var test = _factory.Create(description);
@@ -34,7 +34,7 @@ public class PredefinedTestFactoryShould
     [Fact]
     public void CreateReturnHasBodyTest()
     {
-        var description = new PredefinedTestDescription(PredefinedTestType.HasBody, true);
+        var description = new PredefinedTestDescription(TestType.HasBody, true);
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));
 
         var test = _factory.Create(description);
@@ -46,7 +46,7 @@ public class PredefinedTestFactoryShould
     [Fact]
     public void CreateReturnHasHeaderTest()
     {
-        var description = new PredefinedTestDescription(PredefinedTestType.HasHeader, "Authorization");
+        var description = new PredefinedTestDescription(TestType.HasHeader, "Authorization");
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));
 
         var test = _factory.Create(description);

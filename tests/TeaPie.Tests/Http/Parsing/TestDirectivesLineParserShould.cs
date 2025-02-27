@@ -21,7 +21,7 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(PredefinedTestType.ExpectStatusCodes, testDesc.Type);
+        Equal(TestType.ExpectStatusCodes, testDesc.Type);
         Equal([500, 501], (int[])testDesc.Parameters[0]);
     }
 
@@ -36,7 +36,7 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(PredefinedTestType.HasBody, testDesc.Type);
+        Equal(TestType.HasBody, testDesc.Type);
         False((bool)testDesc.Parameters[0]);
     }
 
@@ -51,7 +51,7 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(PredefinedTestType.HasBody, testDesc.Type);
+        Equal(TestType.HasBody, testDesc.Type);
         True((bool)testDesc.Parameters[0]);
     }
 
@@ -67,7 +67,7 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(PredefinedTestType.HasHeader, testDesc.Type);
+        Equal(TestType.HasHeader, testDesc.Type);
         Equal(headerName, (string)testDesc.Parameters[0]);
     }
 
