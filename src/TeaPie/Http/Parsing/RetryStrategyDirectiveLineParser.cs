@@ -2,17 +2,17 @@
 
 namespace TeaPie.Http.Parsing;
 
-internal partial class RetryStrategyDirectiveLineParser : ILineParser
+internal class RetryStrategyDirectiveLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
-        => RetryStrategySelectorRegex().IsMatch(line);
+        => Regex.IsMatch(line, HttpFileParserConstants.RetryStrategySelectorDirectivePattern);
 
     public void Parse(string line, HttpParsingContext context)
     {
-        var match = RetryStrategySelectorRegex().Match(line);
+        var match = Regex.Match(line, HttpFileParserConstants.RetryStrategySelectorDirectivePattern);
         if (match.Success)
         {
-            context.RetryStrategyName = match.Groups["StrategyName"].Value;
+            context.RetryStrategyName = match.Groups[HttpFileParserConstants.RetryStrategyDirectiveSectionName].Value;
         }
         else
         {
@@ -20,8 +20,4 @@ internal partial class RetryStrategyDirectiveLineParser : ILineParser
                 $"Unable to parse '{HttpFileParserConstants.RetryStrategyDirectiveName}' directive.");
         }
     }
-
-    [GeneratedRegex(
-        HttpFileParserConstants.RetryStrategySelectorDirectivePattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, "sk-SK")]
-    private static partial Regex RetryStrategySelectorRegex();
 }

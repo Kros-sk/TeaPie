@@ -3,17 +3,17 @@ using System.Text.RegularExpressions;
 
 namespace TeaPie.Http.Parsing;
 
-internal partial class RetryUntilStatusCodesLineParser : ILineParser
+internal class RetryUntilStatusCodesLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
-        => RetryUntilStatusCodesRegex().IsMatch(line);
+        => Regex.IsMatch(line, HttpFileParserConstants.RetryUntilStatusCodesDirectivePattern);
 
     public void Parse(string line, HttpParsingContext context)
     {
-        var match = RetryUntilStatusCodesRegex().Match(line);
+        var match = Regex.Match(line, HttpFileParserConstants.RetryUntilStatusCodesDirectivePattern);
         if (match.Success)
         {
-            var statusCodesText = match.Groups["StatusCodes"].Value;
+            var statusCodesText = match.Groups[HttpFileParserConstants.RetryUntilStatusCodesDirectiveSectionName].Value;
 
             context.RetryUntilStatusCodes = statusCodesText
                 .Split(',')
@@ -28,8 +28,4 @@ internal partial class RetryUntilStatusCodesLineParser : ILineParser
                 + "if directive doesn't match the structure.");
         }
     }
-
-    [GeneratedRegex(
-        HttpFileParserConstants.RetryUntilStatusCodesDirectivePattern, RegexOptions.IgnoreCase | RegexOptions.Compiled, "sk-SK")]
-    private static partial Regex RetryUntilStatusCodesRegex();
 }

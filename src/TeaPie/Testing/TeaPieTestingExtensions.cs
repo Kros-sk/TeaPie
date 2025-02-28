@@ -34,9 +34,12 @@ public static class TeaPieTestingExtensions
         this TeaPie teaPie,
         string directiveName,
         string directivePattern,
-        string testName,
-        Func<HttpResponseMessage, object[], Task> testFunction)
+        Func<IReadOnlyDictionary<string, object>, string> testNameGetter,
+        Func<HttpResponseMessage, IReadOnlyDictionary<string, object>, Task> testFunction)
     {
-        teaPie._predefinedTestFactory.RegisterTestType(testName, testFunction);
+        var directive = new TestDirective(directiveName, directivePattern, testNameGetter, testFunction);
+
+        TestDirectivesLineParser.RegisterTestDirective(directivePattern);
+        teaPie._predefinedTestFactory.RegisterTestType(directiveName, testFunction);
     }
 }

@@ -1,6 +1,4 @@
-﻿using TeaPie.Testing;
-
-namespace TeaPie.Http.Parsing;
+﻿namespace TeaPie.Http.Parsing;
 
 internal static class HttpFileParserConstants
 {
@@ -27,33 +25,61 @@ internal static class HttpFileParserConstants
 
     #region Authentication Directives
 
-    public const string AuthProviderDirectiveName = "AUTH-PROVIDER";
-    public const string AuthProviderSelectorDirectivePattern =
-        DirectivePrefixPattern + AuthProviderDirectiveName + @":\s*(?<AuthProvider>.+?)\s*$";
+    public const string AuthDirectivePrefix = "AUTH-";
+
+    public const string AuthProviderDirectiveName = "PROVIDER";
+    public const string AuthProviderDirectiveSectionName = "AuthProvider";
+    public static readonly string AuthProviderSelectorDirectivePattern =
+        HttpDirectivePatternBuilder.Create(AuthProviderDirectiveName)
+            .WithPrefix(AuthDirectivePrefix)
+            .AddStringParameter(AuthProviderDirectiveSectionName)
+            .Build();
 
     #endregion
 
     #region Retry Directives
 
-    public const string RetryStrategyDirectiveName = "RETRY-STRATEGY";
-    public const string RetryStrategySelectorDirectivePattern =
-        DirectivePrefixPattern + RetryStrategyDirectiveName + @":\s*(?<StrategyName>.+?)\s*$";
+    public const string RetryDirectivePrefix = "RETRY-";
 
-    public const string RetryUntilStatusCodesDirectiveName = "RETRY-UNTIL-STATUS";
-    public const string RetryUntilStatusCodesDirectivePattern =
-        DirectivePrefixPattern + RetryUntilStatusCodesDirectiveName + @":\s*\[(?<StatusCodes>[0-9,\s]+)\]\s*$";
+    public const string RetryStrategyDirectiveName = "STRATEGY";
+    public const string RetryStrategyDirectiveSectionName = "StrategyName";
+    public static readonly string RetryStrategySelectorDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryStrategyDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddStringParameter(RetryStrategyDirectiveSectionName)
+            .Build();
 
-    public const string RetryMaxAttemptsDirectiveName = "RETRY-MAX-ATTEMPTS";
-    public const string RetryMaxAttemptsDirectivePattern =
-        DirectivePrefixPattern + RetryMaxAttemptsDirectiveName + @":\s*(?<MaxAttempts>\d+)\s*$";
+    public const string RetryUntilStatusCodesDirectiveName = "UNTIL-STATUS";
+    public const string RetryUntilStatusCodesDirectiveSectionName = "StatusCodes";
+    public static readonly string RetryUntilStatusCodesDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryUntilStatusCodesDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddStatusCodesParameter(RetryUntilStatusCodesDirectiveSectionName)
+            .Build();
 
-    public const string RetryBackoffTypeDirectiveName = "RETRY-BACKOFF-TYPE";
-    public const string RetryBackoffTypeDirectivePattern =
-        DirectivePrefixPattern + RetryBackoffTypeDirectiveName + @":\s*(?<BackoffType>\w+)\s*$";
+    public const string RetryMaxAttemptsDirectiveName = "MAX-ATTEMPTS";
+    public const string RetryMaxAttemptsDirectiveSectionName = "MaxAttempts";
+    public static readonly string RetryMaxAttemptsDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryMaxAttemptsDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddNumberParameter(RetryMaxAttemptsDirectiveSectionName)
+            .Build();
 
-    public const string RetryMaxDelayDirectiveName = "RETRY-MAX-DELAY";
-    public const string RetryMaxDelayDirectivePattern =
-        DirectivePrefixPattern + RetryMaxDelayDirectiveName + @":\s*(?<MaxDelay>\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s*$";
+    public const string RetryBackoffTypeDirectiveName = "BACKOFF-TYPE";
+    public const string RetryBackoffTypeDirectiveSectionName = "BackoffType";
+    public static readonly string RetryBackoffTypeDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryBackoffTypeDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddNumberParameter()
+            .Build();
+
+    public const string RetryMaxDelayDirectiveName = "MAX-DELAY";
+    public const string RetryMaxDelayDirectiveSectionName = "MaxDelay";
+    public static readonly string RetryMaxDelayDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryBackoffTypeDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddTimeOnlyParameter(RetryMaxDelayDirectiveSectionName)
+            .Build();
 
     #endregion
 
@@ -65,16 +91,33 @@ internal static class HttpFileParserConstants
     public const string TestDirectivePattern = @"^##\s*TEST-[A-Za-z0-9_-]+(?:\s*:\s*.+)?\s*$";
 
     public const string TestExpectStatusCodesDirectiveName = "EXPECT-STATUS";
+    public const string TestExpectStatusCodesSectionName = "StatusCodes";
     public static readonly string TestExpectStatusCodesDirectivePattern =
-        TestDirectivePatternBuilder.Create(TestExpectStatusCodesDirectiveName).AddStatusCodesParameter().Build();
+        HttpDirectivePatternBuilder.Create(TestExpectStatusCodesDirectiveName)
+            .WithPrefix(TestDirectivePrefix)
+            .AddStatusCodesParameter(TestExpectStatusCodesSectionName)
+            .Build();
 
     public const string TestHasBodyDirectiveName = "HAS-BODY";
+    public const string TestHasBodyDirectiveSectionName = "Bool";
     public static readonly string TestHasBodyDirectivePattern =
-        TestDirectivePatternBuilder.Create(TestHasBodyDirectiveName).AddBooleanParameter().Build();
+        HttpDirectivePatternBuilder.Create(TestHasBodyDirectiveName)
+            .WithPrefix(TestDirectivePrefix)
+            .AddBooleanParameter(TestHasBodyDirectiveSectionName)
+            .Build();
+
+    public static readonly string TestHasBodyNoParameterDirectivePattern =
+        HttpDirectivePatternBuilder.Create(TestHasBodyDirectiveName)
+            .WithPrefix(TestDirectivePrefix)
+            .Build();
 
     public const string TestHasHeaderDirectiveName = "HAS-HEADER";
+    public const string TestHasHeaderDirectiveSectionName = "HeaderName";
     public static readonly string TestHasHeaderDirectivePattern =
-        TestDirectivePatternBuilder.Create(TestHasHeaderDirectiveName).AddHeaderNameParameter().Build();
+        HttpDirectivePatternBuilder.Create(TestHasHeaderDirectiveName)
+            .WithPrefix(TestDirectivePrefix)
+            .AddHeaderNameParameter(TestHasHeaderDirectiveSectionName)
+            .Build();
 
     #endregion
 

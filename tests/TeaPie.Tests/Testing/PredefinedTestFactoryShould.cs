@@ -8,7 +8,7 @@ namespace TeaPie.Tests.Testing;
 
 public class PredefinedTestFactoryShould
 {
-    private readonly PredefinedTestFactory _factory = new(Substitute.For<IHeadersHandler>());
+    private readonly TestFactory _factory = new(Substitute.For<IHeadersHandler>());
 
     [Fact]
     public void ThrowExceptionForUnsupportedTestType()

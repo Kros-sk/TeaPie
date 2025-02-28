@@ -92,6 +92,39 @@ tp.RegisterReporter(summary =>
 // For more advanced and customized reporting, use:
 // tp.RegisterReporter(IReporter<TestsResultsSummary> reporter);
 
+// CUSTOM IN-LINE TEST DIRECTIVE
+
+// TeaPie allows users to define custom test directives for .http files.
+// Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1, Parameter2, ...
+// A custom directive can be registered as follows:
+tp.RegisterTestDirective(
+    "SUCCESSFULL-STATUS",
+    TestDirectivePatternBuilder
+        .Create("SUCCESSFULL-STATUS")  // Defines the directive name (left side)
+        .AddBooleanParameter("MyBool")  // Adds a boolean parameter (multiple parameters can be added - right side)
+        .Build(),  // Generates Regex pattern for this directive
+    (parameters) =>  // Function that generates the test name using dictionary of available parameters
+    {
+        var negation = (bool)parameters["MyBool"] ? string.Empty : "NOT ";
+        return $"Response status code should {negation}be successful.";
+    },
+    async (response, parameters) =>  // Asynchronous test function that validates the response
+    {
+        if ((bool)parameters["MyBool"])
+        {
+            True(response.IsSuccessStatusCode);
+        }
+        else
+        {
+            False(response.IsSuccessStatusCode);
+        }
+
+        await Task.CompletedTask;
+    }
+);
+
+
+
 // CUSTOM CLASS DEFINITIONS
 
 // Custom authentication provider definition

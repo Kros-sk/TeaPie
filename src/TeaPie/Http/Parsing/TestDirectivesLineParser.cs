@@ -1,24 +1,22 @@
 ﻿using System.Text.RegularExpressions;
 using TeaPie.Testing;
+using static Xunit.Assert;
+using Consts = TeaPie.Http.Parsing.HttpFileParserConstants;
 
 namespace TeaPie.Http.Parsing;
 
-internal partial class TestDirectivesLineParser : ILineParser
+internal class TestDirectivesLineParser : ILineParser
 {
-    private static readonly List<string> _supportedPatterns = [
-        HttpFileParserConstants.TestExpectStatusCodesDirectivePattern,
-        HttpFileParserConstants.TestHasBodyDirectivePattern,
-        HttpFileParserConstants.TestHasHeaderDirectivePattern,
-    ];
+    private static readonly List<TestDirective> _supportedDirectives = GetDefaultDirectives();
 
-    public static void RegisterTestDirective(string pattern) => _supportedPatterns.Add(pattern);
+    public static void RegisterTestDirective(string pattern) => _supportedDirectives.Add(pattern);
 
     public bool CanParse(string line, HttpParsingContext context)
-        => TestDirectivePattern().IsMatch(line);
+        => _supportedDirectives.Any(p => Regex.IsMatch(line, p));
 
     public void Parse(string line, HttpParsingContext context)
     {
-        foreach (var pattern in _supportedPatterns)
+        foreach (var pattern in _supportedDirectives)
         {
             var match = Regex.Match(line, pattern);
             if (match.Success)
@@ -35,12 +33,11 @@ internal partial class TestDirectivesLineParser : ILineParser
         Match match,
         HttpParsingContext context)
     {
-        var directiveName = match.Groups[HttpFileParserConstants.TestDirectiveSectionName].Value;
-        var parameters = match.Groups.Values.Select(g => g.Value).ToArray();
+        var directiveName = match.Groups[Consts.TestDirectiveSectionName].Value;
+        var parameters = match.Groups.Keys
+            .Select(key => new KeyValuePair<string, object>(key, match.Groups[key].Value))
+            .ToDictionary();
 
-        context.RegiterTest(new TestDescription(directiveName, TestType.Custom, parameters));
+        context.RegiterTest(new TestDescription(directiveName, parameters));
     }
-
-    [GeneratedRegex(HttpFileParserConstants.TestDirectivePattern)]
-    private static partial Regex TestDirectivePattern();
 }

@@ -38,6 +38,7 @@ internal static class ScriptsConstants
         "TeaPie.Http",
         "TeaPie.Http.Auth",
         "TeaPie.Http.Auth.OAuth2",
+        "TeaPie.Http.Parsing",
         "TeaPie.Http.Retrying",
         "TeaPie.Json",
         "TeaPie.Reporting",
