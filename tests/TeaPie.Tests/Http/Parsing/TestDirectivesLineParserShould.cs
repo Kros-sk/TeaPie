@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using TeaPie.Http.Parsing;
-using TeaPie.Testing;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Parsing;
@@ -21,8 +20,8 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(TestType.ExpectStatusCodes, testDesc.Type);
-        Equal([500, 501], (int[])testDesc.Parameters[0]);
+        Equal("TEST-EXPECT-STATUS", testDesc.Directive);
+        Equal("[500, 501]", testDesc.Parameters[HttpFileParserConstants.TestExpectStatusCodesParameterName]);
     }
 
     [Fact]
@@ -36,8 +35,8 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(TestType.HasBody, testDesc.Type);
-        False((bool)testDesc.Parameters[0]);
+        Equal("TEST-HAS-BODY", testDesc.Directive);
+        False(bool.Parse(testDesc.Parameters[HttpFileParserConstants.TestHasBodyDirectiveParameterName]));
     }
 
     [Fact]
@@ -51,8 +50,8 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(TestType.HasBody, testDesc.Type);
-        True((bool)testDesc.Parameters[0]);
+        Equal("TEST-HAS-BODY", testDesc.Directive);
+        False(testDesc.Parameters.ContainsKey(HttpFileParserConstants.TestHasBodyDirectiveParameterName));
     }
 
     [Fact]
@@ -67,8 +66,8 @@ public class TestDirectivesLineParserShould
 
         NotEmpty(context.Tests);
         var testDesc = context.Tests[0];
-        Equal(TestType.HasHeader, testDesc.Type);
-        Equal(headerName, (string)testDesc.Parameters[0]);
+        Equal("TEST-HAS-HEADER", testDesc.Directive);
+        Equal(headerName, testDesc.Parameters[HttpFileParserConstants.TestHasHeaderDirectiveParameterName]);
     }
 
     [Fact]

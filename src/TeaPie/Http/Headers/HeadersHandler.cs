@@ -5,7 +5,7 @@ namespace TeaPie.Http.Headers;
 
 internal class HeadersHandler : IHeadersHandler
 {
-    private readonly IHeaderHandler[] _handlers =
+    private static readonly IHeaderHandler[] _handlers =
     [
         new ContentTypeHeaderHandler(),
         new ContentDispositionHeaderHandler(),
@@ -45,7 +45,7 @@ internal class HeadersHandler : IHeadersHandler
         }
     }
 
-    private void CopySpecificHeaders(HttpRequestMessage source, HttpRequestMessage target)
+    private static void CopySpecificHeaders(HttpRequestMessage source, HttpRequestMessage target)
     {
         foreach (var handler in _handlers)
         {
@@ -62,7 +62,7 @@ internal class HeadersHandler : IHeadersHandler
         }
     }
 
-    private void SetHeader(KeyValuePair<string, string> header, HttpRequestMessage requestMessage)
+    private static void SetHeader(KeyValuePair<string, string> header, HttpRequestMessage requestMessage)
     {
         var handler = GetHandler(header.Key, requestMessage);
         handler.SetHeader(header.Value, requestMessage);
@@ -76,7 +76,13 @@ internal class HeadersHandler : IHeadersHandler
     public string GetHeader(string name, HttpResponseMessage responseMessage, string defaultValue = "")
         => GetHeader(name, GetHeaderFromResponse, responseMessage, defaultValue);
 
-    private string GetHeader<TMessage>(
+    public static string GetHeaderFromRequest(string name, HttpRequestMessage requestMessage, string defaultValue = "")
+        => GetHeader(name, GetHeaderFromRequest, requestMessage, defaultValue);
+
+    public static string GetHeaderFromResponse(string name, HttpResponseMessage responseMessage, string defaultValue = "")
+        => GetHeader(name, GetHeaderFromResponse, responseMessage, defaultValue);
+
+    private static string GetHeader<TMessage>(
         string name,
         Func<IHeaderHandler, TMessage, string> getter,
         TMessage message,
@@ -95,17 +101,17 @@ internal class HeadersHandler : IHeadersHandler
         return !value.Equals(string.Empty) ? value : defaultValue;
     }
 
-    private string GetHeaderFromRequest(IHeaderHandler handler, HttpRequestMessage requestMessage)
+    private static string GetHeaderFromRequest(IHeaderHandler handler, HttpRequestMessage requestMessage)
         => handler.GetHeader(requestMessage);
 
-    private string GetHeaderFromResponse(IHeaderHandler handler, HttpResponseMessage responseMessage)
+    private static string GetHeaderFromResponse(IHeaderHandler handler, HttpResponseMessage responseMessage)
         => handler.GetHeader(responseMessage);
     #endregion
 
-    private IHeaderHandler GetHandler(string headerName, HttpResponseMessage responseMessage)
+    private static IHeaderHandler GetHandler(string headerName, HttpResponseMessage responseMessage)
         => _handlers.FirstOrDefault(h => h.CanResolve(headerName, responseMessage), new DefaultHeaderHandler(headerName));
 
-    private IHeaderHandler GetHandler(string headerName, HttpRequestMessage requestMessage)
+    private static IHeaderHandler GetHandler(string headerName, HttpRequestMessage requestMessage)
         => _handlers.FirstOrDefault(h => h.CanResolve(headerName, requestMessage), new DefaultHeaderHandler(headerName));
 
     public static void CheckIfContentExists(string headerName, [NotNull] HttpContent? content)

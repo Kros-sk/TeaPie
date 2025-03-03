@@ -4,7 +4,7 @@ namespace TeaPie;
 
 internal static partial class PascalCaseHumanizer
 {
-    public static string ParsePascalCase(this string expression)
+    public static string SplitPascalCase(this string expression)
     {
         var words = PascalCaseNamesRegex().Matches(expression)
             .Cast<Match>()

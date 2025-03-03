@@ -94,6 +94,9 @@ internal class ApplicationContextBuilder
         return new ApplicationContext(
             _path,
             finalServiceProvider,
+            finalServiceProvider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            finalServiceProvider.GetRequiredService<ITestResultsSummaryReporter>(),
+            finalServiceProvider.GetRequiredService<ILogger<ApplicationContext>>(),
             _optionsBuilder.Build()
         );
     }

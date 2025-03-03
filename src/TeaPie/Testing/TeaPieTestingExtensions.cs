@@ -30,16 +30,28 @@ public static class TeaPieTestingExtensions
     public static async Task Test(this TeaPie teaPie, string testName, Func<Task> testFunction, bool skipTest = false)
         => await teaPie._tester.Test(testName, testFunction, skipTest);
 
-    public static async Task RegisterTestDirective(
+    /// <summary>
+    /// Registers a custom test directive that can be used within a '.http' file for any request.
+    /// </summary>
+    /// <param name="teaPie">The current context instance.</param>
+    /// <param name="directiveName">The name of the directive, <b>excluding the 'TEST-' prefix</b>.</param>
+    /// <param name="directivePattern">The regular expression pattern for matching the directive.
+    /// Use <see cref="TestDirectivePatternBuilder"/> for easier pattern composition.</param>
+    /// <param name="testNameGetter">A function that generates the full test name.
+    /// A <b>dictionary of parameters</b> is provided for customization of the test name.</param>
+    /// <param name="testFunction">The test function to execute when the directive is applied.
+    /// The function receives the HTTP response as an <see cref="HttpResponseMessage"/> and a dictionary of parameters.</param>
+    public static void RegisterTestDirective(
         this TeaPie teaPie,
         string directiveName,
         string directivePattern,
-        Func<IReadOnlyDictionary<string, object>, string> testNameGetter,
-        Func<HttpResponseMessage, IReadOnlyDictionary<string, object>, Task> testFunction)
+        Func<IReadOnlyDictionary<string, string>, string> testNameGetter,
+        Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction)
     {
-        var directive = new TestDirective(directiveName, directivePattern, testNameGetter, testFunction);
+        var directive = new TestDirective(
+            HttpFileParserConstants.TestDirectivePrefix + directiveName, directivePattern, testNameGetter, testFunction);
 
         TestDirectivesLineParser.RegisterTestDirective(directivePattern);
-        teaPie._predefinedTestFactory.RegisterTestType(directiveName, testFunction);
+        teaPie._predefinedTestFactory.RegisterTestDirective(directive);
     }
 }

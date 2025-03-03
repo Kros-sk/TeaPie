@@ -29,7 +29,7 @@ Content-Type: application/json
 ## TEST-HAS-BODY: True
 ## TEST-HAS-HEADER: Content-Type
 // Usage of user-defined test directive, registered in 'init.csx':
-## TEST-SUCCESSFULL-STATUS: False
+## TEST-SUCCESSFUL-STATUS: True
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 // You can use request variables also in headers.
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}

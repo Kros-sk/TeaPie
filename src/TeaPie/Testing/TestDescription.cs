@@ -2,7 +2,7 @@
 
 namespace TeaPie.Testing;
 
-internal record TestDescription(string Directive, IReadOnlyDictionary<string, object> Parameters)
+internal record TestDescription(string Directive, IReadOnlyDictionary<string, string> Parameters)
 {
     public RequestExecutionContext? RequestExecutionContext { get; private set; }
     public void SetRequestExecutionContext(RequestExecutionContext requestExecutionContext)

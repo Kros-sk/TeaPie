@@ -45,7 +45,7 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
             summary.HasSkippedTests,
             (CompatibilityChecker.SupportsEmoji ? Emoji.Known.ThinkingFace + " " : string.Empty) + "Skipped Tests",
             summary.SkippedTests,
-            (result) => $"[bold orange1]Test skipped: [/][bold yellow]\"{result.TestName}\"[/]");
+            (result) => $"[bold orange1]Test skipped: [/][bold yellow]\"{result.TestName.EscapeMarkup()}\"[/]");
 
     private static void ReportFailedTestsIfAny(TestResultsSummary summary, Table table)
         => ReportTestsGroup(
@@ -53,7 +53,7 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
             !summary.AllTestsPassed,
             (CompatibilityChecker.SupportsEmoji ? Emoji.Known.CrossMark + " " : string.Empty) + "Failed Tests",
             summary.FailedTests,
-            (result) => $"[bold red]Test failed: [/][bold yellow]\"{result.TestName}\"[/]",
+            (result) => $"[bold red]Test failed: [/][bold yellow]\"{result.TestName.EscapeMarkup()}\"[/]",
             (result) => $"[bold red]Reason: [/][white]{((TestResult.Failed)result).ErrorMessage}[/]");
 
     private static void ReportTestsGroup(

@@ -98,19 +98,19 @@ tp.RegisterReporter(summary =>
 // Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1, Parameter2, ...
 // A custom directive can be registered as follows:
 tp.RegisterTestDirective(
-    "SUCCESSFULL-STATUS",
+    "SUCCESSFUL-STATUS",
     TestDirectivePatternBuilder
-        .Create("SUCCESSFULL-STATUS")  // Defines the directive name (left side)
+        .Create("SUCCESSFUL-STATUS")  // Defines the directive name (left side)
         .AddBooleanParameter("MyBool")  // Adds a boolean parameter (multiple parameters can be added - right side)
         .Build(),  // Generates Regex pattern for this directive
     (parameters) =>  // Function that generates the test name using dictionary of available parameters
     {
-        var negation = (bool)parameters["MyBool"] ? string.Empty : "NOT ";
+        var negation = bool.Parse(parameters["MyBool"]) ? string.Empty : "NOT ";
         return $"Response status code should {negation}be successful.";
     },
     async (response, parameters) =>  // Asynchronous test function that validates the response
     {
-        if ((bool)parameters["MyBool"])
+        if (bool.Parse(parameters["MyBool"]))
         {
             True(response.IsSuccessStatusCode);
         }

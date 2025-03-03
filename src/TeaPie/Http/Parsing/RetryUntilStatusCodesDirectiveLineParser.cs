@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace TeaPie.Http.Parsing;
 
-internal class RetryUntilStatusCodesLineParser : ILineParser
+internal partial class RetryUntilStatusCodesLineParser : ILineParser
 {
     public bool CanParse(string line, HttpParsingContext context)
         => Regex.IsMatch(line, HttpFileParserConstants.RetryUntilStatusCodesDirectivePattern);
@@ -15,17 +15,18 @@ internal class RetryUntilStatusCodesLineParser : ILineParser
         {
             var statusCodesText = match.Groups[HttpFileParserConstants.RetryUntilStatusCodesDirectiveSectionName].Value;
 
-            context.RetryUntilStatusCodes = statusCodesText
-                .Split(',')
-                .Select(code => code.Trim())
-                .Where(code => int.TryParse(code, out _))
-                .Select(code => (HttpStatusCode)int.Parse(code))
-                .ToList();
+            context.RetryUntilStatusCodes = NumberPattern().Matches(statusCodesText)
+                .Select(m => (HttpStatusCode)int.Parse(m.Value))
+                .ToArray();
         }
         else
         {
-            throw new InvalidOperationException($"Unable to parse '{HttpFileParserConstants.RetryUntilStatusCodesDirectiveName}' "
-                + "if directive doesn't match the structure.");
+            throw new InvalidOperationException(
+                $"Unable to parse '{HttpFileParserConstants.RetryUntilStatusCodesDirectiveFullName}' " +
+                "if directive doesn't match the structure.");
         }
     }
+
+    [GeneratedRegex(@"\d+")]
+    private static partial Regex NumberPattern();
 }

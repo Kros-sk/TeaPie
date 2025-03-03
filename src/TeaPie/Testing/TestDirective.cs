@@ -3,5 +3,5 @@
 internal record TestDirective(
     string DirectiveName,
     string DirectivePattern,
-    Func<IReadOnlyDictionary<string, object>, string> TestNameGetter,
-    Func<HttpResponseMessage, IReadOnlyDictionary<string, object>, Task> TestFunction);
+    Func<IReadOnlyDictionary<string, string>, string> TestNameGetter,
+    Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> TestFunction);

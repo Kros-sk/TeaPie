@@ -10,7 +10,7 @@ internal class BaseDirectivePatternBuilder(string directiveName, string prefix =
     protected string _parameterSeparator = parameterSeparator;
 
     internal const string DefaultSeparator = @"\s*:\s*";
-    internal const string StringParameterPattern = @"\S+";
+    internal const string StringParameterPattern = @".+?";
     internal const string StatusCodesParameterPattern = @"\[(\d+,\s*)*\d+\]";
     internal const string HeaderNameParameterPattern = "[A-Za-z0-9!#$%&'*+.^_`|~-]+";
     internal const string NumberParameterPattern = @"\d+";
@@ -20,7 +20,7 @@ internal class BaseDirectivePatternBuilder(string directiveName, string prefix =
     internal const string StringArrayPattern = @"\[\s*(?:""[^""]+""\s*,\s*)*""[^""]+""\s*\]";
     internal const string NumberArrayPattern = @"\[\s*(?:\d+\s*,\s*)*\d+\s*\]";
     internal const string BoolArrayPattern = @"\[\s*(?:(?i)true|false\s*,\s*)*(?i)true|false\s*\]";
-    internal const string TimeOnlyParameterPattern = @":\s*(?<MaxDelay>\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s*$";
+    internal const string TimeOnlyParameterPattern = @"\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?";
 
     public virtual string Build()
     {

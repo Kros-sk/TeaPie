@@ -17,7 +17,7 @@ internal class RetryStrategyDirectiveLineParser : ILineParser
         else
         {
             throw new InvalidOperationException(
-                $"Unable to parse '{HttpFileParserConstants.RetryStrategyDirectiveName}' directive.");
+                $"Unable to parse '{HttpFileParserConstants.RetryStrategyDirectiveFullName}' directive.");
         }
     }
 }

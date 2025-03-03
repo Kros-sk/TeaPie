@@ -30,6 +30,7 @@ internal class TeaPieBuilder
         _serviceCollection.AddSingleton(Substitute.For<IAuthProviderRegistry>());
         _serviceCollection.AddSingleton(Substitute.For<IAuthProviderAccessor>());
         _serviceCollection.AddSingleton(Substitute.For<IRetryStrategyRegistry>());
+        _serviceCollection.AddSingleton(Substitute.For<ITestFactory>());
     }
 
     public TeaPieBuilder WithService<TService>(TService implementation) where TService : class
@@ -47,7 +48,17 @@ internal class TeaPieBuilder
     public TeaPie Build()
     {
         var provider = _serviceCollection.BuildServiceProvider();
-        return TeaPie.Create(_appContext, provider);
+        return TeaPie.Create(_appContext,
+            provider,
+            provider.GetRequiredService<IVariables>(),
+            provider.GetRequiredService<ILogger<TeaPie>>(),
+            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
+            provider.GetRequiredService<ITestResultsSummaryReporter>(),
+            provider.GetRequiredService<IRetryStrategyRegistry>(),
+            provider.GetRequiredService<IAuthProviderRegistry>(),
+            provider.GetRequiredService<IAuthProviderAccessor>(),
+            provider.GetRequiredService<ITestFactory>());
     }
 
     public TeaPieBuilder WithApplicationContext(ApplicationContext appContext)

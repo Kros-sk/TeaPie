@@ -42,6 +42,7 @@ internal static class HttpFileParserConstants
     public const string RetryDirectivePrefix = "RETRY-";
 
     public const string RetryStrategyDirectiveName = "STRATEGY";
+    public const string RetryStrategyDirectiveFullName = RetryDirectivePrefix + RetryStrategyDirectiveName;
     public const string RetryStrategyDirectiveSectionName = "StrategyName";
     public static readonly string RetryStrategySelectorDirectivePattern =
         HttpDirectivePatternBuilder.Create(RetryStrategyDirectiveName)
@@ -50,6 +51,7 @@ internal static class HttpFileParserConstants
             .Build();
 
     public const string RetryUntilStatusCodesDirectiveName = "UNTIL-STATUS";
+    public const string RetryUntilStatusCodesDirectiveFullName = RetryDirectivePrefix + RetryUntilStatusCodesDirectiveName;
     public const string RetryUntilStatusCodesDirectiveSectionName = "StatusCodes";
     public static readonly string RetryUntilStatusCodesDirectivePattern =
         HttpDirectivePatternBuilder.Create(RetryUntilStatusCodesDirectiveName)
@@ -58,6 +60,7 @@ internal static class HttpFileParserConstants
             .Build();
 
     public const string RetryMaxAttemptsDirectiveName = "MAX-ATTEMPTS";
+    public const string RetryMaxAttemptsDirectiveFullName = RetryDirectivePrefix + RetryMaxAttemptsDirectiveName;
     public const string RetryMaxAttemptsDirectiveSectionName = "MaxAttempts";
     public static readonly string RetryMaxAttemptsDirectivePattern =
         HttpDirectivePatternBuilder.Create(RetryMaxAttemptsDirectiveName)
@@ -66,17 +69,19 @@ internal static class HttpFileParserConstants
             .Build();
 
     public const string RetryBackoffTypeDirectiveName = "BACKOFF-TYPE";
+    public const string RetryBackoffTypeDirectiveFullName = RetryDirectivePrefix + RetryBackoffTypeDirectiveName;
     public const string RetryBackoffTypeDirectiveSectionName = "BackoffType";
     public static readonly string RetryBackoffTypeDirectivePattern =
         HttpDirectivePatternBuilder.Create(RetryBackoffTypeDirectiveName)
             .WithPrefix(RetryDirectivePrefix)
-            .AddNumberParameter()
+            .AddStringParameter(RetryBackoffTypeDirectiveSectionName)
             .Build();
 
     public const string RetryMaxDelayDirectiveName = "MAX-DELAY";
+    public const string RetryMaxDelayDirectiveFullName = RetryDirectivePrefix + RetryMaxDelayDirectiveName;
     public const string RetryMaxDelayDirectiveSectionName = "MaxDelay";
     public static readonly string RetryMaxDelayDirectivePattern =
-        HttpDirectivePatternBuilder.Create(RetryBackoffTypeDirectiveName)
+        HttpDirectivePatternBuilder.Create(RetryMaxDelayDirectiveName)
             .WithPrefix(RetryDirectivePrefix)
             .AddTimeOnlyParameter(RetryMaxDelayDirectiveSectionName)
             .Build();
@@ -91,32 +96,38 @@ internal static class HttpFileParserConstants
     public const string TestDirectivePattern = @"^##\s*TEST-[A-Za-z0-9_-]+(?:\s*:\s*.+)?\s*$";
 
     public const string TestExpectStatusCodesDirectiveName = "EXPECT-STATUS";
-    public const string TestExpectStatusCodesSectionName = "StatusCodes";
+    public const string TestExpectStatusCodesDirectiveFullName = TestDirectivePrefix + TestExpectStatusCodesDirectiveName;
+    public const string TestExpectStatusCodesParameterName = "StatusCodes";
     public static readonly string TestExpectStatusCodesDirectivePattern =
         HttpDirectivePatternBuilder.Create(TestExpectStatusCodesDirectiveName)
             .WithPrefix(TestDirectivePrefix)
-            .AddStatusCodesParameter(TestExpectStatusCodesSectionName)
+            .AddStatusCodesParameter(TestExpectStatusCodesParameterName)
             .Build();
 
     public const string TestHasBodyDirectiveName = "HAS-BODY";
-    public const string TestHasBodyDirectiveSectionName = "Bool";
+    public const string TestHasBodyDirectiveFullName = TestDirectivePrefix + TestHasBodyDirectiveName;
+    public const string TestHasBodyDirectiveParameterName = "Bool";
     public static readonly string TestHasBodyDirectivePattern =
         HttpDirectivePatternBuilder.Create(TestHasBodyDirectiveName)
             .WithPrefix(TestDirectivePrefix)
-            .AddBooleanParameter(TestHasBodyDirectiveSectionName)
+            .AddBooleanParameter(TestHasBodyDirectiveParameterName)
             .Build();
 
+    public const string TestHasBodyNoParameterInternalDirectiveName = "HAS-BODY-SIMPLIFIED";
+    public const string TestHasBodyNoParameterInternalDirectiveFullName =
+        TestDirectivePrefix + TestHasBodyNoParameterInternalDirectiveName;
     public static readonly string TestHasBodyNoParameterDirectivePattern =
         HttpDirectivePatternBuilder.Create(TestHasBodyDirectiveName)
             .WithPrefix(TestDirectivePrefix)
             .Build();
 
     public const string TestHasHeaderDirectiveName = "HAS-HEADER";
-    public const string TestHasHeaderDirectiveSectionName = "HeaderName";
+    public const string TestHasHeaderDirectiveFullName = TestDirectivePrefix + TestHasHeaderDirectiveName;
+    public const string TestHasHeaderDirectiveParameterName = "HeaderName";
     public static readonly string TestHasHeaderDirectivePattern =
         HttpDirectivePatternBuilder.Create(TestHasHeaderDirectiveName)
             .WithPrefix(TestDirectivePrefix)
-            .AddHeaderNameParameter(TestHasHeaderDirectiveSectionName)
+            .AddHeaderNameParameter(TestHasHeaderDirectiveParameterName)
             .Build();
 
     #endregion

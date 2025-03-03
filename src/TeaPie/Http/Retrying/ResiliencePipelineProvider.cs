@@ -162,7 +162,7 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
         };
 
     private static string GetNameForRetryUntilStatusCodes(IReadOnlyList<HttpStatusCode> statusCodes)
-        => HttpFileParserConstants.RetryStrategyDirectiveName + "-" + string.Join('-', statusCodes.Select(sc => (int)sc));
+        => HttpFileParserConstants.RetryStrategyDirectiveFullName + "-" + string.Join('-', statusCodes.Select(sc => (int)sc));
 
     private ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(string name, RetryStrategy retryStrategy, bool altered)
     {
