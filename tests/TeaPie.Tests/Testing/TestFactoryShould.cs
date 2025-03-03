@@ -1,5 +1,4 @@
 ﻿using TeaPie.Http;
-using TeaPie.Http.Parsing;
 using TeaPie.Testing;
 using static Xunit.Assert;
 

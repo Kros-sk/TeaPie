@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http.Parsing;
+﻿using TeaPie.Http.Parsing;
+
+namespace TeaPie.Testing;
 
 /// <summary>
 /// A builder for constructing regular expression patterns for test directives used in `.http` files.

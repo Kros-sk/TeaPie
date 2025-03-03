@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TeaPie.Testing;
+using TeaPie.Http.Parsing;
 
-namespace TeaPie.Http.Parsing;
+namespace TeaPie.Testing;
 
 internal class TestDirectivesLineParser : ILineParser
 {

@@ -1,6 +1,4 @@
-﻿using TeaPie.Http.Parsing;
-
-namespace TeaPie.Testing;
+﻿namespace TeaPie.Testing;
 
 public static class TeaPieTestingExtensions
 {
