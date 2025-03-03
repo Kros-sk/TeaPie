@@ -60,14 +60,14 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
 
     private async Task<OAuth2TokenResponse> SendRequest(FormUrlEncodedContent requestContent, string requestUri)
     {
-        var client = _httpClientFactory.CreateClient(nameof(IAuthProvider<OAuth2Options>));
+        using var client = _httpClientFactory.CreateClient(nameof(IAuthProvider<OAuth2Options>));
         var response = await client.PostAsync(requestUri, requestContent);
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content.ReadFromJsonAsync<OAuth2TokenResponse>();
         if (result is null || string.IsNullOrEmpty(result.AccessToken))
         {
-            throw new Exception("Failed to retrieve access token.");
+            throw new UnauthorizedAccessException("Failed to retrieve access token.");
         }
 
         return result;

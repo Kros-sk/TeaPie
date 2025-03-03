@@ -53,7 +53,7 @@ public class OAuth2Options : IAuthOptions
             return _cachedParameters;
         }
 
-        var parameters = new Dictionary<string, string>(AdditionalParameters);
+        var parameters = new Dictionary<string, string>();
 
         foreach (var (key, valueSelector) in _parametersBinding)
         {
@@ -64,7 +64,12 @@ public class OAuth2Options : IAuthOptions
             }
         }
 
-        _cachedParameters = new Dictionary<string, string>(parameters);
+        foreach (var parameter in AdditionalParameters)
+        {
+            parameters.Add(parameter.Key, parameter.Value);
+        }
+
+        _cachedParameters = parameters;
         return _cachedParameters;
     }
 }
