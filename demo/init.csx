@@ -92,10 +92,10 @@ tp.RegisterReporter(summary =>
 // For more advanced and customized reporting, use:
 // tp.RegisterReporter(IReporter<TestsResultsSummary> reporter);
 
-// CUSTOM IN-LINE TEST DIRECTIVE
+// CUSTOM TEST DIRECTIVE
 
 // TeaPie allows users to define custom test directives for .http files.
-// Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1, Parameter2, ...
+// Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1; Parameter2; ...
 // A custom directive can be registered as follows:
 tp.RegisterTestDirective(
     "SUCCESSFUL-STATUS",
@@ -122,8 +122,6 @@ tp.RegisterTestDirective(
         await Task.CompletedTask;
     }
 );
-
-
 
 // CUSTOM CLASS DEFINITIONS
 

@@ -13,9 +13,6 @@
     - [Initialization script](#initialization-script)
     - [Pre-request Script](#pre-request-script)
     - [Request File](#request-file)
-      - [Predefined Test Directives](#predefined-test-directives)
-      - [Registering Custom Test Directives](#registering-custom-test-directives)
-    - [Example: Custom Test Directive](#example-custom-test-directive)
     - [Authentication](#authentication)
     - [Retrying](#retrying)
     - [Post-Response Script](#post-response-script)
@@ -198,6 +195,7 @@ This gives you comprehensive access to headers and body content of named request
 TeaPie provides **pre-defined test directives** that can be applied within `.http` files to automate response validation.
 Additionally, users can **register custom test directives**, enabling more flexible and reusable test configurations.
 
+<!-- omit from toc -->
 #### Predefined Test Directives
 
 TeaPie supports the following built-in test directives:
@@ -218,6 +216,7 @@ Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 ...
 ```
 
+<!-- omit from toc -->
 #### Registering Custom Test Directives
 
 TeaPie allows users to **define and register custom test directives** dynamically.
@@ -233,8 +232,8 @@ tp.RegisterTestDirective(
     Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction // Function to execute when the directive is applied
 );
 ```
-
-### Example: Custom Test Directive
+<!-- omit from toc -->
+#### Example: Custom Test Directive
 
 The following example registers a custom directive, `## TEST-CUSTOM: <true|false>`:
 
