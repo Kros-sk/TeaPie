@@ -6,7 +6,7 @@ namespace TeaPie.Http.Parsing;
 internal class TestDirectivesLineParser : ILineParser
 {
     private static readonly List<string> _supportedDirectivesPatterns =
-        DefaultDirectivesProvider.GetDefaultTestDirectives().ConvertAll(x => x.DirectivePattern);
+        DefaultDirectivesProvider.GetDefaultTestDirectives().ConvertAll(x => x.Pattern);
 
     public static void RegisterTestDirective(string directivePattern) => _supportedDirectivesPatterns.Add(directivePattern);
 

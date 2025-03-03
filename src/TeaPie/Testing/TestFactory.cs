@@ -13,7 +13,7 @@ internal interface ITestFactory
 internal class TestFactory : ITestFactory
 {
     private readonly Dictionary<string, TestDirective> _supportedDirectives =
-        DefaultDirectivesProvider.GetDefaultTestDirectives().ToDictionary(x => x.DirectiveName, y => y);
+        DefaultDirectivesProvider.GetDefaultTestDirectives().ToDictionary(x => x.Name, y => y);
 
     private static int _factoryCount = 1;
 
@@ -24,7 +24,7 @@ internal class TestFactory : ITestFactory
                 $"Unable to create test for unsupported test directive '{testDescription.Directive}'.");
 
     public void RegisterTestDirective(TestDirective testDirective)
-        => _supportedDirectives[testDirective.DirectiveName] = testDirective;
+        => _supportedDirectives[testDirective.Name] = testDirective;
 
     private static Test Create(
         TestDirective testDirective,

@@ -66,7 +66,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _retryStrategyRegistry = retryStrategiesRegistry;
         _authenticationProviderRegistry = authenticationProviderRegistry;
         _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
-        _predefinedTestFactory = predefinedTestFactory;
+        _testFactory = predefinedTestFactory;
     }
 
     internal IServiceProvider _serviceProvider;
@@ -143,7 +143,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Testing
     internal readonly ITester _tester;
-    internal readonly ITestFactory _predefinedTestFactory;
+    internal readonly ITestFactory _testFactory;
     #endregion
 
     #region Environments

@@ -52,6 +52,6 @@ public static class TeaPieTestingExtensions
             TestDirectives.TestDirectivePrefix + directiveName, directivePattern, testNameGetter, testFunction);
 
         TestDirectivesLineParser.RegisterTestDirective(directivePattern);
-        teaPie._predefinedTestFactory.RegisterTestDirective(directive);
+        teaPie._testFactory.RegisterTestDirective(directive);
     }
 }
