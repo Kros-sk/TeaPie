@@ -23,12 +23,6 @@ internal static class HttpFileParserConstants
 
     public const string DirectivePrefixPattern = @"^##\s*";
 
-    #region Authentication Directives
-
-
-
-    #endregion
-
     #endregion
 
     #region Request

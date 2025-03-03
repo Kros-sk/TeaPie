@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Http.Parsing;
+﻿using TeaPie.Http.Retrying;
+
+namespace TeaPie.Http.Parsing;
 
 internal class DirectivesLineParser : ILineParser
 {

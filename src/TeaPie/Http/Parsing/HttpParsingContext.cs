@@ -29,7 +29,7 @@ internal class HttpParsingContext(HttpRequestHeaders defaultHeaders)
 
     public string AuthProviderName { get; set; } = string.Empty;
 
-    public Queue<TestDescription> _scheduledTests = [];
+    private readonly Queue<TestDescription> _scheduledTests = [];
     public IReadOnlyList<TestDescription> Tests => [.. _scheduledTests];
 
     public void RegiterTest(TestDescription test) => _scheduledTests.Enqueue(test);

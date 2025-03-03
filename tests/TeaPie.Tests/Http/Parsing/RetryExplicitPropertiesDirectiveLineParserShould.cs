@@ -1,6 +1,7 @@
 ﻿using Polly;
 using System.Net.Http.Headers;
 using TeaPie.Http.Parsing;
+using TeaPie.Http.Retrying;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Parsing;

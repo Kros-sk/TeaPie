@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TeaPie.Http.Retrying;
+using TeaPie.Http.Parsing;
 
-namespace TeaPie.Http.Parsing;
+namespace TeaPie.Http.Retrying;
 
 internal class RetryStrategyDirectiveLineParser : ILineParser
 {
