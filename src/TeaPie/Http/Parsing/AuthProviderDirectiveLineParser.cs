@@ -12,12 +12,12 @@ internal partial class AuthProviderDirectiveLineParser : ILineParser
         var match = Regex.Match(line, HttpFileParserConstants.AuthProviderSelectorDirectivePattern);
         if (match.Success)
         {
-            context.AuthProviderName = match.Groups[HttpFileParserConstants.AuthProviderDirectiveSectionName].Value;
+            context.AuthProviderName = match.Groups[HttpFileParserConstants.AuthProviderDirectiveParameterName].Value;
         }
         else
         {
             throw new InvalidOperationException(
-                $"Unable to parse '{HttpFileParserConstants.AuthProviderDirectiveName}' directive.");
+                $"Unable to parse '{HttpFileParserConstants.AuthProviderDirectiveFullName}' directive.");
         }
     }
 }

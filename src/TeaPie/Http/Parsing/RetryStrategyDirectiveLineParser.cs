@@ -12,7 +12,7 @@ internal class RetryStrategyDirectiveLineParser : ILineParser
         var match = Regex.Match(line, HttpFileParserConstants.RetryStrategySelectorDirectivePattern);
         if (match.Success)
         {
-            context.RetryStrategyName = match.Groups[HttpFileParserConstants.RetryStrategyDirectiveSectionName].Value;
+            context.RetryStrategyName = match.Groups[HttpFileParserConstants.RetryStrategyDirectiveParameterName].Value;
         }
         else
         {

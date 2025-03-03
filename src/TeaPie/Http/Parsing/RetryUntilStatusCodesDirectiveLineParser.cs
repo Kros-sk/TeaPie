@@ -13,7 +13,7 @@ internal partial class RetryUntilStatusCodesLineParser : ILineParser
         var match = Regex.Match(line, HttpFileParserConstants.RetryUntilStatusCodesDirectivePattern);
         if (match.Success)
         {
-            var statusCodesText = match.Groups[HttpFileParserConstants.RetryUntilStatusCodesDirectiveSectionName].Value;
+            var statusCodesText = match.Groups[HttpFileParserConstants.RetryUntilStatusCodesDirectiveParameterName].Value;
 
             context.RetryUntilStatusCodes = NumberPattern().Matches(statusCodesText)
                 .Select(m => (HttpStatusCode)int.Parse(m.Value))

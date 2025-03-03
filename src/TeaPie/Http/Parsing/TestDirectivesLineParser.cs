@@ -33,7 +33,7 @@ internal class TestDirectivesLineParser : ILineParser
         Match match,
         HttpParsingContext context)
     {
-        var directiveName = match.Groups[Consts.TestDirectiveSectionName].Value;
+        var directiveName = match.Groups[Consts.TestDirectiveParameterName].Value;
         var parameters = match.Groups.Keys
             .Select(key => new KeyValuePair<string, string>(key, match.Groups[key].Value))
             .ToDictionary();
