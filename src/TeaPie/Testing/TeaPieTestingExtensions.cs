@@ -49,7 +49,7 @@ public static class TeaPieTestingExtensions
         Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction)
     {
         var directive = new TestDirective(
-            HttpFileParserConstants.TestDirectivePrefix + directiveName, directivePattern, testNameGetter, testFunction);
+            TestDirectives.TestDirectivePrefix + directiveName, directivePattern, testNameGetter, testFunction);
 
         TestDirectivesLineParser.RegisterTestDirective(directivePattern);
         teaPie._predefinedTestFactory.RegisterTestDirective(directive);

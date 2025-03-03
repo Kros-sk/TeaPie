@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using TeaPie.Testing;
-using Consts = TeaPie.Http.Parsing.HttpFileParserConstants;
 
 namespace TeaPie.Http.Parsing;
 
@@ -33,7 +32,7 @@ internal class TestDirectivesLineParser : ILineParser
         Match match,
         HttpParsingContext context)
     {
-        var directiveName = match.Groups[Consts.TestDirectiveParameterName].Value;
+        var directiveName = match.Groups[TestDirectives.TestDirectiveParameterName].Value;
         var parameters = match.Groups.Keys
             .Select(key => new KeyValuePair<string, string>(key, match.Groups[key].Value))
             .ToDictionary();

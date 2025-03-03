@@ -22,8 +22,8 @@ public class TestFactoryShould
     public void CreateReturnExpectStatusCodesTest()
     {
         var description = new TestDescription(
-            HttpFileParserConstants.TestExpectStatusCodesDirectiveFullName,
-            new Dictionary<string, string>() { { HttpFileParserConstants.TestExpectStatusCodesParameterName, "[200, 201]" } }
+            TestDirectives.TestExpectStatusCodesDirectiveFullName,
+            new Dictionary<string, string>() { { TestDirectives.TestExpectStatusCodesParameterName, "[200, 201]" } }
         );
 
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));
@@ -38,8 +38,8 @@ public class TestFactoryShould
     public void CreateReturnHasBodyTest()
     {
         var description = new TestDescription(
-            HttpFileParserConstants.TestHasBodyDirectiveFullName,
-            new Dictionary<string, string>() { { HttpFileParserConstants.TestHasBodyDirectiveParameterName, "true" } }
+            TestDirectives.TestHasBodyDirectiveFullName,
+            new Dictionary<string, string>() { { TestDirectives.TestHasBodyDirectiveParameterName, "true" } }
         );
 
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));
@@ -54,7 +54,7 @@ public class TestFactoryShould
     public void CreateReturnSimplifiedHasBodyTest()
     {
         var description = new TestDescription(
-            HttpFileParserConstants.TestHasBodyNoParameterInternalDirectiveFullName,
+            TestDirectives.TestHasBodyNoParameterInternalDirectiveFullName,
             new Dictionary<string, string>()
         );
 
@@ -70,8 +70,8 @@ public class TestFactoryShould
     public void CreateReturnHasHeaderTest()
     {
         var description = new TestDescription(
-            HttpFileParserConstants.TestHasHeaderDirectiveFullName,
-            new Dictionary<string, string>() { { HttpFileParserConstants.TestHasHeaderDirectiveParameterName, "Authorization" } }
+            TestDirectives.TestHasHeaderDirectiveFullName,
+            new Dictionary<string, string>() { { TestDirectives.TestHasHeaderDirectiveParameterName, "Authorization" } }
         );
 
         description.SetRequestExecutionContext(new RequestExecutionContext(null!));

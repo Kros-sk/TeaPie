@@ -2,7 +2,6 @@
 using TeaPie.Http.Headers;
 using TeaPie.Testing;
 using static Xunit.Assert;
-using Consts = TeaPie.Http.Parsing.HttpFileParserConstants;
 
 namespace TeaPie.Http.Parsing;
 
@@ -12,23 +11,23 @@ internal static partial class DefaultDirectivesProvider
         =>
         [
             new(
-                Consts.TestExpectStatusCodesDirectiveFullName,
-                Consts.TestExpectStatusCodesDirectivePattern,
+                TestDirectives.TestExpectStatusCodesDirectiveFullName,
+                TestDirectives.TestExpectStatusCodesDirectivePattern,
                 GetExpectStatusCodesTestName,
                 GetExpectStatusCodesTestFunction),
             new (
-                Consts.TestHasBodyDirectiveFullName,
-                Consts.TestHasBodyDirectivePattern,
+                TestDirectives.TestHasBodyDirectiveFullName,
+                TestDirectives.TestHasBodyDirectivePattern,
                 GetHasBodyTestName,
                 GetHasBodyTestFunction),
             new (
-                Consts.TestHasBodyNoParameterInternalDirectiveFullName,
-                Consts.TestHasBodyNoParameterDirectivePattern,
+                TestDirectives.TestHasBodyNoParameterInternalDirectiveFullName,
+                TestDirectives.TestHasBodyNoParameterDirectivePattern,
                 GetHasBodyTestName,
                 GetHasBodyTestFunction),
             new (
-                Consts.TestHasHeaderDirectiveFullName,
-                Consts.TestHasHeaderDirectivePattern,
+                TestDirectives.TestHasHeaderDirectiveFullName,
+                TestDirectives.TestHasHeaderDirectivePattern,
                 GetHasHeaderTestName,
                 GetHasHeaderTestFunction),
         ];
@@ -36,7 +35,7 @@ internal static partial class DefaultDirectivesProvider
     private static async Task GetExpectStatusCodesTestFunction(
         HttpResponseMessage response, IReadOnlyDictionary<string, string> parameters)
     {
-        var statusCodesText = parameters[Consts.TestExpectStatusCodesParameterName];
+        var statusCodesText = parameters[TestDirectives.TestExpectStatusCodesParameterName];
 
         var statusCodes = NumberPattern().Matches(statusCodesText)
             .Select(m => int.Parse(m.Value))
@@ -49,7 +48,7 @@ internal static partial class DefaultDirectivesProvider
     private static async Task GetHasBodyTestFunction(HttpResponseMessage response, IReadOnlyDictionary<string, string> parameters)
     {
         var isTrue = true;
-        if (parameters.TryGetValue(Consts.TestHasBodyDirectiveParameterName, out var parameter))
+        if (parameters.TryGetValue(TestDirectives.TestHasBodyDirectiveParameterName, out var parameter))
         {
             isTrue = bool.Parse(parameter);
         }
@@ -69,11 +68,11 @@ internal static partial class DefaultDirectivesProvider
     private static async Task GetHasHeaderTestFunction(
         HttpResponseMessage response, IReadOnlyDictionary<string, string> parameters)
     {
-        if (!parameters.TryGetValue(Consts.TestHasHeaderDirectiveParameterName, out var parameter) ||
+        if (!parameters.TryGetValue(TestDirectives.TestHasHeaderDirectiveParameterName, out var parameter) ||
             parameter is not string headerName)
         {
             throw new InvalidOperationException(
-                $"Unable to retrieve parameter '{Consts.TestHasHeaderDirectiveParameterName.SplitPascalCase()}'");
+                $"Unable to retrieve parameter '{TestDirectives.TestHasHeaderDirectiveParameterName.SplitPascalCase()}'");
         }
 
         False(string.IsNullOrEmpty(HeadersHandler.GetHeaderFromResponse(headerName, response)));
@@ -81,12 +80,12 @@ internal static partial class DefaultDirectivesProvider
     }
 
     private static string GetExpectStatusCodesTestName(IReadOnlyDictionary<string, string> parameters)
-        => $"Status code should match one of these: {parameters[Consts.TestExpectStatusCodesParameterName]}";
+        => $"Status code should match one of these: {parameters[TestDirectives.TestExpectStatusCodesParameterName]}";
 
     private static string GetHasBodyTestName(IReadOnlyDictionary<string, string> parameters)
     {
         var isTrue = true;
-        if (parameters.TryGetValue(Consts.TestHasBodyDirectiveParameterName, out var parameter))
+        if (parameters.TryGetValue(TestDirectives.TestHasBodyDirectiveParameterName, out var parameter))
         {
             isTrue = bool.Parse(parameter);
         }
@@ -95,7 +94,7 @@ internal static partial class DefaultDirectivesProvider
     }
 
     private static string GetHasHeaderTestName(IReadOnlyDictionary<string, string> parameters)
-        => $"Response should have header with name '{parameters[Consts.TestHasHeaderDirectiveParameterName]}'.";
+        => $"Response should have header with name '{parameters[TestDirectives.TestHasHeaderDirectiveParameterName]}'.";
 
     private static string GetBoolRepresentation(bool isTrue) => isTrue ? string.Empty : "not ";
 

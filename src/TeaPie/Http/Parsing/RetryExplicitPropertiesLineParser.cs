@@ -1,6 +1,7 @@
 ﻿using Polly;
 using Polly.Retry;
 using System.Text.RegularExpressions;
+using TeaPie.Http.Retrying;
 
 namespace TeaPie.Http.Parsing;
 
@@ -9,9 +10,9 @@ internal class RetryExplicitPropertiesDirectiveLineParser : ILineParser
     private readonly IReadOnlyDictionary<string, Action<Match, HttpParsingContext>> _strategies =
         new Dictionary<string, Action<Match, HttpParsingContext>>()
         {
-           { HttpFileParserConstants.RetryMaxAttemptsDirectivePattern, ParseMaxAttemptsDirective},
-           { HttpFileParserConstants.RetryBackoffTypeDirectivePattern, ParseBackoffTypeDirective},
-           { HttpFileParserConstants.RetryMaxDelayDirectivePattern, ParseMaxDelayDirective}
+           { RetryingDirectives.RetryMaxAttemptsDirectivePattern, ParseMaxAttemptsDirective},
+           { RetryingDirectives.RetryBackoffTypeDirectivePattern, ParseBackoffTypeDirective},
+           { RetryingDirectives.RetryMaxDelayDirectivePattern, ParseMaxDelayDirective}
         };
 
     public bool CanParse(string line, HttpParsingContext context)
