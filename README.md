@@ -13,6 +13,9 @@
     - [Initialization script](#initialization-script)
     - [Pre-request Script](#pre-request-script)
     - [Request File](#request-file)
+      - [Predefined Test Directives](#predefined-test-directives)
+      - [Registering Custom Test Directives](#registering-custom-test-directives)
+    - [Example: Custom Test Directive](#example-custom-test-directive)
     - [Authentication](#authentication)
     - [Retrying](#retrying)
     - [Post-Response Script](#post-response-script)
@@ -190,18 +193,82 @@ For **named requests**, you can access request and response data using the follo
 This gives you comprehensive access to headers and body content of named requests.
 
 <!-- omit from toc -->
-#### Predefined tests
+### Test Directives
 
-To easify test writing, **TeaPie** provides **predefined test directives**, which automatically schedule commonly used tests for execution after a request.
+TeaPie provides **pre-defined test directives** that can be applied within `.http` files to automate response validation.
+Additionally, users can **register custom test directives**, enabling more flexible and reusable test configurations.
+
+#### Predefined Test Directives
+
+TeaPie supports the following built-in test directives:
+
+- `## TEST-EXPECT-STATUS: [200, 201]` – Ensures the response status code matches any value in the array.
+- `## TEST-HAS-BODY` (Equivalent to `## TEST-HAS-BODY: True`) – Checks if the response contains a body.
+- `## TEST-HAS-HEADER: Content-Type` – Verifies that the specified header is present in the response.
+
+Example usage in a `.http` file:
 
 ```http
-## TEST-EXPECT-STATUS: [200, 201]   # Verifies the response status code matches one of the expected values.
-## TEST-HAS-BODY                    # Equivalent to ## TEST-HAS-BODY: True (Ensures the response has a body).
-## TEST-HAS-HEADER: Content-Type    # Checks if the response contains the specified header.
+## TEST-EXPECT-STATUS: [200, 201]
+## TEST-HAS-BODY
+## TEST-HAS-HEADER: Content-Type
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
 Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 
 ...
+```
+
+#### Registering Custom Test Directives
+
+TeaPie allows users to **define and register custom test directives** dynamically.
+These directives are parsed and executed automatically based on the provided logic.
+
+To register a **custom test directive**, use the following method:
+
+```csharp
+tp.RegisterTestDirective(
+    string directiveName, // Directive name (excluding 'TEST-' prefix)
+    string directivePattern, // Regular expression pattern for parser to recognize the directive
+    Func<IReadOnlyDictionary<string, string>, string> testNameGetter, // Function to generate the test name based on input parameters
+    Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction // Function to execute when the directive is applied
+);
+```
+
+### Example: Custom Test Directive
+
+The following example registers a custom directive, `## TEST-CUSTOM: <true|false>`:
+
+```csharp
+tp.RegisterTestDirective(
+    "CUSTOM",
+    TestDirectivePatternBuilder.Create("CUSTOM") // For Regex pattern generation it is recommended to use 'TestDirectivePatternBuilder'
+        .AddBooleanParameter("MyBool") // It is possible to add multiple parameters, all with different data type. Separator between parameters is ';'
+        .Build(),
+    (parameters) => {
+        var negation = bool.Parse(parameters["MyBool"]) ? string.Empty : "NOT "
+        $"Response status code should {negation}be successful."
+    },
+    async (response, parameters) =>
+    {
+        if (bool.Parse(parameters["MyBool"]))
+        {
+            True(response.IsSuccessStatusCode);
+        }
+        else
+        {
+            False(response.IsSuccessStatusCode);
+        }
+
+        await Task.CompletedTask;
+    }
+);
+```
+
+This custom directive can now be used in a `.http` file:
+
+```http
+## TEST-CUSTOM: True
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
 ```
 
 ### Authentication
