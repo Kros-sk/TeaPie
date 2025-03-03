@@ -21,7 +21,7 @@ internal class TestFactory : ITestFactory
         => _supportedDirectives.TryGetValue(testDescription.Directive, out var testDirective)
             ? Create(testDirective, testDescription)
             : throw new InvalidOperationException(
-                $"Unable to create test for unsupported test type '{testDescription.Directive}'.");
+                $"Unable to create test for unsupported test directive '{testDescription.Directive}'.");
 
     public void RegisterTestDirective(TestDirective testDirective)
         => _supportedDirectives[testDirective.DirectiveName] = testDirective;
