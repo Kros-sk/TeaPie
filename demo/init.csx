@@ -94,13 +94,13 @@ tp.RegisterReporter(summary =>
 
 // CUSTOM TEST DIRECTIVE
 
-// TeaPie allows users to define custom test directives for .http files.
+// TeaPie allows users to define custom test directives for '.http' files.
 // Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1; Parameter2; ...
 // A custom directive can be registered as follows:
 tp.RegisterTestDirective(
     "SUCCESSFUL-STATUS",
     TestDirectivePatternBuilder
-        .Create("SUCCESSFUL-STATUS")  // Defines the directive name (left side)
+        .Create("SUCCESSFUL-STATUS")  // Defines the directive name (excluding 'TEST-' prefix - left side)
         .AddBooleanParameter("MyBool")  // Adds a boolean parameter (multiple parameters can be added - right side)
         .Build(),  // Generates Regex pattern for this directive
     (parameters) =>  // Function that generates the test name using dictionary of available parameters

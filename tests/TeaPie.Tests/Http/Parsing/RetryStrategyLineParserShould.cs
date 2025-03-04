@@ -21,7 +21,7 @@ public class RetryStrategyLineParserShould
     }
 
     [Fact]
-    public void ThrowExceptionOnInvalidRetryStrategyDirective()
+    public void NotParseDifferentDirective()
     {
         const string line = "## INVALID-STRATEGY: SomethingElse";
 

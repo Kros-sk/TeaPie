@@ -7,8 +7,6 @@ internal static class TestDirectives
     public const string TestDirectivePrefix = "TEST-";
     public const string TestDirectiveParameterName = "DirectiveName";
 
-    public const string TestDirectivePattern = @"^##\s*TEST-[A-Za-z0-9_-]+(?:\s*:\s*.+)?\s*$";
-
     public const string TestExpectStatusCodesDirectiveName = "EXPECT-STATUS";
     public const string TestExpectStatusCodesDirectiveFullName = TestDirectivePrefix + TestExpectStatusCodesDirectiveName;
     public const string TestExpectStatusCodesParameterName = "StatusCodes";

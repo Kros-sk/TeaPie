@@ -47,11 +47,7 @@ internal static partial class DefaultDirectivesProvider
 
     private static async Task GetHasBodyTestFunction(HttpResponseMessage response, IReadOnlyDictionary<string, string> parameters)
     {
-        var isTrue = true;
-        if (parameters.TryGetValue(TestDirectives.TestHasBodyDirectiveParameterName, out var parameter))
-        {
-            isTrue = bool.Parse(parameter);
-        }
+        var isTrue = GetBool(parameters);
 
         if (isTrue)
         {
@@ -83,6 +79,14 @@ internal static partial class DefaultDirectivesProvider
         => $"Status code should match one of these: {parameters[TestDirectives.TestExpectStatusCodesParameterName]}";
 
     private static string GetHasBodyTestName(IReadOnlyDictionary<string, string> parameters)
+        => $"Response should {GetNegationIfNeeded(GetBool(parameters))}have body.";
+
+    private static string GetHasHeaderTestName(IReadOnlyDictionary<string, string> parameters)
+        => $"Response should have header with name '{parameters[TestDirectives.TestHasHeaderDirectiveParameterName]}'.";
+
+    private static string GetNegationIfNeeded(bool isTrue) => isTrue ? string.Empty : "not ";
+
+    private static bool GetBool(IReadOnlyDictionary<string, string> parameters)
     {
         var isTrue = true;
         if (parameters.TryGetValue(TestDirectives.TestHasBodyDirectiveParameterName, out var parameter))
@@ -90,13 +94,8 @@ internal static partial class DefaultDirectivesProvider
             isTrue = bool.Parse(parameter);
         }
 
-        return $"Response should {GetBoolRepresentation(isTrue)}have body.";
+        return isTrue;
     }
-
-    private static string GetHasHeaderTestName(IReadOnlyDictionary<string, string> parameters)
-        => $"Response should have header with name '{parameters[TestDirectives.TestHasHeaderDirectiveParameterName]}'.";
-
-    private static string GetBoolRepresentation(bool isTrue) => isTrue ? string.Empty : "not ";
 
     [GeneratedRegex(@"\d+")]
     private static partial Regex NumberPattern();

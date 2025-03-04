@@ -18,7 +18,7 @@ public class TestFactoryShould
     }
 
     [Fact]
-    public void CreateReturnExpectStatusCodesTest()
+    public void CreateExpectStatusCodesTest()
     {
         var description = new TestDescription(
             TestDirectives.TestExpectStatusCodesDirectiveFullName,
@@ -34,7 +34,7 @@ public class TestFactoryShould
     }
 
     [Fact]
-    public void CreateReturnHasBodyTest()
+    public void CreateHasBodyTest()
     {
         var description = new TestDescription(
             TestDirectives.TestHasBodyDirectiveFullName,
@@ -50,7 +50,7 @@ public class TestFactoryShould
     }
 
     [Fact]
-    public void CreateReturnSimplifiedHasBodyTest()
+    public void CreateSimplifiedHasBodyTest()
     {
         var description = new TestDescription(
             TestDirectives.TestHasBodyNoParameterInternalDirectiveFullName,
@@ -66,7 +66,7 @@ public class TestFactoryShould
     }
 
     [Fact]
-    public void CreateReturnHasHeaderTest()
+    public void CreateHasHeaderTest()
     {
         var description = new TestDescription(
             TestDirectives.TestHasHeaderDirectiveFullName,

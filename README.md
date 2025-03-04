@@ -220,8 +220,6 @@ Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 #### Registering Custom Test Directives
 
 TeaPie allows users to **define and register custom test directives** dynamically.
-These directives are parsed and executed automatically based on the provided logic.
-
 To register a **custom test directive**, use the following method:
 
 ```csharp
@@ -232,16 +230,14 @@ tp.RegisterTestDirective(
     Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction // Function to execute when the directive is applied
 );
 ```
-<!-- omit from toc -->
-#### Example: Custom Test Directive
 
 The following example registers a custom directive, `## TEST-CUSTOM: <true|false>`:
 
 ```csharp
 tp.RegisterTestDirective(
-    "CUSTOM",
+    "CUSTOM", // Name of the directive (excluding 'TEST-' prefix)
     TestDirectivePatternBuilder.Create("CUSTOM") // For Regex pattern generation it is recommended to use 'TestDirectivePatternBuilder'
-        .AddBooleanParameter("MyBool") // It is possible to add multiple parameters, all with different data type. Separator between parameters is ';'
+        .AddBooleanParameter("MyBool") // Users can add multiple parameters, all with different data types. Default deparator between parameters is ';'.
         .Build(),
     (parameters) => {
         var negation = bool.Parse(parameters["MyBool"]) ? string.Empty : "NOT "
@@ -263,7 +259,7 @@ tp.RegisterTestDirective(
 );
 ```
 
-This custom directive can now be used in a `.http` file:
+Now, the directive is ready to be used in a `.http` file:
 
 ```http
 ## TEST-CUSTOM: True

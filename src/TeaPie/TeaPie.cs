@@ -52,7 +52,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
-        IAuthProviderAccessor defaultAuthProviderAccessor,
+        IAuthProviderAccessor authProviderAccessor,
         ITestFactory predefinedTestFactory)
     {
         _applicationContext = applicationContext;
@@ -65,7 +65,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _reporter = reporter;
         _retryStrategyRegistry = retryStrategiesRegistry;
         _authenticationProviderRegistry = authenticationProviderRegistry;
-        _defaultAuthProviderAccessor = defaultAuthProviderAccessor;
+        _authProviderAccessor = authProviderAccessor;
         _testFactory = predefinedTestFactory;
     }
 
@@ -168,6 +168,6 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Authentication
     internal readonly IAuthProviderRegistry _authenticationProviderRegistry;
-    internal readonly IAuthProviderAccessor _defaultAuthProviderAccessor;
+    internal readonly IAuthProviderAccessor _authProviderAccessor;
     #endregion
 }

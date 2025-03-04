@@ -36,13 +36,7 @@ public class ExecuteRequestStepShould
 
         var accessor = new RequestExecutionContextAccessor() { Context = context };
 
-        var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(),
-            accessor,
-            Substitute.For<IHeadersHandler>(),
-            Substitute.For<IAuthProviderAccessor>(),
-            Substitute.For<ITestScheduler>(),
-            Substitute.For<IPipeline>());
+        var step = GetExecuteRequestStep(serviceProvider, accessor);
 
         await step.Invoking(async step => await step.Execute(appContext)).Should().ThrowAsync<InvalidOperationException>();
     }
@@ -63,13 +57,7 @@ public class ExecuteRequestStepShould
         var parser = CreateParser(serviceProvider);
         parser.Parse(context);
 
-        var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(),
-            accessor,
-            Substitute.For<IHeadersHandler>(),
-            Substitute.For<IAuthProviderAccessor>(),
-            Substitute.For<ITestScheduler>(),
-            Substitute.For<IPipeline>());
+        var step = GetExecuteRequestStep(serviceProvider, accessor);
 
         await step.Execute(appContext);
 
@@ -105,20 +93,23 @@ public class ExecuteRequestStepShould
 
         var parser = CreateParser(serviceProvider);
         parser.Parse(context);
-
-        var step = new ExecuteRequestStep(
-            serviceProvider.GetRequiredService<IHttpClientFactory>(),
-            accessor,
-            Substitute.For<IHeadersHandler>(),
-            Substitute.For<IAuthProviderAccessor>(),
-            Substitute.For<ITestScheduler>(),
-            Substitute.For<IPipeline>());
+        var step = GetExecuteRequestStep(serviceProvider, accessor);
 
         await step.Execute(appContext);
 
         testCaseContext.Response.Should().Be(context.Response);
         testCaseContext.Responses.ContainsKey(RequestName).Should().BeTrue();
     }
+
+    private static ExecuteRequestStep GetExecuteRequestStep(
+        ServiceProvider serviceProvider, RequestExecutionContextAccessor accessor)
+        => new(
+            serviceProvider.GetRequiredService<IHttpClientFactory>(),
+            accessor,
+            Substitute.For<IHeadersHandler>(),
+            Substitute.For<IAuthProviderAccessor>(),
+            Substitute.For<ITestScheduler>(),
+            Substitute.For<IPipeline>());
 
     private static CustomHttpMessageHandler CreateAndConfigureMessageHandler()
         => new(request =>

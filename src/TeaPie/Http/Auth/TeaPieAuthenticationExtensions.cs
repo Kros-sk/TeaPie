@@ -43,5 +43,5 @@ public static class TeaPieAuthenticationExtensions
     }
 
     private static void SetDefaultProvider(TeaPie teaPie, string name)
-        => teaPie._defaultAuthProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.Get(name);
+        => teaPie._authProviderAccessor.DefaultProvider = teaPie._authenticationProviderRegistry.Get(name);
 }
