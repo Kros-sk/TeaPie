@@ -98,9 +98,9 @@ tp.RegisterReporter(summary =>
 // Syntax of testing directives: ## TEST-CUSTOM-NAME: Parameter1; Parameter2; ...
 // A custom directive can be registered as follows:
 tp.RegisterTestDirective(
-    "SUCCESSFUL-STATUS",
-    TestDirectivePatternBuilder
-        .Create("SUCCESSFUL-STATUS")  // Defines the directive name (excluding 'TEST-' prefix - left side)
+    "SUCCESSFUL-STATUS", // Defines the directive name (excluding 'TEST-' prefix - left side)
+    TestDirectivePatternBuilder // User-friendly builder for regular expression patterns
+        .Create("SUCCESSFUL-STATUS")  // To create pattern, firstly provide the name (same as two lines above)
         .AddBooleanParameter("MyBool")  // Adds a boolean parameter (multiple parameters can be added - right side)
         .Build(),  // Generates Regex pattern for this directive
     (parameters) =>  // Function that generates the test name using dictionary of available parameters
