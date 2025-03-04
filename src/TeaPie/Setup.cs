@@ -14,9 +14,10 @@ namespace TeaPie;
 
 internal static class Setup
 {
-    public static IServiceCollection AddTeaPie(this IServiceCollection services, Action loggingConfiguration)
+    public static IServiceCollection AddTeaPie(
+        this IServiceCollection services, IApplicationAbstractFactory applicationAbstractFactory, Action loggingConfiguration)
     {
-        services.AddStructureExploration();
+        services.AddStructureExploration(applicationAbstractFactory);
         services.AddHttp();
         services.AddEnvironments();
         services.AddTestCases();
@@ -24,7 +25,7 @@ internal static class Setup
         services.AddVariables();
         services.AddTesting();
         services.AddPipelines();
-        services.AddReporting();
+        services.AddReporting(applicationAbstractFactory);
         services.AddLogging(loggingConfiguration);
 
         return services;

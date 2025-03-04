@@ -237,10 +237,10 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IVariables, global::TeaPie.Variables.Variables>();
         services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
         services.AddSingleton<IPipeline, ApplicationPipeline>();
-        services.AddSingleton<IStructureExplorer, StructureExplorer>();
+        services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>();
         services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
-        services.AddSingleton<IAuthProviderAccessor, AuthProviderAccessor>();
+        services.AddSingleton<ICurrentAndDefaultAuthProviderAccessor, CurrentAndDefaultAuthProviderAccessor>();
         services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
         services.AddLogging();
 

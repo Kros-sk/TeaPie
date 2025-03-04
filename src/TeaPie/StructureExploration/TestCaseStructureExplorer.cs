@@ -2,26 +2,22 @@
 
 namespace TeaPie.StructureExploration;
 
-internal interface IStructureExplorer
+internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplorer> logger) : IStructureExplorer
 {
-    IReadOnlyCollectionStructure ExploreCollectionStructure(ApplicationContext applicationContext);
-}
-
-internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IStructureExplorer
-{
-    private readonly ILogger<StructureExplorer> _logger = logger;
+    private const string VirtualFolderName = "Virtual";
+    private readonly ILogger<TestCaseStructureExplorer> _logger = logger;
     private string? _environmentFileName;
     private string? _initializationScriptName;
 
-    public IReadOnlyCollectionStructure ExploreCollectionStructure(ApplicationContext applicationContext)
+    public IReadOnlyCollectionStructure Explore(ApplicationContext applicationContext)
     {
         CheckAndResolveArguments(applicationContext);
 
-        LogStartOfCollectionExploration(applicationContext.Path);
+        LogStart(applicationContext.Path);
 
-        var collectionStructure = Explore(applicationContext);
+        var collectionStructure = ExploreTestCase(applicationContext);
 
-        LogEndOfCollectionExploration(collectionStructure.TestCases.Count);
+        LogEnd("     ");
 
         return collectionStructure;
     }
@@ -29,21 +25,21 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     #region Helping methods
     private void CheckAndResolveArguments(ApplicationContext applicationContext)
     {
-        CheckCollectionPath(applicationContext.Path);
+        CheckTestCasePath(applicationContext.Path);
         CheckAndResolveEnvironmentFile(applicationContext.Path, applicationContext.EnvironmentFilePath);
         CheckAndResolveInitializationScript(applicationContext.InitializationScriptPath);
     }
 
-    private static void CheckCollectionPath(string collectionPath)
+    private static void CheckTestCasePath(string path)
     {
-        if (string.IsNullOrEmpty(collectionPath))
+        if (string.IsNullOrEmpty(path))
         {
-            throw new InvalidOperationException("Unable to explore collection structure, if path is empty or missing.");
+            throw new InvalidOperationException("Unable to explore test-case structure, if path is empty or missing.");
         }
 
-        if (!Directory.Exists(collectionPath))
+        if (!System.IO.File.Exists(path))
         {
-            throw new InvalidOperationException($"Unable to explore collection on path '{collectionPath}' " +
+            throw new InvalidOperationException($"Unable to explore test-case on path '{path}' " +
                 "because such a path doesn't exist.");
         }
     }
@@ -90,6 +86,8 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     {
         rootFolder = new(rootPath, collectionName, collectionName, null);
         collectionStructure = new CollectionStructure(rootFolder);
+        collectionStructure.TryAddFolder(
+            new Folder(rootPath, Path.Combine(collectionName, VirtualFolderName), VirtualFolderName, rootFolder));
     }
 
     private static void UpdateContext(ApplicationContext applicationContext, CollectionStructure collectionStructure)
@@ -107,45 +105,31 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     #endregion
 
     #region Exploration methods
-    private CollectionStructure Explore(ApplicationContext applicationContext)
+    private CollectionStructure ExploreTestCase(ApplicationContext applicationContext)
     {
-        InitializeStructure(
-            applicationContext.Path, applicationContext.CollectionName, out var rootFolder, out var collectionStructure);
+        var directoryName = Path.GetDirectoryName(applicationContext.Path)
+            ?? throw new InvalidOperationException("Unable to explore test-case without parent directory.");
 
-        Explore(rootFolder, applicationContext, collectionStructure);
+        InitializeStructure(directoryName, directoryName, out var rootFolder, out var collectionStructure);
+
+        Explore(applicationContext.Path, rootFolder, applicationContext, collectionStructure);
 
         UpdateContext(applicationContext, collectionStructure);
         return collectionStructure;
     }
 
-    private void Explore(Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
+    private void Explore(string testCasePath, Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
-        ExploreFolder(rootFolder, collectionStructure);
-        RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
+        ExploreTestCase(testCasePath, rootFolder, collectionStructure);
+        // RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
     }
 
-    /// <summary>
-    /// Recursive depth-first algorithm, which examines file system tree. Whole structure is gradually formed within
-    /// <paramref name="collectionStructure"/> parameter in form of folders and test-cases. Each folder can have sub-folders
-    /// and/or test cases. Test-case is represented by <b>'.http'</b> file and possibly by other files
-    /// (e.g. script <b>'.csx'</b> files).
-    /// </summary>
-    /// <param name="currentFolder">Folder to be explored.</param>
-    /// <param name="collectionStructure">List of explored test-cases.</param>
-    private void ExploreFolder(Folder currentFolder, CollectionStructure collectionStructure)
+    private void ExploreTestCase(string testCasePath, Folder parentFolder, CollectionStructure collectionStructure)
     {
-        var subFolderPaths = GetFolders(currentFolder);
-        var files = GetFiles(currentFolder);
+        var files = GetFiles(parentFolder);
 
-        SearchForOptionalFilesIfNeeded(currentFolder, collectionStructure, files);
-
-        foreach (var subFolderPath in subFolderPaths)
-        {
-            var subFolder = RegisterFolder(currentFolder, collectionStructure, subFolderPath);
-            ExploreFolder(subFolder, collectionStructure);
-        }
-
-        ExploreTestCases(collectionStructure, currentFolder, files);
+        // SearchForOptionalFilesIfNeeded(currentFolder, collectionStructure, files);
+        ExploreTestCases(testCasePath, collectionStructure, parentFolder, files);
     }
 
     private void SearchForOptionalFilesIfNeeded(
@@ -199,12 +183,13 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     }
 
     private static void ExploreTestCases(
+        string testCasePath,
         CollectionStructure collectionStructure,
         Folder currentFolder,
         IList<string> files)
     {
-        var preRequestScripts = GetScripts(currentFolder, Constants.PreRequestSuffix, files);
-        var postResponseScripts = GetScripts(currentFolder, Constants.PostResponseSuffix, files);
+        var preRequestScripts = GetScript(currentFolder, Constants.PreRequestSuffix, files);
+        var postResponseScripts = GetScript(currentFolder, Constants.PostResponseSuffix, files);
 
         foreach (var reqFile in files.Where(f => f.EndsWith(Constants.RequestFileExtension)).Order())
         {
@@ -320,7 +305,7 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
     private static IList<string> GetFolders(Folder currentFolder)
         => [.. Directory.GetDirectories(currentFolder.Path).OrderBy(path => path, StringComparer.OrdinalIgnoreCase)];
 
-    private static Dictionary<string, Script> GetScripts(
+    private static Dictionary<string, Script> GetScript(
         Folder folder,
         string desiredSuffix,
         IEnumerable<string> files)
@@ -345,9 +330,10 @@ internal partial class StructureExplorer(ILogger<StructureExplorer> logger) : IS
 
     #region Logging
     [LoggerMessage("Exploration of the collection started on path: '{path}'.", Level = LogLevel.Information)]
-    partial void LogStartOfCollectionExploration(string path);
+    partial void LogStart(string path);
 
-    [LoggerMessage("Collection explored, found {countOfTestCases} test cases.", Level = LogLevel.Information)]
-    partial void LogEndOfCollectionExploration(int countOfTestCases);
+    [LoggerMessage("Test-case explored - {foundArtifacts}.", Level = LogLevel.Information)]
+    partial void LogEnd(string foundArtifacts);
+
     #endregion
 }

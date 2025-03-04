@@ -51,13 +51,13 @@ public class StructureExplorerShould
 
         if (emptyPath)
         {
-            structureExplorer.Invoking(se => se.ExploreCollectionStructure(builder.WithPath(string.Empty).Build()))
+            structureExplorer.Invoking(se => se.Explore(builder.WithPath(string.Empty).Build()))
                 .Should().Throw<InvalidOperationException>();
         }
         else
         {
             structureExplorer.Invoking(se =>
-                se.ExploreCollectionStructure(
+                se.Explore(
                     builder.WithPath(
                         $"{Path.GetPathRoot(Environment.SystemDirectory)}{Path.DirectorySeparatorChar}Invalid-{Guid.NewGuid()}")
                     .Build()))
@@ -83,7 +83,7 @@ public class StructureExplorerShould
 
         var structureExplorer = GetStructureExplorer();
 
-        var testCases = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases;
+        var testCases = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases;
 
         testCases.Should().BeEmpty();
     }
@@ -95,7 +95,7 @@ public class StructureExplorerShould
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases
+        var testCasesOrder = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases
             .ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
@@ -114,7 +114,7 @@ public class StructureExplorerShould
         var tempDirectoryPath = Path.Combine(Environment.CurrentDirectory, _rootFolderRelativePath);
         var structureExplorer = GetStructureExplorer();
 
-        var testCasesOrder = structureExplorer.ExploreCollectionStructure(builder.WithPath(tempDirectoryPath).Build()).TestCases
+        var testCasesOrder = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases
             .ToList();
 
         testCasesOrder.Count.Should().Be(_testCasesPaths.Length);
@@ -135,6 +135,6 @@ public class StructureExplorerShould
         }
     }
 
-    private static StructureExplorer GetStructureExplorer()
-        => new(Substitute.For<ILogger<StructureExplorer>>());
+    private static CollectionStructureExplorer GetStructureExplorer()
+        => new(Substitute.For<ILogger<CollectionStructureExplorer>>());
 }
