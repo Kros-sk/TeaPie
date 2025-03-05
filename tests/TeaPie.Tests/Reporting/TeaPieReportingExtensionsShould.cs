@@ -11,7 +11,7 @@ public class TeaPieReportingExtensionsShould
     public void RegisterReporterCorrectly()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
-        var reporter = new CollectionTestResultsSummaryReporter(accessor);
+        var reporter = new TestResultsSummaryReporter(accessor);
         var teaPie = PrepareTeaPieInstance(reporter);
         var dummyReporter = new DummyReporter();
 
@@ -26,7 +26,7 @@ public class TeaPieReportingExtensionsShould
     public void RegisterInlineReporterCorrectly()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
-        var reporter = new CollectionTestResultsSummaryReporter(accessor);
+        var reporter = new TestResultsSummaryReporter(accessor);
         var teaPie = PrepareTeaPieInstance(reporter);
         var reported = false;
 
@@ -37,6 +37,6 @@ public class TeaPieReportingExtensionsShould
         True(reported);
     }
 
-    private static TeaPie PrepareTeaPieInstance(CollectionTestResultsSummaryReporter reporter)
+    private static TeaPie PrepareTeaPieInstance(TestResultsSummaryReporter reporter)
         => new TeaPieBuilder().WithService<ITestResultsSummaryReporter>(reporter).Build();
 }

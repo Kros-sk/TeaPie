@@ -12,7 +12,7 @@ public partial class TestResultsSummaryReporterShould
     public void NotTriggerReportMethodOnUnregisteredReporter()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
-        var compositeReporter = new CollectionTestResultsSummaryReporter(accessor);
+        var compositeReporter = new TestResultsSummaryReporter(accessor);
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -31,7 +31,7 @@ public partial class TestResultsSummaryReporterShould
     public void TriggerReportMethodOnAllRegisteredReporters()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
-        var compositeReporter = new CollectionTestResultsSummaryReporter(accessor);
+        var compositeReporter = new TestResultsSummaryReporter(accessor);
         var reporter1 = Substitute.For<IReporter<TestResultsSummary>>();
         var reporter2 = new DummyReporter();
 
@@ -48,7 +48,7 @@ public partial class TestResultsSummaryReporterShould
     public void ChangeTheStateOfSummaryWhenRegisteringTestResults()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new CollectionTestResultsSummary() };
-        var reporter = new CollectionTestResultsSummaryReporter(accessor);
+        var reporter = new TestResultsSummaryReporter(accessor);
         var skippedTestResult = new TestResult.NotRun() { TestName = "Ignored Test" };
         var passedTestResult = new TestResult.Passed(20) { TestName = "Passed Test" };
         var failedTestResult = new TestResult.Failed(10, "Unknown reason.", null) { TestName = "Failed Test" };

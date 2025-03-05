@@ -4,21 +4,15 @@ using Spectre.Console.Cli;
 
 namespace TeaPie.DotnetTool;
 
-internal abstract class ApplicationCommandBase<TSettings> : AsyncCommand<TSettings> where TSettings : SettingsWithLogging
+internal abstract class ApplicationCommandBase<TSettings> : AsyncCommand<TSettings> where TSettings : LoggingSettings
 {
     public override async Task<int> ExecuteAsync(CommandContext context, TSettings settings)
         => await BuildApplication(settings).Run(new CancellationToken());
 
     protected Application BuildApplication(TSettings settings)
-    {
-        var appBuilder = ApplicationBuilder.Create();
+        => ConfigureApplication(settings).Build();
 
-        ConfigureApplication(appBuilder, settings);
-
-        return appBuilder.Build();
-    }
-
-    protected abstract void ConfigureApplication(ApplicationBuilder appBuilder, TSettings settings);
+    protected abstract ApplicationBuilder ConfigureApplication(TSettings settings);
 
     protected static LogLevel ResolveLogLevel(TSettings settings)
         => settings switch

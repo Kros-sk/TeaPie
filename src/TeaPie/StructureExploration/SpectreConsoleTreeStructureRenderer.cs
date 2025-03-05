@@ -13,14 +13,14 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         var rootFolder = collectionStructure.Root
             ?? throw new InvalidOperationException("Unable to find root of structure.");
 
-        return BuildTree(rootFolder, foldersByParent, testCasesByParent, collectionStructure.EnvironmentFile);
+        return BuildTree(rootFolder, foldersByParent, testCasesByParent, collectionStructure);
     }
 
     private static Tree BuildTree(
         Folder rootFolder,
         Dictionary<string, List<Folder>> foldersByParent,
         Dictionary<string, List<TestCase>> testCasesByParent,
-        File? environmentFile)
+        IReadOnlyCollectionStructure collectionStructure)
     {
         var tree = new Tree($"[white]{rootFolder.Name}[/]");
         var queue = new Queue<Node>();
@@ -29,7 +29,8 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         while (queue.Count > 0)
         {
             var parentNode = queue.Dequeue();
-            ResolveEnvironmentFile(environmentFile, parentNode.RelativePath, parentNode.TreeNode);
+            ResolveEnvironmentFile(collectionStructure.EnvironmentFile, parentNode.RelativePath, parentNode.TreeNode);
+            ResolveInitilizationScript(collectionStructure.InitializationScript, parentNode.RelativePath, parentNode.TreeNode);
             ResolveFolders(foldersByParent, queue, parentNode.RelativePath, parentNode.TreeNode);
             ResolveTestCases(testCasesByParent, parentNode.RelativePath, parentNode.TreeNode);
         }
@@ -50,6 +51,14 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
                 var childNode = parentNode.AddNode(GetFolderReport(folder.Name.EscapeMarkup()));
                 queue.Enqueue(new Node(folder.RelativePath, childNode));
             }
+        }
+    }
+
+    private static void ResolveInitilizationScript(Script? initializationScript, string parentRelativePath, IHasTreeNodes parentNode)
+    {
+        if (initializationScript is not null && parentRelativePath.Equals(initializationScript.File.ParentFolder.RelativePath))
+        {
+            parentNode.AddNode(GetInitializationScriptReport(initializationScript));
         }
     }
 
@@ -79,6 +88,12 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
     {
         var emoji = CompatibilityChecker.SupportsEmoji ? Emoji.Known.OpenFileFolder : "[grey italic]FO[/]";
         return $"{emoji} [white]{name}[/]";
+    }
+
+    private static string GetInitializationScriptReport(Script initializationScript)
+    {
+        var emoji = CompatibilityChecker.SupportsEmoji ? Emoji.Known.Rocket : "[grey italic]IN[/]";
+        return $"{emoji} [aqua]{initializationScript.File.Name}[/]";
     }
 
     private static string GetEnvironmentFileReport(File environmentFile)

@@ -4,7 +4,6 @@ namespace TeaPie.Reporting;
 
 internal static class Setup
 {
-    public static IServiceCollection AddReporting(
-        this IServiceCollection services, IApplicationAbstractFactory applicationAbstractFactory)
-        => applicationAbstractFactory.AddTestResultsSummaryReporter(services);
+    public static IServiceCollection AddReporting(this IServiceCollection services)
+        => services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
 }

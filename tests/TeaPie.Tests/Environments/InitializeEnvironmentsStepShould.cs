@@ -238,9 +238,9 @@ public class InitializeEnvironmentStepShould
         services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
         services.AddSingleton<IPipeline, ApplicationPipeline>();
         services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>();
-        services.AddSingleton<ITestResultsSummaryReporter, CollectionTestResultsSummaryReporter>();
+        services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
         services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
-        services.AddSingleton<ICurrentAndDefaultAuthProviderAccessor, CurrentAndDefaultAuthProviderAccessor>();
+        services.AddSingleton<IAuthProviderAccessor, AuthProviderAccessor>();
         services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
         services.AddLogging();
 

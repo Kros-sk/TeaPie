@@ -4,7 +4,9 @@ namespace TeaPie.StructureExploration;
 
 internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplorer> logger) : IStructureExplorer
 {
-    private const string VirtualFolderName = "Virtual";
+    private const string RemoteFolderName = "Remote";
+    private string _remoteFolderPath = string.Empty;
+
     private readonly ILogger<TestCaseStructureExplorer> _logger = logger;
     private string? _environmentFileName;
     private string? _initializationScriptName;
@@ -17,7 +19,7 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
 
         var collectionStructure = ExploreTestCase(applicationContext);
 
-        LogEnd("     ");
+        LogEnd(collectionStructure);
 
         return collectionStructure;
     }
@@ -40,14 +42,20 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
         if (!System.IO.File.Exists(path))
         {
             throw new InvalidOperationException($"Unable to explore test-case on path '{path}' " +
-                "because such a path doesn't exist.");
+                "because such a file doesn't exist.");
         }
+
+        var directoryPath = Path.GetDirectoryName(path)
+            ?? throw new InvalidOperationException("Unable to explore test-case without parent directory.");
+
+        _ = Path.GetFileName(directoryPath)
+            ?? throw new InvalidOperationException("Unable to explore test-case without parent directory.");
     }
 
-    private void CheckAndResolveEnvironmentFile(string collectionPath, string environmentFilePath)
+    private void CheckAndResolveEnvironmentFile(string testCasePath, string environmentFilePath)
         => CheckAndResolveOptionalFile(
             ref _environmentFileName,
-            GetEnvironmentFileName(collectionPath),
+            GetEnvironmentFileName(testCasePath),
             environmentFilePath,
             "environment file");
 
@@ -76,9 +84,10 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
     }
 
     private static string GetEnvironmentFileName(string path)
-        => Path.GetFileNameWithoutExtension(path) + Constants.EnvironmentFileSuffix + Constants.EnvironmentFileExtension;
+        => Path.GetFileNameWithoutExtension(path).TrimSuffix(Constants.RequestSuffix) +
+        Constants.EnvironmentFileSuffix + Constants.EnvironmentFileExtension;
 
-    private static void InitializeStructure(
+    private void InitializeStructure(
         string rootPath,
         string collectionName,
         out Folder rootFolder,
@@ -86,8 +95,21 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
     {
         rootFolder = new(rootPath, collectionName, collectionName, null);
         collectionStructure = new CollectionStructure(rootFolder);
+        RegisterRemoteFolder(rootPath, collectionName, rootFolder, collectionStructure);
+    }
+
+    private void RegisterRemoteFolder(
+        string rootPath, string collectionName, Folder rootFolder, CollectionStructure collectionStructure)
+    {
+        _remoteFolderPath = Path.Combine(rootPath, RemoteFolderName);
+        RegisterFolder(rootFolder, collectionStructure, _remoteFolderPath);
         collectionStructure.TryAddFolder(
-            new Folder(rootPath, Path.Combine(collectionName, VirtualFolderName), VirtualFolderName, rootFolder));
+            new Folder(
+                _remoteFolderPath,
+                Path.Combine(collectionName, RemoteFolderName),
+                RemoteFolderName,
+                rootFolder)
+        );
     }
 
     private static void UpdateContext(ApplicationContext applicationContext, CollectionStructure collectionStructure)
@@ -107,10 +129,10 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
     #region Exploration methods
     private CollectionStructure ExploreTestCase(ApplicationContext applicationContext)
     {
-        var directoryName = Path.GetDirectoryName(applicationContext.Path)
-            ?? throw new InvalidOperationException("Unable to explore test-case without parent directory.");
+        var directoryPath = Path.GetDirectoryName(applicationContext.Path)!;
+        var directoryName = Path.GetFileName(directoryPath)!;
 
-        InitializeStructure(directoryName, directoryName, out var rootFolder, out var collectionStructure);
+        InitializeStructure(directoryPath, directoryName, out var rootFolder, out var collectionStructure);
 
         Explore(applicationContext.Path, rootFolder, applicationContext, collectionStructure);
 
@@ -118,18 +140,19 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
         return collectionStructure;
     }
 
-    private void Explore(string testCasePath, Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
+    private void Explore(
+        string testCasePath, Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
         ExploreTestCase(testCasePath, rootFolder, collectionStructure);
-        // RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
+        RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
     }
 
     private void ExploreTestCase(string testCasePath, Folder parentFolder, CollectionStructure collectionStructure)
     {
         var files = GetFiles(parentFolder);
 
-        // SearchForOptionalFilesIfNeeded(currentFolder, collectionStructure, files);
-        ExploreTestCases(testCasePath, collectionStructure, parentFolder, files);
+        SearchForOptionalFilesIfNeeded(parentFolder, collectionStructure, files);
+        ExploreTestCase(testCasePath, collectionStructure, parentFolder, files);
     }
 
     private void SearchForOptionalFilesIfNeeded(
@@ -182,26 +205,24 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
         }
     }
 
-    private static void ExploreTestCases(
+    private static void ExploreTestCase(
         string testCasePath,
         CollectionStructure collectionStructure,
         Folder currentFolder,
         IList<string> files)
     {
-        var preRequestScripts = GetScript(currentFolder, Constants.PreRequestSuffix, files);
-        var postResponseScripts = GetScript(currentFolder, Constants.PostResponseSuffix, files);
+        var testCaseName = Path.GetFileName(testCasePath);
+        var preRequestScript = GetScript(testCaseName, currentFolder, Constants.PreRequestSuffix, files);
+        var postResponseScript = GetScript(testCaseName, currentFolder, Constants.PostResponseSuffix, files);
 
-        foreach (var reqFile in files.Where(f => f.EndsWith(Constants.RequestFileExtension)).Order())
+        var testCase = GetTestCase(currentFolder, testCasePath);
+
+        testCase.PreRequestScripts = preRequestScript is not null ? [preRequestScript] : [];
+        testCase.PostResponseScripts = postResponseScript is not null ? [postResponseScript] : [];
+
+        if (!collectionStructure.TryAddTestCase(testCase))
         {
-            var testCase = GetTestCase(currentFolder, out var fileName, out var relativePath, out var requestFileObj, reqFile);
-
-            RegisterPreRequestScript(preRequestScripts, testCase, fileName);
-            RegisterPostResponseScript(postResponseScripts, testCase, fileName);
-
-            if (!collectionStructure.TryAddTestCase(testCase))
-            {
-                throw new InvalidOperationException($"Unable to register same test-case twice. {testCase.RequestsFile.Path}");
-            }
+            throw new InvalidOperationException($"Unable to register same test-case twice. {testCase.RequestsFile.Path}");
         }
     }
     #endregion
@@ -216,28 +237,6 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
 
         return subFolder;
     }
-
-    private static void RegisterPreRequestScript(
-        Dictionary<string, Script> preRequestScripts,
-        TestCase testCase,
-        string fileName)
-        => RegisterScript(preRequestScripts, out testCase.PreRequestScripts, Constants.PreRequestSuffix, fileName);
-
-    private static void RegisterPostResponseScript(
-        Dictionary<string, Script> postResponseScripts,
-        TestCase testCase,
-        string fileName)
-        => RegisterScript(postResponseScripts, out testCase.PostResponseScripts, Constants.PostResponseSuffix, fileName);
-
-    private static void RegisterScript(
-        Dictionary<string, Script> sourceScriptCollection,
-        out IEnumerable<Script> targetScriptCollection,
-        string scriptSuffix,
-        string fileName)
-        => targetScriptCollection = sourceScriptCollection
-            .TryGetValue(GetRelatedScriptFileName(fileName, scriptSuffix), out var script)
-                ? [script]
-                : [];
 
     private void RegisterOptionalFilesIfNeeded(ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
@@ -263,38 +262,32 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
             file => collectionStructure.SetInitializationScript(new Script(file)),
             "initialization script");
 
-    private static void RegisterOptionalFileIfNeeded(
+    private void RegisterOptionalFileIfNeeded(
         string? fileName,
         string filePath,
         CollectionStructure collectionStructure,
         Action<File> setFileAction,
-        string fileNameForErrorMessag)
+        string fileNameForErrorMessage)
     {
         if (fileName is null)
         {
-            if (collectionStructure.TryGetFolder(Path.GetDirectoryName(filePath) ?? string.Empty, out var folder))
+            if (!collectionStructure.TryGetFolder(filePath, out var folder) &&
+                !collectionStructure.TryGetFolder(_remoteFolderPath, out folder))
             {
-                setFileAction(File.Create(filePath, folder));
+                throw new InvalidOperationException($"Unable to find parent folder of {fileNameForErrorMessage}.");
             }
-            else
-            {
-                throw new InvalidOperationException($"Unable to set {fileNameForErrorMessag} to file outside collection.");
-            }
+
+            setFileAction(File.Create(filePath, folder));
         }
     }
     #endregion
 
     #region Getting methods
-    private static TestCase GetTestCase(
-        Folder currentFolder,
-        out string fileName,
-        out string relativePath,
-        out File requestFileObj,
-        string reqFile)
+    private static TestCase GetTestCase(Folder currentFolder, string reqFilePath)
     {
-        fileName = Path.GetFileName(reqFile);
-        relativePath = $"{currentFolder.RelativePath}{Path.DirectorySeparatorChar}{fileName}";
-        requestFileObj = new(reqFile, relativePath, fileName, currentFolder);
+        var fileName = Path.GetFileName(reqFilePath);
+        var relativePath = GetRelativePath(currentFolder, fileName);
+        var requestFileObj = new File(reqFilePath, relativePath, fileName, currentFolder);
 
         return new TestCase(requestFileObj);
     }
@@ -302,37 +295,50 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
     private static IList<string> GetFiles(Folder currentFolder)
         => [.. Directory.GetFiles(currentFolder.Path).OrderBy(path => path, StringComparer.OrdinalIgnoreCase)];
 
-    private static IList<string> GetFolders(Folder currentFolder)
-        => [.. Directory.GetDirectories(currentFolder.Path).OrderBy(path => path, StringComparer.OrdinalIgnoreCase)];
-
-    private static Dictionary<string, Script> GetScript(
+    private static Script? GetScript(
+        string requestFileName,
         Folder folder,
         string desiredSuffix,
         IEnumerable<string> files)
-            => files
-                .Where(f => Path.GetFileName(f).EndsWith(desiredSuffix + Constants.ScriptFileExtension))
-                .Select(file =>
-                {
-                    var fileName = Path.GetFileName(file);
-                    var script = new Script(File.Create(file, folder));
-
-                    return new KeyValuePair<string, Script>(fileName, script);
-                })
-                .ToDictionary();
+    {
+        var file = files.FirstOrDefault(
+            f => Path.GetFileName(f).Equals(GetRelatedScriptFileName(requestFileName, desiredSuffix)));
+        return file is not null ? new Script(File.Create(file, folder)) : null;
+    }
 
     private static string GetRelatedScriptFileName(string requestFileName, string desiredSuffix)
         => Path.GetFileNameWithoutExtension(requestFileName).TrimSuffix(Constants.RequestSuffix) +
             desiredSuffix + Constants.ScriptFileExtension;
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
-        => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
+        => Path.Combine(parentFolder.RelativePath, folderName);
+
     #endregion
 
     #region Logging
-    [LoggerMessage("Exploration of the collection started on path: '{path}'.", Level = LogLevel.Information)]
+
+    [LoggerMessage("Exploration of the test-case on path: '{path}' started.", Level = LogLevel.Information)]
     partial void LogStart(string path);
 
-    [LoggerMessage("Test-case explored - {foundArtifacts}.", Level = LogLevel.Information)]
+    private void LogEnd(CollectionStructure collectionStructure)
+    {
+        var testCase = collectionStructure.TestCases.First();
+        var tokens = new List<string>();
+
+        if (testCase.PreRequestScripts.Any())
+        {
+            tokens.Add(Constants.PreRequestSuffix.TrimStart('-'));
+        }
+
+        if (testCase.PostResponseScripts.Any())
+        {
+            tokens.Add(Constants.PostResponseSuffix.TrimStart('-'));
+        }
+
+        LogEnd(tokens.Count != 0 ? $"({string.Join(", ", tokens)})" : string.Empty);
+    }
+
+    [LoggerMessage("Test-case explored {foundArtifacts}.", Level = LogLevel.Information)]
     partial void LogEnd(string foundArtifacts);
 
     #endregion

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace TeaPie.DotnetTool;
 
-internal class SettingsWithLogging : CommandSettings
+internal class LoggingSettings : CommandSettings
 {
     [CommandOption("--log-file")]
     [Description("Path to the file where all logs will be saved.")]

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using NuGet.Common;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
@@ -32,11 +31,11 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
     private async Task<string> GetToken()
     {
         var source = "cache";
-        var token = await _cache.GetOrCreate(AccessTokenCacheKey, async _ =>
+        var token = await _cache.GetOrCreateAsync(AccessTokenCacheKey, async _ =>
         {
-            var token = await GetTokenFromRequest();
+            var newToken = await GetTokenFromRequest();
             source = ResolveRequestUri();
-            return token;
+            return newToken;
         })!;
 
         _logger.LogTrace("{Subject} was fetched from {Source}.", "Access token", source);

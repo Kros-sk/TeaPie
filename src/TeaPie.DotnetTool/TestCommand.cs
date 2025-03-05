@@ -5,13 +5,16 @@ namespace TeaPie.DotnetTool;
 
 internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
 {
-    protected override void ConfigureApplication(ApplicationBuilder appBuilder, Settings settings)
+    protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = ResolveLogLevel(settings);
+        var path = PathResolver.Resolve(settings.Path, string.Empty);
+
+        var appBuilder = ApplicationBuilder.Create(!Path.HasExtension(path));
 
         appBuilder
-            .WithPath(PathResolver.Resolve(settings.Path, string.Empty))
+            .WithPath(path)
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithEnvironment(settings.Environment ?? string.Empty)
@@ -19,9 +22,11 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
             .WithReportFile(PathResolver.Resolve(settings.ReportFilePath, string.Empty))
             .WithInitializationScript(PathResolver.Resolve(settings.InitializationScriptPath, string.Empty))
             .WithDefaultPipeline();
+
+        return appBuilder;
     }
 
-    public sealed class Settings : SettingsWithLogging
+    public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
         [Description("Path to the collection which will be tested. Defaults to the current directory.")]

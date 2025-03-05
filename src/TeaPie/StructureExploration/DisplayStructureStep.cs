@@ -31,10 +31,17 @@ internal class DisplayStructureStep(ITreeStructureRenderer treeRenderer) : IPipe
             Border = TableBorder.Rounded
         };
 
-        table.AddColumn($"[bold yellow]Collection - {context.CollectionName}[/] " +
-            $"[italic white](Number of test-cases: [/][italic bold yellow]{context.TestCases.Count}[/][italic white])[/]");
-        table.AddRow(tree!);
+        if (Path.HasExtension(context.Path))
+        {
+            table.AddColumn($"[bold yellow]Test-Case - {context.StructureName}[/]");
+        }
+        else
+        {
+            table.AddColumn($"[bold yellow]Collection - {context.StructureName}[/] " +
+                $"[italic white](Number of test-cases: [/][italic bold yellow]{context.TestCases.Count}[/][italic white])[/]");
+        }
 
+        table.AddRow(tree!);
         AnsiConsole.Write(table);
     }
 }

@@ -4,6 +4,9 @@ namespace TeaPie.StructureExploration;
 
 internal partial class CollectionStructureExplorer(ILogger<CollectionStructureExplorer> logger) : IStructureExplorer
 {
+    private const string RemoteFolderName = "Remote";
+    private string _remoteFolderPath = string.Empty;
+
     private readonly ILogger<CollectionStructureExplorer> _logger = logger;
     private string? _environmentFileName;
     private string? _initializationScriptName;
@@ -77,7 +80,7 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
     private static string GetEnvironmentFileName(string path)
         => Path.GetFileNameWithoutExtension(path) + Constants.EnvironmentFileSuffix + Constants.EnvironmentFileExtension;
 
-    private static void InitializeStructure(
+    private void InitializeStructure(
         string rootPath,
         string collectionName,
         out Folder rootFolder,
@@ -85,6 +88,20 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
     {
         rootFolder = new(rootPath, collectionName, collectionName, null);
         collectionStructure = new CollectionStructure(rootFolder);
+        RegisterRemoteFolder(rootPath, collectionName, rootFolder, collectionStructure);
+    }
+
+    private void RegisterRemoteFolder(
+        string rootPath, string collectionName, Folder rootFolder, CollectionStructure collectionStructure)
+    {
+        _remoteFolderPath = Path.Combine(rootPath, RemoteFolderName);
+        collectionStructure.TryAddFolder(
+            new Folder(
+                _remoteFolderPath,
+                Path.Combine(collectionName, RemoteFolderName),
+                RemoteFolderName,
+                rootFolder)
+        );
     }
 
     private static void UpdateContext(ApplicationContext applicationContext, CollectionStructure collectionStructure)
@@ -105,7 +122,7 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
     private CollectionStructure ExploreCollection(ApplicationContext applicationContext)
     {
         InitializeStructure(
-            applicationContext.Path, applicationContext.CollectionName, out var rootFolder, out var collectionStructure);
+            applicationContext.Path, applicationContext.StructureName, out var rootFolder, out var collectionStructure);
 
         Explore(rootFolder, applicationContext, collectionStructure);
 
@@ -273,23 +290,22 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
             file => collectionStructure.SetInitializationScript(new Script(file)),
             "initialization script");
 
-    private static void RegisterOptionalFileIfNeeded(
+    private void RegisterOptionalFileIfNeeded(
         string? fileName,
         string filePath,
         CollectionStructure collectionStructure,
         Action<File> setFileAction,
-        string fileNameForErrorMessag)
+        string fileNameForErrorMessage)
     {
         if (fileName is null)
         {
-            if (collectionStructure.TryGetFolder(Path.GetDirectoryName(filePath) ?? string.Empty, out var folder))
+            if (!collectionStructure.TryGetFolder(filePath, out var folder) &&
+                !collectionStructure.TryGetFolder(_remoteFolderPath, out folder))
             {
-                setFileAction(File.Create(filePath, folder));
+                throw new InvalidOperationException($"Unable to find parent folder of {fileNameForErrorMessage}.");
             }
-            else
-            {
-                throw new InvalidOperationException($"Unable to set {fileNameForErrorMessag} to file outside collection.");
-            }
+
+            setFileAction(File.Create(filePath, folder));
         }
     }
     #endregion
@@ -303,7 +319,7 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
         string reqFile)
     {
         fileName = Path.GetFileName(reqFile);
-        relativePath = $"{currentFolder.RelativePath}{Path.DirectorySeparatorChar}{fileName}";
+        relativePath = GetRelativePath(currentFolder, fileName);
         requestFileObj = new(reqFile, relativePath, fileName, currentFolder);
 
         return new TestCase(requestFileObj);
@@ -335,7 +351,8 @@ internal partial class CollectionStructureExplorer(ILogger<CollectionStructureEx
             desiredSuffix + Constants.ScriptFileExtension;
 
     private static string GetRelativePath(Folder parentFolder, string folderName)
-        => $"{parentFolder.RelativePath}{Path.DirectorySeparatorChar}{folderName}";
+        => Path.Combine(parentFolder.RelativePath, folderName);
+
     #endregion
 
     #region Logging

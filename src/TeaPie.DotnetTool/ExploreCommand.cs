@@ -5,19 +5,25 @@ namespace TeaPie.DotnetTool;
 
 internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
 {
-    protected override void ConfigureApplication(ApplicationBuilder appBuilder, Settings settings)
+    protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = ResolveLogLevel(settings);
+        var path = PathResolver.Resolve(settings.Path, string.Empty);
+
+        var appBuilder = ApplicationBuilder.Create(!Path.HasExtension(path));
 
         appBuilder
-            .WithPath(PathResolver.Resolve(settings.Path, string.Empty))
+            .WithPath(path)
             .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFile, string.Empty))
+            .WithInitializationScript(PathResolver.Resolve(settings.InitializationScriptPath, string.Empty))
             .WithStructureExplorationPipeline();
+
+        return appBuilder;
     }
 
-    public sealed class Settings : SettingsWithLogging
+    public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
         [Description("Path to collection which will be explored. Defaults to the current directory.")]
@@ -27,5 +33,10 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
         [Description("Path to file, which contains definitions of available environments. If this option is not used, " +
             "first found file within collection with name '<collection-name>-env.json' is used.")]
         public string? EnvironmentFile { get; init; }
+
+        [CommandOption("-i|--init-script|--initialization-script")]
+        [Description("Path to script, which will be used for initialization before the first test-case execution. " +
+            "If this option is not used, first found file within collection with name 'init.csx' is used.")]
+        public string? InitializationScriptPath { get; init; }
     }
 }

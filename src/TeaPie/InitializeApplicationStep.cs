@@ -30,7 +30,7 @@ internal class InitializeApplicationStep(
 
         ResolveAuthProviders();
 
-        SetTestResultsSummaryObject(context.CollectionName);
+        SetTestResultsSummaryObject(context.StructureName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
     }

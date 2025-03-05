@@ -2,7 +2,7 @@
 
 namespace TeaPie.Reporting;
 
-internal class CollectionTestResultsSummaryReporter(ITestResultsSummaryAccessor accessor) : ITestResultsSummaryReporter
+internal class TestResultsSummaryReporter(ITestResultsSummaryAccessor accessor) : ITestResultsSummaryReporter
 {
     private readonly List<IReporter<TestResultsSummary>> _reporters = [];
     private readonly ITestResultsSummaryAccessor _accessor = accessor;
@@ -10,6 +10,7 @@ internal class CollectionTestResultsSummaryReporter(ITestResultsSummaryAccessor 
     private bool _started;
 
     public void RegisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Add(reporter);
+
     public void UnregisterReporter(IReporter<TestResultsSummary> reporter) => _reporters.Remove(reporter);
 
     public void Initialize()
