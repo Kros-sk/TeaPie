@@ -75,7 +75,7 @@ TeaPie supports two execution modes:
 For more advanced usage, here’s the full command specification:
 
 ```sh
-teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>]
+teapie test [path-to-collection] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
 ```
 
 > 💁‍♂️ You can use alias `t` or **completely omit command name**, since `test` command is considered as **default command** when launching `teapie`.
@@ -86,17 +86,17 @@ To view detailed information about each argument and option, run:
 teapie --help
 ```
 
-Both single test-case runs and collection runs follow these two main steps:
+Both single test-case and collection runs follow these two main steps:
 
 1. **Structure Exploration** – TeaPie scans the directory or test-case structure to identify all test cases and related files.
 2. **Test Execution** – Each detected test is executed based on the provided configuration.
 
 ### Exploring Collection Structure
 
-If you only want to **inspect the collection structure** without running the tests, you can do so with the following command:
+If you only want to **inspect the collection or test-case structure** without running the tests, you can do so with the following command:
 
 ```sh
-teapie explore [path-to-collection] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>]
+teapie explore [path-to-collection-or-test-case] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [--env-file|--environment-file <path-to-environment-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
 ```
 
 > 💁‍♂️ You can use aliases `exp` or `e` to run the same command.
@@ -123,9 +123,9 @@ Users can adjust logging levels during application run by using these options:
 
 ### Initialization script
 
-Before the first test case is executed, users have the opportunity to run an **initialization script**. This script is intended for **pre-test setup** tasks such as *setting environment variables, defining reporters, configuring logging,* and more.
+Before the (first) test case is executed, users have the opportunity to run an **initialization script**. This script is intended for **pre-test setup** tasks such as *setting environment variables, defining reporters, configuring logging,* and more.
 
-By default, **first found** script **within collection** with name `init.csx` is used. However, users can **explicitly specify** a different script by using the following option:
+By default, **first found** script **within collection/parent folder of the test-case** with name `init.csx` is used. However, users can **explicitly specify** a different script by using the following option:
 
 ```sh
 -i|--init-script|--initialization-script <path-to-script>
@@ -133,7 +133,7 @@ By default, **first found** script **within collection** with name `init.csx` is
 
 ### Pre-request Script
 
-The **pre-request script** is used to set variables and initialize any required data before sending requests.
+The **pre-request script** is used to set variables and initialize any required data before sending request(s).
 
 - Use the `#nuget` directive to install **NuGet packages**:
 
@@ -496,13 +496,11 @@ Environments are a crucial part of automating tests, allowing you to define vari
 <!-- omit from toc -->
 #### Environment File
 
-To use environments, firstly you must define them in **environment file** - a JSON file located within the **collection folder structure**. By default, the tool uses the **first found file** (depth-first algorithm) with name `<collection-name>-env.json`. However, you can specify a custom environment file by using the following option:
+To use environments, firstly you must define them in a JSON **environment file**. By default, the tool uses the **first found file** within collection (depth-first algorithm) with name `<collection-name>-env.json`, respectively first found file in the parent directory of provided test-case which follows `<test-case-name>-env.json` naming convention, when running single test-case. However, you can specify a custom environment file by using the following option:
 
 ```sh
---env-file <path-to-environment-file>
+--env-file|--environment-file <path-to-environment-file>
 ```
-
-> You can use alias `--environment-file`, too.
 
 This is example, of how environment file can look like:
 
