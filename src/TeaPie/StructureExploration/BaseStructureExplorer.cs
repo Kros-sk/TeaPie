@@ -221,7 +221,6 @@ internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplor
             new Folder(_remoteFolderPath, Path.Combine(collectionName, RemoteFolderName), RemoteFolderName, rootFolder));
     }
 
-
     protected void RegisterOptionalFilesIfNeeded(ApplicationContext applicationContext, CollectionStructure collectionStructure)
     {
         RegisterEnvironmentFileIfNeeded(applicationContext.EnvironmentFilePath, collectionStructure);
