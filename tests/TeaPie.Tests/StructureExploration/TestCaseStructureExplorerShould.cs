@@ -67,7 +67,7 @@ public class TestCaseStructureExplorerShould
         var remoteFolderPath = Path.Combine(
             Environment.CurrentDirectory,
             StructureExplorationIndex.CollectionFolderRelativePath,
-            "Remote");
+            BaseStructureExplorer.RemoteFolderName);
 
         True(structure.TryGetFolder(remoteFolderPath, out var folder));
         NotNull(folder);

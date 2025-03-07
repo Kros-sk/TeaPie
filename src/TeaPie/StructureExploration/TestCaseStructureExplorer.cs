@@ -65,12 +65,12 @@ internal partial class TestCaseStructureExplorer(ILogger<TestCaseStructureExplor
 
         if (testCase.PreRequestScripts.Any())
         {
-            tokens.Add(Constants.PreRequestSuffix.TrimStart('-'));
+            tokens.Add("pre-request script");
         }
 
         if (testCase.PostResponseScripts.Any())
         {
-            tokens.Add(Constants.PostResponseSuffix.TrimStart('-'));
+            tokens.Add("post-response script");
         }
 
         LogEnd(tokens.Count != 0 ? $"({string.Join(", ", tokens)})" : string.Empty);

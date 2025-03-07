@@ -4,7 +4,7 @@ namespace TeaPie.StructureExploration;
 
 internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplorer
 {
-    protected const string RemoteFolderName = "Remote";
+    public const string RemoteFolderName = "~Remote";
     protected string _remoteFolderPath = string.Empty;
 
     protected readonly ILogger _logger = logger;
