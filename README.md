@@ -31,10 +31,16 @@ Since `TeaPie.Tool` is not on NuGet store yet, the easiest way to launch this to
    cd ./src/TeaPie.DotnetTool
    ```
 
-1. Run the application:
+2. Run test of the `demo` **collection**:
 
    ```sh
    dotnet run test "../../demo" # this will run 'teapie test' command on demo collection
+   ```
+
+   Alternatively, you can run just **single test case**:
+
+   ```sh
+    dotnet run test "../../demo/Tests/2. Cars/EditCar-req.http" -i "../../demo/init.csx" --env-file "../../demo-env.json"
    ```
 
 You can **learn more** about how to use this tool either in [Usage section](#usage) or by checking attached [demo](./demo/).
@@ -66,7 +72,6 @@ After generating test cases and writing your tests, you can execute the **main c
 ```sh
 teapie
 ```
-
 TeaPie supports two execution modes:
 
 - **Collection Run** - If a **directory path** is provided, tool runs all **test-cases** found in the specified folder and its subfolders.
