@@ -39,7 +39,7 @@ public class TestCaseStructureExplorerShould
     }
 
     [Fact]
-    public void ShouldFindOnlyOneTestCase()
+    public void FindOnlyOneTestCase()
     {
         var builder = new ApplicationContextBuilder();
         var testCasePath = Path.Combine(
@@ -53,7 +53,7 @@ public class TestCaseStructureExplorerShould
     }
 
     [Fact]
-    public void ShouldCreateRemoteFolder()
+    public void CreateRemoteFolder()
     {
         var builder = new ApplicationContextBuilder();
         var testCasePath = Path.Combine(

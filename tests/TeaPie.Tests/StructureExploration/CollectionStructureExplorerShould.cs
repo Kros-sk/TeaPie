@@ -42,7 +42,7 @@ public class CollectionStructureExplorerShould
     }
 
     [Fact]
-    public void ShouldCreateRemoteFolder()
+    public void CreateRemoteFolder()
     {
         var builder = new ApplicationContextBuilder();
         var collectionPath = Path.Combine(
