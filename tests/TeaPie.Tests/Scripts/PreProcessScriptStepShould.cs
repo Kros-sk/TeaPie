@@ -6,7 +6,7 @@ namespace TeaPie.Tests.Scripts;
 public class PreProcessScriptStepShould
 {
     [Fact]
-    public async void CallPreProcessMethodOnPreProcessorDuringExecution()
+    public async Task CallPreProcessMethodOnPreProcessorDuringExecution()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };

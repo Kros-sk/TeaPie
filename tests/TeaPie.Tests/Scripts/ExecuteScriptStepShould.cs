@@ -10,7 +10,7 @@ namespace TeaPie.Tests.Scripts;
 public class ExecuteScriptStepShould
 {
     [Fact]
-    public async void ExecuteScriptWithNuGetPackageWithoutAnyProblem()
+    public async Task ExecuteScriptWithNuGetPackageWithoutAnyProblem()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
@@ -23,7 +23,7 @@ public class ExecuteScriptStepShould
     }
 
     [Fact]
-    public async void AccessTeaPieLoggerDuringScriptExectutionWithoutAnyProblem()
+    public async Task AccessTeaPieLoggerDuringScriptExectutionWithoutAnyProblem()
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
@@ -41,7 +41,7 @@ public class ExecuteScriptStepShould
     }
 
     [Fact]
-    public async void BeAbleToManipulateWithVariablesDuringScriptExecution()
+    public async Task BeAbleToManipulateWithVariablesDuringScriptExecution()
     {
         var logger = Substitute.For<ILogger>();
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptManipulatingWithVariables);

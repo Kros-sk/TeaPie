@@ -7,7 +7,7 @@ namespace TeaPie.Tests;
 public class ApplicationPipelineShould
 {
     [Fact]
-    public async void ExecuteAllStepsDuringRun()
+    public async Task ExecuteAllStepsDuringRun()
     {
         var pipeline = new ApplicationPipeline();
         var cancellationToken = CancellationToken.None;
@@ -85,7 +85,7 @@ public class ApplicationPipelineShould
     }
 
     [Fact]
-    public async void EnableAddingStepsDuringPipelineRun()
+    public async Task EnableAddingStepsDuringPipelineRun()
     {
         var pipeline = new ApplicationPipeline();
         pipeline.AddSteps(new GenerativeStep(pipeline));

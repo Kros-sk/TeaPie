@@ -10,7 +10,7 @@ namespace TeaPie.Tests.Scripts;
 public class CompileScriptStepShould
 {
     [Fact]
-    public async void CallCompileMethodOnCompilerDuringExecution()
+    public async Task CallCompileMethodOnCompilerDuringExecution()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.PlainScriptPath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
@@ -28,7 +28,7 @@ public class CompileScriptStepShould
     }
 
     [Fact]
-    public async void ThrowProperExceptionWhenCompilingScriptWithSyntaxError()
+    public async Task ThrowProperExceptionWhenCompilingScriptWithSyntaxError()
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);

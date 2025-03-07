@@ -10,7 +10,7 @@ namespace TeaPie.Tests.Scripts;
 public class ScriptCompilerShould
 {
     [Fact]
-    public async void ThrowProperExceptionWhenCompilingScriptWithSyntaxError()
+    public async Task ThrowProperExceptionWhenCompilingScriptWithSyntaxError()
     {
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
@@ -23,7 +23,7 @@ public class ScriptCompilerShould
     }
 
     [Fact]
-    public async void CompilePlainScriptWithoutAnyProblem()
+    public async Task CompilePlainScriptWithoutAnyProblem()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.PlainScriptPath);
         await ScriptHelper.PrepareScriptForCompilation(context);
@@ -35,7 +35,7 @@ public class ScriptCompilerShould
     }
 
     [Fact]
-    public async void CompileScriptWithNuGetPackageWithoutAnyProblem()
+    public async Task CompileScriptWithNuGetPackageWithoutAnyProblem()
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithOneNuGetDirectivePath);
         await ScriptHelper.PrepareScriptForCompilation(context);

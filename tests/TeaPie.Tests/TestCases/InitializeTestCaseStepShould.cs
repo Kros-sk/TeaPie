@@ -22,7 +22,7 @@ public class InitializeTestCaseStepShould
 
     [Theory]
     [MemberData(nameof(GetVariousTestCases))]
-    public async void FulfillTestCaseContextProperlyDuringExecution(object testCaseAsObject)
+    public async Task FulfillTestCaseContextProperlyDuringExecution(object testCaseAsObject)
     {
         if (testCaseAsObject is not TestCase testCase)
         {
