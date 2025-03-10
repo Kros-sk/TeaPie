@@ -18,7 +18,7 @@ public static class TeaPieAuthenticationExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">The name under which the authentication provider will be registered.</param>
     /// <param name="authenticationProvider">The authentication provider to register.</param>
-    public static void RegisterDefaultProvider(this TeaPie teaPie, string name, IAuthProvider authenticationProvider)
+    public static void RegisterDefaultAuthProvider(this TeaPie teaPie, string name, IAuthProvider authenticationProvider)
     {
         teaPie.RegisterAuthProvider(name, authenticationProvider);
         SetDefaultProvider(teaPie, name);

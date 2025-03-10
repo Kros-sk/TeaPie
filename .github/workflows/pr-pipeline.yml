@@ -8,6 +8,15 @@ on:
     branches:
       - master
 
+permissions:
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -34,3 +43,15 @@ jobs:
     # Run unit tests
     - name: Run Unit tests
       run: dotnet test --no-build --verbosity normal --configuration Release
+
+  publish-docs:
+    - name: Generate Documentation with DocFX
+      uses: dotnet/docfx-action@v1
+      with:
+        args: docs/docfx.json
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/_site

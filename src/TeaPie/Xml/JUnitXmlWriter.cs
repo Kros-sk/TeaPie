@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace TeaPie.Xml;
 
-public class JUnitXmlWriter : IDisposable
+internal class JUnitXmlWriter : IDisposable
 {
     private readonly XmlWriter _writer;
     private bool _rootWritten;

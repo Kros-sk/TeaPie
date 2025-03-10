@@ -72,6 +72,7 @@ After generating test cases and writing your tests, you can execute the **main c
 ```sh
 teapie
 ```
+
 TeaPie supports two execution modes:
 
 - **Collection Run** - If a **directory path** is provided, tool runs all **test-cases** found in the specified folder and its subfolders.
