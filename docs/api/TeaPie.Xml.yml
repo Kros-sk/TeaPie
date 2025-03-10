@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Xml
+  commentId: N:TeaPie.Xml
+  id: TeaPie.Xml
+  children:
+  - TeaPie.Xml.JUnitXmlWriter
+  langs:
+  - csharp
+  - vb
+  name: TeaPie.Xml
+  nameWithType: TeaPie.Xml
+  fullName: TeaPie.Xml
+  type: Namespace
+  assemblies:
+  - TeaPie
+references:
+- uid: TeaPie.Xml.JUnitXmlWriter
+  commentId: T:TeaPie.Xml.JUnitXmlWriter
+  href: TeaPie.Xml.JUnitXmlWriter.html
+  name: JUnitXmlWriter
+  nameWithType: JUnitXmlWriter
+  fullName: TeaPie.Xml.JUnitXmlWriter

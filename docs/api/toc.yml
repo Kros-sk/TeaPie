@@ -1,0 +1,151 @@
+### YamlMime:TableOfContent
+items:
+- uid: TeaPie
+  name: TeaPie
+  type: Namespace
+  items:
+  - uid: TeaPie.Application
+    name: Application
+    type: Class
+  - uid: TeaPie.ApplicationBuilder
+    name: ApplicationBuilder
+    type: Class
+  - uid: TeaPie.IApplicationContext
+    name: IApplicationContext
+    type: Interface
+  - uid: TeaPie.PathExtensions
+    name: PathExtensions
+    type: Class
+  - uid: TeaPie.TeaPie
+    name: TeaPie
+    type: Class
+- uid: TeaPie.Http
+  name: TeaPie.Http
+  type: Namespace
+  items:
+  - uid: TeaPie.Http.HttpMessagesExtensions
+    name: HttpMessagesExtensions
+    type: Class
+- uid: TeaPie.Http.Auth
+  name: TeaPie.Http.Auth
+  type: Namespace
+  items:
+  - uid: TeaPie.Http.Auth.IAuthOptions
+    name: IAuthOptions
+    type: Interface
+  - uid: TeaPie.Http.Auth.IAuthProvider
+    name: IAuthProvider
+    type: Interface
+  - uid: TeaPie.Http.Auth.IAuthProvider`1
+    name: IAuthProvider<TOptions>
+    type: Interface
+  - uid: TeaPie.Http.Auth.TeaPieAuthenticationExtensions
+    name: TeaPieAuthenticationExtensions
+    type: Class
+- uid: TeaPie.Http.Auth.OAuth2
+  name: TeaPie.Http.Auth.OAuth2
+  type: Namespace
+  items:
+  - uid: TeaPie.Http.Auth.OAuth2.OAuth2Options
+    name: OAuth2Options
+    type: Class
+  - uid: TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder
+    name: OAuth2OptionsBuilder
+    type: Class
+  - uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+    name: TeaPieOAuth2Extensions
+    type: Class
+- uid: TeaPie.Http.Retrying
+  name: TeaPie.Http.Retrying
+  type: Namespace
+  items:
+  - uid: TeaPie.Http.Retrying.TeaPieRetryingExtensions
+    name: TeaPieRetryingExtensions
+    type: Class
+- uid: TeaPie.Json
+  name: TeaPie.Json
+  type: Namespace
+  items:
+  - uid: TeaPie.Json.CaseInsensitiveExpandoObject
+    name: CaseInsensitiveExpandoObject
+    type: Class
+  - uid: TeaPie.Json.JsonExtensions
+    name: JsonExtensions
+    type: Class
+- uid: TeaPie.Reporting
+  name: TeaPie.Reporting
+  type: Namespace
+  items:
+  - uid: TeaPie.Reporting.ICompositeReporter`2
+    name: ICompositeReporter<TReporterType, TReportedObject>
+    type: Interface
+  - uid: TeaPie.Reporting.IReporter
+    name: IReporter
+    type: Interface
+  - uid: TeaPie.Reporting.IReporter`1
+    name: IReporter<TReportedObject>
+    type: Interface
+  - uid: TeaPie.Reporting.ITestResultsSummaryReporter
+    name: ITestResultsSummaryReporter
+    type: Interface
+  - uid: TeaPie.Reporting.TeaPieReportingExtensions
+    name: TeaPieReportingExtensions
+    type: Class
+- uid: TeaPie.Scripts
+  name: TeaPie.Scripts
+  type: Namespace
+  items:
+  - uid: TeaPie.Scripts.Globals
+    name: Globals
+    type: Class
+- uid: TeaPie.Testing
+  name: TeaPie.Testing
+  type: Namespace
+  items:
+  - uid: TeaPie.Testing.CollectionTestResultsSummary
+    name: CollectionTestResultsSummary
+    type: Class
+  - uid: TeaPie.Testing.TeaPieTestingExtensions
+    name: TeaPieTestingExtensions
+    type: Class
+  - uid: TeaPie.Testing.TestCaseTestResultsSummary
+    name: TestCaseTestResultsSummary
+    type: Class
+  - uid: TeaPie.Testing.TestDirectivePatternBuilder
+    name: TestDirectivePatternBuilder
+    type: Class
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    type: Class
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: TestResult.Failed
+    type: Class
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: TestResult.NotRun
+    type: Class
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: TestResult.Passed
+    type: Class
+  - uid: TeaPie.Testing.TestResultMatchExtensions
+    name: TestResultMatchExtensions
+    type: Class
+  - uid: TeaPie.Testing.TestResultsSummary
+    name: TestResultsSummary
+    type: Class
+- uid: TeaPie.Variables
+  name: TeaPie.Variables
+  type: Namespace
+  items:
+  - uid: TeaPie.Variables.IVariablesOperations
+    name: IVariablesOperations
+    type: Interface
+  - uid: TeaPie.Variables.TeaPieVariablesExtensions
+    name: TeaPieVariablesExtensions
+    type: Class
+  - uid: TeaPie.Variables.Variable
+    name: Variable
+    type: Class
+  - uid: TeaPie.Variables.VariablesCollection
+    name: VariablesCollection
+    type: Class
+memberLayout: SamePage

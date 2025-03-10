@@ -1,0 +1,908 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Testing.TeaPieTestingExtensions
+  commentId: T:TeaPie.Testing.TeaPieTestingExtensions
+  id: TeaPieTestingExtensions
+  parent: TeaPie.Testing
+  children:
+  - TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective(TeaPie.TeaPie,System.String,System.String,System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String},System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task})
+  - TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Action,System.Boolean)
+  - TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Func{System.Threading.Tasks.Task},System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: TeaPieTestingExtensions
+  nameWithType: TeaPieTestingExtensions
+  fullName: TeaPie.Testing.TeaPieTestingExtensions
+  type: Class
+  source:
+    remote:
+      path: src/TeaPie/Testing/TeaPieTestingExtensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: TeaPieTestingExtensions
+    path: ../src/TeaPie/Testing/TeaPieTestingExtensions.cs
+    startLine: 2
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static class TeaPieTestingExtensions
+    content.vb: Public Module TeaPieTestingExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Action,System.Boolean)
+  commentId: M:TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Action,System.Boolean)
+  id: Test(TeaPie.TeaPie,System.String,System.Action,System.Boolean)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TeaPieTestingExtensions
+  langs:
+  - csharp
+  - vb
+  name: Test(TeaPie, string, Action, bool)
+  nameWithType: TeaPieTestingExtensions.Test(TeaPie, string, Action, bool)
+  fullName: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie, string, System.Action, bool)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Testing/TeaPieTestingExtensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Test
+    path: ../src/TeaPie/Testing/TeaPieTestingExtensions.cs
+    startLine: 14
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  summary: >-
+    Executes the specified <code class="paramref">testFunction</code> as a test method. If <code class="paramref">testFunction</code>
+
+    throws an exception, the test is considered <b>failed</b>. If no exception is thrown, the test is considered
+
+    <b>passed</b>. The test will be referenced by <code class="paramref">testName</code> in the results.
+  example: []
+  syntax:
+    content: public static void Test(this TeaPie teaPie, string testName, Action testFunction, bool skipTest = false)
+    parameters:
+    - id: teaPie
+      type: TeaPie.TeaPie
+      description: The current context instance.
+    - id: testName
+      type: System.String
+      description: The name of the test.
+    - id: testFunction
+      type: System.Action
+      description: The testing function to execute.
+    - id: skipTest
+      type: System.Boolean
+      description: >-
+        Indicates whether the test should be skipped (<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>) or
+            normally executed (<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>). Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Shared Sub Test(teaPie As TeaPie, testName As String, testFunction As Action, skipTest As Boolean = False)
+  overload: TeaPie.Testing.TeaPieTestingExtensions.Test*
+  nameWithType.vb: TeaPieTestingExtensions.Test(TeaPie, String, Action, Boolean)
+  fullName.vb: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie, String, System.Action, Boolean)
+  name.vb: Test(TeaPie, String, Action, Boolean)
+- uid: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Func{System.Threading.Tasks.Task},System.Boolean)
+  commentId: M:TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie,System.String,System.Func{System.Threading.Tasks.Task},System.Boolean)
+  id: Test(TeaPie.TeaPie,System.String,System.Func{System.Threading.Tasks.Task},System.Boolean)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TeaPieTestingExtensions
+  langs:
+  - csharp
+  - vb
+  name: Test(TeaPie, string, Func<Task>, bool)
+  nameWithType: TeaPieTestingExtensions.Test(TeaPie, string, Func<Task>, bool)
+  fullName: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie, string, System.Func<System.Threading.Tasks.Task>, bool)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Testing/TeaPieTestingExtensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Test
+    path: ../src/TeaPie/Testing/TeaPieTestingExtensions.cs
+    startLine: 27
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  summary: >-
+    Executes the specified asynchronous <code class="paramref">testFunction</code> as a test method. If <code class="paramref">testFunction</code>
+
+    throws an exception, the test is considered <b>failed</b>. If no exception is thrown, the test is considered
+
+    <b>passed</b>. The test will be referenced by <code class="paramref">testName</code> in the results.
+  example: []
+  syntax:
+    content: public static Task Test(this TeaPie teaPie, string testName, Func<Task> testFunction, bool skipTest = false)
+    parameters:
+    - id: teaPie
+      type: TeaPie.TeaPie
+      description: The current context instance.
+    - id: testName
+      type: System.String
+      description: The name of the test.
+    - id: testFunction
+      type: System.Func{System.Threading.Tasks.Task}
+      description: The asynchronous testing function to execute.
+    - id: skipTest
+      type: System.Boolean
+      description: >-
+        Indicates whether the test should be skipped (<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>) or
+            normally executed (<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>). Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function Test(teaPie As TeaPie, testName As String, testFunction As Func(Of Task), skipTest As Boolean = False) As Task
+  overload: TeaPie.Testing.TeaPieTestingExtensions.Test*
+  nameWithType.vb: TeaPieTestingExtensions.Test(TeaPie, String, Func(Of Task), Boolean)
+  fullName.vb: TeaPie.Testing.TeaPieTestingExtensions.Test(TeaPie.TeaPie, String, System.Func(Of System.Threading.Tasks.Task), Boolean)
+  name.vb: Test(TeaPie, String, Func(Of Task), Boolean)
+- uid: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective(TeaPie.TeaPie,System.String,System.String,System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String},System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task})
+  commentId: M:TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective(TeaPie.TeaPie,System.String,System.String,System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String},System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task})
+  id: RegisterTestDirective(TeaPie.TeaPie,System.String,System.String,System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String},System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TeaPieTestingExtensions
+  langs:
+  - csharp
+  - vb
+  name: RegisterTestDirective(TeaPie, string, string, Func<IReadOnlyDictionary<string, string>, string>, Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task>)
+  nameWithType: TeaPieTestingExtensions.RegisterTestDirective(TeaPie, string, string, Func<IReadOnlyDictionary<string, string>, string>, Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task>)
+  fullName: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective(TeaPie.TeaPie, string, string, System.Func<System.Collections.Generic.IReadOnlyDictionary<string, string>, string>, System.Func<System.Net.Http.HttpResponseMessage, System.Collections.Generic.IReadOnlyDictionary<string, string>, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Testing/TeaPieTestingExtensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: RegisterTestDirective
+    path: ../src/TeaPie/Testing/TeaPieTestingExtensions.cs
+    startLine: 41
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  summary: Registers a custom test directive that can be used within a '.http' file for any request.
+  example: []
+  syntax:
+    content: public static void RegisterTestDirective(this TeaPie teaPie, string directiveName, string directivePattern, Func<IReadOnlyDictionary<string, string>, string> testNameGetter, Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task> testFunction)
+    parameters:
+    - id: teaPie
+      type: TeaPie.TeaPie
+      description: The current context instance.
+    - id: directiveName
+      type: System.String
+      description: The name of the directive, <b>excluding the 'TEST-' prefix</b>.
+    - id: directivePattern
+      type: System.String
+      description: >-
+        The regular expression pattern for matching the directive.
+            Use <xref href="TeaPie.Testing.TestDirectivePatternBuilder" data-throw-if-not-resolved="false"></xref> for easier pattern composition.
+    - id: testNameGetter
+      type: System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String}
+      description: >-
+        A function that generates the full test name.
+            A <b>dictionary of parameters</b> is provided for customization of the test name.
+    - id: testFunction
+      type: System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task}
+      description: >-
+        The test function to execute when the directive is applied.
+            The function receives the HTTP response as an <xref href="System.Net.Http.HttpResponseMessage" data-throw-if-not-resolved="false"></xref> and a dictionary of parameters.
+    content.vb: Public Shared Sub RegisterTestDirective(teaPie As TeaPie, directiveName As String, directivePattern As String, testNameGetter As Func(Of IReadOnlyDictionary(Of String, String), String), testFunction As Func(Of HttpResponseMessage, IReadOnlyDictionary(Of String, String), Task))
+  overload: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective*
+  nameWithType.vb: TeaPieTestingExtensions.RegisterTestDirective(TeaPie, String, String, Func(Of IReadOnlyDictionary(Of String, String), String), Func(Of HttpResponseMessage, IReadOnlyDictionary(Of String, String), Task))
+  fullName.vb: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective(TeaPie.TeaPie, String, String, System.Func(Of System.Collections.Generic.IReadOnlyDictionary(Of String, String), String), System.Func(Of System.Net.Http.HttpResponseMessage, System.Collections.Generic.IReadOnlyDictionary(Of String, String), System.Threading.Tasks.Task))
+  name.vb: RegisterTestDirective(TeaPie, String, String, Func(Of IReadOnlyDictionary(Of String, String), String), Func(Of HttpResponseMessage, IReadOnlyDictionary(Of String, String), Task))
+references:
+- uid: TeaPie.Testing
+  commentId: N:TeaPie.Testing
+  href: TeaPie.html
+  name: TeaPie.Testing
+  nameWithType: TeaPie.Testing
+  fullName: TeaPie.Testing
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TeaPie.Testing.TeaPieTestingExtensions.Test*
+  commentId: Overload:TeaPie.Testing.TeaPieTestingExtensions.Test
+  href: TeaPie.Testing.TeaPieTestingExtensions.html#TeaPie_Testing_TeaPieTestingExtensions_Test_TeaPie_TeaPie_System_String_System_Action_System_Boolean_
+  name: Test
+  nameWithType: TeaPieTestingExtensions.Test
+  fullName: TeaPie.Testing.TeaPieTestingExtensions.Test
+- uid: TeaPie.TeaPie
+  commentId: T:TeaPie.TeaPie
+  parent: TeaPie
+  href: TeaPie.TeaPie.html
+  name: TeaPie
+  nameWithType: TeaPie
+  fullName: TeaPie.TeaPie
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: TeaPie
+  commentId: N:TeaPie
+  href: TeaPie.html
+  name: TeaPie
+  nameWithType: TeaPie
+  fullName: TeaPie
+- uid: System.Func{System.Threading.Tasks.Task}
+  commentId: T:System.Func{System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Task>
+  nameWithType: Func<Task>
+  fullName: System.Func<System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of Task)
+  fullName.vb: System.Func(Of System.Threading.Tasks.Task)
+  name.vb: Func(Of Task)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: TeaPie.Testing.TestDirectivePatternBuilder
+  commentId: T:TeaPie.Testing.TestDirectivePatternBuilder
+  parent: TeaPie.Testing
+  href: TeaPie.Testing.TestDirectivePatternBuilder.html
+  name: TestDirectivePatternBuilder
+  nameWithType: TestDirectivePatternBuilder
+  fullName: TeaPie.Testing.TestDirectivePatternBuilder
+- uid: System.Net.Http.HttpResponseMessage
+  commentId: T:System.Net.Http.HttpResponseMessage
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  name: HttpResponseMessage
+  nameWithType: HttpResponseMessage
+  fullName: System.Net.Http.HttpResponseMessage
+- uid: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective*
+  commentId: Overload:TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective
+  href: TeaPie.Testing.TeaPieTestingExtensions.html#TeaPie_Testing_TeaPieTestingExtensions_RegisterTestDirective_TeaPie_TeaPie_System_String_System_String_System_Func_System_Collections_Generic_IReadOnlyDictionary_System_String_System_String__System_String__System_Func_System_Net_Http_HttpResponseMessage_System_Collections_Generic_IReadOnlyDictionary_System_String_System_String__System_Threading_Tasks_Task__
+  name: RegisterTestDirective
+  nameWithType: TeaPieTestingExtensions.RegisterTestDirective
+  fullName: TeaPie.Testing.TeaPieTestingExtensions.RegisterTestDirective
+- uid: System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String}
+  commentId: T:System.Func{System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IReadOnlyDictionary<string, string>, string>
+  nameWithType: Func<IReadOnlyDictionary<string, string>, string>
+  fullName: System.Func<System.Collections.Generic.IReadOnlyDictionary<string, string>, string>
+  nameWithType.vb: Func(Of IReadOnlyDictionary(Of String, String), String)
+  fullName.vb: System.Func(Of System.Collections.Generic.IReadOnlyDictionary(Of String, String), String)
+  name.vb: Func(Of IReadOnlyDictionary(Of String, String), String)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task}
+  commentId: T:System.Func{System.Net.Http.HttpResponseMessage,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task>
+  nameWithType: Func<HttpResponseMessage, IReadOnlyDictionary<string, string>, Task>
+  fullName: System.Func<System.Net.Http.HttpResponseMessage, System.Collections.Generic.IReadOnlyDictionary<string, string>, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of HttpResponseMessage, IReadOnlyDictionary(Of String, String), Task)
+  fullName.vb: System.Func(Of System.Net.Http.HttpResponseMessage, System.Collections.Generic.IReadOnlyDictionary(Of String, String), System.Threading.Tasks.Task)
+  name.vb: Func(Of HttpResponseMessage, IReadOnlyDictionary(Of String, String), Task)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )

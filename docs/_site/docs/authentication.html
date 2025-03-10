@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Authentication | TeaPie </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Authentication | TeaPie ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/authentication.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="TeaPie">
+            TeaPie
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="authentication">Authentication</h1>
+
+<p>To provide maximum flexibility, an <strong>authentication interceptor</strong> is applied to all outgoing HTTP requests. The <strong>authentication provider</strong> to be used within interceptor <strong>can be specified in scripts</strong> or directly within <strong>request files</strong>.</p>
+<h2 id="available-authentication-providers">Available Authentication Providers</h2>
+<p>Currently, <strong>TeaPie</strong> supports two authentication providers:</p>
+<ul>
+<li><code>None</code> - <strong>No authentication</strong> is performed. This is the <strong>default behavior</strong> for all requests.</li>
+<li><code>OAuth2</code> - A commonly used authentication method, <strong>natively supported</strong> by the tool.</li>
+</ul>
+<p>To use <strong>OAuth2</strong>, it must be configured before executing requests:</p>
+<pre><code class="lang-csharp">tp.ConfigureOAuth2Provider(OAuth2OptionsBuilder.Create()
+    .WithAuthUrl(tp.GetVariable&lt;string&gt;(&quot;AuthServerUrl&quot;)) // Required parameter.
+    .WithGrantType(&quot;client_credentials&quot;) // Required parameter.
+    .WithClientId(&quot;test-client&quot;)
+    .WithClientSecret(&quot;test-secret&quot;)
+    .AddParameter(&quot;custom_parameter&quot;, &quot;true&quot;) // Add custom parameters if needed.
+    .Build()
+);
+</code></pre>
+<h2 id="registering-a-custom-authentication-provider">Registering a Custom Authentication Provider</h2>
+<p>To use a custom authentication provider, <strong>register it before usage</strong>:</p>
+<pre><code class="lang-csharp">tp.RegisterAuthProvider(
+    &quot;MyAuth&quot;,
+    new MyAuthProvider(tp.ApplicationContext)
+        .ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
+);
+</code></pre>
+<p>If the <strong>registered provider should also be the default</strong>, use this method instead:</p>
+<pre><code class="lang-csharp">tp.RegisterDefaultAuthProvider(
+    &quot;MyAuth&quot;,
+    new MyAuthProvider(tp.ApplicationContext)
+        .ConfigureOptions(new MyAuthProviderOptions { AuthUrl = authUrl })
+);
+</code></pre>
+<h2 id="setting-a-default-authentication-provider">Setting a Default Authentication Provider</h2>
+<p>To specify which <strong>registered authentication provider</strong> should be used for all requests, set it as the default:</p>
+<pre><code class="lang-csharp">tp.SetDefaultAuthProvider(&quot;MyAuth&quot;); // Sets 'MyAuth' as the default authentication provider.
+</code></pre>
+<p>For <code>OAuth2</code> there is built-in method:</p>
+<pre><code class="lang-csharp">tp.SetOAuth2AsDefaultAuthProvider();
+</code></pre>
+<p>If no authentication provider is explicitly set as default, requests will <strong>default to &quot;None&quot;</strong>, meaning no authentication is applied.</p>
+<h2 id="using-a-specific-authentication-provider-for-a-request">Using a Specific Authentication Provider for a Request</h2>
+<p>Some requests may require a different authentication mechanism than the default.
+To <strong>assign a specific authentication provider</strong> for a request, use this directive in a <code>.http</code> file:</p>
+<pre><code class="lang-http">## AUTH-PROVIDER: MyAuth
+POST {{ApiBaseUrl}}{{ApiCarsSection}}
+Content-Type: application/json
+
+...
+</code></pre>
+<h2 id="disabling-authentication">Disabling Authentication</h2>
+<p>By default, no authentication is performed. However, if a default authentication provider is set, it applies to all requests.
+To <strong>disable authentication</strong> for a specific request, use the pre-defined authentication provider 'None':</p>
+<pre><code class="lang-http">## AUTH-PROVIDER: None
+POST {{ApiBaseUrl}}{{ApiCarsSection}}
+Content-Type: application/json
+
+...
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/authentication.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

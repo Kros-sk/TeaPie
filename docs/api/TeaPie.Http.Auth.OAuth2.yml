@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Http.Auth.OAuth2
+  commentId: N:TeaPie.Http.Auth.OAuth2
+  id: TeaPie.Http.Auth.OAuth2
+  children:
+  - TeaPie.Http.Auth.OAuth2.OAuth2Options
+  - TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder
+  - TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  langs:
+  - csharp
+  - vb
+  name: TeaPie.Http.Auth.OAuth2
+  nameWithType: TeaPie.Http.Auth.OAuth2
+  fullName: TeaPie.Http.Auth.OAuth2
+  type: Namespace
+  assemblies:
+  - TeaPie
+references:
+- uid: TeaPie.Http.Auth.OAuth2.OAuth2Options
+  commentId: T:TeaPie.Http.Auth.OAuth2.OAuth2Options
+  parent: TeaPie.Http.Auth.OAuth2
+  href: TeaPie.Http.Auth.OAuth2.OAuth2Options.html
+  name: OAuth2Options
+  nameWithType: OAuth2Options
+  fullName: TeaPie.Http.Auth.OAuth2.OAuth2Options
+- uid: TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder
+  commentId: T:TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder
+  parent: TeaPie.Http.Auth.OAuth2
+  href: TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder.html
+  name: OAuth2OptionsBuilder
+  nameWithType: OAuth2OptionsBuilder
+  fullName: TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  commentId: T:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  parent: TeaPie.Http.Auth.OAuth2
+  href: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.html
+  name: TeaPieOAuth2Extensions
+  nameWithType: TeaPieOAuth2Extensions
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+- uid: TeaPie.Http.Auth.OAuth2
+  commentId: N:TeaPie.Http.Auth.OAuth2
+  href: TeaPie.html
+  name: TeaPie.Http.Auth.OAuth2
+  nameWithType: TeaPie.Http.Auth.OAuth2
+  fullName: TeaPie.Http.Auth.OAuth2
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  - name: .
+  - uid: TeaPie.Http.Auth.OAuth2
+    name: OAuth2
+    href: TeaPie.Http.Auth.OAuth2.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  - name: .
+  - uid: TeaPie.Http.Auth.OAuth2
+    name: OAuth2
+    href: TeaPie.Http.Auth.OAuth2.html

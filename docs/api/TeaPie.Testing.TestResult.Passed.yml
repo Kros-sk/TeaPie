@@ -1,0 +1,4849 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Testing.TestResult.Passed
+  commentId: T:TeaPie.Testing.TestResult.Passed
+  id: TestResult.Passed
+  parent: TeaPie.Testing
+  children:
+  - TeaPie.Testing.TestResult.Passed.#ctor(System.Int64)
+  - TeaPie.Testing.TestResult.Passed.Duration
+  - TeaPie.Testing.TestResult.Passed.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  - TeaPie.Testing.TestResult.Passed.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  - TeaPie.Testing.TestResult.Passed.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  - TeaPie.Testing.TestResult.Passed.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  - TeaPie.Testing.TestResult.Passed.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  - TeaPie.Testing.TestResult.Passed.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  - TeaPie.Testing.TestResult.Passed.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  - TeaPie.Testing.TestResult.Passed.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  - TeaPie.Testing.TestResult.Passed.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  - TeaPie.Testing.TestResult.Passed.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  - TeaPie.Testing.TestResult.Passed.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  - TeaPie.Testing.TestResult.Passed.UnwrapFailed
+  - TeaPie.Testing.TestResult.Passed.UnwrapNotRun
+  - TeaPie.Testing.TestResult.Passed.UnwrapPassed
+  langs:
+  - csharp
+  - vb
+  name: TestResult.Passed
+  nameWithType: TestResult.Passed
+  fullName: TeaPie.Testing.TestResult.Passed
+  type: Class
+  source:
+    id: Passed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 178
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: 'public sealed record TestResult.Passed : TestResult, IEquatable<TestResult>, IEquatable<TestResult.Passed>'
+    content.vb: Public NotInheritable Class TestResult.Passed Inherits TestResult Implements IEquatable(Of TestResult), IEquatable(Of TestResult.Passed)
+  inheritance:
+  - System.Object
+  - TeaPie.Testing.TestResult
+  implements:
+  - System.IEquatable{TeaPie.Testing.TestResult}
+  - System.IEquatable{TeaPie.Testing.TestResult.Passed}
+  inheritedMembers:
+  - TeaPie.Testing.TestResult.TestName
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+- uid: TeaPie.Testing.TestResult.Passed.#ctor(System.Int64)
+  commentId: M:TeaPie.Testing.TestResult.Passed.#ctor(System.Int64)
+  id: '#ctor(System.Int64)'
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Passed(long)
+  nameWithType: TestResult.Passed.Passed(long)
+  fullName: TeaPie.Testing.TestResult.Passed.Passed(long)
+  type: Constructor
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResult.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: .ctor
+    path: ../src/TeaPie/Testing/TestResult.cs
+    startLine: 8
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public Passed(long Duration)
+    parameters:
+    - id: Duration
+      type: System.Int64
+    content.vb: Public Sub New(Duration As Long)
+  overload: TeaPie.Testing.TestResult.Passed.#ctor*
+  nameWithType.vb: TestResult.Passed.New(Long)
+  fullName.vb: TeaPie.Testing.TestResult.Passed.New(Long)
+  name.vb: New(Long)
+- uid: TeaPie.Testing.TestResult.Passed.Duration
+  commentId: P:TeaPie.Testing.TestResult.Passed.Duration
+  id: Duration
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: TestResult.Passed.Duration
+  fullName: TeaPie.Testing.TestResult.Passed.Duration
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResult.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Duration
+    path: ../src/TeaPie/Testing/TestResult.cs
+    startLine: 8
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public long Duration { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Duration As Long
+  overload: TeaPie.Testing.TestResult.Passed.Duration*
+- uid: TeaPie.Testing.TestResult.Passed.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  id: Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Match<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<Passed, TMatchOutput>, Func<Failed, TMatchOutput>)
+  nameWithType: TestResult.Passed.Match<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TestResult.Passed, TMatchOutput>, Func<TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.Match<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  type: Method
+  source:
+    id: Match
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 180
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput Match<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput> notRun, Func<TestResult.Passed, TMatchOutput> passed, Func<TestResult.Failed, TMatchOutput> failed)
+    parameters:
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function Match(Of TMatchOutput)(notRun As Func(Of TestResult.NotRun, TMatchOutput), passed As Func(Of TestResult.Passed, TMatchOutput), failed As Func(Of TestResult.Failed, TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.Match*
+  nameWithType.vb: TestResult.Passed.Match(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TestResult.Passed, TMatchOutput), Func(Of TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.Match(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of Passed, TMatchOutput), Func(Of Failed, TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResult.Passed.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  id: Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Match(Action<NotRun>, Action<Passed>, Action<Failed>)
+  nameWithType: TestResult.Passed.Match(Action<TestResult.NotRun>, Action<TestResult.Passed>, Action<TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResult.Passed.Match(System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action<TeaPie.Testing.TestResult.Failed>)
+  type: Method
+  source:
+    id: Match
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 185
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void Match(Action<TestResult.NotRun> notRun, Action<TestResult.Passed> passed, Action<TestResult.Failed> failed)
+    parameters:
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    content.vb: Public Overrides Sub Match(notRun As Action(Of TestResult.NotRun), passed As Action(Of TestResult.Passed), failed As Action(Of TestResult.Failed))
+  overridden: TeaPie.Testing.TestResult.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  overload: TeaPie.Testing.TestResult.Passed.Match*
+  nameWithType.vb: TestResult.Passed.Match(Action(Of TestResult.NotRun), Action(Of TestResult.Passed), Action(Of TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.Match(System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action(Of TeaPie.Testing.TestResult.Failed))
+  name.vb: Match(Action(Of NotRun), Action(Of Passed), Action(Of Failed))
+- uid: TeaPie.Testing.TestResult.Passed.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  commentId: M:TeaPie.Testing.TestResult.Passed.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  id: Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Match<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, Passed, TMatchOutput>, Func<TState, Failed, TMatchOutput>)
+  nameWithType: TestResult.Passed.Match<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.Match<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  type: Method
+  source:
+    id: Match
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 190
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput Match<TState, TMatchOutput>(TState state, Func<TState, TestResult.NotRun, TMatchOutput> notRun, Func<TState, TestResult.Passed, TMatchOutput> passed, Func<TState, TestResult.Failed, TMatchOutput> failed)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: notRun
+      type: System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: passed
+      type: System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: failed
+      type: System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    typeParameters:
+    - id: TState
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function Match(Of TState, TMatchOutput)(state As TState, notRun As Func(Of TState, TestResult.NotRun, TMatchOutput), passed As Func(Of TState, TestResult.Passed, TMatchOutput), failed As Func(Of TState, TestResult.Failed, TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.Match``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.Match*
+  nameWithType.vb: TestResult.Passed.Match(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.Match(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, Passed, TMatchOutput), Func(Of TState, Failed, TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResult.Passed.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  id: Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: Match<TState>(TState, Action<TState, NotRun>, Action<TState, Passed>, Action<TState, Failed>)
+  nameWithType: TestResult.Passed.Match<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState, TestResult.Passed>, Action<TState, TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResult.Passed.Match<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState, TeaPie.Testing.TestResult.Failed>)
+  type: Method
+  source:
+    id: Match
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 196
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void Match<TState>(TState state, Action<TState, TestResult.NotRun> notRun, Action<TState, TestResult.Passed> passed, Action<TState, TestResult.Failed> failed)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: notRun
+      type: System.Action{{TState},TeaPie.Testing.TestResult.NotRun}
+    - id: passed
+      type: System.Action{{TState},TeaPie.Testing.TestResult.Passed}
+    - id: failed
+      type: System.Action{{TState},TeaPie.Testing.TestResult.Failed}
+    typeParameters:
+    - id: TState
+    content.vb: Public Overrides Sub Match(Of TState)(state As TState, notRun As Action(Of TState, TestResult.NotRun), passed As Action(Of TState, TestResult.Passed), failed As Action(Of TState, TestResult.Failed))
+  overridden: TeaPie.Testing.TestResult.Match``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.NotRun},System.Action{{TState},TeaPie.Testing.TestResult.Passed},System.Action{{TState},TeaPie.Testing.TestResult.Failed})
+  overload: TeaPie.Testing.TestResult.Passed.Match*
+  nameWithType.vb: TestResult.Passed.Match(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState, TestResult.Passed), Action(Of TState, TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.Match(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState, TeaPie.Testing.TestResult.Failed))
+  name.vb: Match(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState, Passed), Action(Of TState, Failed))
+- uid: TeaPie.Testing.TestResult.Passed.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  id: MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRun<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchNotRun<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchNotRun<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchNotRun
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 202
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchNotRun<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput> notRun, Func<TMatchOutput> @else)
+    parameters:
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchNotRun(Of TMatchOutput)(notRun As Func(Of TestResult.NotRun, TMatchOutput), [else] As Func(Of TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchNotRun*
+  nameWithType.vb: TestResult.Passed.MatchNotRun(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchNotRun(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchNotRun(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  id: MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchPassed<TMatchOutput>(Func<Passed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchPassed<TMatchOutput>(Func<TestResult.Passed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchPassed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchPassed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 206
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchPassed<TMatchOutput>(Func<TestResult.Passed, TMatchOutput> passed, Func<TMatchOutput> @else)
+    parameters:
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchPassed(Of TMatchOutput)(passed As Func(Of TestResult.Passed, TMatchOutput), [else] As Func(Of TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchPassed*
+  nameWithType.vb: TestResult.Passed.MatchPassed(Of TMatchOutput)(Func(Of TestResult.Passed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchPassed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchPassed(Of TMatchOutput)(Func(Of Passed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  id: MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchFailed<TMatchOutput>(Func<Failed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchFailed<TMatchOutput>(Func<TestResult.Failed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchFailed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchFailed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 210
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchFailed<TMatchOutput>(Func<TestResult.Failed, TMatchOutput> failed, Func<TMatchOutput> @else)
+    parameters:
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchFailed(Of TMatchOutput)(failed As Func(Of TestResult.Failed, TMatchOutput), [else] As Func(Of TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}},System.Func{{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchFailed*
+  nameWithType.vb: TestResult.Passed.MatchFailed(Of TMatchOutput)(Func(Of TestResult.Failed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchFailed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchFailed(Of TMatchOutput)(Func(Of Failed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  id: MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRun(Action<NotRun>, Action)
+  nameWithType: TestResult.Passed.MatchNotRun(Action<TestResult.NotRun>, Action)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchNotRun(System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action)
+  type: Method
+  source:
+    id: MatchNotRun
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 214
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchNotRun(Action<TestResult.NotRun> notRun, Action @else)
+    parameters:
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: else
+      type: System.Action
+    content.vb: Public Overrides Sub MatchNotRun(notRun As Action(Of TestResult.NotRun), [else] As Action)
+  overridden: TeaPie.Testing.TestResult.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  overload: TeaPie.Testing.TestResult.Passed.MatchNotRun*
+  nameWithType.vb: TestResult.Passed.MatchNotRun(Action(Of TestResult.NotRun), Action)
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchNotRun(System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action)
+  name.vb: MatchNotRun(Action(Of NotRun), Action)
+- uid: TeaPie.Testing.TestResult.Passed.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  id: MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchPassed(Action<Passed>, Action)
+  nameWithType: TestResult.Passed.MatchPassed(Action<TestResult.Passed>, Action)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchPassed(System.Action<TeaPie.Testing.TestResult.Passed>, System.Action)
+  type: Method
+  source:
+    id: MatchPassed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 218
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchPassed(Action<TestResult.Passed> passed, Action @else)
+    parameters:
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: else
+      type: System.Action
+    content.vb: Public Overrides Sub MatchPassed(passed As Action(Of TestResult.Passed), [else] As Action)
+  overridden: TeaPie.Testing.TestResult.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  overload: TeaPie.Testing.TestResult.Passed.MatchPassed*
+  nameWithType.vb: TestResult.Passed.MatchPassed(Action(Of TestResult.Passed), Action)
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchPassed(System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action)
+  name.vb: MatchPassed(Action(Of Passed), Action)
+- uid: TeaPie.Testing.TestResult.Passed.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  id: MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchFailed(Action<Failed>, Action)
+  nameWithType: TestResult.Passed.MatchFailed(Action<TestResult.Failed>, Action)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchFailed(System.Action<TeaPie.Testing.TestResult.Failed>, System.Action)
+  type: Method
+  source:
+    id: MatchFailed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 222
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchFailed(Action<TestResult.Failed> failed, Action @else)
+    parameters:
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    - id: else
+      type: System.Action
+    content.vb: Public Overrides Sub MatchFailed(failed As Action(Of TestResult.Failed), [else] As Action)
+  overridden: TeaPie.Testing.TestResult.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  overload: TeaPie.Testing.TestResult.Passed.MatchFailed*
+  nameWithType.vb: TestResult.Passed.MatchFailed(Action(Of TestResult.Failed), Action)
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchFailed(System.Action(Of TeaPie.Testing.TestResult.Failed), System.Action)
+  name.vb: MatchFailed(Action(Of Failed), Action)
+- uid: TeaPie.Testing.TestResult.Passed.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  id: MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRun<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchNotRun<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchNotRun<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  type: Method
+  source:
+    id: MatchNotRun
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 226
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchNotRun<TState, TMatchOutput>(TState state, Func<TState, TestResult.NotRun, TMatchOutput> notRun, Func<TState, TMatchOutput> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: notRun
+      type: System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TState},{TMatchOutput}}
+    typeParameters:
+    - id: TState
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchNotRun(Of TState, TMatchOutput)(state As TState, notRun As Func(Of TState, TestResult.NotRun, TMatchOutput), [else] As Func(Of TState, TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchNotRun``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchNotRun*
+  nameWithType.vb: TestResult.Passed.MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchNotRun(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  id: MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchPassed<TState, TMatchOutput>(TState, Func<TState, Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchPassed<TState, TMatchOutput>(TState, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchPassed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  type: Method
+  source:
+    id: MatchPassed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 231
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchPassed<TState, TMatchOutput>(TState state, Func<TState, TestResult.Passed, TMatchOutput> passed, Func<TState, TMatchOutput> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: passed
+      type: System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TState},{TMatchOutput}}
+    typeParameters:
+    - id: TState
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchPassed(Of TState, TMatchOutput)(state As TState, passed As Func(Of TState, TestResult.Passed, TMatchOutput), [else] As Func(Of TState, TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchPassed``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchPassed*
+  nameWithType.vb: TestResult.Passed.MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchPassed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  id: MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchFailed<TState, TMatchOutput>(TState, Func<TState, Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.Passed.MatchFailed<TState, TMatchOutput>(TState, Func<TState, TestResult.Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchFailed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  type: Method
+  source:
+    id: MatchFailed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 236
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TMatchOutput MatchFailed<TState, TMatchOutput>(TState state, Func<TState, TestResult.Failed, TMatchOutput> failed, Func<TState, TMatchOutput> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: failed
+      type: System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TState},{TMatchOutput}}
+    typeParameters:
+    - id: TState
+    - id: TMatchOutput
+    return:
+      type: '{TMatchOutput}'
+    content.vb: Public Overrides Function MatchFailed(Of TState, TMatchOutput)(state As TState, failed As Func(Of TState, TestResult.Failed, TMatchOutput), [else] As Func(Of TState, TMatchOutput)) As TMatchOutput
+  overridden: TeaPie.Testing.TestResult.MatchFailed``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchFailed*
+  nameWithType.vb: TestResult.Passed.MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchFailed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+- uid: TeaPie.Testing.TestResult.Passed.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  id: MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRun<TState>(TState, Action<TState, NotRun>, Action<TState>)
+  nameWithType: TestResult.Passed.MatchNotRun<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchNotRun<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState>)
+  type: Method
+  source:
+    id: MatchNotRun
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 241
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchNotRun<TState>(TState state, Action<TState, TestResult.NotRun> notRun, Action<TState> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: notRun
+      type: System.Action{{TState},TeaPie.Testing.TestResult.NotRun}
+    - id: else
+      type: System.Action{{TState}}
+    typeParameters:
+    - id: TState
+    content.vb: Public Overrides Sub MatchNotRun(Of TState)(state As TState, notRun As Action(Of TState, TestResult.NotRun), [else] As Action(Of TState))
+  overridden: TeaPie.Testing.TestResult.MatchNotRun``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.NotRun},System.Action{{TState}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchNotRun*
+  nameWithType.vb: TestResult.Passed.MatchNotRun(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchNotRun(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState))
+  name.vb: MatchNotRun(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState))
+- uid: TeaPie.Testing.TestResult.Passed.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  id: MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchPassed<TState>(TState, Action<TState, Passed>, Action<TState>)
+  nameWithType: TestResult.Passed.MatchPassed<TState>(TState, Action<TState, TestResult.Passed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchPassed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState>)
+  type: Method
+  source:
+    id: MatchPassed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 246
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchPassed<TState>(TState state, Action<TState, TestResult.Passed> passed, Action<TState> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: passed
+      type: System.Action{{TState},TeaPie.Testing.TestResult.Passed}
+    - id: else
+      type: System.Action{{TState}}
+    typeParameters:
+    - id: TState
+    content.vb: Public Overrides Sub MatchPassed(Of TState)(state As TState, passed As Action(Of TState, TestResult.Passed), [else] As Action(Of TState))
+  overridden: TeaPie.Testing.TestResult.MatchPassed``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.Passed},System.Action{{TState}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchPassed*
+  nameWithType.vb: TestResult.Passed.MatchPassed(Of TState)(TState, Action(Of TState, TestResult.Passed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchPassed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState))
+  name.vb: MatchPassed(Of TState)(TState, Action(Of TState, Passed), Action(Of TState))
+- uid: TeaPie.Testing.TestResult.Passed.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.Passed.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  id: MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: MatchFailed<TState>(TState, Action<TState, Failed>, Action<TState>)
+  nameWithType: TestResult.Passed.MatchFailed<TState>(TState, Action<TState, TestResult.Failed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.Passed.MatchFailed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Failed>, System.Action<TState>)
+  type: Method
+  source:
+    id: MatchFailed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 251
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override void MatchFailed<TState>(TState state, Action<TState, TestResult.Failed> failed, Action<TState> @else)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: failed
+      type: System.Action{{TState},TeaPie.Testing.TestResult.Failed}
+    - id: else
+      type: System.Action{{TState}}
+    typeParameters:
+    - id: TState
+    content.vb: Public Overrides Sub MatchFailed(Of TState)(state As TState, failed As Action(Of TState, TestResult.Failed), [else] As Action(Of TState))
+  overridden: TeaPie.Testing.TestResult.MatchFailed``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.Failed},System.Action{{TState}})
+  overload: TeaPie.Testing.TestResult.Passed.MatchFailed*
+  nameWithType.vb: TestResult.Passed.MatchFailed(Of TState)(TState, Action(Of TState, TestResult.Failed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.Passed.MatchFailed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Failed), System.Action(Of TState))
+  name.vb: MatchFailed(Of TState)(TState, Action(Of TState, Failed), Action(Of TState))
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapNotRun
+  commentId: M:TeaPie.Testing.TestResult.Passed.UnwrapNotRun
+  id: UnwrapNotRun
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: UnwrapNotRun()
+  nameWithType: TestResult.Passed.UnwrapNotRun()
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapNotRun()
+  type: Method
+  source:
+    id: UnwrapNotRun
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 257
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TestResult.NotRun UnwrapNotRun()
+    return:
+      type: TeaPie.Testing.TestResult.NotRun
+    content.vb: Public Overrides Function UnwrapNotRun() As TestResult.NotRun
+  overridden: TeaPie.Testing.TestResult.UnwrapNotRun
+  overload: TeaPie.Testing.TestResult.Passed.UnwrapNotRun*
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapPassed
+  commentId: M:TeaPie.Testing.TestResult.Passed.UnwrapPassed
+  id: UnwrapPassed
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: UnwrapPassed()
+  nameWithType: TestResult.Passed.UnwrapPassed()
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapPassed()
+  type: Method
+  source:
+    id: UnwrapPassed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 258
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TestResult.Passed UnwrapPassed()
+    return:
+      type: TeaPie.Testing.TestResult.Passed
+    content.vb: Public Overrides Function UnwrapPassed() As TestResult.Passed
+  overridden: TeaPie.Testing.TestResult.UnwrapPassed
+  overload: TeaPie.Testing.TestResult.Passed.UnwrapPassed*
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapFailed
+  commentId: M:TeaPie.Testing.TestResult.Passed.UnwrapFailed
+  id: UnwrapFailed
+  parent: TeaPie.Testing.TestResult.Passed
+  langs:
+  - csharp
+  - vb
+  name: UnwrapFailed()
+  nameWithType: TestResult.Passed.UnwrapFailed()
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapFailed()
+  type: Method
+  source:
+    id: UnwrapFailed
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResult.g.cs
+    startLine: 259
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  example: []
+  syntax:
+    content: public override TestResult.Failed UnwrapFailed()
+    return:
+      type: TeaPie.Testing.TestResult.Failed
+    content.vb: Public Overrides Function UnwrapFailed() As TestResult.Failed
+  overridden: TeaPie.Testing.TestResult.UnwrapFailed
+  overload: TeaPie.Testing.TestResult.Passed.UnwrapFailed*
+references:
+- uid: TeaPie.Testing
+  commentId: N:TeaPie.Testing
+  href: TeaPie.html
+  name: TeaPie.Testing
+  nameWithType: TeaPie.Testing
+  fullName: TeaPie.Testing
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: TeaPie.Testing.TestResult
+  commentId: T:TeaPie.Testing.TestResult
+  parent: TeaPie.Testing
+  href: TeaPie.Testing.TestResult.html
+  name: TestResult
+  nameWithType: TestResult
+  fullName: TeaPie.Testing.TestResult
+- uid: System.IEquatable{TeaPie.Testing.TestResult}
+  commentId: T:System.IEquatable{TeaPie.Testing.TestResult}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TestResult>
+  nameWithType: IEquatable<TestResult>
+  fullName: System.IEquatable<TeaPie.Testing.TestResult>
+  nameWithType.vb: IEquatable(Of TestResult)
+  fullName.vb: System.IEquatable(Of TeaPie.Testing.TestResult)
+  name.vb: IEquatable(Of TestResult)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: )
+- uid: System.IEquatable{TeaPie.Testing.TestResult.Passed}
+  commentId: T:System.IEquatable{TeaPie.Testing.TestResult.Passed}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TestResult.Passed>
+  nameWithType: IEquatable<TestResult.Passed>
+  fullName: System.IEquatable<TeaPie.Testing.TestResult.Passed>
+  nameWithType.vb: IEquatable(Of TestResult.Passed)
+  fullName.vb: System.IEquatable(Of TeaPie.Testing.TestResult.Passed)
+  name.vb: IEquatable(Of TestResult.Passed)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+- uid: TeaPie.Testing.TestResult.TestName
+  commentId: P:TeaPie.Testing.TestResult.TestName
+  parent: TeaPie.Testing.TestResult
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_TestName
+  name: TestName
+  nameWithType: TestResult.TestName
+  fullName: TeaPie.Testing.TestResult.TestName
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+- uid: TeaPie.Testing.TestResult.Passed.#ctor*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.#ctor
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed__ctor_System_Int64_
+  name: Passed
+  nameWithType: TestResult.Passed.Passed
+  fullName: TeaPie.Testing.TestResult.Passed.Passed
+  nameWithType.vb: TestResult.Passed.New
+  fullName.vb: TeaPie.Testing.TestResult.Passed.New
+  name.vb: New
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: TeaPie.Testing.TestResult.Passed.Duration*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.Duration
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_Duration
+  name: Duration
+  nameWithType: TestResult.Passed.Duration
+  fullName: TeaPie.Testing.TestResult.Passed.Duration
+- uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  name: Match<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<Passed, TMatchOutput>, Func<Failed, TMatchOutput>)
+  nameWithType: TestResult.Match<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TestResult.Passed, TMatchOutput>, Func<TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Match<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  nameWithType.vb: TestResult.Match(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TestResult.Passed, TMatchOutput), Func(Of TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of Passed, TMatchOutput), Func(Of Failed, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.Match*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.Match
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  name: Match
+  nameWithType: TestResult.Passed.Match
+  fullName: TeaPie.Testing.TestResult.Passed.Match
+- uid: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.NotRun,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.NotRun, TMatchOutput>
+  nameWithType: Func<TestResult.NotRun, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.NotRun, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput)
+  name.vb: Func(Of TestResult.NotRun, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.Passed,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.Passed, TMatchOutput>
+  nameWithType: Func<TestResult.Passed, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.Passed, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput)
+  name.vb: Func(Of TestResult.Passed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.Failed,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.Failed, TMatchOutput>
+  nameWithType: Func<TestResult.Failed, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.Failed, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput)
+  name.vb: Func(Of TestResult.Failed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: '{TMatchOutput}'
+  commentId: '!:TMatchOutput'
+  definition: TMatchOutput
+  name: TMatchOutput
+  nameWithType: TMatchOutput
+  fullName: TMatchOutput
+- uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  commentId: M:TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  name: Match<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<Passed, TMatchOutput>, Func<Failed, TMatchOutput>)
+  nameWithType: TestResult.Match<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TestResult.Passed, TMatchOutput>, Func<TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Match<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  nameWithType.vb: TestResult.Match(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TestResult.Passed, TMatchOutput), Func(Of TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of Passed, TMatchOutput), Func(Of Failed, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: TMatchOutput
+  name: TMatchOutput
+  nameWithType: TMatchOutput
+  fullName: TMatchOutput
+- uid: TeaPie.Testing.TestResult.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResult.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  parent: TeaPie.Testing.TestResult
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_TeaPie_Testing_TestResult_Passed__System_Action_TeaPie_Testing_TestResult_Failed__
+  name: Match(Action<NotRun>, Action<Passed>, Action<Failed>)
+  nameWithType: TestResult.Match(Action<TestResult.NotRun>, Action<TestResult.Passed>, Action<TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResult.Match(System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action<TeaPie.Testing.TestResult.Failed>)
+  nameWithType.vb: TestResult.Match(Action(Of TestResult.NotRun), Action(Of TestResult.Passed), Action(Of TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResult.Match(System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action(Of TeaPie.Testing.TestResult.Failed))
+  name.vb: Match(Action(Of NotRun), Action(Of Passed), Action(Of Failed))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_TeaPie_Testing_TestResult_Passed__System_Action_TeaPie_Testing_TestResult_Failed__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_TeaPie_Testing_TestResult_Passed__System_Action_TeaPie_Testing_TestResult_Failed__
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.NotRun}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.NotRun}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.NotRun>
+  nameWithType: Action<TestResult.NotRun>
+  fullName: System.Action<TeaPie.Testing.TestResult.NotRun>
+  nameWithType.vb: Action(Of TestResult.NotRun)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.NotRun)
+  name.vb: Action(Of TestResult.NotRun)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.Passed}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.Passed}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.Passed>
+  nameWithType: Action<TestResult.Passed>
+  fullName: System.Action<TeaPie.Testing.TestResult.Passed>
+  nameWithType.vb: Action(Of TestResult.Passed)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.Passed)
+  name.vb: Action(Of TestResult.Passed)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.Failed}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.Failed}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.Failed>
+  nameWithType: Action<TestResult.Failed>
+  fullName: System.Action<TeaPie.Testing.TestResult.Failed>
+  nameWithType.vb: Action(Of TestResult.Failed)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.Failed)
+  name.vb: Action(Of TestResult.Failed)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: TeaPie.Testing.TestResult.Match``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  name: Match<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, Passed, TMatchOutput>, Func<TState, Failed, TMatchOutput>)
+  nameWithType: TestResult.Match<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Match<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  nameWithType.vb: TestResult.Match(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, Passed, TMatchOutput), Func(Of TState, Failed, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: '{TState}'
+  commentId: '!:TState'
+  definition: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+  commentId: T:System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<TState, TestResult.NotRun, TMatchOutput>
+  nameWithType: Func<TState, TestResult.NotRun, TMatchOutput>
+  fullName: System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>
+  nameWithType.vb: Func(Of TState, TestResult.NotRun, TMatchOutput)
+  fullName.vb: System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput)
+  name.vb: Func(Of TState, TestResult.NotRun, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+  commentId: T:System.Func{``0,TeaPie.Testing.TestResult.Passed,``1}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<TState, TestResult.Passed, TMatchOutput>
+  nameWithType: Func<TState, TestResult.Passed, TMatchOutput>
+  fullName: System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>
+  nameWithType.vb: Func(Of TState, TestResult.Passed, TMatchOutput)
+  fullName.vb: System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput)
+  name.vb: Func(Of TState, TestResult.Passed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+  commentId: T:System.Func{``0,TeaPie.Testing.TestResult.Failed,``1}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<TState, TestResult.Failed, TMatchOutput>
+  nameWithType: Func<TState, TestResult.Failed, TMatchOutput>
+  fullName: System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>
+  nameWithType.vb: Func(Of TState, TestResult.Failed, TMatchOutput)
+  fullName.vb: System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput)
+  name.vb: Func(Of TState, TestResult.Failed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  commentId: M:TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  name: Match<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, Passed, TMatchOutput>, Func<TState, Failed, TMatchOutput>)
+  nameWithType: TestResult.Match<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.Match<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  nameWithType.vb: TestResult.Match(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: Match(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, Passed, TMatchOutput), Func(Of TState, Failed, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,TeaPie.Testing.TestResult.Failed,``1})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0_TeaPie_Testing_TestResult_Failed___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: TeaPie.Testing.TestResult.Match``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.NotRun},System.Action{{TState},TeaPie.Testing.TestResult.Passed},System.Action{{TState},TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  name: Match<TState>(TState, Action<TState, NotRun>, Action<TState, Passed>, Action<TState, Failed>)
+  nameWithType: TestResult.Match<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState, TestResult.Passed>, Action<TState, TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResult.Match<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState, TeaPie.Testing.TestResult.Failed>)
+  nameWithType.vb: TestResult.Match(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState, TestResult.Passed), Action(Of TState, TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState, TeaPie.Testing.TestResult.Failed))
+  name.vb: Match(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState, Passed), Action(Of TState, Failed))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: )
+- uid: System.Action{{TState},TeaPie.Testing.TestResult.NotRun}
+  commentId: T:System.Action{``0,TeaPie.Testing.TestResult.NotRun}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<TState, TestResult.NotRun>
+  nameWithType: Action<TState, TestResult.NotRun>
+  fullName: System.Action<TState, TeaPie.Testing.TestResult.NotRun>
+  nameWithType.vb: Action(Of TState, TestResult.NotRun)
+  fullName.vb: System.Action(Of TState, TeaPie.Testing.TestResult.NotRun)
+  name.vb: Action(Of TState, TestResult.NotRun)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+- uid: System.Action{{TState},TeaPie.Testing.TestResult.Passed}
+  commentId: T:System.Action{``0,TeaPie.Testing.TestResult.Passed}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<TState, TestResult.Passed>
+  nameWithType: Action<TState, TestResult.Passed>
+  fullName: System.Action<TState, TeaPie.Testing.TestResult.Passed>
+  nameWithType.vb: Action(Of TState, TestResult.Passed)
+  fullName.vb: System.Action(Of TState, TeaPie.Testing.TestResult.Passed)
+  name.vb: Action(Of TState, TestResult.Passed)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+- uid: System.Action{{TState},TeaPie.Testing.TestResult.Failed}
+  commentId: T:System.Action{``0,TeaPie.Testing.TestResult.Failed}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<TState, TestResult.Failed>
+  nameWithType: Action<TState, TestResult.Failed>
+  fullName: System.Action<TState, TeaPie.Testing.TestResult.Failed>
+  nameWithType.vb: Action(Of TState, TestResult.Failed)
+  fullName.vb: System.Action(Of TState, TeaPie.Testing.TestResult.Failed)
+  name.vb: Action(Of TState, TestResult.Failed)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+- uid: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  name: Match<TState>(TState, Action<TState, NotRun>, Action<TState, Passed>, Action<TState, Failed>)
+  nameWithType: TestResult.Match<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState, TestResult.Passed>, Action<TState, TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResult.Match<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState, TeaPie.Testing.TestResult.Failed>)
+  nameWithType.vb: TestResult.Match(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState, TestResult.Passed), Action(Of TState, TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResult.Match(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState, TeaPie.Testing.TestResult.Failed))
+  name.vb: Match(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState, Passed), Action(Of TState, Failed))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.Match``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0,TeaPie.Testing.TestResult.Failed})
+    name: Match
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_Match__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0_TeaPie_Testing_TestResult_Failed__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  name: MatchNotRun<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchNotRun<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchNotRun(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.MatchNotRun*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.MatchNotRun
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  name: MatchNotRun
+  nameWithType: TestResult.Passed.MatchNotRun
+  fullName: TeaPie.Testing.TestResult.Passed.MatchNotRun
+- uid: System.Func{{TMatchOutput}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TMatchOutput>
+  nameWithType: Func<TMatchOutput>
+  fullName: System.Func<TMatchOutput>
+  nameWithType.vb: Func(Of TMatchOutput)
+  fullName.vb: System.Func(Of TMatchOutput)
+  name.vb: Func(Of TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  name: MatchNotRun<TMatchOutput>(Func<NotRun, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchNotRun<TMatchOutput>(Func<TestResult.NotRun, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TMatchOutput)(Func(Of TestResult.NotRun, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchNotRun(Of TMatchOutput)(Func(Of NotRun, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1_System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  name: MatchPassed<TMatchOutput>(Func<Passed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchPassed<TMatchOutput>(Func<TestResult.Passed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchPassed(Of TMatchOutput)(Func(Of TestResult.Passed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchPassed(Of TMatchOutput)(Func(Of Passed, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.MatchPassed*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.MatchPassed
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  name: MatchPassed
+  nameWithType: TestResult.Passed.MatchPassed
+  fullName: TeaPie.Testing.TestResult.Passed.MatchPassed
+- uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  name: MatchPassed<TMatchOutput>(Func<Passed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchPassed<TMatchOutput>(Func<TestResult.Passed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchPassed(Of TMatchOutput)(Func(Of TestResult.Passed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchPassed(Of TMatchOutput)(Func(Of Passed, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1_System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}},System.Func{{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  name: MatchFailed<TMatchOutput>(Func<Failed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchFailed<TMatchOutput>(Func<TestResult.Failed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchFailed(Of TMatchOutput)(Func(Of TestResult.Failed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchFailed(Of TMatchOutput)(Func(Of Failed, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.MatchFailed*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.MatchFailed
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  name: MatchFailed
+  nameWithType: TestResult.Passed.MatchFailed
+  fullName: TeaPie.Testing.TestResult.Passed.MatchFailed
+- uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  name: MatchFailed<TMatchOutput>(Func<Failed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResult.MatchFailed<TMatchOutput>(Func<TestResult.Failed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TMatchOutput>(System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TMatchOutput>)
+  nameWithType.vb: TestResult.MatchFailed(Of TMatchOutput)(Func(Of TestResult.Failed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TMatchOutput)(System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchFailed(Of TMatchOutput)(Func(Of Failed, TMatchOutput), Func(Of TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1_System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  parent: TeaPie.Testing.TestResult
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_
+  name: MatchNotRun(Action<NotRun>, Action)
+  nameWithType: TestResult.MatchNotRun(Action<TestResult.NotRun>, Action)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun(System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action)
+  nameWithType.vb: TestResult.MatchNotRun(Action(Of TestResult.NotRun), Action)
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action)
+  name.vb: MatchNotRun(Action(Of NotRun), Action)
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun(System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun_System_Action_TeaPie_Testing_TestResult_NotRun__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: TeaPie.Testing.TestResult.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  parent: TeaPie.Testing.TestResult
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed_System_Action_TeaPie_Testing_TestResult_Passed__System_Action_
+  name: MatchPassed(Action<Passed>, Action)
+  nameWithType: TestResult.MatchPassed(Action<TestResult.Passed>, Action)
+  fullName: TeaPie.Testing.TestResult.MatchPassed(System.Action<TeaPie.Testing.TestResult.Passed>, System.Action)
+  nameWithType.vb: TestResult.MatchPassed(Action(Of TestResult.Passed), Action)
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action)
+  name.vb: MatchPassed(Action(Of Passed), Action)
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed_System_Action_TeaPie_Testing_TestResult_Passed__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed(System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed_System_Action_TeaPie_Testing_TestResult_Passed__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  parent: TeaPie.Testing.TestResult
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed_System_Action_TeaPie_Testing_TestResult_Failed__System_Action_
+  name: MatchFailed(Action<Failed>, Action)
+  nameWithType: TestResult.MatchFailed(Action<TestResult.Failed>, Action)
+  fullName: TeaPie.Testing.TestResult.MatchFailed(System.Action<TeaPie.Testing.TestResult.Failed>, System.Action)
+  nameWithType.vb: TestResult.MatchFailed(Action(Of TestResult.Failed), Action)
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(System.Action(Of TeaPie.Testing.TestResult.Failed), System.Action)
+  name.vb: MatchFailed(Action(Of Failed), Action)
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed_System_Action_TeaPie_Testing_TestResult_Failed__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed(System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed_System_Action_TeaPie_Testing_TestResult_Failed__System_Action_
+  - name: (
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.NotRun,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  name: MatchNotRun<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchNotRun<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: System.Func{{TState},{TMatchOutput}}
+  commentId: T:System.Func{``0,``1}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TState, TMatchOutput>
+  nameWithType: Func<TState, TMatchOutput>
+  fullName: System.Func<TState, TMatchOutput>
+  nameWithType.vb: Func(Of TState, TMatchOutput)
+  fullName.vb: System.Func(Of TState, TMatchOutput)
+  name.vb: Func(Of TState, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  name: MatchNotRun<TState, TMatchOutput>(TState, Func<TState, NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchNotRun<TState, TMatchOutput>(TState, Func<TState, TestResult.NotRun, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchNotRun(Of TState, TMatchOutput)(TState, Func(Of TState, NotRun, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``2(``0,System.Func{``0,TeaPie.Testing.TestResult.NotRun,``1},System.Func{``0,``1})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__2___0_System_Func___0_TeaPie_Testing_TestResult_NotRun___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchPassed``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.Passed,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  name: MatchPassed<TState, TMatchOutput>(TState, Func<TState, Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchPassed<TState, TMatchOutput>(TState, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  name: MatchPassed<TState, TMatchOutput>(TState, Func<TState, Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchPassed<TState, TMatchOutput>(TState, Func<TState, TestResult.Passed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchPassed(Of TState, TMatchOutput)(TState, Func(Of TState, Passed, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Passed,``1},System.Func{``0,``1})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__2___0_System_Func___0_TeaPie_Testing_TestResult_Passed___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed``2({TState},System.Func{{TState},TeaPie.Testing.TestResult.Failed,{TMatchOutput}},System.Func{{TState},{TMatchOutput}})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  name: MatchFailed<TState, TMatchOutput>(TState, Func<TState, Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchFailed<TState, TMatchOutput>(TState, Func<TState, TestResult.Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  name: MatchFailed<TState, TMatchOutput>(TState, Func<TState, Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  nameWithType: TestResult.MatchFailed<TState, TMatchOutput>(TState, Func<TState, TestResult.Failed, TMatchOutput>, Func<TState, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TState, TMatchOutput>(TState, System.Func<TState, TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TState, TMatchOutput>)
+  nameWithType.vb: TestResult.MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, TestResult.Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TState, TMatchOutput)(TState, System.Func(Of TState, TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TState, TMatchOutput))
+  name.vb: MatchFailed(Of TState, TMatchOutput)(TState, Func(Of TState, Failed, TMatchOutput), Func(Of TState, TMatchOutput))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``2(``0,System.Func{``0,TeaPie.Testing.TestResult.Failed,``1},System.Func{``0,``1})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__2___0_System_Func___0_TeaPie_Testing_TestResult_Failed___1__System_Func___0___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.NotRun},System.Action{{TState}})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  name: MatchNotRun<TState>(TState, Action<TState, NotRun>, Action<TState>)
+  nameWithType: TestResult.MatchNotRun<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState))
+  name.vb: MatchNotRun(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: System.Action{{TState}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TState>
+  nameWithType: Action<TState>
+  fullName: System.Action<TState>
+  nameWithType.vb: Action(Of TState)
+  fullName.vb: System.Action(Of TState)
+  name.vb: Action(Of TState)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  name: MatchNotRun<TState>(TState, Action<TState, NotRun>, Action<TState>)
+  nameWithType: TestResult.MatchNotRun<TState>(TState, Action<TState, TestResult.NotRun>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchNotRun<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.NotRun>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchNotRun(Of TState)(TState, Action(Of TState, TestResult.NotRun), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchNotRun(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.NotRun), System.Action(Of TState))
+  name.vb: MatchNotRun(Of TState)(TState, Action(Of TState, NotRun), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchNotRun``1(``0,System.Action{``0,TeaPie.Testing.TestResult.NotRun},System.Action{``0})
+    name: MatchNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchNotRun__1___0_System_Action___0_TeaPie_Testing_TestResult_NotRun__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchPassed``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.Passed},System.Action{{TState}})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  name: MatchPassed<TState>(TState, Action<TState, Passed>, Action<TState>)
+  nameWithType: TestResult.MatchPassed<TState>(TState, Action<TState, TestResult.Passed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchPassed(Of TState)(TState, Action(Of TState, TestResult.Passed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState))
+  name.vb: MatchPassed(Of TState)(TState, Action(Of TState, Passed), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  name: MatchPassed<TState>(TState, Action<TState, Passed>, Action<TState>)
+  nameWithType: TestResult.MatchPassed<TState>(TState, Action<TState, TestResult.Passed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchPassed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Passed>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchPassed(Of TState)(TState, Action(Of TState, TestResult.Passed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchPassed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Passed), System.Action(Of TState))
+  name.vb: MatchPassed(Of TState)(TState, Action(Of TState, Passed), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchPassed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Passed},System.Action{``0})
+    name: MatchPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchPassed__1___0_System_Action___0_TeaPie_Testing_TestResult_Passed__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed``1({TState},System.Action{{TState},TeaPie.Testing.TestResult.Failed},System.Action{{TState}})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  parent: TeaPie.Testing.TestResult
+  definition: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  name: MatchFailed<TState>(TState, Action<TState, Failed>, Action<TState>)
+  nameWithType: TestResult.MatchFailed<TState>(TState, Action<TState, TestResult.Failed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Failed>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchFailed(Of TState)(TState, Action(Of TState, TestResult.Failed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Failed), System.Action(Of TState))
+  name.vb: MatchFailed(Of TState)(TState, Action(Of TState, Failed), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  commentId: M:TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+  isExternal: true
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  name: MatchFailed<TState>(TState, Action<TState, Failed>, Action<TState>)
+  nameWithType: TestResult.MatchFailed<TState>(TState, Action<TState, TestResult.Failed>, Action<TState>)
+  fullName: TeaPie.Testing.TestResult.MatchFailed<TState>(TState, System.Action<TState, TeaPie.Testing.TestResult.Failed>, System.Action<TState>)
+  nameWithType.vb: TestResult.MatchFailed(Of TState)(TState, Action(Of TState, TestResult.Failed), Action(Of TState))
+  fullName.vb: TeaPie.Testing.TestResult.MatchFailed(Of TState)(TState, System.Action(Of TState, TeaPie.Testing.TestResult.Failed), System.Action(Of TState))
+  name.vb: MatchFailed(Of TState)(TState, Action(Of TState, Failed), Action(Of TState))
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.MatchFailed``1(``0,System.Action{``0,TeaPie.Testing.TestResult.Failed},System.Action{``0})
+    name: MatchFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_MatchFailed__1___0_System_Action___0_TeaPie_Testing_TestResult_Failed__System_Action___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
+- uid: TeaPie.Testing.TestResult.UnwrapNotRun
+  commentId: M:TeaPie.Testing.TestResult.UnwrapNotRun
+  parent: TeaPie.Testing.TestResult
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapNotRun
+  name: UnwrapNotRun()
+  nameWithType: TestResult.UnwrapNotRun()
+  fullName: TeaPie.Testing.TestResult.UnwrapNotRun()
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.UnwrapNotRun
+    name: UnwrapNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapNotRun
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.UnwrapNotRun
+    name: UnwrapNotRun
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapNotRun
+  - name: (
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapNotRun*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.UnwrapNotRun
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_UnwrapNotRun
+  name: UnwrapNotRun
+  nameWithType: TestResult.Passed.UnwrapNotRun
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapNotRun
+- uid: TeaPie.Testing.TestResult.NotRun
+  commentId: T:TeaPie.Testing.TestResult.NotRun
+  parent: TeaPie.Testing
+  href: TeaPie.Testing.TestResult.html
+  name: TestResult.NotRun
+  nameWithType: TestResult.NotRun
+  fullName: TeaPie.Testing.TestResult.NotRun
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+- uid: TeaPie.Testing.TestResult.UnwrapPassed
+  commentId: M:TeaPie.Testing.TestResult.UnwrapPassed
+  parent: TeaPie.Testing.TestResult
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapPassed
+  name: UnwrapPassed()
+  nameWithType: TestResult.UnwrapPassed()
+  fullName: TeaPie.Testing.TestResult.UnwrapPassed()
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.UnwrapPassed
+    name: UnwrapPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapPassed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.UnwrapPassed
+    name: UnwrapPassed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapPassed
+  - name: (
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapPassed*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.UnwrapPassed
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_UnwrapPassed
+  name: UnwrapPassed
+  nameWithType: TestResult.Passed.UnwrapPassed
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapPassed
+- uid: TeaPie.Testing.TestResult.Passed
+  commentId: T:TeaPie.Testing.TestResult.Passed
+  parent: TeaPie.Testing
+  href: TeaPie.Testing.TestResult.html
+  name: TestResult.Passed
+  nameWithType: TestResult.Passed
+  fullName: TeaPie.Testing.TestResult.Passed
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+- uid: TeaPie.Testing.TestResult.UnwrapFailed
+  commentId: M:TeaPie.Testing.TestResult.UnwrapFailed
+  parent: TeaPie.Testing.TestResult
+  href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapFailed
+  name: UnwrapFailed()
+  nameWithType: TestResult.UnwrapFailed()
+  fullName: TeaPie.Testing.TestResult.UnwrapFailed()
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult.UnwrapFailed
+    name: UnwrapFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapFailed
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult.UnwrapFailed
+    name: UnwrapFailed
+    href: TeaPie.Testing.TestResult.html#TeaPie_Testing_TestResult_UnwrapFailed
+  - name: (
+  - name: )
+- uid: TeaPie.Testing.TestResult.Passed.UnwrapFailed*
+  commentId: Overload:TeaPie.Testing.TestResult.Passed.UnwrapFailed
+  href: TeaPie.Testing.TestResult.Passed.html#TeaPie_Testing_TestResult_Passed_UnwrapFailed
+  name: UnwrapFailed
+  nameWithType: TestResult.Passed.UnwrapFailed
+  fullName: TeaPie.Testing.TestResult.Passed.UnwrapFailed
+- uid: TeaPie.Testing.TestResult.Failed
+  commentId: T:TeaPie.Testing.TestResult.Failed
+  parent: TeaPie.Testing
+  href: TeaPie.Testing.TestResult.html
+  name: TestResult.Failed
+  nameWithType: TestResult.Failed
+  fullName: TeaPie.Testing.TestResult.Failed
+  spec.csharp:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  spec.vb:
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Post-Response Script | TeaPie </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Post-Response Script | TeaPie ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/test-case/post-response-script.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="TeaPie">
+            TeaPie
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="post-response-script">Post-Response Script</h1>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Definition</strong></td>
+<td><code>.csx</code> script to be executed after all HTTP requests within test case.</td>
+</tr>
+<tr>
+<td><strong>Naming Convention</strong></td>
+<td><code>&lt;test-case-name&gt;-test.csx</code></td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Testing given response(s) and tear-down of data.</td>
+</tr>
+<tr>
+<td><strong>Example Usage</strong></td>
+<td><a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/1.%20Customers/AddCustomer-test.csx">Simple Script</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-test.csx">Manipulation with Body</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-test.csx">Another Example</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-test.csx">Advanced Script</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="features">Features</h2>
+<h3 id="testing">Testing</h3>
+<p>The <strong>post-response script</strong> is used to <strong>define tests</strong>. A test is considered <strong>failed</strong> if an exception is thrown within the test body, following standard testing framework practices. This approach allows you to <strong>use any assertion library</strong> referenced via NuGet.</p>
+<blockquote>
+<p>💁‍♂️ However, the <strong>natively supported assertion library</strong> is <code>Xunit.Assert</code>, which is statically imported in all script files. This means you don't need the <code>Assert.</code> prefix to access its methods.</p>
+</blockquote>
+<!-- omit from toc -->
+<h4 id="example-test">Example Test</h4>
+<pre><code class="lang-csharp">tp.Test(&quot;Status code should be 201.&quot;, () =&gt;
+{
+    var statusCode = tp.Response.StatusCode();
+    Equal(201, statusCode);
+});
+</code></pre>
+<!-- omit from toc -->
+<h4 id="accessing-requests-and-responses">Accessing Requests and Responses</h4>
+<ul>
+<li>For <strong>single requests</strong> or the <strong>most recently executed request</strong>, use <code>tp.Request</code> and <code>tp.Response</code>.</li>
+<li>For <strong>multiple requests</strong> in a <code>.http</code> file, use <code>tp.Requests</code> and <code>tp.Responses</code> to access named requests and responses.</li>
+</ul>
+<!-- omit from toc -->
+<h4 id="skipping-tests">Skipping Tests</h4>
+<p>During development or debugging, you may need to skip certain tests. To do this, set the optional <code>skipTest</code> parameter to <code>true</code>:</p>
+<pre><code class="lang-csharp">tp.Test(&quot;Status code should be 201.&quot;, () =&gt;
+{
+    var statusCode = tp.Responses[&quot;CreateCarRequest&quot;].StatusCode();
+    Equal(201, statusCode);
+}, true); // Skip this test
+</code></pre>
+<!-- omit from toc -->
+<h4 id="asynchronous-tests">Asynchronous Tests</h4>
+<p>Asynchronous tests are also fully supported:</p>
+<pre><code class="lang-csharp">await tp.Test($&quot;Newly added car should have '{brand}' brand.&quot;, async () =&gt;
+{
+    var body = tp.GetVariable&lt;string&gt;(&quot;NewCar&quot;);
+    dynamic obj = body.ToExpando();
+
+    dynamic responseJson = await tp.Responses[&quot;GetNewCarRequest&quot;].GetBodyAsExpandoAsync();
+    Equal(obj.Brand, responseJson.brand);
+});
+</code></pre>
+<!-- omit from toc -->
+<h4 id="working-with-body-content">Working with Body Content</h4>
+<p>Both <code>HttpRequestMessage</code> and <code>HttpResponseMessage</code> objects include convenient methods for handling body content:</p>
+<ul>
+<li><code>GetBody()</code> / <code>GetBodyAsync()</code> - Retrieves the body as a <code>string</code>.</li>
+<li><code>GetBody&lt;TResult&gt;()</code> / <code>GetBodyAsync&lt;TResult&gt;()</code> - Deserializes the JSON body into an object of type <code>TResult</code>.</li>
+<li><code>GetBodyAsExpando()</code> / <code>GetBodyAsExpandoAsync()</code> - Retrieves the body as a <strong>case-insensitive <code>dynamic</code> expando object</strong>, making property access easier.
+<ul>
+<li><strong>IMPORTANT</strong>: To use an expando object correctly, <strong>explicitly declare containing variable</strong> as <code>dynamic</code>.</li>
+</ul>
+</li>
+</ul>
+<!-- omit from toc -->
+<h4 id="status-code-handling">Status Code Handling</h4>
+<p>The response object includes a <code>StatusCode()</code> method that simplifies status code handling by returning its <strong>integer</strong> value.</p>
+<!-- omit from toc -->
+<h4 id="json-handling">JSON Handling</h4>
+<p>For requests that handle <code>application/json</code> payloads, a <strong>extension method</strong> <code>ToExpando()</code> can simplify access to JSON properties:</p>
+<pre><code class="lang-csharp">// Using case-insensitive expando object
+tp.Test(&quot;Identifier should be a positive integer.&quot;, () =&gt;
+{
+    // Expando object has to be marked epxlicitly as 'dynamic'
+    dynamic responseBody = tp.Response.GetBody().ToExpando();
+    True(responseBody.id &gt; 0);
+});
+</code></pre>
+<p>This makes working with JSON responses straightforward and efficient.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/test-case/post-response-script.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

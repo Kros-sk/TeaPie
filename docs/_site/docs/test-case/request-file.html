@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Request File | TeaPie </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Request File | TeaPie ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/test-case/request-file.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="TeaPie">
+            TeaPie
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="request-file">Request File</h1>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Definition</strong></td>
+<td>An <code>.http</code> file which contains definition of (multiple) HTTP request(s).</td>
+</tr>
+<tr>
+<td><strong>Naming Convention</strong></td>
+<td><code>&lt;test-case-name&gt;-req.http</code></td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Definition of HTTP requests which will be executed within test case.</td>
+</tr>
+<tr>
+<td><strong>Example Usage</strong></td>
+<td><a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/1.%20Customers/AddCustomer-req.http">Single Request</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-req.http">Multiple (Named) Requests</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http">Advanced Request File with Directives</a>, <a href="https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http">Request File with Retry Directives</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="features">Features</h2>
+<p>A <a href="https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0"><strong>request file</strong></a> can contain one or more HTTP requests. To separate requests, use the <code>###</code> comment line between two requests.</p>
+<h3 id="named-request">Named Request</h3>
+<p>You can also name your requests for easier management by adding a metadata line just before request definition:</p>
+<pre><code class="lang-http"># @name RequestName
+GET https:/localhost:3001/customers
+Content-Type: application/json
+
+{
+    &quot;Id&quot;: 3,
+    &quot;FirstName&quot;: &quot;Alice&quot;,
+    &quot;LastName&quot;: &quot;Johnson&quot;,
+    &quot;Email&quot;: &quot;alice.johnson@example.com&quot;
+}
+</code></pre>
+<h3 id="variables">Variables</h3>
+<p>All variables can be used in the request file with the <code>{{variableName}}</code> notation.</p>
+<blockquote>
+<p>💁‍♂️ When you want to use <strong>reference types for variables</strong>, make sure that they override <code>ToString()</code> method. During variable resolution, <code>ToString()</code> will be called on them.</p>
+</blockquote>
+<p>For <strong>named requests</strong>, you can access request and response data using the following syntax:</p>
+<pre><code class="lang-http">{{requestName.(request|response).(body|headers).(*|JPath|XPath)}}
+
+# Example that will fetch 'Id' property from 'AddNewCarRequest' request's JSON body
+{{AddNewCarRequest.request.body.$.Id}}
+</code></pre>
+<p>This gives you comprehensive access to headers and body content of named requests.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/test-case/request-file.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

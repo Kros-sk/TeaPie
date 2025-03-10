@@ -1,0 +1,1044 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Variables.VariablesCollection
+  commentId: T:TeaPie.Variables.VariablesCollection
+  id: VariablesCollection
+  parent: TeaPie.Variables
+  children:
+  - TeaPie.Variables.VariablesCollection.Clear
+  - TeaPie.Variables.VariablesCollection.Contains(System.String)
+  - TeaPie.Variables.VariablesCollection.Count
+  - TeaPie.Variables.VariablesCollection.GetEnumerator
+  - TeaPie.Variables.VariablesCollection.Get``1(System.String,``0)
+  - TeaPie.Variables.VariablesCollection.Remove(System.String)
+  - TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag(System.String)
+  - TeaPie.Variables.VariablesCollection.Set``1(System.String,``0,System.String[])
+  langs:
+  - csharp
+  - vb
+  name: VariablesCollection
+  nameWithType: VariablesCollection
+  fullName: TeaPie.Variables.VariablesCollection
+  type: Class
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: VariablesCollection
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 5
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: 'public class VariablesCollection : IEnumerable<Variable>, IEnumerable'
+    content.vb: Public Class VariablesCollection Implements IEnumerable(Of Variable), IEnumerable
+  inheritance:
+  - System.Object
+  implements:
+  - System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+- uid: TeaPie.Variables.VariablesCollection.Count
+  commentId: P:TeaPie.Variables.VariablesCollection.Count
+  id: Count
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: VariablesCollection.Count
+  fullName: TeaPie.Variables.VariablesCollection.Count
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Count
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 10
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: TeaPie.Variables.VariablesCollection.Count*
+- uid: TeaPie.Variables.VariablesCollection.Set``1(System.String,``0,System.String[])
+  commentId: M:TeaPie.Variables.VariablesCollection.Set``1(System.String,``0,System.String[])
+  id: Set``1(System.String,``0,System.String[])
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Set<T>(string, T?, params string[])
+  nameWithType: VariablesCollection.Set<T>(string, T?, params string[])
+  fullName: TeaPie.Variables.VariablesCollection.Set<T>(string, T?, params string[])
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Set
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 12
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: public void Set<T>(string variableName, T? value, params string[] tags)
+    parameters:
+    - id: variableName
+      type: System.String
+    - id: value
+      type: '{T}'
+    - id: tags
+      type: System.String[]
+    typeParameters:
+    - id: T
+    content.vb: Public Sub [Set](Of T)(variableName As String, value As T, ParamArray tags As String())
+  overload: TeaPie.Variables.VariablesCollection.Set*
+  nameWithType.vb: VariablesCollection.Set(Of T)(String, T, ParamArray String())
+  fullName.vb: TeaPie.Variables.VariablesCollection.Set(Of T)(String, T, ParamArray String())
+  name.vb: Set(Of T)(String, T, ParamArray String())
+- uid: TeaPie.Variables.VariablesCollection.Get``1(System.String,``0)
+  commentId: M:TeaPie.Variables.VariablesCollection.Get``1(System.String,``0)
+  id: Get``1(System.String,``0)
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Get<T>(string, T?)
+  nameWithType: VariablesCollection.Get<T>(string, T?)
+  fullName: TeaPie.Variables.VariablesCollection.Get<T>(string, T?)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Get
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 28
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  summary: >-
+    Attempts to get variable with given <code class="paramref">name</code> of <code class="typeparamref">T</code> type. If no such variable is
+
+    found, <code class="paramref">defaultValue</code> is retrieved.
+  example: []
+  syntax:
+    content: public T? Get<T>(string name, T? defaultValue = default)
+    parameters:
+    - id: name
+      type: System.String
+      description: Name of the variable.
+    - id: defaultValue
+      type: '{T}'
+      description: >-
+        Value, that will be retrieved when no variable with given <code class="paramref">name</code> of
+            <code class="typeparamref">T</code> type was found.
+    typeParameters:
+    - id: T
+      description: Type of the variable.
+    return:
+      type: '{T}'
+      description: >-
+        Variable value or <code class="paramref">defaultValue</code> if no variable with given <code class="paramref">name</code> of
+            <code class="typeparamref">T</code> type was found.
+    content.vb: Public Function [Get](Of T)(name As String, defaultValue As T = Nothing) As T
+  overload: TeaPie.Variables.VariablesCollection.Get*
+  nameWithType.vb: VariablesCollection.Get(Of T)(String, T)
+  fullName.vb: TeaPie.Variables.VariablesCollection.Get(Of T)(String, T)
+  name.vb: Get(Of T)(String, T)
+- uid: TeaPie.Variables.VariablesCollection.Contains(System.String)
+  commentId: M:TeaPie.Variables.VariablesCollection.Contains(System.String)
+  id: Contains(System.String)
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Contains(string)
+  nameWithType: VariablesCollection.Contains(string)
+  fullName: TeaPie.Variables.VariablesCollection.Contains(string)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Contains
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 41
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: public bool Contains(string variableName)
+    parameters:
+    - id: variableName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function Contains(variableName As String) As Boolean
+  overload: TeaPie.Variables.VariablesCollection.Contains*
+  nameWithType.vb: VariablesCollection.Contains(String)
+  fullName.vb: TeaPie.Variables.VariablesCollection.Contains(String)
+  name.vb: Contains(String)
+- uid: TeaPie.Variables.VariablesCollection.Remove(System.String)
+  commentId: M:TeaPie.Variables.VariablesCollection.Remove(System.String)
+  id: Remove(System.String)
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Remove(string)
+  nameWithType: VariablesCollection.Remove(string)
+  fullName: TeaPie.Variables.VariablesCollection.Remove(string)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Remove
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 43
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: public bool Remove(string variableName)
+    parameters:
+    - id: variableName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function Remove(variableName As String) As Boolean
+  overload: TeaPie.Variables.VariablesCollection.Remove*
+  nameWithType.vb: VariablesCollection.Remove(String)
+  fullName.vb: TeaPie.Variables.VariablesCollection.Remove(String)
+  name.vb: Remove(String)
+- uid: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag(System.String)
+  commentId: M:TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag(System.String)
+  id: RemoveVariablesWithTag(System.String)
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveVariablesWithTag(string)
+  nameWithType: VariablesCollection.RemoveVariablesWithTag(string)
+  fullName: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag(string)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: RemoveVariablesWithTag
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 52
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  summary: >-
+    Attempts to remove all variables with given <code class="paramref">tag</code>. If removal of any of them fails,
+
+    <code>false</code> is retrieved.
+  example: []
+  syntax:
+    content: public bool RemoveVariablesWithTag(string tag)
+    parameters:
+    - id: tag
+      type: System.String
+      description: Tag by which variables are going to be deleted.
+    return:
+      type: System.Boolean
+      description: >-
+        Whether removal of all variables tagged with <code class="paramref">tag</code> was successfull. If at least one removal
+            failed, <code>false</code> is returned.
+    content.vb: Public Function RemoveVariablesWithTag(tag As String) As Boolean
+  overload: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag*
+  nameWithType.vb: VariablesCollection.RemoveVariablesWithTag(String)
+  fullName.vb: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag(String)
+  name.vb: RemoveVariablesWithTag(String)
+- uid: TeaPie.Variables.VariablesCollection.Clear
+  commentId: M:TeaPie.Variables.VariablesCollection.Clear
+  id: Clear
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: VariablesCollection.Clear()
+  fullName: TeaPie.Variables.VariablesCollection.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Clear
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 63
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: TeaPie.Variables.VariablesCollection.Clear*
+- uid: TeaPie.Variables.VariablesCollection.GetEnumerator
+  commentId: M:TeaPie.Variables.VariablesCollection.GetEnumerator
+  id: GetEnumerator
+  parent: TeaPie.Variables.VariablesCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: VariablesCollection.GetEnumerator()
+  fullName: TeaPie.Variables.VariablesCollection.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Variables/VariablesCollection.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: GetEnumerator
+    path: ../src/TeaPie/Variables/VariablesCollection.cs
+    startLine: 65
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Variables
+  summary: Returns an enumerator that iterates through the collection.
+  example: []
+  syntax:
+    content: public IEnumerator<Variable> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{TeaPie.Variables.Variable}
+      description: An enumerator that can be used to iterate through the collection.
+    content.vb: Public Function GetEnumerator() As IEnumerator(Of Variable)
+  overload: TeaPie.Variables.VariablesCollection.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}.GetEnumerator
+references:
+- uid: TeaPie.Variables
+  commentId: N:TeaPie.Variables
+  href: TeaPie.html
+  name: TeaPie.Variables
+  nameWithType: TeaPie.Variables
+  fullName: TeaPie.Variables
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Variables
+    name: Variables
+    href: TeaPie.Variables.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Variables
+    name: Variables
+    href: TeaPie.Variables.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}
+  commentId: T:System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Variable>
+  nameWithType: IEnumerable<Variable>
+  fullName: System.Collections.Generic.IEnumerable<TeaPie.Variables.Variable>
+  nameWithType.vb: IEnumerable(Of Variable)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of TeaPie.Variables.Variable)
+  name.vb: IEnumerable(Of Variable)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: TeaPie.Variables.Variable
+    name: Variable
+    href: TeaPie.Variables.Variable.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Variables.Variable
+    name: Variable
+    href: TeaPie.Variables.Variable.html
+  - name: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerable
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+- uid: TeaPie.Variables.VariablesCollection.Count*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Count
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Count
+  name: Count
+  nameWithType: VariablesCollection.Count
+  fullName: TeaPie.Variables.VariablesCollection.Count
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: TeaPie.Variables.VariablesCollection.Set*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Set
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Set__1_System_String___0_System_String___
+  name: Set
+  nameWithType: VariablesCollection.Set
+  fullName: TeaPie.Variables.VariablesCollection.Set
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: TeaPie.Variables.VariablesCollection.Get*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Get
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Get__1_System_String___0_
+  name: Get
+  nameWithType: VariablesCollection.Get
+  fullName: TeaPie.Variables.VariablesCollection.Get
+- uid: TeaPie.Variables.VariablesCollection.Contains*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Contains
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Contains_System_String_
+  name: Contains
+  nameWithType: VariablesCollection.Contains
+  fullName: TeaPie.Variables.VariablesCollection.Contains
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: TeaPie.Variables.VariablesCollection.Remove*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Remove
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Remove_System_String_
+  name: Remove
+  nameWithType: VariablesCollection.Remove
+  fullName: TeaPie.Variables.VariablesCollection.Remove
+- uid: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_RemoveVariablesWithTag_System_String_
+  name: RemoveVariablesWithTag
+  nameWithType: VariablesCollection.RemoveVariablesWithTag
+  fullName: TeaPie.Variables.VariablesCollection.RemoveVariablesWithTag
+- uid: TeaPie.Variables.VariablesCollection.Clear*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.Clear
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_Clear
+  name: Clear
+  nameWithType: VariablesCollection.Clear
+  fullName: TeaPie.Variables.VariablesCollection.Clear
+- uid: TeaPie.Variables.VariablesCollection.GetEnumerator*
+  commentId: Overload:TeaPie.Variables.VariablesCollection.GetEnumerator
+  href: TeaPie.Variables.VariablesCollection.html#TeaPie_Variables_VariablesCollection_GetEnumerator
+  name: GetEnumerator
+  nameWithType: VariablesCollection.GetEnumerator
+  fullName: TeaPie.Variables.VariablesCollection.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<Variable>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<TeaPie.Variables.Variable>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of Variable).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of TeaPie.Variables.Variable).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable{TeaPie.Variables.Variable}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator{TeaPie.Variables.Variable}
+  commentId: T:System.Collections.Generic.IEnumerator{TeaPie.Variables.Variable}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<Variable>
+  nameWithType: IEnumerator<Variable>
+  fullName: System.Collections.Generic.IEnumerator<TeaPie.Variables.Variable>
+  nameWithType.vb: IEnumerator(Of Variable)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of TeaPie.Variables.Variable)
+  name.vb: IEnumerator(Of Variable)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - uid: TeaPie.Variables.Variable
+    name: Variable
+    href: TeaPie.Variables.Variable.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Variables.Variable
+    name: Variable
+    href: TeaPie.Variables.Variable.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

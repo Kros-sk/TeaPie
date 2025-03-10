@@ -1,0 +1,151 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Http.Auth.IAuthOptions
+  commentId: T:TeaPie.Http.Auth.IAuthOptions
+  id: IAuthOptions
+  parent: TeaPie.Http.Auth
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IAuthOptions
+  nameWithType: IAuthOptions
+  fullName: TeaPie.Http.Auth.IAuthOptions
+  type: Interface
+  source:
+    remote:
+      path: src/TeaPie/Http/Auth/IAuthOptions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: IAuthOptions
+    path: ../src/TeaPie/Http/Auth/IAuthOptions.cs
+    startLine: 2
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Http.Auth
+  syntax:
+    content: public interface IAuthOptions
+    content.vb: Public Interface IAuthOptions
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+references:
+- uid: TeaPie.Http.Auth
+  commentId: N:TeaPie.Http.Auth
+  href: TeaPie.html
+  name: TeaPie.Http.Auth
+  nameWithType: TeaPie.Http.Auth
+  fullName: TeaPie.Http.Auth
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Http
+  commentId: N:TeaPie.Http
+  id: TeaPie.Http
+  children:
+  - TeaPie.Http.HttpMessagesExtensions
+  langs:
+  - csharp
+  - vb
+  name: TeaPie.Http
+  nameWithType: TeaPie.Http
+  fullName: TeaPie.Http
+  type: Namespace
+  assemblies:
+  - TeaPie
+references:
+- uid: TeaPie.Http.HttpMessagesExtensions
+  commentId: T:TeaPie.Http.HttpMessagesExtensions
+  href: TeaPie.Http.HttpMessagesExtensions.html
+  name: HttpMessagesExtensions
+  nameWithType: HttpMessagesExtensions
+  fullName: TeaPie.Http.HttpMessagesExtensions

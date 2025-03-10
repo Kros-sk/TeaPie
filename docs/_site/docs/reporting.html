@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Reporting | TeaPie </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Reporting | TeaPie ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/reporting.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="TeaPie">
+            TeaPie
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="reporting">Reporting</h1>
+
+<h2 id="console-report">Console report</h2>
+<p>At the end of a collection testing run, a summary report of test results is <strong>automatically displayed to console</strong> using <code>Spectre.Console</code> components. Here is an example:</p>
+<p><img src="../images/report-example.png" alt="Report example"></p>
+<h2 id="reporting-to-file">Reporting to File</h2>
+<p>TeaPie includes a built-in <strong><code>JUnit XML</code> file reporter</strong>, which can be enabled by adding the <code>-r|--report-file</code> <strong>option</strong> with a valid path to an <code>.xml</code> file where the report will be generated.</p>
+<p>This <strong>widely accepted format</strong> is supported natively by <strong>GitHub Actions</strong> and <strong>Microsoft Azure DevOps</strong>. However, it is not fully standardized, and different CI tools may use modified versions of this format. For more details, refer to this <a href="https://github.com/testmoapp/junitxml">post</a>.</p>
+<p>Since <code>JUnit XML</code> uses <strong>different terminology</strong> than <code>TeaPie</code>, here is the mapping:</p>
+<ul>
+<li><strong><code>testsuites</code></strong> → <strong>Collection</strong></li>
+<li><strong><code>testsuite</code></strong> → <strong>Test Case</strong></li>
+<li><strong><code>testcase</code></strong> → <strong>Test</strong></li>
+</ul>
+<p>Time is automatically converted to <strong>seconds</strong> (a common practice) with <strong>three decimal places</strong>, using <strong>dot notation</strong>.</p>
+<h2 id="custom-reporters">Custom Reporters</h2>
+<p>The <strong>default console reporter</strong>, powered by <code>AnsiConsole</code> from <code>Spectre.Console</code>, provides all essential test results details. However, users can <strong>add custom reporters</strong>, either by defining them <strong>inline</strong>:</p>
+<pre><code class="lang-csharp">tp.RegisterReporter((summary) =&gt;
+{
+    if (summary.AllTestsPassed)
+    {
+        Console.WriteLine($&quot;Success! All {summary.NumberOfExecutedTests} tests passed.&quot;);
+    }
+    else
+    {
+        Console.WriteLine($&quot;Failure: {summary.PercentageOfFailedTests}% of tests failed.&quot;);
+    }
+});
+</code></pre>
+<p>Or for more advanced and customizable reporting, by implementing a custom reporter class that implements the <code>IReporter&lt;TestsResultsSummary&gt;</code> interface:</p>
+<pre><code class="lang-csharp">public class MyReporter : IReporter&lt;TestsResultsSummary&gt;
+{
+    public void Report(TestsResultsSummary summary)
+    {
+        // Custom reporting logic...
+    }
+}
+
+tp.RegisterReporter(new MyReporter());
+</code></pre>
+<blockquote>
+<p>All necessary information about results of tests can be found within <a class="xref" href="../api/TeaPie.Testing.TestCaseTestResultsSummary.html">TestResultSummary</a> object. The summary contains properties with access to commonly evaluated statistics as <code>AllTestsPassed</code>, <code>NumberOfFailedTests</code>, <code>PercentageOfSkippedTests</code>, <code>FailedTests</code>, ...</p>
+</blockquote>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Kros-sk/TeaPie/blob/testCaseRun/docs/docs/reporting.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

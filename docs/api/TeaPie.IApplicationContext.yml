@@ -1,0 +1,407 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.IApplicationContext
+  commentId: T:TeaPie.IApplicationContext
+  id: IApplicationContext
+  parent: TeaPie
+  children:
+  - TeaPie.IApplicationContext.EnvironmentName
+  - TeaPie.IApplicationContext.Logger
+  - TeaPie.IApplicationContext.Path
+  - TeaPie.IApplicationContext.Reporter
+  - TeaPie.IApplicationContext.ServiceProvider
+  langs:
+  - csharp
+  - vb
+  name: IApplicationContext
+  nameWithType: IApplicationContext
+  fullName: TeaPie.IApplicationContext
+  type: Interface
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: IApplicationContext
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 5
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: public interface IApplicationContext
+    content.vb: Public Interface IApplicationContext
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+- uid: TeaPie.IApplicationContext.Path
+  commentId: P:TeaPie.IApplicationContext.Path
+  id: Path
+  parent: TeaPie.IApplicationContext
+  langs:
+  - csharp
+  - vb
+  name: Path
+  nameWithType: IApplicationContext.Path
+  fullName: TeaPie.IApplicationContext.Path
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Path
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 7
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: string Path { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Path As String
+  overload: TeaPie.IApplicationContext.Path*
+- uid: TeaPie.IApplicationContext.EnvironmentName
+  commentId: P:TeaPie.IApplicationContext.EnvironmentName
+  id: EnvironmentName
+  parent: TeaPie.IApplicationContext
+  langs:
+  - csharp
+  - vb
+  name: EnvironmentName
+  nameWithType: IApplicationContext.EnvironmentName
+  fullName: TeaPie.IApplicationContext.EnvironmentName
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: EnvironmentName
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 9
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: string EnvironmentName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property EnvironmentName As String
+  overload: TeaPie.IApplicationContext.EnvironmentName*
+- uid: TeaPie.IApplicationContext.Logger
+  commentId: P:TeaPie.IApplicationContext.Logger
+  id: Logger
+  parent: TeaPie.IApplicationContext
+  langs:
+  - csharp
+  - vb
+  name: Logger
+  nameWithType: IApplicationContext.Logger
+  fullName: TeaPie.IApplicationContext.Logger
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Logger
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 11
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: ILogger Logger { get; }
+    parameters: []
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: ReadOnly Property Logger As ILogger
+  overload: TeaPie.IApplicationContext.Logger*
+- uid: TeaPie.IApplicationContext.ServiceProvider
+  commentId: P:TeaPie.IApplicationContext.ServiceProvider
+  id: ServiceProvider
+  parent: TeaPie.IApplicationContext
+  langs:
+  - csharp
+  - vb
+  name: ServiceProvider
+  nameWithType: IApplicationContext.ServiceProvider
+  fullName: TeaPie.IApplicationContext.ServiceProvider
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: ServiceProvider
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 13
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: IServiceProvider ServiceProvider { get; }
+    parameters: []
+    return:
+      type: System.IServiceProvider
+    content.vb: ReadOnly Property ServiceProvider As IServiceProvider
+  overload: TeaPie.IApplicationContext.ServiceProvider*
+- uid: TeaPie.IApplicationContext.Reporter
+  commentId: P:TeaPie.IApplicationContext.Reporter
+  id: Reporter
+  parent: TeaPie.IApplicationContext
+  langs:
+  - csharp
+  - vb
+  name: Reporter
+  nameWithType: IApplicationContext.Reporter
+  fullName: TeaPie.IApplicationContext.Reporter
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/IApplicationContext.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Reporter
+    path: ../src/TeaPie/IApplicationContext.cs
+    startLine: 15
+  assemblies:
+  - TeaPie
+  namespace: TeaPie
+  syntax:
+    content: ITestResultsSummaryReporter Reporter { get; }
+    parameters: []
+    return:
+      type: TeaPie.Reporting.ITestResultsSummaryReporter
+    content.vb: ReadOnly Property Reporter As ITestResultsSummaryReporter
+  overload: TeaPie.IApplicationContext.Reporter*
+references:
+- uid: TeaPie
+  commentId: N:TeaPie
+  href: TeaPie.html
+  name: TeaPie
+  nameWithType: TeaPie
+  fullName: TeaPie
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+- uid: TeaPie.IApplicationContext.Path*
+  commentId: Overload:TeaPie.IApplicationContext.Path
+  href: TeaPie.IApplicationContext.html#TeaPie_IApplicationContext_Path
+  name: Path
+  nameWithType: IApplicationContext.Path
+  fullName: TeaPie.IApplicationContext.Path
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TeaPie.IApplicationContext.EnvironmentName*
+  commentId: Overload:TeaPie.IApplicationContext.EnvironmentName
+  href: TeaPie.IApplicationContext.html#TeaPie_IApplicationContext_EnvironmentName
+  name: EnvironmentName
+  nameWithType: IApplicationContext.EnvironmentName
+  fullName: TeaPie.IApplicationContext.EnvironmentName
+- uid: TeaPie.IApplicationContext.Logger*
+  commentId: Overload:TeaPie.IApplicationContext.Logger
+  href: TeaPie.IApplicationContext.html#TeaPie_IApplicationContext_Logger
+  name: Logger
+  nameWithType: IApplicationContext.Logger
+  fullName: TeaPie.IApplicationContext.Logger
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: TeaPie.IApplicationContext.ServiceProvider*
+  commentId: Overload:TeaPie.IApplicationContext.ServiceProvider
+  href: TeaPie.IApplicationContext.html#TeaPie_IApplicationContext_ServiceProvider
+  name: ServiceProvider
+  nameWithType: IApplicationContext.ServiceProvider
+  fullName: TeaPie.IApplicationContext.ServiceProvider
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: TeaPie.IApplicationContext.Reporter*
+  commentId: Overload:TeaPie.IApplicationContext.Reporter
+  href: TeaPie.IApplicationContext.html#TeaPie_IApplicationContext_Reporter
+  name: Reporter
+  nameWithType: IApplicationContext.Reporter
+  fullName: TeaPie.IApplicationContext.Reporter
+- uid: TeaPie.Reporting.ITestResultsSummaryReporter
+  commentId: T:TeaPie.Reporting.ITestResultsSummaryReporter
+  parent: TeaPie.Reporting
+  href: TeaPie.Reporting.ITestResultsSummaryReporter.html
+  name: ITestResultsSummaryReporter
+  nameWithType: ITestResultsSummaryReporter
+  fullName: TeaPie.Reporting.ITestResultsSummaryReporter
+- uid: TeaPie.Reporting
+  commentId: N:TeaPie.Reporting
+  href: TeaPie.html
+  name: TeaPie.Reporting
+  nameWithType: TeaPie.Reporting
+  fullName: TeaPie.Reporting
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Reporting
+    name: Reporting
+    href: TeaPie.Reporting.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Reporting
+    name: Reporting
+    href: TeaPie.Reporting.html

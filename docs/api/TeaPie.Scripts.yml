@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Scripts
+  commentId: N:TeaPie.Scripts
+  id: TeaPie.Scripts
+  children:
+  - TeaPie.Scripts.Globals
+  langs:
+  - csharp
+  - vb
+  name: TeaPie.Scripts
+  nameWithType: TeaPie.Scripts
+  fullName: TeaPie.Scripts
+  type: Namespace
+  assemblies:
+  - TeaPie
+references:
+- uid: TeaPie.Scripts.Globals
+  commentId: T:TeaPie.Scripts.Globals
+  href: TeaPie.Scripts.Globals.html
+  name: Globals
+  nameWithType: Globals
+  fullName: TeaPie.Scripts.Globals

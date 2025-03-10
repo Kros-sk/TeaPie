@@ -1,0 +1,417 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  commentId: T:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  id: TeaPieOAuth2Extensions
+  parent: TeaPie.Http.Auth.OAuth2
+  children:
+  - TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider(TeaPie.TeaPie,TeaPie.Http.Auth.OAuth2.OAuth2Options)
+  - TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider(TeaPie.TeaPie)
+  langs:
+  - csharp
+  - vb
+  name: TeaPieOAuth2Extensions
+  nameWithType: TeaPieOAuth2Extensions
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  type: Class
+  source:
+    remote:
+      path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: TeaPieOAuth2Extensions
+    path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+    startLine: 2
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Http.Auth.OAuth2
+  syntax:
+    content: public static class TeaPieOAuth2Extensions
+    content.vb: Public Module TeaPieOAuth2Extensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider(TeaPie.TeaPie,TeaPie.Http.Auth.OAuth2.OAuth2Options)
+  commentId: M:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider(TeaPie.TeaPie,TeaPie.Http.Auth.OAuth2.OAuth2Options)
+  id: ConfigureOAuth2Provider(TeaPie.TeaPie,TeaPie.Http.Auth.OAuth2.OAuth2Options)
+  isExtensionMethod: true
+  parent: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  langs:
+  - csharp
+  - vb
+  name: ConfigureOAuth2Provider(TeaPie, OAuth2Options)
+  nameWithType: TeaPieOAuth2Extensions.ConfigureOAuth2Provider(TeaPie, OAuth2Options)
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider(TeaPie.TeaPie, TeaPie.Http.Auth.OAuth2.OAuth2Options)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: ConfigureOAuth2Provider
+    path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+    startLine: 9
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Http.Auth.OAuth2
+  summary: Configures options for <b>OAuth2</b> authentication provider.
+  example: []
+  syntax:
+    content: public static void ConfigureOAuth2Provider(this TeaPie teaPie, OAuth2Options options)
+    parameters:
+    - id: teaPie
+      type: TeaPie.TeaPie
+      description: The current context instance.
+    - id: options
+      type: TeaPie.Http.Auth.OAuth2.OAuth2Options
+      description: Options with which <b>OAuth2</b> authentication provider will be configured.
+    content.vb: Public Shared Sub ConfigureOAuth2Provider(teaPie As TeaPie, options As OAuth2Options)
+  overload: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider*
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider(TeaPie.TeaPie)
+  commentId: M:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider(TeaPie.TeaPie)
+  id: SetOAuth2AsDefaultAuthProvider(TeaPie.TeaPie)
+  isExtensionMethod: true
+  parent: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions
+  langs:
+  - csharp
+  - vb
+  name: SetOAuth2AsDefaultAuthProvider(TeaPie)
+  nameWithType: TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider(TeaPie)
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider(TeaPie.TeaPie)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: SetOAuth2AsDefaultAuthProvider
+    path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
+    startLine: 19
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Http.Auth.OAuth2
+  summary: Sets <b>OAuth2</b> authentication provider as default.
+  example: []
+  syntax:
+    content: public static void SetOAuth2AsDefaultAuthProvider(this TeaPie teaPie)
+    parameters:
+    - id: teaPie
+      type: TeaPie.TeaPie
+      description: The current context instance.
+    content.vb: Public Shared Sub SetOAuth2AsDefaultAuthProvider(teaPie As TeaPie)
+  overload: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider*
+references:
+- uid: TeaPie.Http.Auth.OAuth2
+  commentId: N:TeaPie.Http.Auth.OAuth2
+  href: TeaPie.html
+  name: TeaPie.Http.Auth.OAuth2
+  nameWithType: TeaPie.Http.Auth.OAuth2
+  fullName: TeaPie.Http.Auth.OAuth2
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  - name: .
+  - uid: TeaPie.Http.Auth.OAuth2
+    name: OAuth2
+    href: TeaPie.Http.Auth.OAuth2.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  - name: .
+  - uid: TeaPie.Http.Auth.OAuth2
+    name: OAuth2
+    href: TeaPie.Http.Auth.OAuth2.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider*
+  commentId: Overload:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider
+  href: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.html#TeaPie_Http_Auth_OAuth2_TeaPieOAuth2Extensions_ConfigureOAuth2Provider_TeaPie_TeaPie_TeaPie_Http_Auth_OAuth2_OAuth2Options_
+  name: ConfigureOAuth2Provider
+  nameWithType: TeaPieOAuth2Extensions.ConfigureOAuth2Provider
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.ConfigureOAuth2Provider
+- uid: TeaPie.TeaPie
+  commentId: T:TeaPie.TeaPie
+  parent: TeaPie
+  href: TeaPie.TeaPie.html
+  name: TeaPie
+  nameWithType: TeaPie
+  fullName: TeaPie.TeaPie
+- uid: TeaPie.Http.Auth.OAuth2.OAuth2Options
+  commentId: T:TeaPie.Http.Auth.OAuth2.OAuth2Options
+  parent: TeaPie.Http.Auth.OAuth2
+  href: TeaPie.Http.Auth.OAuth2.OAuth2Options.html
+  name: OAuth2Options
+  nameWithType: OAuth2Options
+  fullName: TeaPie.Http.Auth.OAuth2.OAuth2Options
+- uid: TeaPie
+  commentId: N:TeaPie
+  href: TeaPie.html
+  name: TeaPie
+  nameWithType: TeaPie
+  fullName: TeaPie
+- uid: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider*
+  commentId: Overload:TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider
+  href: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.html#TeaPie_Http_Auth_OAuth2_TeaPieOAuth2Extensions_SetOAuth2AsDefaultAuthProvider_TeaPie_TeaPie_
+  name: SetOAuth2AsDefaultAuthProvider
+  nameWithType: TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider
+  fullName: TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.SetOAuth2AsDefaultAuthProvider

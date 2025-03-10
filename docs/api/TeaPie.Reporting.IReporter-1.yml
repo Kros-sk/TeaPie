@@ -1,0 +1,199 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Reporting.IReporter`1
+  commentId: T:TeaPie.Reporting.IReporter`1
+  id: IReporter`1
+  parent: TeaPie.Reporting
+  children:
+  - TeaPie.Reporting.IReporter`1.Report(`0)
+  langs:
+  - csharp
+  - vb
+  name: IReporter<TReportedObject>
+  nameWithType: IReporter<TReportedObject>
+  fullName: TeaPie.Reporting.IReporter<TReportedObject>
+  type: Interface
+  source:
+    remote:
+      path: src/TeaPie/Reporting/IReporter.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: IReporter
+    path: ../src/TeaPie/Reporting/IReporter.cs
+    startLine: 7
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Reporting
+  syntax:
+    content: public interface IReporter<TReportedObject>
+    typeParameters:
+    - id: TReportedObject
+    content.vb: Public Interface IReporter(Of TReportedObject)
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  nameWithType.vb: IReporter(Of TReportedObject)
+  fullName.vb: TeaPie.Reporting.IReporter(Of TReportedObject)
+  name.vb: IReporter(Of TReportedObject)
+- uid: TeaPie.Reporting.IReporter`1.Report(`0)
+  commentId: M:TeaPie.Reporting.IReporter`1.Report(`0)
+  id: Report(`0)
+  parent: TeaPie.Reporting.IReporter`1
+  langs:
+  - csharp
+  - vb
+  name: Report(TReportedObject)
+  nameWithType: IReporter<TReportedObject>.Report(TReportedObject)
+  fullName: TeaPie.Reporting.IReporter<TReportedObject>.Report(TReportedObject)
+  type: Method
+  source:
+    remote:
+      path: src/TeaPie/Reporting/IReporter.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Report
+    path: ../src/TeaPie/Reporting/IReporter.cs
+    startLine: 9
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Reporting
+  syntax:
+    content: void Report(TReportedObject report)
+    parameters:
+    - id: report
+      type: '{TReportedObject}'
+    content.vb: Sub Report(report As TReportedObject)
+  overload: TeaPie.Reporting.IReporter`1.Report*
+  nameWithType.vb: IReporter(Of TReportedObject).Report(TReportedObject)
+  fullName.vb: TeaPie.Reporting.IReporter(Of TReportedObject).Report(TReportedObject)
+references:
+- uid: TeaPie.Reporting
+  commentId: N:TeaPie.Reporting
+  href: TeaPie.html
+  name: TeaPie.Reporting
+  nameWithType: TeaPie.Reporting
+  fullName: TeaPie.Reporting
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Reporting
+    name: Reporting
+    href: TeaPie.Reporting.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Reporting
+    name: Reporting
+    href: TeaPie.Reporting.html
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+- uid: TeaPie.Reporting.IReporter`1.Report*
+  commentId: Overload:TeaPie.Reporting.IReporter`1.Report
+  href: TeaPie.Reporting.IReporter-1.html#TeaPie_Reporting_IReporter_1_Report__0_
+  name: Report
+  nameWithType: IReporter<TReportedObject>.Report
+  fullName: TeaPie.Reporting.IReporter<TReportedObject>.Report
+  nameWithType.vb: IReporter(Of TReportedObject).Report
+  fullName.vb: TeaPie.Reporting.IReporter(Of TReportedObject).Report
+- uid: '{TReportedObject}'
+  commentId: '!:TReportedObject'
+  definition: TReportedObject
+  name: TReportedObject
+  nameWithType: TReportedObject
+  fullName: TReportedObject
+- uid: TReportedObject
+  commentId: '!:TReportedObject'
+  name: TReportedObject
+  nameWithType: TReportedObject
+  fullName: TReportedObject

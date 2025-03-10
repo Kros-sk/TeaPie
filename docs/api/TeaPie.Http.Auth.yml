@@ -1,0 +1,97 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Http.Auth
+  commentId: N:TeaPie.Http.Auth
+  id: TeaPie.Http.Auth
+  children:
+  - TeaPie.Http.Auth.IAuthOptions
+  - TeaPie.Http.Auth.IAuthProvider
+  - TeaPie.Http.Auth.IAuthProvider`1
+  - TeaPie.Http.Auth.TeaPieAuthenticationExtensions
+  langs:
+  - csharp
+  - vb
+  name: TeaPie.Http.Auth
+  nameWithType: TeaPie.Http.Auth
+  fullName: TeaPie.Http.Auth
+  type: Namespace
+  assemblies:
+  - TeaPie
+references:
+- uid: TeaPie.Http.Auth.IAuthOptions
+  commentId: T:TeaPie.Http.Auth.IAuthOptions
+  parent: TeaPie.Http.Auth
+  href: TeaPie.Http.Auth.IAuthOptions.html
+  name: IAuthOptions
+  nameWithType: IAuthOptions
+  fullName: TeaPie.Http.Auth.IAuthOptions
+- uid: TeaPie.Http.Auth.IAuthProvider
+  commentId: T:TeaPie.Http.Auth.IAuthProvider
+  parent: TeaPie.Http.Auth
+  href: TeaPie.Http.Auth.IAuthProvider.html
+  name: IAuthProvider
+  nameWithType: IAuthProvider
+  fullName: TeaPie.Http.Auth.IAuthProvider
+- uid: TeaPie.Http.Auth.IAuthProvider`1
+  commentId: T:TeaPie.Http.Auth.IAuthProvider`1
+  parent: TeaPie.Http.Auth
+  href: TeaPie.Http.Auth.IAuthProvider-1.html
+  name: IAuthProvider<TOptions>
+  nameWithType: IAuthProvider<TOptions>
+  fullName: TeaPie.Http.Auth.IAuthProvider<TOptions>
+  nameWithType.vb: IAuthProvider(Of TOptions)
+  fullName.vb: TeaPie.Http.Auth.IAuthProvider(Of TOptions)
+  name.vb: IAuthProvider(Of TOptions)
+  spec.csharp:
+  - uid: TeaPie.Http.Auth.IAuthProvider`1
+    name: IAuthProvider
+    href: TeaPie.Http.Auth.IAuthProvider-1.html
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: TeaPie.Http.Auth.IAuthProvider`1
+    name: IAuthProvider
+    href: TeaPie.Http.Auth.IAuthProvider-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: TeaPie.Http.Auth.TeaPieAuthenticationExtensions
+  commentId: T:TeaPie.Http.Auth.TeaPieAuthenticationExtensions
+  parent: TeaPie.Http.Auth
+  href: TeaPie.Http.Auth.TeaPieAuthenticationExtensions.html
+  name: TeaPieAuthenticationExtensions
+  nameWithType: TeaPieAuthenticationExtensions
+  fullName: TeaPie.Http.Auth.TeaPieAuthenticationExtensions
+- uid: TeaPie.Http.Auth
+  commentId: N:TeaPie.Http.Auth
+  href: TeaPie.html
+  name: TeaPie.Http.Auth
+  nameWithType: TeaPie.Http.Auth
+  fullName: TeaPie.Http.Auth
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Http
+    name: Http
+    href: TeaPie.Http.html
+  - name: .
+  - uid: TeaPie.Http.Auth
+    name: Auth
+    href: TeaPie.Http.Auth.html

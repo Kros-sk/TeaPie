@@ -1,0 +1,92 @@
+[33m74bd8ee[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mpublish[m[33m, [m[1;31morigin/publish[m[33m)[m HEAD@{0}: commit: update of pipeline, change of the extension method name, change of the access modifier
+[33m6d9ea21[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{1}: checkout: moving from master to publish
+[33m6d9ea21[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{2}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m02f61b3[m HEAD@{3}: checkout: moving from testCaseRun to master
+[33m7564328[m[33m ([m[1;31morigin/testCaseRun[m[33m, [m[1;32mtestCaseRun[m[33m)[m HEAD@{4}: commit: update of README.md files
+[33me9ef238[m HEAD@{5}: commit: pre-pull-request changes
+[33m7b0c192[m HEAD@{6}: commit: resolution of warnings
+[33m4a935c6[m HEAD@{7}: commit: rename of remote folder
+[33ma72c840[m HEAD@{8}: commit: update of NuGet packages
+[33m320aed5[m HEAD@{9}: commit: update of README.md
+[33mbdb54e4[m HEAD@{10}: commit: unit tests
+[33mc53484a[m HEAD@{11}: checkout: moving from authentication to testCaseRun
+[33m6d71af6[m[33m ([m[1;31morigin/authentication[m[33m, [m[1;32mauthentication[m[33m)[m HEAD@{12}: reset: moving to HEAD
+[33m6d71af6[m[33m ([m[1;31morigin/authentication[m[33m, [m[1;32mauthentication[m[33m)[m HEAD@{13}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m12b0fee[m HEAD@{14}: commit: update of README.md and demo
+[33m22ef3cd[m HEAD@{15}: commit: unit tests
+[33mab1c2e8[m HEAD@{16}: commit: support for dynamic change of auth provider (by directive)
+[33mc135675[m HEAD@{17}: commit: update of demo
+[33m14cc901[m HEAD@{18}: commit: fix of unit tests
+[33m0f03430[m HEAD@{19}: commit: OAuth2 options builder, erasure of unwanted usings
+[33mce13d7f[m HEAD@{20}: checkout: moving from master to authentication
+[33m02f61b3[m HEAD@{21}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m5f0c839[m HEAD@{22}: checkout: moving from initializationScript to master
+[33ma10df79[m[33m ([m[1;31morigin/initializationScript[m[33m, [m[1;32minitializationScript[m[33m)[m HEAD@{23}: commit (merge): master merge
+[33m6763ac8[m HEAD@{24}: checkout: moving from master to initializationScript
+[33m5f0c839[m HEAD@{25}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33mc376c2c[m HEAD@{26}: checkout: moving from initializationScript to master
+[33m6763ac8[m HEAD@{27}: commit (merge): comments resolution
+[33mcb103b3[m HEAD@{28}: checkout: moving from reportingToFile to initializationScript
+[33md208e8a[m[33m ([m[1;31morigin/reportingToFile[m[33m, [m[1;32mreportingToFile[m[33m)[m HEAD@{29}: commit: comment for demo
+[33m71a181e[m HEAD@{30}: commit: update of .gitignore
+[33m906576f[m HEAD@{31}: commit: comments resolution
+[33m4ca202d[m HEAD@{32}: checkout: moving from initializationScript to reportingToFile
+[33mcb103b3[m HEAD@{33}: commit: update of README.md
+[33mc860014[m HEAD@{34}: commit: small fix
+[33m4cdb873[m HEAD@{35}: checkout: moving from reportingToFile to initializationScript
+[33m4ca202d[m HEAD@{36}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m3ded33a[m HEAD@{37}: commit: pre-pull-request changes
+[33m927b46d[m HEAD@{38}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m07df445[m HEAD@{39}: commit: implementation draft
+[33mc376c2c[m HEAD@{40}: checkout: moving from master to reportingToFile
+[33mc376c2c[m HEAD@{41}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m72baab2[m HEAD@{42}: checkout: moving from reporting to master
+[33m41af7bf[m[33m ([m[1;31morigin/reporting[m[33m, [m[1;32mreporting[m[33m)[m HEAD@{43}: commit: pre-pull-request changes
+[33m46e882f[m HEAD@{44}: commit: README.md and demo check-up
+[33m28f69a5[m HEAD@{45}: commit: rename to grammatically correct and better-sounding
+[33m4fe6f2f[m HEAD@{46}: commit: report test results summary despite syntax errors
+[33mee6ab77[m HEAD@{47}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33mea6040b[m HEAD@{48}: commit: skippable tests, new compatibility checker
+[33mbfc8c33[m HEAD@{49}: commit: reporting base
+[33m70c6be3[m HEAD@{50}: commit: fix of Assert.Equal ussage in demo (expected and actual were swapped)
+[33m72baab2[m HEAD@{51}: checkout: moving from master to reporting
+[33m72baab2[m HEAD@{52}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m2448395[m HEAD@{53}: checkout: moving from environments to master
+[33mecc75ae[m[33m ([m[1;31morigin/environments[m[33m, [m[1;32menvironments[m[33m)[m HEAD@{54}: commit: pre-pull-request changes, optimization of File creation, completion of unit tests
+[33m0ee5a8b[m HEAD@{55}: commit: from VariableTypResolver to JsonElementTypeConverter
+[33m23f3335[m HEAD@{56}: commit: support for explore command
+[33m841499f[m HEAD@{57}: commit: structure exploration performance improvements (as suggested in the comment)
+[33m0676967[m HEAD@{58}: commit: fix of unit tests, partial comments resolution
+[33m878e0ec[m HEAD@{59}: commit: update of README.md
+[33m7fbe805[m HEAD@{60}: commit: environment file path normalization
+[33mf2ec048[m HEAD@{61}: commit: cli tool options support
+[33m39f64e7[m HEAD@{62}: commit: support for environment-less runs, demo update
+[33m642bbd9[m HEAD@{63}: commit: another unit tests (for steps), reset of ApplicationContextBuilder internal state, which caused unexpected behaviour
+[33md55076c[m HEAD@{64}: checkout: moving from demo to environments
+[33mc92d727[m[33m ([m[1;31morigin/demo[m[33m, [m[1;32mdemo[m[33m)[m HEAD@{65}: commit: removal of redundant slash at the end of path
+[33m886af1b[m HEAD@{66}: commit: pre-pull-request changes
+[33m696a506[m HEAD@{67}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m3f2e132[m HEAD@{68}: commit: demo draft
+[33mbb726db[m HEAD@{69}: commit: fix of path resolution, more convenient diagnostics for user
+[33md0d0363[m HEAD@{70}: commit: implementation of handy methods
+[33me5f7f9e[m HEAD@{71}: merge master: Merge made by the 'ort' strategy.
+[33m45c4aa5[m HEAD@{72}: checkout: moving from master to demo
+[33m2448395[m HEAD@{73}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m8d2feea[m HEAD@{74}: checkout: moving from structureExplorationFix to master
+[33m9a7c928[m[33m ([m[1;31morigin/structureExplorationFix[m[33m, [m[1;32mstructureExplorationFix[m[33m)[m HEAD@{75}: commit: unit tests adjustments
+[33m60aa7cf[m HEAD@{76}: checkout: moving from cliTool to structureExplorationFix
+[33m674ee15[m[33m ([m[1;32mcliTool[m[33m)[m HEAD@{77}: commit: implementation of cli tool
+[33m70667dc[m HEAD@{78}: commit: unification of approach for path and temporary path
+[33ma08f7c3[m HEAD@{79}: commit: logging adjustments
+[33m8d2feea[m HEAD@{80}: checkout: moving from master to cliTool
+[33m8d2feea[m HEAD@{81}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33md6cba0d[m HEAD@{82}: checkout: moving from cliApplication to master
+[33m57df97c[m[33m ([m[1;31morigin/cliApplication[m[33m, [m[1;32mcliApplication[m[33m)[m HEAD@{83}: reset: moving to HEAD
+[33m57df97c[m[33m ([m[1;31morigin/cliApplication[m[33m, [m[1;32mcliApplication[m[33m)[m HEAD@{84}: commit: re-style of the description
+[33mbf71ad3[m HEAD@{85}: commit: implementation of CLI application
+[33md6cba0d[m HEAD@{86}: reset: moving to HEAD
+[33md6cba0d[m HEAD@{87}: checkout: moving from master to cliApplication
+[33md6cba0d[m HEAD@{88}: reset: moving to HEAD
+[33md6cba0d[m HEAD@{89}: pull --progress --no-edit --no-stat --recurse-submodules=no origin: Fast-forward
+[33m602b074[m HEAD@{90}: checkout: moving from commentsResolution5 to master
+[33ma681aa7[m[33m ([m[1;31morigi

@@ -1,0 +1,1542 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Testing.TestResultMatchExtensions
+  commentId: T:TeaPie.Testing.TestResultMatchExtensions
+  id: TestResultMatchExtensions
+  parent: TeaPie.Testing
+  children:
+  - TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  - TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  - TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  langs:
+  - csharp
+  - vb
+  name: TestResultMatchExtensions
+  nameWithType: TestResultMatchExtensions
+  fullName: TeaPie.Testing.TestResultMatchExtensions
+  type: Class
+  source:
+    id: TestResultMatchExtensions
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 6
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static class TestResultMatchExtensions
+    content.vb: Public Module TestResultMatchExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  id: MatchAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchAsync<TMatchOutput>(Task<TestResult>, Func<NotRun, TMatchOutput>, Func<Passed, TMatchOutput>, Func<Failed, TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchAsync<TMatchOutput>(Task<TestResult>, Func<TestResult.NotRun, TMatchOutput>, Func<TestResult.Passed, TMatchOutput>, Func<TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchAsync<TMatchOutput>(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  type: Method
+  source:
+    id: MatchAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 9
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task<TMatchOutput> MatchAsync<TMatchOutput>(this Task<TestResult> unionTask, Func<TestResult.NotRun, TMatchOutput> notRun, Func<TestResult.Passed, TMatchOutput> passed, Func<TestResult.Failed, TMatchOutput> failed)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.Task{{TMatchOutput}}
+    content.vb: Public Shared Function MatchAsync(Of TMatchOutput)(unionTask As Task(Of TestResult), notRun As Func(Of TestResult.NotRun, TMatchOutput), passed As Func(Of TestResult.Passed, TMatchOutput), failed As Func(Of TestResult.Failed, TMatchOutput)) As Task(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of TestResult.NotRun, TMatchOutput), Func(Of TestResult.Passed, TMatchOutput), Func(Of TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(Of TMatchOutput)(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: MatchAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of NotRun, TMatchOutput), Func(Of Passed, TMatchOutput), Func(Of Failed, TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  id: MatchAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{TeaPie.Testing.TestResult.Failed,``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchAsync<TMatchOutput>(ValueTask<TestResult>, Func<NotRun, TMatchOutput>, Func<Passed, TMatchOutput>, Func<Failed, TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchAsync<TMatchOutput>(ValueTask<TestResult>, Func<TestResult.NotRun, TMatchOutput>, Func<TestResult.Passed, TMatchOutput>, Func<TestResult.Failed, TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchAsync<TMatchOutput>(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>)
+  type: Method
+  source:
+    id: MatchAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 20
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask<TMatchOutput> MatchAsync<TMatchOutput>(this ValueTask<TestResult> unionTask, Func<TestResult.NotRun, TMatchOutput> notRun, Func<TestResult.Passed, TMatchOutput> passed, Func<TestResult.Failed, TMatchOutput> failed)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.ValueTask{{TMatchOutput}}
+    content.vb: Public Shared Function MatchAsync(Of TMatchOutput)(unionTask As ValueTask(Of TestResult), notRun As Func(Of TestResult.NotRun, TMatchOutput), passed As Func(Of TestResult.Passed, TMatchOutput), failed As Func(Of TestResult.Failed, TMatchOutput)) As ValueTask(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of TestResult.NotRun, TMatchOutput), Func(Of TestResult.Passed, TMatchOutput), Func(Of TestResult.Failed, TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(Of TMatchOutput)(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput))
+  name.vb: MatchAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of NotRun, TMatchOutput), Func(Of Passed, TMatchOutput), Func(Of Failed, TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  id: MatchAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchAsync(Task<TestResult>, Action<NotRun>, Action<Passed>, Action<Failed>)
+  nameWithType: TestResultMatchExtensions.MatchAsync(Task<TestResult>, Action<TestResult.NotRun>, Action<TestResult.Passed>, Action<TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action<TeaPie.Testing.TestResult.Failed>)
+  type: Method
+  source:
+    id: MatchAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 31
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task MatchAsync(this Task<TestResult> unionTask, Action<TestResult.NotRun> notRun, Action<TestResult.Passed> passed, Action<TestResult.Failed> failed)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function MatchAsync(unionTask As Task(Of TestResult), notRun As Action(Of TestResult.NotRun), passed As Action(Of TestResult.Passed), failed As Action(Of TestResult.Failed)) As Task
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchAsync(Task(Of TestResult), Action(Of TestResult.NotRun), Action(Of TestResult.Passed), Action(Of TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action(Of TeaPie.Testing.TestResult.Failed))
+  name.vb: MatchAsync(Task(Of TestResult), Action(Of NotRun), Action(Of Passed), Action(Of Failed))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  id: MatchAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action{TeaPie.Testing.TestResult.Passed},System.Action{TeaPie.Testing.TestResult.Failed})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchAsync(ValueTask<TestResult>, Action<NotRun>, Action<Passed>, Action<Failed>)
+  nameWithType: TestResultMatchExtensions.MatchAsync(ValueTask<TestResult>, Action<TestResult.NotRun>, Action<TestResult.Passed>, Action<TestResult.Failed>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action<TeaPie.Testing.TestResult.Failed>)
+  type: Method
+  source:
+    id: MatchAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 42
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask MatchAsync(this ValueTask<TestResult> unionTask, Action<TestResult.NotRun> notRun, Action<TestResult.Passed> passed, Action<TestResult.Failed> failed)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Shared Function MatchAsync(unionTask As ValueTask(Of TestResult), notRun As Action(Of TestResult.NotRun), passed As Action(Of TestResult.Passed), failed As Action(Of TestResult.Failed)) As ValueTask
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchAsync(ValueTask(Of TestResult), Action(Of TestResult.NotRun), Action(Of TestResult.Passed), Action(Of TestResult.Failed))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchAsync(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action(Of TeaPie.Testing.TestResult.Failed))
+  name.vb: MatchAsync(ValueTask(Of TestResult), Action(Of NotRun), Action(Of Passed), Action(Of Failed))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  id: MatchNotRunAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRunAsync<TMatchOutput>(Task<TestResult>, Func<NotRun, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchNotRunAsync<TMatchOutput>(Task<TestResult>, Func<TestResult.NotRun, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync<TMatchOutput>(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchNotRunAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 53
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task<TMatchOutput> MatchNotRunAsync<TMatchOutput>(this Task<TestResult> unionTask, Func<TestResult.NotRun, TMatchOutput> notRun, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.Task{{TMatchOutput}}
+    content.vb: Public Shared Function MatchNotRunAsync(Of TMatchOutput)(unionTask As Task(Of TestResult), notRun As Func(Of TestResult.NotRun, TMatchOutput), [else] As Func(Of TMatchOutput)) As Task(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchNotRunAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of TestResult.NotRun, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(Of TMatchOutput)(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchNotRunAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of NotRun, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  id: MatchPassedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchPassedAsync<TMatchOutput>(Task<TestResult>, Func<Passed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchPassedAsync<TMatchOutput>(Task<TestResult>, Func<TestResult.Passed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync<TMatchOutput>(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchPassedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 64
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task<TMatchOutput> MatchPassedAsync<TMatchOutput>(this Task<TestResult> unionTask, Func<TestResult.Passed, TMatchOutput> passed, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.Task{{TMatchOutput}}
+    content.vb: Public Shared Function MatchPassedAsync(Of TMatchOutput)(unionTask As Task(Of TestResult), passed As Func(Of TestResult.Passed, TMatchOutput), [else] As Func(Of TMatchOutput)) As Task(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchPassedAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of TestResult.Passed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(Of TMatchOutput)(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchPassedAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of Passed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  id: MatchFailedAsync``1(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchFailedAsync<TMatchOutput>(Task<TestResult>, Func<Failed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchFailedAsync<TMatchOutput>(Task<TestResult>, Func<TestResult.Failed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync<TMatchOutput>(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchFailedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 75
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task<TMatchOutput> MatchFailedAsync<TMatchOutput>(this Task<TestResult> unionTask, Func<TestResult.Failed, TMatchOutput> failed, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.Task{{TMatchOutput}}
+    content.vb: Public Shared Function MatchFailedAsync(Of TMatchOutput)(unionTask As Task(Of TestResult), failed As Func(Of TestResult.Failed, TMatchOutput), [else] As Func(Of TMatchOutput)) As Task(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchFailedAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of TestResult.Failed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(Of TMatchOutput)(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchFailedAsync(Of TMatchOutput)(Task(Of TestResult), Func(Of Failed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  id: MatchNotRunAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.NotRun,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRunAsync<TMatchOutput>(ValueTask<TestResult>, Func<NotRun, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchNotRunAsync<TMatchOutput>(ValueTask<TestResult>, Func<TestResult.NotRun, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync<TMatchOutput>(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchNotRunAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 86
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask<TMatchOutput> MatchNotRunAsync<TMatchOutput>(this ValueTask<TestResult> unionTask, Func<TestResult.NotRun, TMatchOutput> notRun, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.ValueTask{{TMatchOutput}}
+    content.vb: Public Shared Function MatchNotRunAsync(Of TMatchOutput)(unionTask As ValueTask(Of TestResult), notRun As Func(Of TestResult.NotRun, TMatchOutput), [else] As Func(Of TMatchOutput)) As ValueTask(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchNotRunAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of TestResult.NotRun, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(Of TMatchOutput)(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchNotRunAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of NotRun, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  id: MatchPassedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Passed,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchPassedAsync<TMatchOutput>(ValueTask<TestResult>, Func<Passed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchPassedAsync<TMatchOutput>(ValueTask<TestResult>, Func<TestResult.Passed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync<TMatchOutput>(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchPassedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 97
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask<TMatchOutput> MatchPassedAsync<TMatchOutput>(this ValueTask<TestResult> unionTask, Func<TestResult.Passed, TMatchOutput> passed, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: passed
+      type: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.ValueTask{{TMatchOutput}}
+    content.vb: Public Shared Function MatchPassedAsync(Of TMatchOutput)(unionTask As ValueTask(Of TestResult), passed As Func(Of TestResult.Passed, TMatchOutput), [else] As Func(Of TMatchOutput)) As ValueTask(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchPassedAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of TestResult.Passed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(Of TMatchOutput)(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchPassedAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of Passed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  id: MatchFailedAsync``1(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Func{TeaPie.Testing.TestResult.Failed,``0},System.Func{``0})
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchFailedAsync<TMatchOutput>(ValueTask<TestResult>, Func<Failed, TMatchOutput>, Func<TMatchOutput>)
+  nameWithType: TestResultMatchExtensions.MatchFailedAsync<TMatchOutput>(ValueTask<TestResult>, Func<TestResult.Failed, TMatchOutput>, Func<TMatchOutput>)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync<TMatchOutput>(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>, System.Func<TMatchOutput>)
+  type: Method
+  source:
+    id: MatchFailedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 108
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask<TMatchOutput> MatchFailedAsync<TMatchOutput>(this ValueTask<TestResult> unionTask, Func<TestResult.Failed, TMatchOutput> failed, Func<TMatchOutput> @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: failed
+      type: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+    - id: else
+      type: System.Func{{TMatchOutput}}
+    typeParameters:
+    - id: TMatchOutput
+    return:
+      type: System.Threading.Tasks.ValueTask{{TMatchOutput}}
+    content.vb: Public Shared Function MatchFailedAsync(Of TMatchOutput)(unionTask As ValueTask(Of TestResult), failed As Func(Of TestResult.Failed, TMatchOutput), [else] As Func(Of TMatchOutput)) As ValueTask(Of TMatchOutput)
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchFailedAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of TestResult.Failed, TMatchOutput), Func(Of TMatchOutput))
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(Of TMatchOutput)(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput), System.Func(Of TMatchOutput))
+  name.vb: MatchFailedAsync(Of TMatchOutput)(ValueTask(Of TestResult), Func(Of Failed, TMatchOutput), Func(Of TMatchOutput))
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  id: MatchNotRunAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRunAsync(Task<TestResult>, Action<NotRun>, Action)
+  nameWithType: TestResultMatchExtensions.MatchNotRunAsync(Task<TestResult>, Action<TestResult.NotRun>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action)
+  type: Method
+  source:
+    id: MatchNotRunAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 119
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task MatchNotRunAsync(this Task<TestResult> unionTask, Action<TestResult.NotRun> notRun, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function MatchNotRunAsync(unionTask As Task(Of TestResult), notRun As Action(Of TestResult.NotRun), [else] As Action) As Task
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchNotRunAsync(Task(Of TestResult), Action(Of TestResult.NotRun), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action)
+  name.vb: MatchNotRunAsync(Task(Of TestResult), Action(Of NotRun), Action)
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  id: MatchPassedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchPassedAsync(Task<TestResult>, Action<Passed>, Action)
+  nameWithType: TestResultMatchExtensions.MatchPassedAsync(Task<TestResult>, Action<TestResult.Passed>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action)
+  type: Method
+  source:
+    id: MatchPassedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 130
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task MatchPassedAsync(this Task<TestResult> unionTask, Action<TestResult.Passed> passed, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function MatchPassedAsync(unionTask As Task(Of TestResult), passed As Action(Of TestResult.Passed), [else] As Action) As Task
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchPassedAsync(Task(Of TestResult), Action(Of TestResult.Passed), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action)
+  name.vb: MatchPassedAsync(Task(Of TestResult), Action(Of Passed), Action)
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  id: MatchFailedAsync(System.Threading.Tasks.Task{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchFailedAsync(Task<TestResult>, Action<Failed>, Action)
+  nameWithType: TestResultMatchExtensions.MatchFailedAsync(Task<TestResult>, Action<TestResult.Failed>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.Task<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.Failed>, System.Action)
+  type: Method
+  source:
+    id: MatchFailedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 141
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static Task MatchFailedAsync(this Task<TestResult> unionTask, Action<TestResult.Failed> failed, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function MatchFailedAsync(unionTask As Task(Of TestResult), failed As Action(Of TestResult.Failed), [else] As Action) As Task
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchFailedAsync(Task(Of TestResult), Action(Of TestResult.Failed), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.Failed), System.Action)
+  name.vb: MatchFailedAsync(Task(Of TestResult), Action(Of Failed), Action)
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  id: MatchNotRunAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.NotRun},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchNotRunAsync(ValueTask<TestResult>, Action<NotRun>, Action)
+  nameWithType: TestResultMatchExtensions.MatchNotRunAsync(ValueTask<TestResult>, Action<TestResult.NotRun>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.NotRun>, System.Action)
+  type: Method
+  source:
+    id: MatchNotRunAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 152
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask MatchNotRunAsync(this ValueTask<TestResult> unionTask, Action<TestResult.NotRun> notRun, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: notRun
+      type: System.Action{TeaPie.Testing.TestResult.NotRun}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Shared Function MatchNotRunAsync(unionTask As ValueTask(Of TestResult), notRun As Action(Of TestResult.NotRun), [else] As Action) As ValueTask
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchNotRunAsync(ValueTask(Of TestResult), Action(Of TestResult.NotRun), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.NotRun), System.Action)
+  name.vb: MatchNotRunAsync(ValueTask(Of TestResult), Action(Of NotRun), Action)
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  id: MatchPassedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Passed},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchPassedAsync(ValueTask<TestResult>, Action<Passed>, Action)
+  nameWithType: TestResultMatchExtensions.MatchPassedAsync(ValueTask<TestResult>, Action<TestResult.Passed>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.Passed>, System.Action)
+  type: Method
+  source:
+    id: MatchPassedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 163
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask MatchPassedAsync(this ValueTask<TestResult> unionTask, Action<TestResult.Passed> passed, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: passed
+      type: System.Action{TeaPie.Testing.TestResult.Passed}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Shared Function MatchPassedAsync(unionTask As ValueTask(Of TestResult), passed As Action(Of TestResult.Passed), [else] As Action) As ValueTask
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchPassedAsync(ValueTask(Of TestResult), Action(Of TestResult.Passed), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.Passed), System.Action)
+  name.vb: MatchPassedAsync(ValueTask(Of TestResult), Action(Of Passed), Action)
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  commentId: M:TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  id: MatchFailedAsync(System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult},System.Action{TeaPie.Testing.TestResult.Failed},System.Action)
+  isExtensionMethod: true
+  parent: TeaPie.Testing.TestResultMatchExtensions
+  langs:
+  - csharp
+  - vb
+  name: MatchFailedAsync(ValueTask<TestResult>, Action<Failed>, Action)
+  nameWithType: TestResultMatchExtensions.MatchFailedAsync(ValueTask<TestResult>, Action<TestResult.Failed>, Action)
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>, System.Action<TeaPie.Testing.TestResult.Failed>, System.Action)
+  type: Method
+  source:
+    id: MatchFailedAsync
+    path: Dunet.Generator\Dunet.Generator.UnionGeneration.UnionGenerator\TeaPie.Testing.TestResultMatchExtensions.g.cs
+    startLine: 174
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public static ValueTask MatchFailedAsync(this ValueTask<TestResult> unionTask, Action<TestResult.Failed> failed, Action @else)
+    parameters:
+    - id: unionTask
+      type: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+    - id: failed
+      type: System.Action{TeaPie.Testing.TestResult.Failed}
+    - id: else
+      type: System.Action
+    return:
+      type: System.Threading.Tasks.ValueTask
+    content.vb: Public Shared Function MatchFailedAsync(unionTask As ValueTask(Of TestResult), failed As Action(Of TestResult.Failed), [else] As Action) As ValueTask
+  overload: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync*
+  nameWithType.vb: TestResultMatchExtensions.MatchFailedAsync(ValueTask(Of TestResult), Action(Of TestResult.Failed), Action)
+  fullName.vb: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync(System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult), System.Action(Of TeaPie.Testing.TestResult.Failed), System.Action)
+  name.vb: MatchFailedAsync(ValueTask(Of TestResult), Action(Of Failed), Action)
+references:
+- uid: TeaPie.Testing
+  commentId: N:TeaPie.Testing
+  href: TeaPie.html
+  name: TeaPie.Testing
+  nameWithType: TeaPie.Testing
+  fullName: TeaPie.Testing
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchAsync*
+  commentId: Overload:TeaPie.Testing.TestResultMatchExtensions.MatchAsync
+  href: TeaPie.Testing.TestResultMatchExtensions.html#TeaPie_Testing_TestResultMatchExtensions_MatchAsync__1_System_Threading_Tasks_Task_TeaPie_Testing_TestResult__System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func_TeaPie_Testing_TestResult_Failed___0__
+  name: MatchAsync
+  nameWithType: TestResultMatchExtensions.MatchAsync
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchAsync
+- uid: System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+  commentId: T:System.Threading.Tasks.Task{TeaPie.Testing.TestResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TestResult>
+  nameWithType: Task<TestResult>
+  fullName: System.Threading.Tasks.Task<TeaPie.Testing.TestResult>
+  nameWithType.vb: Task(Of TestResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TeaPie.Testing.TestResult)
+  name.vb: Task(Of TestResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: )
+- uid: System.Func{TeaPie.Testing.TestResult.NotRun,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.NotRun,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.NotRun, TMatchOutput>
+  nameWithType: Func<TestResult.NotRun, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.NotRun, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.NotRun, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.NotRun, TMatchOutput)
+  name.vb: Func(Of TestResult.NotRun, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{TeaPie.Testing.TestResult.Passed,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.Passed,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.Passed, TMatchOutput>
+  nameWithType: Func<TestResult.Passed, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.Passed, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.Passed, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.Passed, TMatchOutput)
+  name.vb: Func(Of TestResult.Passed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func{TeaPie.Testing.TestResult.Failed,{TMatchOutput}}
+  commentId: T:System.Func{TeaPie.Testing.TestResult.Failed,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<TestResult.Failed, TMatchOutput>
+  nameWithType: Func<TestResult.Failed, TMatchOutput>
+  fullName: System.Func<TeaPie.Testing.TestResult.Failed, TMatchOutput>
+  nameWithType.vb: Func(Of TestResult.Failed, TMatchOutput)
+  fullName.vb: System.Func(Of TeaPie.Testing.TestResult.Failed, TMatchOutput)
+  name.vb: Func(Of TestResult.Failed, TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: ','
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Threading.Tasks.Task{{TMatchOutput}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TMatchOutput>
+  nameWithType: Task<TMatchOutput>
+  fullName: System.Threading.Tasks.Task<TMatchOutput>
+  nameWithType.vb: Task(Of TMatchOutput)
+  fullName.vb: System.Threading.Tasks.Task(Of TMatchOutput)
+  name.vb: Task(Of TMatchOutput)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+  commentId: T:System.Threading.Tasks.ValueTask{TeaPie.Testing.TestResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TestResult>
+  nameWithType: ValueTask<TestResult>
+  fullName: System.Threading.Tasks.ValueTask<TeaPie.Testing.TestResult>
+  nameWithType.vb: ValueTask(Of TestResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TeaPie.Testing.TestResult)
+  name.vb: ValueTask(Of TestResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: )
+- uid: System.Threading.Tasks.ValueTask{{TMatchOutput}}
+  commentId: T:System.Threading.Tasks.ValueTask{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TMatchOutput>
+  nameWithType: ValueTask<TMatchOutput>
+  fullName: System.Threading.Tasks.ValueTask<TMatchOutput>
+  nameWithType.vb: ValueTask(Of TMatchOutput)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TMatchOutput)
+  name.vb: ValueTask(Of TMatchOutput)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.NotRun}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.NotRun}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.NotRun>
+  nameWithType: Action<TestResult.NotRun>
+  fullName: System.Action<TeaPie.Testing.TestResult.NotRun>
+  nameWithType.vb: Action(Of TestResult.NotRun)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.NotRun)
+  name.vb: Action(Of TestResult.NotRun)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.Passed}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.Passed}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.Passed>
+  nameWithType: Action<TestResult.Passed>
+  fullName: System.Action<TeaPie.Testing.TestResult.Passed>
+  nameWithType.vb: Action(Of TestResult.Passed)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.Passed)
+  name.vb: Action(Of TestResult.Passed)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+- uid: System.Action{TeaPie.Testing.TestResult.Failed}
+  commentId: T:System.Action{TeaPie.Testing.TestResult.Failed}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TestResult.Failed>
+  nameWithType: Action<TestResult.Failed>
+  fullName: System.Action<TeaPie.Testing.TestResult.Failed>
+  nameWithType.vb: Action(Of TestResult.Failed)
+  fullName.vb: System.Action(Of TeaPie.Testing.TestResult.Failed)
+  name.vb: Action(Of TestResult.Failed)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.ValueTask
+  commentId: T:System.Threading.Tasks.ValueTask
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask
+  name: ValueTask
+  nameWithType: ValueTask
+  fullName: System.Threading.Tasks.ValueTask
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync*
+  commentId: Overload:TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync
+  href: TeaPie.Testing.TestResultMatchExtensions.html#TeaPie_Testing_TestResultMatchExtensions_MatchNotRunAsync__1_System_Threading_Tasks_Task_TeaPie_Testing_TestResult__System_Func_TeaPie_Testing_TestResult_NotRun___0__System_Func___0__
+  name: MatchNotRunAsync
+  nameWithType: TestResultMatchExtensions.MatchNotRunAsync
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchNotRunAsync
+- uid: System.Func{{TMatchOutput}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TMatchOutput>
+  nameWithType: Func<TMatchOutput>
+  fullName: System.Func<TMatchOutput>
+  nameWithType.vb: Func(Of TMatchOutput)
+  fullName.vb: System.Func(Of TMatchOutput)
+  name.vb: Func(Of TMatchOutput)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TMatchOutput
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMatchOutput
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync*
+  commentId: Overload:TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync
+  href: TeaPie.Testing.TestResultMatchExtensions.html#TeaPie_Testing_TestResultMatchExtensions_MatchPassedAsync__1_System_Threading_Tasks_Task_TeaPie_Testing_TestResult__System_Func_TeaPie_Testing_TestResult_Passed___0__System_Func___0__
+  name: MatchPassedAsync
+  nameWithType: TestResultMatchExtensions.MatchPassedAsync
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchPassedAsync
+- uid: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync*
+  commentId: Overload:TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync
+  href: TeaPie.Testing.TestResultMatchExtensions.html#TeaPie_Testing_TestResultMatchExtensions_MatchFailedAsync__1_System_Threading_Tasks_Task_TeaPie_Testing_TestResult__System_Func_TeaPie_Testing_TestResult_Failed___0__System_Func___0__
+  name: MatchFailedAsync
+  nameWithType: TestResultMatchExtensions.MatchFailedAsync
+  fullName: TeaPie.Testing.TestResultMatchExtensions.MatchFailedAsync
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action

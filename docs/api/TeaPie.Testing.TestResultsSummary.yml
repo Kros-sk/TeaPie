@@ -1,0 +1,1234 @@
+### YamlMime:ManagedReference
+items:
+- uid: TeaPie.Testing.TestResultsSummary
+  commentId: T:TeaPie.Testing.TestResultsSummary
+  id: TestResultsSummary
+  parent: TeaPie.Testing
+  children:
+  - TeaPie.Testing.TestResultsSummary.AllTestsPassed
+  - TeaPie.Testing.TestResultsSummary.FailedTests
+  - TeaPie.Testing.TestResultsSummary.HasSkippedTests
+  - TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+  - TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+  - TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+  - TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+  - TeaPie.Testing.TestResultsSummary.NumberOfTests
+  - TeaPie.Testing.TestResultsSummary.PassedTests
+  - TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+  - TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+  - TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+  - TeaPie.Testing.TestResultsSummary.SkippedTests
+  - TeaPie.Testing.TestResultsSummary.TestResults
+  - TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+  - TeaPie.Testing.TestResultsSummary.Timestamp
+  langs:
+  - csharp
+  - vb
+  name: TestResultsSummary
+  nameWithType: TestResultsSummary
+  fullName: TeaPie.Testing.TestResultsSummary
+  type: Class
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: TestResultsSummary
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 2
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public class TestResultsSummary
+    content.vb: Public Class TestResultsSummary
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - TeaPie.Testing.CollectionTestResultsSummary
+  - TeaPie.Testing.TestCaseTestResultsSummary
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+- uid: TeaPie.Testing.TestResultsSummary.Timestamp
+  commentId: P:TeaPie.Testing.TestResultsSummary.Timestamp
+  id: Timestamp
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: TestResultsSummary.Timestamp
+  fullName: TeaPie.Testing.TestResultsSummary.Timestamp
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: Timestamp
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 4
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public DateTime Timestamp { get; protected set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property Timestamp As Date
+  overload: TeaPie.Testing.TestResultsSummary.Timestamp*
+- uid: TeaPie.Testing.TestResultsSummary.AllTestsPassed
+  commentId: P:TeaPie.Testing.TestResultsSummary.AllTestsPassed
+  id: AllTestsPassed
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: AllTestsPassed
+  nameWithType: TestResultsSummary.AllTestsPassed
+  fullName: TeaPie.Testing.TestResultsSummary.AllTestsPassed
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: AllTestsPassed
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 5
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public bool AllTestsPassed { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property AllTestsPassed As Boolean
+  overload: TeaPie.Testing.TestResultsSummary.AllTestsPassed*
+- uid: TeaPie.Testing.TestResultsSummary.HasSkippedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.HasSkippedTests
+  id: HasSkippedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: HasSkippedTests
+  nameWithType: TestResultsSummary.HasSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.HasSkippedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: HasSkippedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 6
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public bool HasSkippedTests { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasSkippedTests As Boolean
+  overload: TeaPie.Testing.TestResultsSummary.HasSkippedTests*
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+  id: NumberOfSkippedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: NumberOfSkippedTests
+  nameWithType: TestResultsSummary.NumberOfSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: NumberOfSkippedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 8
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public int NumberOfSkippedTests { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property NumberOfSkippedTests As Integer
+  overload: TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests*
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+  id: NumberOfPassedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: NumberOfPassedTests
+  nameWithType: TestResultsSummary.NumberOfPassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: NumberOfPassedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 9
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public int NumberOfPassedTests { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property NumberOfPassedTests As Integer
+  overload: TeaPie.Testing.TestResultsSummary.NumberOfPassedTests*
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+  id: NumberOfFailedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: NumberOfFailedTests
+  nameWithType: TestResultsSummary.NumberOfFailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: NumberOfFailedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 10
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public int NumberOfFailedTests { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property NumberOfFailedTests As Integer
+  overload: TeaPie.Testing.TestResultsSummary.NumberOfFailedTests*
+- uid: TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+  commentId: P:TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+  id: TimeElapsedDuringTesting
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: TimeElapsedDuringTesting
+  nameWithType: TestResultsSummary.TimeElapsedDuringTesting
+  fullName: TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: TimeElapsedDuringTesting
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 11
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public double TimeElapsedDuringTesting { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property TimeElapsedDuringTesting As Double
+  overload: TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting*
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.NumberOfTests
+  id: NumberOfTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: NumberOfTests
+  nameWithType: TestResultsSummary.NumberOfTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: NumberOfTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 13
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public int NumberOfTests { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property NumberOfTests As Integer
+  overload: TeaPie.Testing.TestResultsSummary.NumberOfTests*
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+  id: NumberOfExecutedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: NumberOfExecutedTests
+  nameWithType: TestResultsSummary.NumberOfExecutedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: NumberOfExecutedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 14
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public int NumberOfExecutedTests { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property NumberOfExecutedTests As Integer
+  overload: TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests*
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+  id: PercentageOfSkippedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: PercentageOfSkippedTests
+  nameWithType: TestResultsSummary.PercentageOfSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: PercentageOfSkippedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 16
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public double PercentageOfSkippedTests { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property PercentageOfSkippedTests As Double
+  overload: TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests*
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+  id: PercentageOfPassedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: PercentageOfPassedTests
+  nameWithType: TestResultsSummary.PercentageOfPassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: PercentageOfPassedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 19
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public double PercentageOfPassedTests { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property PercentageOfPassedTests As Double
+  overload: TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests*
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+  id: PercentageOfFailedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: PercentageOfFailedTests
+  nameWithType: TestResultsSummary.PercentageOfFailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: PercentageOfFailedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 22
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public double PercentageOfFailedTests { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property PercentageOfFailedTests As Double
+  overload: TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests*
+- uid: TeaPie.Testing.TestResultsSummary.TestResults
+  commentId: P:TeaPie.Testing.TestResultsSummary.TestResults
+  id: TestResults
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: TestResults
+  nameWithType: TestResultsSummary.TestResults
+  fullName: TeaPie.Testing.TestResultsSummary.TestResults
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: TestResults
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 26
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public IReadOnlyList<TestResult> TestResults { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult}
+    content.vb: Public ReadOnly Property TestResults As IReadOnlyList(Of TestResult)
+  overload: TeaPie.Testing.TestResultsSummary.TestResults*
+- uid: TeaPie.Testing.TestResultsSummary.SkippedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.SkippedTests
+  id: SkippedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: SkippedTests
+  nameWithType: TestResultsSummary.SkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.SkippedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: SkippedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 29
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public IReadOnlyList<TestResult.NotRun> SkippedTests { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.NotRun}
+    content.vb: Public ReadOnly Property SkippedTests As IReadOnlyList(Of TestResult.NotRun)
+  overload: TeaPie.Testing.TestResultsSummary.SkippedTests*
+- uid: TeaPie.Testing.TestResultsSummary.PassedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.PassedTests
+  id: PassedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: PassedTests
+  nameWithType: TestResultsSummary.PassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PassedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: PassedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 32
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public IReadOnlyList<TestResult.Passed> PassedTests { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Passed}
+    content.vb: Public ReadOnly Property PassedTests As IReadOnlyList(Of TestResult.Passed)
+  overload: TeaPie.Testing.TestResultsSummary.PassedTests*
+- uid: TeaPie.Testing.TestResultsSummary.FailedTests
+  commentId: P:TeaPie.Testing.TestResultsSummary.FailedTests
+  id: FailedTests
+  parent: TeaPie.Testing.TestResultsSummary
+  langs:
+  - csharp
+  - vb
+  name: FailedTests
+  nameWithType: TestResultsSummary.FailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.FailedTests
+  type: Property
+  source:
+    remote:
+      path: src/TeaPie/Testing/TestResultsSummary.cs
+      branch: testCaseRun
+      repo: https://github.com/Kros-sk/TeaPie.git
+    id: FailedTests
+    path: ../src/TeaPie/Testing/TestResultsSummary.cs
+    startLine: 35
+  assemblies:
+  - TeaPie
+  namespace: TeaPie.Testing
+  syntax:
+    content: public IReadOnlyList<TestResult.Failed> FailedTests { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Failed}
+    content.vb: Public ReadOnly Property FailedTests As IReadOnlyList(Of TestResult.Failed)
+  overload: TeaPie.Testing.TestResultsSummary.FailedTests*
+references:
+- uid: TeaPie.Testing
+  commentId: N:TeaPie.Testing
+  href: TeaPie.html
+  name: TeaPie.Testing
+  nameWithType: TeaPie.Testing
+  fullName: TeaPie.Testing
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Testing
+    name: Testing
+    href: TeaPie.Testing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.TeaPie.Json.JsonExtensions.ToJsonString
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  parent: TeaPie.Json.JsonExtensions
+  definition: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  commentId: M:TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+  isExternal: true
+  href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  name: ToJsonString(object)
+  nameWithType: JsonExtensions.ToJsonString(object)
+  fullName: TeaPie.Json.JsonExtensions.ToJsonString(object)
+  nameWithType.vb: JsonExtensions.ToJsonString(Object)
+  fullName.vb: TeaPie.Json.JsonExtensions.ToJsonString(Object)
+  name.vb: ToJsonString(Object)
+  spec.csharp:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: TeaPie.Json.JsonExtensions.ToJsonString(System.Object)
+    name: ToJsonString
+    href: TeaPie.Json.JsonExtensions.html#TeaPie_Json_JsonExtensions_ToJsonString_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: TeaPie.Json.JsonExtensions
+  commentId: T:TeaPie.Json.JsonExtensions
+  parent: TeaPie.Json
+  href: TeaPie.Json.JsonExtensions.html
+  name: JsonExtensions
+  nameWithType: JsonExtensions
+  fullName: TeaPie.Json.JsonExtensions
+- uid: TeaPie.Json
+  commentId: N:TeaPie.Json
+  href: TeaPie.html
+  name: TeaPie.Json
+  nameWithType: TeaPie.Json
+  fullName: TeaPie.Json
+  spec.csharp:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+  spec.vb:
+  - uid: TeaPie
+    name: TeaPie
+    href: TeaPie.html
+  - name: .
+  - uid: TeaPie.Json
+    name: Json
+    href: TeaPie.Json.html
+- uid: TeaPie.Testing.TestResultsSummary.Timestamp*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.Timestamp
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_Timestamp
+  name: Timestamp
+  nameWithType: TestResultsSummary.Timestamp
+  fullName: TeaPie.Testing.TestResultsSummary.Timestamp
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: TeaPie.Testing.TestResultsSummary.AllTestsPassed*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.AllTestsPassed
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_AllTestsPassed
+  name: AllTestsPassed
+  nameWithType: TestResultsSummary.AllTestsPassed
+  fullName: TeaPie.Testing.TestResultsSummary.AllTestsPassed
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: TeaPie.Testing.TestResultsSummary.HasSkippedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.HasSkippedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_HasSkippedTests
+  name: HasSkippedTests
+  nameWithType: TestResultsSummary.HasSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.HasSkippedTests
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_NumberOfSkippedTests
+  name: NumberOfSkippedTests
+  nameWithType: TestResultsSummary.NumberOfSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfSkippedTests
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfPassedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_NumberOfPassedTests
+  name: NumberOfPassedTests
+  nameWithType: TestResultsSummary.NumberOfPassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfPassedTests
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfFailedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_NumberOfFailedTests
+  name: NumberOfFailedTests
+  nameWithType: TestResultsSummary.NumberOfFailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfFailedTests
+- uid: TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_TimeElapsedDuringTesting
+  name: TimeElapsedDuringTesting
+  nameWithType: TestResultsSummary.TimeElapsedDuringTesting
+  fullName: TeaPie.Testing.TestResultsSummary.TimeElapsedDuringTesting
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.NumberOfTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_NumberOfTests
+  name: NumberOfTests
+  nameWithType: TestResultsSummary.NumberOfTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfTests
+- uid: TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_NumberOfExecutedTests
+  name: NumberOfExecutedTests
+  nameWithType: TestResultsSummary.NumberOfExecutedTests
+  fullName: TeaPie.Testing.TestResultsSummary.NumberOfExecutedTests
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_PercentageOfSkippedTests
+  name: PercentageOfSkippedTests
+  nameWithType: TestResultsSummary.PercentageOfSkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfSkippedTests
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_PercentageOfPassedTests
+  name: PercentageOfPassedTests
+  nameWithType: TestResultsSummary.PercentageOfPassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfPassedTests
+- uid: TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_PercentageOfFailedTests
+  name: PercentageOfFailedTests
+  nameWithType: TestResultsSummary.PercentageOfFailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PercentageOfFailedTests
+- uid: TeaPie.Testing.TestResultsSummary.TestResults*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.TestResults
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_TestResults
+  name: TestResults
+  nameWithType: TestResultsSummary.TestResults
+  fullName: TeaPie.Testing.TestResultsSummary.TestResults
+- uid: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult}
+  commentId: T:System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TestResult>
+  nameWithType: IReadOnlyList<TestResult>
+  fullName: System.Collections.Generic.IReadOnlyList<TeaPie.Testing.TestResult>
+  nameWithType.vb: IReadOnlyList(Of TestResult)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of TeaPie.Testing.TestResult)
+  name.vb: IReadOnlyList(Of TestResult)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: TeaPie.Testing.TestResultsSummary.SkippedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.SkippedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_SkippedTests
+  name: SkippedTests
+  nameWithType: TestResultsSummary.SkippedTests
+  fullName: TeaPie.Testing.TestResultsSummary.SkippedTests
+- uid: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.NotRun}
+  commentId: T:System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.NotRun}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TestResult.NotRun>
+  nameWithType: IReadOnlyList<TestResult.NotRun>
+  fullName: System.Collections.Generic.IReadOnlyList<TeaPie.Testing.TestResult.NotRun>
+  nameWithType.vb: IReadOnlyList(Of TestResult.NotRun)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of TeaPie.Testing.TestResult.NotRun)
+  name.vb: IReadOnlyList(Of TestResult.NotRun)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.NotRun
+    name: NotRun
+    href: TeaPie.Testing.TestResult.NotRun.html
+  - name: )
+- uid: TeaPie.Testing.TestResultsSummary.PassedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.PassedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_PassedTests
+  name: PassedTests
+  nameWithType: TestResultsSummary.PassedTests
+  fullName: TeaPie.Testing.TestResultsSummary.PassedTests
+- uid: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Passed}
+  commentId: T:System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Passed}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TestResult.Passed>
+  nameWithType: IReadOnlyList<TestResult.Passed>
+  fullName: System.Collections.Generic.IReadOnlyList<TeaPie.Testing.TestResult.Passed>
+  nameWithType.vb: IReadOnlyList(Of TestResult.Passed)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of TeaPie.Testing.TestResult.Passed)
+  name.vb: IReadOnlyList(Of TestResult.Passed)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Passed
+    name: Passed
+    href: TeaPie.Testing.TestResult.Passed.html
+  - name: )
+- uid: TeaPie.Testing.TestResultsSummary.FailedTests*
+  commentId: Overload:TeaPie.Testing.TestResultsSummary.FailedTests
+  href: TeaPie.Testing.TestResultsSummary.html#TeaPie_Testing_TestResultsSummary_FailedTests
+  name: FailedTests
+  nameWithType: TestResultsSummary.FailedTests
+  fullName: TeaPie.Testing.TestResultsSummary.FailedTests
+- uid: System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Failed}
+  commentId: T:System.Collections.Generic.IReadOnlyList{TeaPie.Testing.TestResult.Failed}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<TestResult.Failed>
+  nameWithType: IReadOnlyList<TestResult.Failed>
+  fullName: System.Collections.Generic.IReadOnlyList<TeaPie.Testing.TestResult.Failed>
+  nameWithType.vb: IReadOnlyList(Of TestResult.Failed)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of TeaPie.Testing.TestResult.Failed)
+  name.vb: IReadOnlyList(Of TestResult.Failed)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: TeaPie.Testing.TestResult
+    name: TestResult
+    href: TeaPie.Testing.TestResult.html
+  - name: .
+  - uid: TeaPie.Testing.TestResult.Failed
+    name: Failed
+    href: TeaPie.Testing.TestResult.Failed.html
+  - name: )

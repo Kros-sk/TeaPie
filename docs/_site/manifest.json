@@ -1,0 +1,890 @@
+{
+  "source_base_path": "C:/KROS/Diploma Thesis/Repository/TeaPie/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Application.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Application.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Application",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.ApplicationBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.ApplicationBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.ApplicationBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.IAuthOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.IAuthOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.IAuthOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.IAuthProvider-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.IAuthProvider-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.IAuthProvider<TOptions>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.IAuthProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.IAuthProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.IAuthProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.OAuth2.OAuth2Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.OAuth2.OAuth2Options.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.OAuth2.OAuth2Options",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.OAuth2.OAuth2OptionsBuilder",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.OAuth2.TeaPieOAuth2Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.OAuth2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.OAuth2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.OAuth2",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.TeaPieAuthenticationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.TeaPieAuthenticationExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth.TeaPieAuthenticationExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Auth.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Auth.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Auth",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.HttpMessagesExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.HttpMessagesExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.HttpMessagesExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Retrying.TeaPieRetryingExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Retrying.TeaPieRetryingExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Retrying.TeaPieRetryingExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.Retrying.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.Retrying.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http.Retrying",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Http.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Http.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Http",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.IApplicationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.IApplicationContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.IApplicationContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Json.CaseInsensitiveExpandoObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Json.CaseInsensitiveExpandoObject.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Json.CaseInsensitiveExpandoObject",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Json.JsonExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Json.JsonExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Json.JsonExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Json.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Json.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Json",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.PathExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.PathExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.PathExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.ICompositeReporter-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.ICompositeReporter-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting.ICompositeReporter<TReporterType, TReportedObject>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.IReporter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.IReporter-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting.IReporter<TReportedObject>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.IReporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.IReporter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting.IReporter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.ITestResultsSummaryReporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.ITestResultsSummaryReporter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting.ITestResultsSummaryReporter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.TeaPieReportingExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.TeaPieReportingExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting.TeaPieReportingExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Reporting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Reporting.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Reporting",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Scripts.Globals.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Scripts.Globals.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Scripts.Globals",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Scripts.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Scripts.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Scripts",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.TeaPie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.TeaPie.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.TeaPie",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.CollectionTestResultsSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.CollectionTestResultsSummary.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.CollectionTestResultsSummary",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TeaPieTestingExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TeaPieTestingExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TeaPieTestingExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestCaseTestResultsSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestCaseTestResultsSummary.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestCaseTestResultsSummary",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestDirectivePatternBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestDirectivePatternBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestDirectivePatternBuilder",
+      "Summary": "<p sourcefile=\"api/TeaPie.Testing.TestDirectivePatternBuilder.yml\" sourcestartlinenumber=\"1\">A builder for constructing regular expression patterns for test directives used in '.http' files.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResult.Failed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResult.Failed.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResult.Failed",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResult.NotRun.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResult.NotRun.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResult.NotRun",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResult.Passed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResult.Passed.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResult.Passed",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResult",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResultMatchExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResultMatchExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResultMatchExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.TestResultsSummary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.TestResultsSummary.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing.TestResultsSummary",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Testing.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Testing.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Testing",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Variables.IVariablesOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Variables.IVariablesOperations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Variables.IVariablesOperations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Variables.TeaPieVariablesExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Variables.TeaPieVariablesExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Variables.TeaPieVariablesExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Variables.Variable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Variables.Variable.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Variables.Variable",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Variables.VariablesCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Variables.VariablesCollection.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Variables.VariablesCollection",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Variables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Variables.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Variables",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Xml.JUnitXmlWriter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Xml.JUnitXmlWriter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Xml.JUnitXmlWriter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.Xml.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.Xml.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie.Xml",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/TeaPie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/TeaPie.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "TeaPie",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/authentication.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/authentication.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/collection.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/collection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/environments.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/environments.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/initialization-script.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/initialization-script.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/logging.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/logging.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/reporting.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/reporting.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/retrying.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/retrying.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/running-tests.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/running-tests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/test-case/post-response-script.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/test-case/post-response-script.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/test-case/pre-request-script.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/test-case/pre-request-script.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/test-case/request-file.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/test-case/request-file.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/test-case/test-case.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/test-case/test-case.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/report-example.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/report-example.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
