@@ -1,4 +1,4 @@
-name: Build and Test PR
+name: Build, Test, and Deploy Docs
 
 # Trigger
 on:
@@ -45,11 +45,21 @@ jobs:
       run: dotnet test --no-build --verbosity normal --configuration Release
 
   publish-docs:
+    runs-on: ubuntu-latest
+    needs: build-and-test  # Ensures it runs only after build-and-test succeeds
+
+    steps:
+    # Checkout code again because each job starts fresh
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Install DocFX and Generate Documentation
     - name: Generate Documentation with DocFX
       uses: dotnet/docfx-action@v1
       with:
         args: docs/docfx.json
 
+    # Deploy the documentation to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
