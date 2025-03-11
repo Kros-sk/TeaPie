@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: CaseInsensitiveExpandoObject
     path: ../src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
@@ -70,7 +70,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: .ctor
     path: ../src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
@@ -102,7 +102,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TryGetMember
     path: ../src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
@@ -144,7 +144,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TrySetMember
     path: ../src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
@@ -186,7 +186,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/CaseInsensitiveExpandoObject.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetDynamicMemberNames
     path: ../src/TeaPie/Json/CaseInsensitiveExpandoObject.cs

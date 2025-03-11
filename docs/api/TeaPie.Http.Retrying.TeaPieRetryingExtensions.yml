@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Retrying/TeaPieRetryingExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TeaPieRetryingExtensions
     path: ../src/TeaPie/Http/Retrying/TeaPieRetryingExtensions.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Retrying/TeaPieRetryingExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RegisterRetryStrategy
     path: ../src/TeaPie/Http/Retrying/TeaPieRetryingExtensions.cs

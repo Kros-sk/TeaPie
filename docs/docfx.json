@@ -40,6 +40,7 @@
       "_appName": "TeaPie",
       "_appTitle": "TeaPie",
       "_enableSearch": true,
+      "_appFaviconPath": "favicon.ico",
       "pdf": true
     }
   }

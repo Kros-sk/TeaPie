@@ -26,7 +26,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ApplicationBuilder
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -62,7 +62,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Create
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithPath
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -130,7 +130,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithTemporaryPath
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -164,7 +164,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithLogging
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -202,7 +202,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithDefaultPipeline
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -230,7 +230,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithStructureExplorationPipeline
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -258,7 +258,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithEnvironment
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithEnvironmentFile
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -326,7 +326,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithReportFile
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -360,7 +360,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithInitializationScript
     path: ../src/TeaPie/ApplicationBuilder.cs
@@ -394,7 +394,7 @@ items:
   source:
     remote:
       path: src/TeaPie/ApplicationBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Build
     path: ../src/TeaPie/ApplicationBuilder.cs

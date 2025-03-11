@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: OAuth2OptionsBuilder
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Create
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -88,7 +88,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithAuthUrl
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -122,7 +122,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithGrantType
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -156,7 +156,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithClientId
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -190,7 +190,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithClientSecret
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -224,7 +224,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithUsername
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -258,7 +258,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: WithPassword
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddParameter
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
@@ -328,7 +328,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Build
     path: ../src/TeaPie/Http/Auth/OAuth2/OAuth2OptionsBuilder.cs

@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/IReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: IReporter
     path: ../src/TeaPie/Reporting/IReporter.cs
@@ -48,7 +48,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/IReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Report
     path: ../src/TeaPie/Reporting/IReporter.cs

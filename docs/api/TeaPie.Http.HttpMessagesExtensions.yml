@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: HttpMessagesExtensions
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -64,7 +64,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBody
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -102,7 +102,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBody
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -140,7 +140,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBody
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBody
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -230,7 +230,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsExpando
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -269,7 +269,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsExpando
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -308,7 +308,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -346,7 +346,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -384,7 +384,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -431,7 +431,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -478,7 +478,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsExpandoAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -519,7 +519,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetBodyAsExpandoAsync
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs
@@ -560,7 +560,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/HttpMessagesExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: StatusCode
     path: ../src/TeaPie/Http/HttpMessagesExtensions.cs

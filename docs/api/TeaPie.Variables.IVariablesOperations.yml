@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: IVariablesOperations
     path: ../src/TeaPie/Variables/IVariablesOperations.cs
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetVariable
     path: ../src/TeaPie/Variables/IVariablesOperations.cs
@@ -85,7 +85,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ContainsVariable
     path: ../src/TeaPie/Variables/IVariablesOperations.cs
@@ -119,7 +119,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: SetVariable
     path: ../src/TeaPie/Variables/IVariablesOperations.cs
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RemoveVariable
     path: ../src/TeaPie/Variables/IVariablesOperations.cs
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/IVariablesOperations.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RemoveVariablesWithTag
     path: ../src/TeaPie/Variables/IVariablesOperations.cs

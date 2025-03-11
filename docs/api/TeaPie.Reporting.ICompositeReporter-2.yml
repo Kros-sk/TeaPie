@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ICompositeReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ICompositeReporter
     path: ../src/TeaPie/Reporting/ICompositeReporter.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ICompositeReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RegisterReporter
     path: ../src/TeaPie/Reporting/ICompositeReporter.cs
@@ -83,7 +83,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ICompositeReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: UnregisterReporter
     path: ../src/TeaPie/Reporting/ICompositeReporter.cs

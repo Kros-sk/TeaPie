@@ -84,7 +84,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestResult.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TestName
     path: ../src/TeaPie/Testing/TestResult.cs

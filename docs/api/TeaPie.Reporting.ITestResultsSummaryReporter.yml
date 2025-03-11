@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ITestResultsSummaryReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ITestResultsSummaryReporter
     path: ../src/TeaPie/Reporting/ITestResultsSummaryReporter.cs
@@ -48,7 +48,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ITestResultsSummaryReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RegisterTestResult
     path: ../src/TeaPie/Reporting/ITestResultsSummaryReporter.cs
@@ -82,7 +82,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/ITestResultsSummaryReporter.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Initialize
     path: ../src/TeaPie/Reporting/ITestResultsSummaryReporter.cs

@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/PathExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: PathExtensions
     path: ../src/TeaPie/PathExtensions.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/TeaPie/PathExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: NormalizePath
     path: ../src/TeaPie/PathExtensions.cs

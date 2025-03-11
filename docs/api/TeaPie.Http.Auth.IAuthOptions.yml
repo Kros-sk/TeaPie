@@ -15,7 +15,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/IAuthOptions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: IAuthOptions
     path: ../src/TeaPie/Http/Auth/IAuthOptions.cs

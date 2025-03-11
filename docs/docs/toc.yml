@@ -13,6 +13,8 @@
      href: test-case/post-response-script.md
 - name: Collection
   href: collection.md
+- name: How to Write Tests
+  href: how-to-write-tests.md
 - name: Running Tests
   href: running-tests.md
 - name: Initialization Script
@@ -27,3 +29,5 @@
   href: reporting.md
 - name: Logging
   href: logging.md
+- name: Directives
+  href: directives.md

@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: VariablesCollection
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -63,7 +63,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Count
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Set
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -130,7 +130,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Get
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -181,7 +181,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Contains
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Remove
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -249,7 +249,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RemoveVariablesWithTag
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Clear
     path: ../src/TeaPie/Variables/VariablesCollection.cs
@@ -318,7 +318,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Variables/VariablesCollection.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetEnumerator
     path: ../src/TeaPie/Variables/VariablesCollection.cs

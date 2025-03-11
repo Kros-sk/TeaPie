@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/JsonExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: JsonExtensions
     path: ../src/TeaPie/Json/JsonExtensions.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/JsonExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ToJson
     path: ../src/TeaPie/Json/JsonExtensions.cs
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/JsonExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ToExpando
     path: ../src/TeaPie/Json/JsonExtensions.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/JsonExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: To
     path: ../src/TeaPie/Json/JsonExtensions.cs
@@ -180,7 +180,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Json/JsonExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ToJsonString
     path: ../src/TeaPie/Json/JsonExtensions.cs

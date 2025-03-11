@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Application.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Application
     path: ../src/TeaPie/Application.cs
@@ -52,7 +52,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Application.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Run
     path: ../src/TeaPie/Application.cs

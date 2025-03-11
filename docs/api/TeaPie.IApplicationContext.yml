@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: IApplicationContext
     path: ../src/TeaPie/IApplicationContext.cs
@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Path
     path: ../src/TeaPie/IApplicationContext.cs
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: EnvironmentName
     path: ../src/TeaPie/IApplicationContext.cs
@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Logger
     path: ../src/TeaPie/IApplicationContext.cs
@@ -134,7 +134,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ServiceProvider
     path: ../src/TeaPie/IApplicationContext.cs
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: src/TeaPie/IApplicationContext.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Reporter
     path: ../src/TeaPie/IApplicationContext.cs

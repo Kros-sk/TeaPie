@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TeaPieOAuth2Extensions
     path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ConfigureOAuth2Provider
     path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
@@ -89,7 +89,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: SetOAuth2AsDefaultAuthProvider
     path: ../src/TeaPie/Http/Auth/OAuth2/TeaPieOAuth2Extensions.cs

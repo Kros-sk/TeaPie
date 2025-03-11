@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/IAuthProvider.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: IAuthProvider
     path: ../src/TeaPie/Http/Auth/IAuthProvider.cs
@@ -43,7 +43,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Http/Auth/IAuthProvider.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Authenticate
     path: ../src/TeaPie/Http/Auth/IAuthProvider.cs

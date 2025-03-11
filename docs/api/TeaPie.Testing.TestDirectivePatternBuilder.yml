@@ -28,7 +28,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TestDirectivePatternBuilder
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -66,7 +66,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Create
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Build
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -135,7 +135,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddStringParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -218,7 +218,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddBooleanParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -258,7 +258,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddNumberParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -298,7 +298,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddStatusCodesParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -338,7 +338,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddHeaderNameParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -378,7 +378,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddDateTimeParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -418,7 +418,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddTimeOnlyParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -458,7 +458,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddStringArrayParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -498,7 +498,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddBooleanArrayParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs
@@ -538,7 +538,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestDirectivePatternBuilder.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: AddNumberArrayParameter
     path: ../src/TeaPie/Testing/TestDirectivePatternBuilder.cs

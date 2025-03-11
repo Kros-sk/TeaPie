@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestCaseTestResultsSummary.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TestCaseTestResultsSummary
     path: ../src/TeaPie/Testing/TestCaseTestResultsSummary.cs
@@ -71,7 +71,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestCaseTestResultsSummary.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: .ctor
     path: ../src/TeaPie/Testing/TestCaseTestResultsSummary.cs
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestCaseTestResultsSummary.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Name
     path: ../src/TeaPie/Testing/TestCaseTestResultsSummary.cs

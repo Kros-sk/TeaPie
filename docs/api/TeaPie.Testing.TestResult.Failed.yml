@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestResult.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: .ctor
     path: ../src/TeaPie/Testing/TestResult.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestResult.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Duration
     path: ../src/TeaPie/Testing/TestResult.cs
@@ -140,7 +140,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestResult.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ErrorMessage
     path: ../src/TeaPie/Testing/TestResult.cs
@@ -169,7 +169,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Testing/TestResult.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Exception
     path: ../src/TeaPie/Testing/TestResult.cs

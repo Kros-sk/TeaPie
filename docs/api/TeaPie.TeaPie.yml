@@ -29,7 +29,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TeaPie
     path: ../src/TeaPie/TeaPie.cs
@@ -79,7 +79,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Instance
     path: ../src/TeaPie/TeaPie.cs
@@ -108,7 +108,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: ApplicationContext
     path: ../src/TeaPie/TeaPie.cs
@@ -137,7 +137,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Logger
     path: ../src/TeaPie/TeaPie.cs
@@ -166,7 +166,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GlobalVariables
     path: ../src/TeaPie/TeaPie.cs
@@ -196,7 +196,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: EnvironmentVariables
     path: ../src/TeaPie/TeaPie.cs
@@ -226,7 +226,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: CollectionVariables
     path: ../src/TeaPie/TeaPie.cs
@@ -256,7 +256,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TestCaseVariables
     path: ../src/TeaPie/TeaPie.cs
@@ -286,7 +286,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: GetVariable
     path: ../src/TeaPie/TeaPie.cs
@@ -341,7 +341,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: SetVariable
     path: ../src/TeaPie/TeaPie.cs
@@ -388,7 +388,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Requests
     path: ../src/TeaPie/TeaPie.cs
@@ -419,7 +419,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Responses
     path: ../src/TeaPie/TeaPie.cs
@@ -450,7 +450,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Request
     path: ../src/TeaPie/TeaPie.cs
@@ -481,7 +481,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Response
     path: ../src/TeaPie/TeaPie.cs
@@ -512,7 +512,7 @@ items:
   source:
     remote:
       path: src/TeaPie/TeaPie.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: SetEnvironment
     path: ../src/TeaPie/TeaPie.cs

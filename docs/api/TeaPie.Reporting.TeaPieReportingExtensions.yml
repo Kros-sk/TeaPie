@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/TeaPieReportingExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: TeaPieReportingExtensions
     path: ../src/TeaPie/Reporting/TeaPieReportingExtensions.cs
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/TeaPieReportingExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RegisterReporter
     path: ../src/TeaPie/Reporting/TeaPieReportingExtensions.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Reporting/TeaPieReportingExtensions.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: RegisterReporter
     path: ../src/TeaPie/Reporting/TeaPieReportingExtensions.cs

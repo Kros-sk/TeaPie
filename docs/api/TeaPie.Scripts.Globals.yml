@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Scripts/Globals.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: Globals
     path: ../src/TeaPie/Scripts/Globals.cs
@@ -53,7 +53,7 @@ items:
   source:
     remote:
       path: src/TeaPie/Scripts/Globals.cs
-      branch: testCaseRun
+      branch: publish
       repo: https://github.com/Kros-sk/TeaPie.git
     id: tp
     path: ../src/TeaPie/Scripts/Globals.cs
