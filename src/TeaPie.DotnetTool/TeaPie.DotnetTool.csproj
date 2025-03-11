@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageProjectUrl>https://github.com/Kros-sk/TeaPie</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Kros-sk/TeaPie</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>api;testing;cli</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
@@ -16,6 +26,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TeaPie\TeaPie.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../icon.png" Pack="true" PackagePath="" />
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

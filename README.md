@@ -19,6 +19,7 @@ It provides **pre-request scripting, post-response validation, retry strategies,
 ## 📦 Installation
 
 ### Install via NuGet
+
 To install **TeaPie CLI**, use the following command:
 
 ```sh

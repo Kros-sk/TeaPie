@@ -9,16 +9,11 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Authors>Matej Grochal (KROS a.s.)</Authors>
+        <Version>0.0.1</Version>
+        <Authors>Matej Grochal</Authors>
         <Company>KROS a.s.</Company>
-        <Description>CLI tool for API testing.</Description>
+        <Description>CLI-based framework for creation, management, and execution of API Tests.</Description>
         <Copyright>Copyright © KROS a.s.</Copyright>
-        <Version>1.0.0</Version>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <VersionPrefix>0.1</VersionPrefix>
-        <VersionSuffix></VersionSuffix>
     </PropertyGroup>
 
     <ItemGroup>

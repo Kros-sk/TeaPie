@@ -46,6 +46,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal --configuration Release
 
   publish-docs:
+    needs: build-and-test
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -64,8 +65,25 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        # Upload entire repository
         path: 'docs/_site'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
+  deploy-to-nuget:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Create NuGet Package
+        run: dotnet pack --configuration Release
+
+      - name: Publish to NuGet
+        run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
