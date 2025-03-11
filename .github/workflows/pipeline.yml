@@ -1,4 +1,4 @@
-name: Build, Test, and Deploy Docs
+name: CI/CD Pipeline
 
 # Trigger
 on:
@@ -70,20 +70,27 @@ jobs:
       id: deployment
       uses: actions/deploy-pages@v4
 
-  deploy-to-nuget:
-    needs: build-and-test
+  publish-nuget:
+    name: Publish to NuGet
+    needs: build-and-test  # Runs only if build & tests pass
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: Create NuGet Package
-        run: dotnet pack --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      - name: Create NuGet package
+        run: dotnet pack --configuration Release --no-build
 
       - name: Publish to NuGet
         run: dotnet nuget push bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
