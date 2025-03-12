@@ -1,6 +1,5 @@
 name: CI/CD Pipeline
 
-# Trigger
 on:
   pull_request:
   workflow_dispatch:
@@ -9,44 +8,38 @@ on:
       - master
 
 permissions:
-  contents: read  # Allow read access to the repository content
+  contents: read
   actions: read
   pages: write
   id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code from the repository
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Setup .NET environment
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'
 
-    # Install dependencies
     - name: Install dependencies
       run: dotnet restore
 
-    # Build the project
     - name: Build project
       run: dotnet build --configuration Release --no-restore -warnaserror
 
-    # Run unit tests
     - name: Run Unit tests
       run: dotnet test --no-build --verbosity normal --configuration Release
 
   publish-docs:
     needs: build-and-test
+    concurrency:
+      group: "github-pages"
+      cancel-in-progress: true  # Cancels ongoing GitHub Pages deployments if a new one starts
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -72,7 +65,10 @@ jobs:
 
   publish-nuget:
     name: Publish to NuGet
-    needs: build-and-test  # Runs only if build & tests pass
+    needs: build-and-test
+    concurrency:
+      group: "nuget-publish"
+      cancel-in-progress: true  # Ensures only the latest NuGet package gets published
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -94,4 +90,3 @@ jobs:
 
       - name: Find and Publish NuGet Package
         run: dotnet nuget push $(find . -type f -name "*.nupkg") --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-

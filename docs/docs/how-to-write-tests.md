@@ -74,3 +74,63 @@ Content-Type: {{AddCarRequest.request.headers.Content-Type}}
 ```
 
 Full list of (not only) test directives is [here](directives.md).
+
+### Custom Testing Directives  
+
+Each project may have **repeating test scenarios** that require a **customized approach**.  
+TeaPie allows you to **dynamically register new testing directives** that can be used in `.http` files.
+
+#### Registering a Custom Testing Directive  
+
+Before using a **custom testing directive**, it must be **registered in a script** that executes **before its first usage**.  
+
+**Required elements:**
+
+| **Component** | **Description** |
+|--------------|----------------|
+| **Directive Name** | The name of the directive, which will be prepended by the `TEST-` prefix. |
+| **Regular Expression Pattern** | Defines how the directive should be parsed. Use [TestDirectivePatternBuilder](xref:TeaPie.Testing.TestDirectivePatternBuilder) to simplify pattern creation. |
+| **Test Name Generator** | A function that takes directive parameters and generates a test name assigned to all tests fired by the directive. |
+| **Testing Function** | A function that performs the test, receiving an `HttpResponseMessage` and a `Dictionary<string, string>` of parameters. |
+
+Registering a new testing directive example:
+
+```csharp
+tp.RegisterTestDirective(
+    "SUCCESSFUL-STATUS",
+    TestDirectivePatternBuilder
+        .Create("SUCCESSFUL-STATUS")
+        .AddBooleanParameter("MyBool")
+        .Build(),
+    (parameters) =>
+    {
+        var negation = bool.Parse(parameters["MyBool"]) ? string.Empty : "NOT ";
+        return $"Response status code should {negation}be successful.";
+    },
+    async (response, parameters) =>
+    {
+        if (bool.Parse(parameters["MyBool"]))
+        {
+            True(response.IsSuccessStatusCode);
+        }
+        else
+        {
+            False(response.IsSuccessStatusCode);
+        }
+
+        await Task.CompletedTask;
+    }
+);
+```
+
+#### Using a Custom Testing Directive  
+
+Once registered, the directive can be used in a `.http` file as follows:  
+
+```http
+## TEST-SUCCESSFUL-STATUS: True
+PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}
+Content-Type: {{AddCarRequest.request.headers.Content-Type}}
+
+...
+```
