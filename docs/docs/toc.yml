@@ -19,6 +19,8 @@
   href: running-tests.md
 - name: Initialization Script
   href: initialization-script.md
+- name: Variables
+  href: variables.md  
 - name: Environments
   href: environments.md
 - name: Authentication
@@ -31,3 +33,5 @@
   href: logging.md
 - name: Directives
   href: directives.md
+- name: For Contributors
+  href: https://github.com/Kros-sk/TeaPie/blob/master/CONTRIBUTING.md

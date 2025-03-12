@@ -1,23 +1,43 @@
-# Getting Started
+# Getting Started  
 
-Since `TeaPie.Tool` is not on NuGet store yet, the easiest way to launch this tool is:
+## 📦 Installation  
 
-1. Move to the **project folder**:
+To install **TeaPie CLI**, run:  
 
-   ```sh
-   cd ./src/TeaPie.DotnetTool
-   ```
+```sh
+dotnet tool install -g TeaPie.Tool
+```  
 
-2. Run test of the `demo` **collection**:
+To install the framework in your project:  
 
-   ```sh
-   dotnet run test "../../demo" # this will run 'teapie test' command on demo collection
-   ```
+```sh
+dotnet add package TeaPie
+```  
 
-   Alternatively, you can run just **single test case**:
+---
 
-   ```sh
-    dotnet run test "../../demo/Tests/2. Cars/EditCar-req.http" -i "../../demo/init.csx" --env-file "../../demo-env.json"
-   ```
+## ⚡ Quick Start  
 
-You can **learn more** about how to use this tool either in [Usage section](usage) or by checking attached [demo](./demo/).
+### **1️⃣ Create a New Test Case**
+
+```sh
+teapie generate <test-case-name>
+```
+
+To learn more about **test cases**, visit the [Test Case page](./test-case/test-case.md).  
+
+### **2️⃣ Run All Test Cases in a Collection**
+
+```sh
+teapie test demo
+```
+
+Not sure what a **collection** is? Read [about collections](collection.md).  
+
+### **3️⃣ Execute a Single Test Case**
+
+```sh
+teapie test ".\demo\Tests\2. Cars\EditCar-req.http" --env-file ".\demo\demo-env.json" -i ".\demo\init.csx"
+```  
+
+Whether you want to run single test case or collection, [read more](running-tests.md).

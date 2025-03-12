@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # User-defined
 *launchSettings*.json
 demo/reports/
+docs/_site

@@ -5,16 +5,29 @@
 [![Build](https://github.com/Kros-sk/TeaPie/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Kros-sk/TeaPie/actions)
 
 TeaPie is a **lightweight API testing framework** designed for **automation-friendly, scriptable API testing** with `.http` files.
-It provides **pre-request scripting, post-response validation, retry strategies, authentication support, and custom test directives**.
+It provides **pre-request scripting, post-response validation, retry strategies, flexible authentication, environments support and custom test directives**.
+
+## 📖 Documentation
+
+📚 **Complete documentation is available in the** **[Wiki](https://kros-sk.github.io/TeaPie/docs/introduction.html)**.
 
 ## 🚀 Features
 
-✅ **Scriptable API Tests** – Define test cases using `.http` files
-✅ **Pre-request & Post-response Scripts** – Extend tests with C# scripts
-✅ **Custom Authentication Providers** – Supports OAuth2 & user-defined providers
+✅ **Universal HTTP Requests Definition** – Define HTTP requests using `.http` files
+
+✅ **Pre-Request & Post-Response Scripts** – Extend HTTP request with C# scripts for data
+
+✅ **Custom Authentication Providers** – Supports OAuth2 & user-defined authentication providers
+
 ✅ **Retry Strategies** – Customize retry logic for API failures
-✅ **Environment & Initialization Scripts** – Manage test variables easily
-✅ **Extensible & Open Source** – Register custom test directives, reporters, and more
+
+✅ **Environment Support** – Run your tests on any environment and change it dynamically
+
+✅ **Custom Reporting** - Apart of Console and JUnit XML reporting, you can specify own reporters
+
+✅ **Easy Versioning** – Collections of the tests can be part of (backend) repository and changes are easily visible on PRs
+
+✅ **Extensible & Open Source** – Project is ready-to-be extended due to its pipeline design pattern
 
 ## 📦 Installation
 
@@ -43,20 +56,16 @@ teapie generate <test-case-name>
 Run all test cases in a collection:
 
 ```sh
-teapie test ./Tests
+teapie test demo
 ```
 
 Execute a single test case:
 
 ```sh
-teapie ./Tests/MyTestCase-req.http
+teapie test ".\demo\Tests\2. Cars\EditCar-req.http" --env-file ".\demo\demo-env.json" i- ".\demo\init.csx"
 ```
 
 For more usage details, visit the **[Wiki](https://kros-sk.github.io/TeaPie/docs/introduction.html)**.
-
-## 📖 Documentation
-
-📚 **Complete documentation is available in the** **[Wiki](https://kros-sk.github.io/TeaPie/docs/introduction.html)**.
 
 ## 🤝 Contributing
 
