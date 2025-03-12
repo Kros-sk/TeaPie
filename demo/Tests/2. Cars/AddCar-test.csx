@@ -6,8 +6,8 @@
 });
 
 // Approach to string variable with the name "NewCar".
-var body = tp.GetVariable<string>("NewCar");
-dynamic obj = body.ToExpando();
+var newCar = tp.GetVariable<string>("NewCar");
+dynamic obj = newCar.ToExpando();
 var brand = obj.Brand;
 
 await tp.Test($"Newly added car should have '{brand}' brand.", async () =>

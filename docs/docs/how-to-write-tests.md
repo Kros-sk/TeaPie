@@ -27,8 +27,8 @@ Since asynchronous operations are gaining on popularity, `TeaPie` support asynch
 ```csharp
 await tp.Test($"Newly added car should have '{brand}' brand.", async () =>
 {
-    var body = tp.GetVariable<string>("NewCar");
-    dynamic obj = body.ToExpando();
+    var newCar = tp.GetVariable<string>("NewCar");
+    dynamic obj = newCar.ToExpando();
 
     dynamic responseJson = await tp.Responses["GetNewCarRequest"].GetBodyAsExpandoAsync();
     Equal(obj.Brand, responseJson.brand);
@@ -44,7 +44,7 @@ tp.Test("Status code should be 201.", () =>
 {
     var statusCode = tp.Responses["CreateCarRequest"].StatusCode();
     Equal(201, statusCode);
-}, true); // Skip this test
+}, skipTest: true); // Skip this test
 ```
 
 ## Testing in Request File

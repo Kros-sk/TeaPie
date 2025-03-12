@@ -9,12 +9,12 @@
 
 ## Specification
 
-Before executing (the first) test case, users can run an **initialization script**.  
+Before executing (the first) test case, users can run an **initialization script**.
 This script is used for **pre-test setup**, including:
 
-- Setting **environment variables**
-- Defining **reporters**
-- Configuring **logging**
+- Setting [**environment variables**](environments.md)
+- Defining [**reporters**](reporting.md)
+- Configuring [**logging**](logging.md)
 - Other necessary pre-execution tasks
 
 By default, TeaPie **automatically detects** and executes the **first `init.csx` script** found in the **collection or parent folder of the test case**.

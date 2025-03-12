@@ -10,7 +10,7 @@ tp.Test("Car should be rented successfully.", () =>
     Equal(201, tp.Responses["RentCarRequest"].StatusCode());
     // Access the response from the most recently executed request.
     Equal(200, tp.Response.StatusCode());
-}, true); // To skip test, just add optional parameter to 'true'.
+}, skipTest: true); // To skip test, just add optional parameter with 'true' value.
 
 // If you have variable in JSON string, it can be easily converted to reference type, by using 'To<TResult>()' method.
 var car = tp.GetVariable<string>("NewCar").To<Car>();
