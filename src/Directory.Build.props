@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>0.0.1</Version>
+        <Version>1.0.0</Version>
         <Authors>Matej Grochal</Authors>
         <Company>KROS a.s.</Company>
         <Description>CLI-based framework for creation, management, and execution of API Tests.</Description>
