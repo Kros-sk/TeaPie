@@ -37,6 +37,7 @@ jobs:
 
   publish-docs:
     needs: build-and-test
+    if: github.event_name != 'pull_request'
     concurrency:
       group: "github-pages"
       cancel-in-progress: true  # Cancels ongoing GitHub Pages deployments if a new one starts
@@ -66,6 +67,7 @@ jobs:
   publish-nuget:
     name: Publish to NuGet
     needs: build-and-test
+    if: github.event_name != 'pull_request'
     concurrency:
       group: "nuget-publish"
       cancel-in-progress: true  # Ensures only the latest NuGet package gets published
