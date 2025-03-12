@@ -44,3 +44,9 @@ You can provide either an *absolute* or a *relative path*.
 ```
 
 >💁‍♂️ Even though NuGet packages are installed globally across all scripts, you must use the `using` directive to access them in your scripts.
+
+### Data Generation
+
+As you can see in the provided example [Demo Pre-Request Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-init.csx), there is method which generates the data - `GenerateCar()`, which is defined in script [GenerateNewCar.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/Definitions/GenerateNewCar.csx). The foundation of the data generation is in the class [CarFaker.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/Definitions/CarFaker.csx).
+
+The example for data generation uses NuGet packagte `AutoBogus`.
