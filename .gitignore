@@ -401,3 +401,4 @@ FodyWeavers.xsd
 *launchSettings*.json
 demo/reports/
 docs/_site
+docs/api/
