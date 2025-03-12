@@ -38,7 +38,7 @@ For requests that handle `application/json` payloads, a **extension method** `To
 tp.Test("Identifier should be a positive integer.", () =>
 {
     // Expando object has to be marked epxlicitly as 'dynamic'
-    dynamic responseBody = tp.Response.GetBody().ToExpando();
+    dynamic responseBody = tp.Response.GetBodyAsExpando();
     True(responseBody.id > 0);
 });
 ```
