@@ -53,7 +53,7 @@ internal static class HttpFileParserConstants
     public const string HttpCommentPrefix = "# ";
     public const string HttpCommentAltPrefix = "// ";
     public const string HttpDirectivePrefix = "## ";
-    public const string HttpRequestSeparatorDirectiveLineRegex = "###.*";
+    public const string HttpRequestSeparatorDirectiveLineRegex = "###.*(\r?\n|$)";
 
     public const string HttpGetMethodDirective = "GET";
     public const string HttpPutMethodDirective = "PUT";

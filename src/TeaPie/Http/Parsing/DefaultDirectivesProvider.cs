@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Data;
+using System.Text.RegularExpressions;
 using TeaPie.Http.Headers;
 using TeaPie.Testing;
 using static Xunit.Assert;
@@ -41,7 +42,22 @@ internal static partial class DefaultDirectivesProvider
             .Select(m => int.Parse(m.Value))
             .ToArray();
 
-        True(statusCodes.Contains(response.StatusCode()));
+        if (statusCodes.Length == 0)
+        {
+            throw new SyntaxErrorException("Test directive uses requires at least one status code provided in the array.");
+        }
+
+        var foundStatusCode = statusCodes[0];
+        foreach (var statusCode in statusCodes)
+        {
+            foundStatusCode = statusCode;
+            if (statusCode == response.StatusCode())
+            {
+                break;
+            }
+        }
+
+        Equal(foundStatusCode, response.StatusCode());
         await Task.CompletedTask;
     }
 

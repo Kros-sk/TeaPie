@@ -1,12 +1,18 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Polly;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
+using TeaPie.Variables;
 
 namespace TeaPie.Http.Auth.OAuth2;
 
-internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache memoryCache, ILogger<OAuth2Provider> logger)
+internal class OAuth2Provider(
+    IHttpClientFactory clientFactory,
+    IMemoryCache memoryCache,
+    ILogger<OAuth2Provider> logger,
+    IVariables variables)
     : IAuthProvider<OAuth2Options>
 {
     private const string AccessTokenCacheKey = "access_token";
@@ -15,6 +21,7 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
     private readonly IHttpClientFactory _httpClientFactory = clientFactory;
     private readonly IMemoryCache _cache = memoryCache;
     private readonly ILogger<OAuth2Provider> _logger = logger;
+    private readonly IVariables _variables = variables;
 
     private readonly AuthorizationHeaderHandler _authorizationHeaderHandler = new();
     private OAuth2Options _configuration = new();
@@ -35,6 +42,7 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
         {
             var newToken = await GetTokenFromRequest();
             source = ResolveRequestUri();
+            _variables.SetVariable(AuthConstants.OAuth2AccessTokenKey, newToken);
             return newToken;
         })!;
 
@@ -46,11 +54,23 @@ internal class OAuth2Provider(IHttpClientFactory clientFactory, IMemoryCache mem
     {
         ResolveParameters(out var requestContent, out var requestUri);
 
+        LogSendingRequest();
+
         var result = await SendRequest(requestContent, requestUri);
 
         CacheToken(result);
 
         return result.AccessToken!;
+    }
+
+    private void LogSendingRequest()
+    {
+        var content = string.Join(
+            Environment.NewLine, _configuration.GetParametersAsReadOnly().Select(p => $"{p.Key}={p.Value}"));
+
+        _logger.LogTrace("Content (www-url-encoded) for the following HTTP request: {NewLine}{Body}",
+            Environment.NewLine,
+            content);
     }
 
     private void ResolveParameters(out FormUrlEncodedContent requestContent, out string requestUri)

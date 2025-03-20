@@ -78,7 +78,11 @@ internal class ExecuteRequestStep(
 
     private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)
     {
-        if (requestExecutionContext.AuthProvider is not null)
+        if (requestExecutionContext.AuthProvider is null)
+        {
+            _authProviderAccessor.SetCurrentProviderToDefault();
+        }
+        else
         {
             _authProviderAccessor.CurrentProvider = requestExecutionContext.AuthProvider;
         }
@@ -156,7 +160,7 @@ internal class ExecuteRequestStep(
         logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
 
-        logger.LogTrace("Body: {NewLine}{BodyContent}", Environment.NewLine, await response.GetBodyAsync());
+        logger.LogTrace("Content of the response: {NewLine}{BodyContent}", Environment.NewLine, await response.GetBodyAsync());
     }
 
     private void ValidateContext(
