@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TeaPie.Logging;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
@@ -32,8 +33,13 @@ internal partial class Tester(
             ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
 
         StartRunIfFirstTest();
+        var testCase = _testCaseExecutionContextAccessor.Context.TestCase;
 
-        var test = new Test(testName, testFunction, new TestResult.NotRun() { TestName = testName });
+        var test = new Test(
+            testName,
+            testFunction,
+            new TestResult.NotRun() { TestName = testName, TestCasePath = testCase.RequestsFile.RelativePath },
+            testCase);
 
         test = await ExecuteOrSkipTest(testName, skipTest, testCaseExecutionContext, test);
 
@@ -59,33 +65,37 @@ internal partial class Tester(
         }
         else
         {
-            test = await ExecuteTest(test, testCaseExecutionContext);
+            test = await ExecuteTest(test, testCaseExecutionContext.TestCase);
         }
 
         return test;
     }
 
-    private async Task<Test> ExecuteTest(Test test, TestCaseExecutionContext testCaseExecutionContext)
+    private async Task<Test> ExecuteTest(Test test, TestCase? testCase)
     {
         _stopWatch.Reset();
 
         try
         {
-            return await ExecuteTest(test, test.Function, testCaseExecutionContext);
+            return await ExecuteTest(test, test.Function, testCase);
         }
         catch (Exception ex)
         {
-            return TestFailure(test, ex, testCaseExecutionContext);
+            return TestFailure(test, ex, testCase);
         }
     }
 
-    private Test TestFailure(Test test, Exception ex, TestCaseExecutionContext testCaseExecutionContext)
+    private Test TestFailure(Test test, Exception ex, TestCase? testCase)
     {
         _stopWatch.Stop();
 
-        var result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex) { TestName = test.Name };
+        var result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex)
+        {
+            TestName = test.Name,
+            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+        };
         test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, result);
+        _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
 
         LogTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
         return test;
@@ -97,9 +107,9 @@ internal partial class Tester(
         LogTestFailureReason(message);
     }
 
-    private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCaseExecutionContext testCaseExecutionContext)
+    private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCase? testCase)
     {
-        LogTestStart(test.Name, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
+        LogTestStart(test.Name, testCase?.RequestsFile.RelativePath);
 
         _stopWatch.Start();
 
@@ -107,9 +117,13 @@ internal partial class Tester(
 
         _stopWatch.Stop();
 
-        var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds) { TestName = test.Name };
+        var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds)
+        {
+            TestName = test.Name,
+            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+        };
         test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, result);
+        _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
 
         LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
         return test;
@@ -120,7 +134,7 @@ internal partial class Tester(
     partial void LogTestSkip(string Name, string Path);
 
     [LoggerMessage(Message = "Running test: '{Name}' ({Path})", Level = LogLevel.Information)]
-    partial void LogTestStart(string Name, string Path);
+    partial void LogTestStart(string Name, string? Path);
 
     [LoggerMessage(Message = "Test Passed: '{Name}' in {Duration}", Level = LogLevel.Information)]
     partial void LogTestSuccess(string Name, string Duration);

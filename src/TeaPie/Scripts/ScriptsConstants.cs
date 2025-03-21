@@ -32,6 +32,7 @@ internal static class ScriptsConstants
         "System.Linq",
         "System.Net",
         "System.Net.Http",
+        "System.Text",
         "System.Threading",
         "System.Threading.Tasks",
         "TeaPie",

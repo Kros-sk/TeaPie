@@ -1,5 +1,6 @@
 ﻿using TeaPie.Http;
 using TeaPie.Http.Parsing;
+using TeaPie.StructureExploration;
 
 namespace TeaPie.Testing;
 
@@ -33,12 +34,22 @@ internal class TestFactory : ITestFactory
         CheckParameters(description, out var requestExecutionContext);
 
         return CreateTest(testDirective.TestNameGetter(description.Parameters),
+            requestExecutionContext.TestCaseExecutionContext?.TestCase,
             async () => await testDirective.TestFunction(requestExecutionContext.Response!, description.Parameters));
     }
 
-    private static Test CreateTest(string testName, Func<Task> testFunction)
+    private static Test CreateTest(string testName, TestCase? testCase, Func<Task> testFunction)
     {
-        var test = new Test($"[{_factoryCount}] {testName}", testFunction, new TestResult.NotRun() { TestName = testName });
+        var test = new Test(
+            $"[{_factoryCount}] {testName}",
+            testFunction,
+            new TestResult.NotRun()
+            {
+                TestName = testName,
+                TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+            },
+            testCase);
+
         _factoryCount++;
         return test;
     }

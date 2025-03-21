@@ -32,6 +32,7 @@ internal class OAuth2Provider(
     public IAuthProvider<OAuth2Options> ConfigureOptions(OAuth2Options configuration)
     {
         _configuration = configuration;
+        _cache.Remove(AccessTokenCacheKey);
         return this;
     }
 
