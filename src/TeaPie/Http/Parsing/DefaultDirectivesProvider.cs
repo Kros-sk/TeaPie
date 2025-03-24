@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Spectre.Console;
+using System.Data;
 using System.Text.RegularExpressions;
 using TeaPie.Http.Headers;
 using TeaPie.Testing;
@@ -44,20 +45,15 @@ internal static partial class DefaultDirectivesProvider
 
         if (statusCodes.Length == 0)
         {
-            throw new SyntaxErrorException("Test directive uses requires at least one status code provided in the array.");
+            throw new SyntaxErrorException("Test directive requires at least one status code provided in the array.");
         }
 
-        var foundStatusCode = statusCodes[0];
-        foreach (var statusCode in statusCodes)
+        if (!statusCodes.Contains(response.StatusCode()))
         {
-            foundStatusCode = statusCode;
-            if (statusCode == response.StatusCode())
-            {
-                break;
-            }
+            Fail($"Expected status should be one of these {statusCodesText.EscapeMarkup()} " +
+                $"but received {response.StatusCode()} ({response.ReasonPhrase}).");
         }
 
-        Equal(foundStatusCode, response.StatusCode());
         await Task.CompletedTask;
     }
 

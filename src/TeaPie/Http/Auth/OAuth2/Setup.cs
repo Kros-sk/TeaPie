@@ -8,7 +8,7 @@ internal static class Setup
     {
         services.AddMemoryCache();
         services.AddSingleton<OAuth2Provider>();
-        services.AddHttpClient<IAuthProvider<OAuth2Options>, OAuth2Provider>();
+        services.AddHttpClient<IAuthProvider<OAuth2Options>, OAuth2Provider>(nameof(OAuth2Provider));
 
         return services;
     }

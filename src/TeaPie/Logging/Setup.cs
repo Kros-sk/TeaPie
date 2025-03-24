@@ -11,6 +11,7 @@ internal static class Setup
     {
         configure();
 
+        services.AddTransient<LoggingInterceptorHandler>();
         services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 

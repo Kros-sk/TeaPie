@@ -95,7 +95,7 @@ internal class OAuth2Provider(
 
     private async Task<OAuth2TokenResponse> SendRequest(FormUrlEncodedContent requestContent, string requestUri)
     {
-        using var client = _httpClientFactory.CreateClient(nameof(IAuthProvider<OAuth2Options>));
+        using var client = _httpClientFactory.CreateClient(nameof(OAuth2Provider));
         var response = await client.PostAsync(requestUri, requestContent);
         response.EnsureSuccessStatusCode();
 

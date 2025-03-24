@@ -40,13 +40,9 @@ internal class ExecuteRequestStep(
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)
     {
-        context.Logger.LogTrace("HTTP Request for '{RequestUri}' is going to be sent.", request!.RequestUri);
-
         var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
         InsertStepForScheduledTestsIfAny(context.ServiceProvider);
-
-        await LogResponse(context.Logger, response);
 
         return response;
     }
@@ -107,24 +103,8 @@ internal class ExecuteRequestStep(
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-            LogRequestBody(request, content, logger);
             return await client.SendAsync(request, token);
         }, cancellationToken);
-    }
-
-    private static void LogRequestBody(HttpRequestMessage request, string content, ILogger logger)
-    {
-        if (request.Content is not null)
-        {
-            logger.LogTrace("Following HTTP request's body ({ContentType}):{NewLine}{Body}",
-                request.Content.Headers.ContentType?.MediaType,
-                Environment.NewLine,
-                content);
-        }
-        else
-        {
-            logger.LogTrace("Following HTTP request doesn't have any body.");
-        }
     }
 
     private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)
@@ -169,14 +149,6 @@ internal class ExecuteRequestStep(
 
         _headersHandler.SetHeaders(originalMessage, request);
         return request;
-    }
-
-    private static async Task LogResponse(ILogger logger, HttpResponseMessage response)
-    {
-        logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
-            (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
-
-        logger.LogTrace("Content of the response: {NewLine}{BodyContent}", Environment.NewLine, await response.GetBodyAsync());
     }
 
     private void ValidateContext(
