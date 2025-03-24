@@ -107,8 +107,24 @@ internal class ExecuteRequestStep(
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+            LogRequestBody(request, content, logger);
             return await client.SendAsync(request, token);
         }, cancellationToken);
+    }
+
+    private static void LogRequestBody(HttpRequestMessage request, string content, ILogger logger)
+    {
+        if (request.Content is not null)
+        {
+            logger.LogTrace("Following HTTP request's body ({ContentType}):{NewLine}{Body}",
+                request.Content.Headers.ContentType?.MediaType,
+                Environment.NewLine,
+                content);
+        }
+        else
+        {
+            logger.LogTrace("Following HTTP request doesn't have any body.");
+        }
     }
 
     private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)

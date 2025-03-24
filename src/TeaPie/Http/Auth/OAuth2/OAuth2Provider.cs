@@ -68,12 +68,12 @@ internal class OAuth2Provider(
 
     private void LogSendingRequest()
     {
-        var content = string.Join(
+        var body = string.Join(
             Environment.NewLine, _configuration.GetParametersAsReadOnly().Select(ToStringMaskingSecrets));
 
-        _logger.LogTrace("Content (www-url-encoded) for the following HTTP request: {NewLine}{Body}",
+        _logger.LogTrace("Following HTTP request's body (www-url-encoded):{NewLine}{Body}",
             Environment.NewLine,
-            content);
+            body);
     }
 
     private static string ToStringMaskingSecrets(KeyValuePair<string, string> p)

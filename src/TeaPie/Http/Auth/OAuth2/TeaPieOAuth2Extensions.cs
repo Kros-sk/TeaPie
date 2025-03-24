@@ -19,7 +19,8 @@ public static class TeaPieOAuth2Extensions
     }
 
     /// <summary>
-    /// Configures options for custom <b>OAuth2</b> authentication provider, which will be registered by <paramref name="name"/>.
+    /// Configures options for custom <b>OAuth2</b> authentication provider, which will be registered by specified
+    /// <paramref name="name"/>.
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">Name by which new OAuth2 provider should be registered (and configured).</param>
