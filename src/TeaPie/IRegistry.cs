@@ -2,7 +2,7 @@
 
 internal interface IRegistry<TElement>
 {
-    void Register(string name, TElement retryStrategy);
+    void Register(string name, TElement element);
 
     TElement Get(string name);
 

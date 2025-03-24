@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Polly;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
@@ -15,7 +14,7 @@ internal class OAuth2Provider(
     IVariables variables)
     : IAuthProvider<OAuth2Options>
 {
-    private const string AccessTokenCacheKey = "access_token";
+    private readonly string _accessTokenCacheKey = Guid.NewGuid() + "-access_token";
     private const string RedirectUriParameterKey = "redirect_uri";
 
     private readonly IHttpClientFactory _httpClientFactory = clientFactory;
@@ -32,18 +31,21 @@ internal class OAuth2Provider(
     public IAuthProvider<OAuth2Options> ConfigureOptions(OAuth2Options configuration)
     {
         _configuration = configuration;
-        _cache.Remove(AccessTokenCacheKey);
+        _cache.Remove(_accessTokenCacheKey);
         return this;
     }
 
     private async Task<string> GetToken()
     {
         var source = "cache";
-        var token = await _cache.GetOrCreateAsync(AccessTokenCacheKey, async _ =>
+        var token = await _cache.GetOrCreateAsync(_accessTokenCacheKey, async _ =>
         {
             var newToken = await GetTokenFromRequest();
             source = ResolveRequestUri();
-            _variables.SetVariable(AuthConstants.OAuth2AccessTokenKey, newToken);
+            if (_configuration.AccessTokenVariableName is not null)
+            {
+                _variables.SetVariable(_configuration.AccessTokenVariableName, newToken);
+            }
             return newToken;
         })!;
 
@@ -67,12 +69,18 @@ internal class OAuth2Provider(
     private void LogSendingRequest()
     {
         var content = string.Join(
-            Environment.NewLine, _configuration.GetParametersAsReadOnly().Select(p => $"{p.Key}={p.Value}"));
+            Environment.NewLine, _configuration.GetParametersAsReadOnly().Select(ToStringMaskingSecrets));
 
         _logger.LogTrace("Content (www-url-encoded) for the following HTTP request: {NewLine}{Body}",
             Environment.NewLine,
             content);
     }
+
+    private static string ToStringMaskingSecrets(KeyValuePair<string, string> p)
+        => p.Key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
+            p.Key.Contains("secret", StringComparison.OrdinalIgnoreCase)
+                ? $"{p.Key}={new string('*', p.Value.Length)}"
+                : $"{p.Key}={p.Value}";
 
     private void ResolveParameters(out FormUrlEncodedContent requestContent, out string requestUri)
     {
@@ -103,7 +111,7 @@ internal class OAuth2Provider(
             Priority = CacheItemPriority.High
         };
 
-        _cache.Set(AccessTokenCacheKey, result.AccessToken, cacheEntryOptions);
+        _cache.Set(_accessTokenCacheKey, result.AccessToken, cacheEntryOptions);
     }
 
     private string ResolveRequestUri()

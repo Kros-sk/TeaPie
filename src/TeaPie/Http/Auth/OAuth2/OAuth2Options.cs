@@ -9,6 +9,7 @@ public class OAuth2Options : IAuthOptions
     public string? Password { get; }
     public string? ClientSecret { get; }
     public Uri? RedirectUri { get; }
+    public string? AccessTokenVariableName { get; }
     public IReadOnlyDictionary<string, string> AdditionalParameters { get; } = new Dictionary<string, string>();
 
     private IReadOnlyDictionary<string, string>? _cachedParameters;
@@ -31,6 +32,7 @@ public class OAuth2Options : IAuthOptions
         string? username = null,
         string? password = null,
         string? clientSecret = null,
+        string? accessTokenVariableName = null,
         Dictionary<string, string>? additionalParameters = null)
     {
         AuthUrl = oauthUrl ?? throw new ArgumentNullException(nameof(oauthUrl));
@@ -39,6 +41,7 @@ public class OAuth2Options : IAuthOptions
         Username = username;
         Password = password;
         ClientSecret = clientSecret;
+        AccessTokenVariableName = accessTokenVariableName;
         AdditionalParameters = new Dictionary<string, string>(additionalParameters ?? []);
     }
 
