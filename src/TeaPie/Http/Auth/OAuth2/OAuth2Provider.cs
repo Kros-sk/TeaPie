@@ -42,15 +42,20 @@ internal class OAuth2Provider(
         {
             var newToken = await GetTokenFromRequest();
             source = ResolveRequestUri();
-            if (_configuration.AccessTokenVariableName is not null)
-            {
-                _variables.SetVariable(_configuration.AccessTokenVariableName, newToken);
-            }
+            SetVariableIfNeeded(newToken);
             return newToken;
         })!;
 
         _logger.LogTrace("{Subject} was fetched from {Source}.", "Access token", source);
         return token!;
+    }
+
+    private void SetVariableIfNeeded(string newToken)
+    {
+        if (_configuration.AccessTokenVariableName is not null)
+        {
+            _variables.SetVariable(_configuration.AccessTokenVariableName, newToken);
+        }
     }
 
     private async Task<string> GetTokenFromRequest()
@@ -76,11 +81,11 @@ internal class OAuth2Provider(
             body);
     }
 
-    private static string ToStringMaskingSecrets(KeyValuePair<string, string> p)
-        => p.Key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
-            p.Key.Contains("secret", StringComparison.OrdinalIgnoreCase)
-                ? $"{p.Key}={new string('*', p.Value.Length)}"
-                : $"{p.Key}={p.Value}";
+    private static string ToStringMaskingSecrets(KeyValuePair<string, string> parameter)
+        => parameter.Key.Contains("password", StringComparison.OrdinalIgnoreCase) ||
+            parameter.Key.Contains("secret", StringComparison.OrdinalIgnoreCase)
+                ? $"{parameter.Key}={new string('*', parameter.Value.Length)}"
+                : $"{parameter.Key}={parameter.Value}";
 
     private void ResolveParameters(out FormUrlEncodedContent requestContent, out string requestUri)
     {

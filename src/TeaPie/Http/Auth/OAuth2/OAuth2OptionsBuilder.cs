@@ -18,9 +18,9 @@ public sealed class OAuth2OptionsBuilder
     public static OAuth2OptionsBuilder Create() => new();
 
     /// <summary>
-    /// Adds URL to which user should be authenticated.
+    /// Adds URL on which user should be authenticated.
     /// </summary>
-    /// <param name="oauthUrl">URL to which user should be authenticated.</param>
+    /// <param name="oauthUrl">URL on which user should be authenticated.</param>
     /// <returns>Updated instance of builder.</returns>
     public OAuth2OptionsBuilder WithAuthUrl(string oauthUrl)
     {
@@ -74,7 +74,6 @@ public sealed class OAuth2OptionsBuilder
 
     /// <summary>
     /// Adds 'password' parameter with <paramref name="password"/> value.
-    /// With refresh of the token, variable will be updated.
     /// </summary>
     /// <param name="password">Value of the parameter with name 'password'.</param>
     /// <returns>Updated instance of builder.</returns>
@@ -86,7 +85,7 @@ public sealed class OAuth2OptionsBuilder
 
     /// <summary>
     /// Access token will be saved to variable named by <paramref name="variableName"/>.
-    /// With refresh of the token, variable will be updated.
+    /// With token change, variable is updated accordingly.
     /// </summary>
     /// <param name="variableName">Name of the variable which will hold access token value.</param>
     /// <returns>Updated instance of builder.</returns>
@@ -111,6 +110,10 @@ public sealed class OAuth2OptionsBuilder
         return this;
     }
 
+    /// <summary>
+    /// Creates <see cref="OAuth2Options"/> according to configuration of the builder.
+    /// </summary>
+    /// <returns>Options for OAuth2 provider.</returns>
     public OAuth2Options Build()
     {
         CheckRequiredParameters();
