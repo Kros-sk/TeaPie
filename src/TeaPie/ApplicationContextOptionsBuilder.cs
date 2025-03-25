@@ -10,7 +10,7 @@ internal class ApplicationContextOptionsBuilder
 
     public ApplicationContextOptionsBuilder SetTempFolderPath(string? tempPath)
     {
-        _tempFolderPath = string.IsNullOrEmpty(tempPath) ? Constants.DefaultTemporaryFolderPath : tempPath;
+        _tempFolderPath = string.IsNullOrEmpty(tempPath) ? Constants.SystemTemporaryFolderPath : tempPath;
         return this;
     }
 
@@ -41,7 +41,7 @@ internal class ApplicationContextOptionsBuilder
     public ApplicationContextOptions Build()
     {
         return new ApplicationContextOptions(
-            _tempFolderPath ?? Constants.DefaultTemporaryFolderPath,
+            _tempFolderPath ?? Constants.SystemTemporaryFolderPath,
             _environment,
             _environmentFilePath,
             _reportFilePath,
