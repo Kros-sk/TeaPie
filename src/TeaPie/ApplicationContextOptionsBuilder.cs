@@ -10,7 +10,7 @@ internal class ApplicationContextOptionsBuilder
 
     public ApplicationContextOptionsBuilder SetTempFolderPath(string? tempPath)
     {
-        _tempFolderPath = string.IsNullOrEmpty(tempPath) ? Constants.SystemTemporaryFolderPath : tempPath;
+        _tempFolderPath = tempPath ?? string.Empty;
         return this;
     }
 

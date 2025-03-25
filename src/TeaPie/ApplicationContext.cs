@@ -26,6 +26,8 @@ internal class ApplicationContext(
 
     public string StructureName => System.IO.Path.GetFileNameWithoutExtension(Path).TrimSuffix(Constants.RequestSuffix);
 
+    public string TeaPieFolderPath { get; internal set; } = string.Empty;
+
     public IReadOnlyCollectionStructure CollectionStructure { get; set; } = new CollectionStructure();
     public IReadOnlyCollection<TestCase> TestCases => CollectionStructure.TestCases;
 
@@ -47,4 +49,5 @@ internal class ApplicationContext(
     }
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
+
 }

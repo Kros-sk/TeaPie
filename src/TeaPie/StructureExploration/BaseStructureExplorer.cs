@@ -2,7 +2,7 @@
 
 namespace TeaPie.StructureExploration;
 
-internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplorer
+internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger) : IStructureExplorer
 {
     public const string RemoteFolderName = "~Remote";
     protected string _remoteFolderPath = string.Empty;
@@ -10,6 +10,7 @@ internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplor
     protected readonly ILogger _logger = logger;
     protected string? _environmentFileName;
     protected string? _initializationScriptName;
+    protected IPathProvider _pathProvider = pathProvider;
 
     public IReadOnlyCollectionStructure Explore(ApplicationContext applicationContext)
     {
@@ -31,6 +32,7 @@ internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplor
         collectionStructure = new CollectionStructure(rootFolder);
 
         RegisterRemoteFolder(rootPath, collectionName, rootFolder, collectionStructure);
+        RegisterTeaPieFolder(collectionName, rootFolder, collectionStructure);
     }
 
     protected static void UpdateContext(ApplicationContext applicationContext, CollectionStructure collectionStructure)
@@ -213,12 +215,20 @@ internal abstract class BaseStructureExplorer(ILogger logger) : IStructureExplor
 
         return subFolder;
     }
+
     protected void RegisterRemoteFolder(
         string rootPath, string collectionName, Folder rootFolder, CollectionStructure collectionStructure)
     {
         _remoteFolderPath = Path.Combine(rootPath, RemoteFolderName);
         collectionStructure.TryAddFolder(
             new Folder(_remoteFolderPath, Path.Combine(collectionName, RemoteFolderName), RemoteFolderName, rootFolder));
+    }
+
+    protected void RegisterTeaPieFolder(
+        string collectionName, Folder rootFolder, CollectionStructure collectionStructure)
+    {
+        collectionStructure.TryAddFolder(
+            new Folder(_pathProvider.TeaPieFolderPath, Path.Combine(collectionName, Constants.TeaPieFolderName), Constants.TeaPieFolderName, rootFolder));
     }
 
     protected void RegisterOptionalFilesIfNeeded(ApplicationContext applicationContext, CollectionStructure collectionStructure)

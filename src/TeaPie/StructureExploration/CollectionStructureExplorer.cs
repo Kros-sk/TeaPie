@@ -2,8 +2,8 @@
 
 namespace TeaPie.StructureExploration;
 
-internal partial class CollectionStructureExplorer(ILogger<CollectionStructureExplorer> logger)
-    : BaseStructureExplorer(logger)
+internal partial class CollectionStructureExplorer(IPathProvider pathProvider, ILogger<CollectionStructureExplorer> logger)
+    : BaseStructureExplorer(pathProvider, logger)
 {
     protected override CollectionStructure ExploreStructure(ApplicationContext applicationContext)
     {

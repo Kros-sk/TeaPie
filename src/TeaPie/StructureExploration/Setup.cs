@@ -10,6 +10,8 @@ internal static class Setup
     {
         services.AddSingleton<ITreeStructureRenderer, SpectreConsoleTreeStructureRenderer>();
 
+        services.AddSingleton<IPathProvider, PathProvider>();
+
         return isCollectionRun
             ? services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>()
             : services.AddSingleton<IStructureExplorer, TestCaseStructureExplorer>();

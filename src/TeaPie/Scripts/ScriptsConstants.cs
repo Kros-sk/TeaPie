@@ -5,6 +5,8 @@ internal static class ScriptsConstants
     public const string DefaultNuGetPackagesFolderName = "packages";
     public const string DefaultNuGetLibraryFolderName = "lib";
 
+    public const string TeaPieFolderPathReference = "$teapie";
+
     public const string NuGetPackageFileExtension = ".nupkg";
 
     public const string LibraryFileExtension = ".dll";

@@ -4,8 +4,10 @@ using TeaPie.Pipelines;
 
 namespace TeaPie.StructureExploration;
 
-internal sealed class ResolveTemporaryFolderStep : IPipelineStep
+internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineStep
 {
+    private readonly IPathProvider _pathProvider = pathProvider;
+
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         if (context.TempFolderPath.Equals(string.Empty))
@@ -17,6 +19,7 @@ internal sealed class ResolveTemporaryFolderStep : IPipelineStep
             CreateFolderIfNeeded(context);
         }
 
+        _pathProvider.UpdatePaths(context);
         await Task.CompletedTask;
     }
 
@@ -25,6 +28,7 @@ internal sealed class ResolveTemporaryFolderStep : IPipelineStep
         if (TryFindTeaPieFolder(context.Path, out var teaPiePath))
         {
             context.TempFolderPath = teaPiePath;
+            context.TeaPieFolderPath = teaPiePath;
         }
         else
         {
@@ -36,20 +40,36 @@ internal sealed class ResolveTemporaryFolderStep : IPipelineStep
     {
         teaPiePath = null;
         var currentPath = startingPoint;
-        while (!currentPath.Equals(Environment.SystemDirectory))
+
+        while (Directory.GetParent(currentPath) is not null)
         {
-            if (Path.GetFileName(currentPath).Equals(Constants.TeaPieFolderName))
+            if (IsTeaPieFolder(currentPath))
             {
                 teaPiePath = currentPath;
                 return true;
             }
 
-            currentPath = Directory.GetParent(currentPath)?.FullName
-                ?? throw new InvalidOperationException($"Given path {currentPath} doesn't have any parent folder.");
+            if (TryFindFromSiblings(currentPath, out teaPiePath))
+            {
+                return true;
+            }
+
+            currentPath = Directory.GetParent(currentPath)?.FullName!;
         }
 
         return false;
     }
+
+    private static bool TryFindFromSiblings(string currentPath, [NotNullWhen(true)] out string? teaPieFolder)
+    {
+        var parent = Directory.GetParent(currentPath)!;
+        var siblings = Directory.GetDirectories(parent.FullName);
+        teaPieFolder = siblings.FirstOrDefault(IsTeaPieFolder);
+
+        return teaPieFolder is not null;
+    }
+
+    private static bool IsTeaPieFolder(string currentPath) => Path.GetFileName(currentPath).Equals(Constants.TeaPieFolderName);
 
     private static void CreateFolderIfNeeded(ApplicationContext context)
     {
