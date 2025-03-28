@@ -1,5 +1,7 @@
 ﻿using NSubstitute;
 using TeaPie.Scripts;
+using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Tests.Scripts;
 
@@ -10,7 +12,7 @@ public class PreProcessScriptStepShould
     {
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptWithSyntaxErrorPath);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
-        context.RawContent = await File.ReadAllTextAsync(context.Script.File.Path);
+        context.RawContent = await System.IO.File.ReadAllTextAsync(context.Script.File.Path);
 
         var processor = Substitute.For<IScriptPreProcessor>();
 
@@ -23,14 +25,9 @@ public class PreProcessScriptStepShould
             .WithTempFolderPath(tempPath)
             .Build();
 
-        var step = new PreProcessScriptStep(pipeline, accessor, processor);
+        var step = new PreProcessScriptStep(pipeline, accessor, processor, Substitute.For<IExternalFileRegistry>());
         await step.Execute(appContext);
 
-        await processor.Received(1).ProcessScript(
-            context.Script.File.Path,
-            context.RawContent!,
-            rootPath,
-            tempPath,
-            Arg.Any<List<string>>());
+        await processor.Received(1).ProcessScript(context, Arg.Any<List<ScriptReference>>());
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
 using TeaPie.Pipelines;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
 
@@ -19,7 +20,7 @@ internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineSt
             CreateFolderIfNeeded(context);
         }
 
-        _pathProvider.UpdatePaths(context);
+        _pathProvider.UpdatePaths(context.Path, context.TempFolderPath, context.TeaPieFolderPath);
         await Task.CompletedTask;
     }
 

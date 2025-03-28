@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
 
@@ -128,7 +129,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
     {
         var file = files.FirstOrDefault(
             f => Path.GetFileName(f).Equals(GetRelatedScriptFileName(requestFileName, desiredSuffix)));
-        return file is not null ? new Script(File.Create(file, folder)) : null;
+        return file is not null ? new Script(InternalFile.Create(file, folder)) : null;
     }
 
     private static string GetRelatedScriptFileName(string requestFileName, string desiredSuffix)
@@ -139,12 +140,12 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         Folder currentFolder,
         out string fileName,
         out string relativePath,
-        out File requestFileObj,
+        out InternalFile requestFileObj,
         string reqFile)
     {
         fileName = Path.GetFileName(reqFile);
         relativePath = GetRelativePath(currentFolder, fileName);
-        requestFileObj = new(reqFile, relativePath, fileName, currentFolder);
+        requestFileObj = new(reqFile, relativePath, currentFolder);
 
         return new TestCase(requestFileObj);
     }
@@ -189,7 +190,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         bool fileExistsInCollection,
         Folder parentFolder,
         IList<string> files,
-        Action<File> setFileAction)
+        Action<InternalFile> setFileAction)
     {
         if (fileName is not null && !fileExistsInCollection)
         {
@@ -197,7 +198,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
 
             if (foundFile is not null)
             {
-                setFileAction(File.Create(foundFile, parentFolder));
+                setFileAction(InternalFile.Create(foundFile, parentFolder));
             }
         }
     }
@@ -259,7 +260,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         string? fileName,
         string filePath,
         CollectionStructure collectionStructure,
-        Action<File> setFileAction,
+        Action<InternalFile> setFileAction,
         string fileNameForErrorMessage)
     {
         if (fileName is null)
@@ -270,7 +271,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
                 throw new InvalidOperationException($"Unable to find parent folder of {fileNameForErrorMessage}.");
             }
 
-            setFileAction(File.Create(filePath, folder));
+            setFileAction(InternalFile.Create(filePath, folder));
         }
     }
 

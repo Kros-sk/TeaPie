@@ -6,7 +6,6 @@ using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using static Xunit.Assert;
-using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Testing;
 
@@ -21,7 +20,7 @@ public class TesterShould
     {
         _mockPath = "pathToTestCase.http";
         _mockTestCaseExecutionContext = new TestCaseExecutionContext(
-            new TestCase(new File(_mockPath, _mockPath, _mockPath, null!)));
+            new TestCase(new InternalFile(_mockPath, _mockPath, null!)));
 
         _currentTestCaseExecutionContextAccessor = new CurrentTestCaseExecutionContextAccessor()
         {

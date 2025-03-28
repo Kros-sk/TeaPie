@@ -1,43 +1,37 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Scripts;
 
-internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accessor) : IPipelineStep
+internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accessor, TemporaryPathResolver temporaryPathResolver)
+    : IPipelineStep
 {
     private readonly IScriptExecutionContextAccessor _scriptContextAccessor = accessor;
+    private readonly TemporaryPathResolver _temporaryPathResolver = temporaryPathResolver;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var scriptExecutionContext, out var content);
 
-        var temporaryPath = await SaveTemporaryScript(context, scriptExecutionContext, content, cancellationToken);
+        var temporaryPath = await SaveTemporaryScript(scriptExecutionContext, content, cancellationToken);
 
         context.Logger.LogTrace(
             "Pre-processed script from path '{ScriptPath}' was saved to temporary folder, on path '{TempPath}'",
-            scriptExecutionContext.Script.File.RelativePath,
+            scriptExecutionContext.Script.File.GetDisplayPath(),
             temporaryPath);
     }
 
-    private static async Task<string> SaveTemporaryScript(
-        ApplicationContext context,
+    private async Task<string> SaveTemporaryScript(
         ScriptExecutionContext scriptExecution,
         string content,
         CancellationToken cancellationToken)
     {
-        var temporaryPath = Path.Combine(context.TempFolderPath, scriptExecution.Script.File.RelativePath);
+        var temporaryPath = _temporaryPathResolver.ResolvePath(scriptExecution.Script.File.Path, string.Empty);
 
-        var parent = Directory.GetParent(temporaryPath);
-        ArgumentNullException.ThrowIfNull(parent);
-
-        if (!Directory.Exists(parent.FullName))
-        {
-            Directory.CreateDirectory(parent.FullName);
-        }
-
+        Directory.CreateDirectory(Path.GetDirectoryName(temporaryPath)!);
         await File.WriteAllTextAsync(temporaryPath, content, cancellationToken);
 
-        scriptExecution.TemporaryPath = temporaryPath;
         return temporaryPath;
     }
 

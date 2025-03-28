@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
 
@@ -11,6 +12,10 @@ internal static class Setup
         services.AddSingleton<ITreeStructureRenderer, SpectreConsoleTreeStructureRenderer>();
 
         services.AddSingleton<IPathProvider, PathProvider>();
+
+        services.AddSingleton<IExternalFileRegistry, ExternalFilesRegistry>();
+
+        services.AddPaths();
 
         return isCollectionRun
             ? services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>()

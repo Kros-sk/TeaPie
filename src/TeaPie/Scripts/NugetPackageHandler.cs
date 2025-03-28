@@ -5,12 +5,14 @@ using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using System.Reflection;
-using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Scripts;
 
 internal interface INuGetPackageHandler
 {
+    Task HandleNuGetPackage(NuGetPackageDescription nugetPackage);
+
     Task HandleNuGetPackages(IEnumerable<NuGetPackageDescription> nugetPackages);
 }
 
@@ -35,7 +37,7 @@ internal partial class NuGetPackageHandler(
         }
     }
 
-    private async Task HandleNuGetPackage(NuGetPackageDescription nugetPackage)
+    public async Task HandleNuGetPackage(NuGetPackageDescription nugetPackage)
     {
         await DownloadNuGet(nugetPackage);
         AddNuGetDllToAssembly(nugetPackage);

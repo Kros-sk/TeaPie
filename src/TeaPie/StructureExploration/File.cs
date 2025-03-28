@@ -2,16 +2,10 @@
 
 namespace TeaPie.StructureExploration;
 
-[DebuggerDisplay("{RelativePath}")]
-internal record File(string Path, string RelativePath, string Name, Folder ParentFolder)
+[DebuggerDisplay("{GetDisplayPath()}")]
+internal record File(string Path, string RelativePath = "")
 {
-    public static File Create(string filePath, Folder folder)
-    {
-        var fileName = System.IO.Path.GetFileName(filePath);
-        return new File(
-        filePath,
-            $"{folder.RelativePath}{System.IO.Path.DirectorySeparatorChar}{fileName}",
-            fileName,
-            folder);
-    }
+    public string Name { get; } = System.IO.Path.GetFileName(Path);
+
+    public string GetDisplayPath() => string.IsNullOrEmpty(RelativePath) ? Path : RelativePath;
 }

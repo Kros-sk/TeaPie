@@ -1,7 +1,6 @@
 ﻿using TeaPie.Http;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
-using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Http;
 
@@ -30,7 +29,7 @@ internal static class RequestHelper
         };
     }
 
-    public static File GetFile(string path)
+    public static InternalFile GetFile(string path)
     {
         var folder = new Folder(
             RequestsIndex.RootFolderFullPath,
@@ -38,6 +37,6 @@ internal static class RequestHelper
             RequestsIndex.RootFolderName,
             null);
 
-        return File.Create(path, folder);
+        return InternalFile.Create(path, folder);
     }
 }

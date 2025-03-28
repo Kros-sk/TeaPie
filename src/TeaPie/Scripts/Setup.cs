@@ -10,6 +10,8 @@ internal static class Setup
         services.AddSingleton<IScriptCompiler, ScriptCompiler>();
         services.AddSingleton<INuGetPackageHandler, NuGetPackageHandler>();
 
+        services.AddSingleton<IScriptLineResolversProvider, ScriptLineResolversProvider>();
+
         services.AddScoped<IScriptExecutionContextAccessor, ScriptExecutionContextAccessor>();
 
         services.AddHttpClient<ExecuteScriptStep>();

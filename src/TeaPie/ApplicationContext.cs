@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Reporting;
 using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 using TeaPie.TestCases;
 
 namespace TeaPie;
@@ -33,7 +34,7 @@ internal class ApplicationContext(
 
     private readonly Dictionary<string, Script> _userDefinedScripts = [];
     public IReadOnlyDictionary<string, Script> UserDefinedScripts => _userDefinedScripts;
-    public void RegisterUserDefinedScript(string key, Script script) => _userDefinedScripts.Add(key, script);
+    public void RegisterUserDefinedScript(string path, Script script) => _userDefinedScripts.Add(path, script);
 
     public ILogger Logger { get; set; } = logger;
 
@@ -49,5 +50,4 @@ internal class ApplicationContext(
     }
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
-
 }

@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Environments;
 using TeaPie.Pipelines;
-using TeaPie.Reporting;
 using TeaPie.StructureExploration;
-using TeaPie.TestCases;
-using TeaPie.Testing;
 using TeaPie.Variables;
 
 namespace TeaPie.Tests.Environments;
@@ -48,17 +45,7 @@ public class SetEnvironmentStepShould
         out ApplicationContextBuilder appContextBuilder)
     {
         var services = new ServiceCollection();
-        services.AddScoped<ExploreStructureStep>();
-        services.AddScoped<InitializeEnvironmentsStep>();
-        services.AddScoped<SetEnvironmentStep>();
-        services.AddSingleton<IVariables, global::TeaPie.Variables.Variables>();
-        services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
-        services.AddSingleton<IPipeline, ApplicationPipeline>();
-        services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>();
-        services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
-        services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
-        services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
-        services.AddLogging();
+        services.AddTeaPie(true, () => { });
 
         provider = services.BuildServiceProvider();
 

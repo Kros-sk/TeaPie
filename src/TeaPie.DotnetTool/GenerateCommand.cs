@@ -1,7 +1,7 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Cli;
 using System.ComponentModel;
-using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.DotnetTool;
 

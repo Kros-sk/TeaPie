@@ -2,7 +2,7 @@
 using System.Text.Json;
 using TeaPie.Json;
 using TeaPie.Pipelines;
-using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Variables;
 
@@ -40,7 +40,7 @@ internal class TryLoadVariablesStep(IVariables variables, IPathProvider pathProv
 
     private static async Task<Dictionary<string, Dictionary<string, object?>>> ParseVariablesFile(string variablesFilePath)
     {
-        await using var environmentFile = System.IO.File.OpenRead(variablesFilePath);
+        await using var environmentFile = File.OpenRead(variablesFilePath);
         return JsonSerializer
             .Deserialize<Dictionary<string, Dictionary<string, object?>>>(environmentFile, _jsonSerializerOptions.Value) ?? [];
     }

@@ -52,7 +52,7 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     public bool HasEnvironmentFile => EnvironmentFile is not null;
 
     [MemberNotNull(nameof(EnvironmentFile))]
-    internal void SetEnvironmentFile(File? file)
+    internal void SetEnvironmentFile(InternalFile? file)
     {
         if (file is null)
         {

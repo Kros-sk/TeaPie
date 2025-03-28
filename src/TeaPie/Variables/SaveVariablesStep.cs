@@ -2,7 +2,7 @@
 using System.Text.Json;
 using TeaPie.Json;
 using TeaPie.Pipelines;
-using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Variables;
 
@@ -27,9 +27,11 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
 
     private async Task SaveVariables(string variablesFilePath)
     {
-        var variablesByScopes = GetVariablesByScopes();
-        var json = JsonSerializer.Serialize(variablesByScopes, _jsonSerializerOptions.Value);
-        await SaveToFile(variablesFilePath, json);
+        // TODO: Implement
+
+        //var variablesByScopes = GetVariablesByScopes();
+        //var json = JsonSerializer.Serialize(variablesByScopes, _jsonSerializerOptions.Value);
+        //await SaveToFile(variablesFilePath, json);
     }
 
     private Dictionary<string, Dictionary<string, object?>> GetVariablesByScopes()

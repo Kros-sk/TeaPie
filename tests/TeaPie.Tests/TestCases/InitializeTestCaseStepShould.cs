@@ -1,22 +1,15 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using NuGet.Common;
-using TeaPie.Http;
-using TeaPie.Pipelines;
-using TeaPie.Reporting;
-using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
-using TeaPie.Testing;
 using TeaPie.Tests.Http;
 using TeaPie.Tests.Scripts;
-using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.TestCases;
 
 public class InitializeTestCaseStepShould
 {
-    private static readonly File _file = RequestHelper.GetFile(
+    private static readonly InternalFile _file = RequestHelper.GetFile(
             Path.Combine(ScriptIndex.RootSubFolderFullPath,
                 $"virtualRequest{Constants.RequestSuffix}{Constants.RequestFileExtension}"));
 
@@ -92,16 +85,7 @@ public class InitializeTestCaseStepShould
     }
 
     private static void ConfigureServices(ServiceCollection services)
-    {
-        services.AddSingleton<NuGet.Common.ILogger, NullLogger>();
-
-        services.AddTestCases();
-        services.AddScripts();
-        services.AddHttp();
-        services.AddPipelines();
-        services.AddReporting();
-        services.AddTesting();
-    }
+        => services.AddTeaPie(true, () => { });
 
     private static Script GetScript(string path)
     {
@@ -111,7 +95,7 @@ public class InitializeTestCaseStepShould
             ScriptIndex.RootFolderName,
             null);
 
-        var file = File.Create(path, folder);
+        var file = InternalFile.Create(path, folder);
 
         return new Script(file);
     }

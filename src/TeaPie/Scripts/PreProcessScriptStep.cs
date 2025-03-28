@@ -1,55 +1,52 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Scripts;
 
 internal sealed class PreProcessScriptStep(
     IPipeline pipeline,
     IScriptExecutionContextAccessor scriptExecutionContextAccessor,
-    IScriptPreProcessor scriptPreProcessor) : IPipelineStep
+    IScriptPreProcessor scriptPreProcessor,
+    IExternalFileRegistry externalFileRegistry) : IPipelineStep
 {
     private readonly IScriptExecutionContextAccessor _scriptContextAccessor = scriptExecutionContextAccessor;
     private readonly IPipeline _pipeline = pipeline;
     private readonly IScriptPreProcessor _scriptPreProcessor = scriptPreProcessor;
+    private readonly IExternalFileRegistry _externalFileRegistry = externalFileRegistry;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        ValidateContext(out var scriptExecutionContext, out var content);
+        ValidateContext(out var scriptExecutionContext);
 
         context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' started.",
-            scriptExecutionContext.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.GetDisplayPath());
 
-        var referencedScriptsPaths = new List<string>();
+        var referencedScriptsPaths = new List<ScriptReference>();
 
-        scriptExecutionContext.ProcessedContent =
-            await _scriptPreProcessor.ProcessScript(
-                scriptExecutionContext.Script.File.Path,
-                content,
-                context.Path,
-                context.TempFolderPath,
-                referencedScriptsPaths);
+        await _scriptPreProcessor.ProcessScript(scriptExecutionContext, referencedScriptsPaths);
 
         HandleReferencedScripts(context, referencedScriptsPaths);
 
         context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' finished.",
-            scriptExecutionContext.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.GetDisplayPath());
     }
 
-    private void HandleReferencedScripts(ApplicationContext context, List<string> referencedScriptsPaths)
+    private void HandleReferencedScripts(ApplicationContext context, List<ScriptReference> referencedScriptsPaths)
     {
-        foreach (var scriptPath in referencedScriptsPaths)
+        foreach (var scriptReference in referencedScriptsPaths)
         {
-            if (!context.UserDefinedScripts.ContainsKey(scriptPath))
+            if (!context.UserDefinedScripts.ContainsKey(scriptReference.RealPath))
             {
-                InsertStepsForScript(context, scriptPath);
+                InsertStepsForScript(context, scriptReference);
             }
         }
     }
 
-    private void InsertStepsForScript(ApplicationContext context, string scriptPath)
+    private void InsertStepsForScript(ApplicationContext context, ScriptReference scriptReference)
     {
-        PrepareSteps(context, scriptPath, out var relativePath, out var script, out var steps);
+        PrepareSteps(context, scriptReference, out var relativePath, out var script, out var steps);
 
         _pipeline.InsertSteps(this, steps);
 
@@ -58,34 +55,46 @@ internal sealed class PreProcessScriptStep(
             relativePath,
             steps.Length);
 
-        context.RegisterUserDefinedScript(scriptPath, script);
+        context.RegisterUserDefinedScript(scriptReference.RealPath, script);
     }
 
-    private static void PrepareSteps(
+    private void PrepareSteps(
         ApplicationContext context,
-        string scriptPath,
+        ScriptReference scriptReference,
         out string relativePath,
         out Script script,
         out IPipelineStep[] steps)
     {
-        relativePath = scriptPath.TrimRootPath(context.Path, true);
-        if (!context.CollectionStructure.TryGetFolder(Path.GetDirectoryName(scriptPath) ?? string.Empty, out var folder))
-        {
-            throw new InvalidOperationException($"Unable to find parent folder to script on path '{scriptPath}'.This may " +
-                "mean, that some of the directories within the path don't exist.");
-        }
+        relativePath = scriptReference.RealPath.TrimRootPath(context.Path, true);
 
-        script = new Script(new(scriptPath, relativePath, Path.GetFileName(scriptPath), folder));
+        script = GetScript(context, scriptReference, relativePath);
+
         var scriptContext = new ScriptExecutionContext(script);
-
         steps = ScriptStepsFactory.CreateStepsForScriptPreProcess(context.ServiceProvider, scriptContext);
     }
 
-    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
+    private Script GetScript(ApplicationContext context, ScriptReference scriptReference, string relativePath)
+    {
+        if (scriptReference.IsExternal)
+        {
+            var file = _externalFileRegistry.Get(scriptReference.RealPath);
+            return new(file);
+        }
+        else if (context.CollectionStructure.TryGetFolder(
+            Path.GetDirectoryName(scriptReference.RealPath) ?? string.Empty, out var folder))
+        {
+            return new Script(
+                new InternalFile(scriptReference.RealPath, relativePath, folder));
+        }
+
+        throw new InvalidOperationException($"Unable to find script on path '{scriptReference.RealPath}'.");
+    }
+
+    private void ValidateContext(out ScriptExecutionContext scriptExecutionContext)
     {
         const string activityName = "pre-process script";
         ExecutionContextValidator.Validate(_scriptContextAccessor, out scriptExecutionContext, activityName);
         ExecutionContextValidator.ValidateParameter(
-            scriptExecutionContext.RawContent, out content, activityName, "its content");
+            scriptExecutionContext.RawContent, out _, activityName, "its content");
     }
 }

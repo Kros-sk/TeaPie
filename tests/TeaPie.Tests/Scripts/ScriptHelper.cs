@@ -2,7 +2,7 @@
 using NSubstitute;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
-using File = TeaPie.StructureExploration.File;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.Tests.Scripts;
 
@@ -16,7 +16,7 @@ internal static class ScriptHelper
             ScriptIndex.RootFolderName,
             null);
 
-        var file = File.Create(path, folder);
+        var file = InternalFile.Create(path, folder);
 
         var script = new Script(file);
 
@@ -30,18 +30,18 @@ internal static class ScriptHelper
 
     public static async Task PreProccessScript(ScriptExecutionContext context)
     {
-        var nugetHandler = new NuGetPackageHandler(
-            Substitute.For<ILogger<NuGetPackageHandler>>(),
-            NuGet.Common.NullLogger.Instance);
+        var pathProvider = Substitute.For<IPathProvider>();
+        var scriptLineResolversProvider = new ScriptLineResolversProvider(
+            Substitute.For<INuGetPackageHandler>(),
+            Substitute.For<IPathResolver>(),
+            new TemporaryPathResolver(pathProvider, new RelativePathResolver()),
+            Substitute.For<IExternalFileRegistry>(),
+            pathProvider);
 
-        var processor = new ScriptPreProcessor(nugetHandler, Substitute.For<ILogger<ScriptPreProcessor>>());
-        var referencedScripts = new List<string>();
-        context.ProcessedContent = await processor.ProcessScript(
-            context.Script.File.Path,
-            context.RawContent!,
-            ScriptIndex.RootSubFolderFullPath,
-            Path.GetTempPath(),
-            referencedScripts);
+        var processor = new ScriptPreProcessor(scriptLineResolversProvider);
+
+        var referencedScripts = new List<ScriptReference>();
+        await processor.ProcessScript(context, referencedScripts);
     }
 
     public static async Task PrepareScriptForCompilation(ScriptExecutionContext context)

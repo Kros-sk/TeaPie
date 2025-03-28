@@ -1,4 +1,6 @@
-﻿namespace TeaPie.DotnetTool;
+﻿using TeaPie.StructureExploration.Paths;
+
+namespace TeaPie.DotnetTool;
 
 internal static class PathResolver
 {

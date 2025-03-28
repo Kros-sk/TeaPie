@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -140,5 +141,5 @@ public class CollectionStructureExplorerShould
     }
 
     private static CollectionStructureExplorer GetStructureExplorer()
-        => new(Substitute.For<ILogger<CollectionStructureExplorer>>());
+        => new(Substitute.For<IPathProvider>(), Substitute.For<ILogger<CollectionStructureExplorer>>());
 }

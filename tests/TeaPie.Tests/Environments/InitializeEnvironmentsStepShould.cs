@@ -230,19 +230,7 @@ public class InitializeEnvironmentStepShould
         string collectionPath = "")
     {
         var services = new ServiceCollection();
-        services.AddScoped<ExploreStructureStep>();
-        services.AddScoped<InitializeEnvironmentsStep>();
-        services.AddScoped<SetEnvironmentStep>();
-        services.AddScoped<ReportTestResultsSummaryStep>();
-        services.AddSingleton<IVariables, global::TeaPie.Variables.Variables>();
-        services.AddSingleton<IEnvironmentsRegistry, EnvironmentsRegistry>();
-        services.AddSingleton<IPipeline, ApplicationPipeline>();
-        services.AddSingleton<IStructureExplorer, CollectionStructureExplorer>();
-        services.AddSingleton<ITestResultsSummaryReporter, TestResultsSummaryReporter>();
-        services.AddSingleton<ITestResultsSummaryAccessor, TestResultsSummaryAccessor>();
-        services.AddSingleton<IAuthProviderAccessor, AuthProviderAccessor>();
-        services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
-        services.AddLogging();
+        services.AddTeaPie(true, () => { });
 
         provider = services.BuildServiceProvider();
 

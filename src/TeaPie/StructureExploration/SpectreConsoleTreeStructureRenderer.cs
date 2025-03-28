@@ -56,7 +56,8 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
 
     private static void ResolveInitilizationScript(Script? initializationScript, string parentRelativePath, IHasTreeNodes parentNode)
     {
-        if (initializationScript is not null && parentRelativePath.Equals(initializationScript.File.ParentFolder.RelativePath))
+        parentRelativePath = parentRelativePath.Trim(); // TODO: Remove
+        if (initializationScript is not null) // TODO: &&  parentRelativePath.Equals(initializationScript.File.Name.ParentFolder.RelativePath))
         {
             parentNode.AddNode(GetInitializationScriptReport(initializationScript));
         }
@@ -64,10 +65,11 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
 
     private static void ResolveEnvironmentFile(File? environmentFile, string parentRelativePath, IHasTreeNodes parentNode)
     {
-        if (environmentFile is not null && parentRelativePath.Equals(environmentFile.ParentFolder.RelativePath))
-        {
-            parentNode.AddNode(GetEnvironmentFileReport(environmentFile));
-        }
+        // TODO: Implement
+        //if (environmentFile is not null && parentRelativePath.Equals(environmentFile.ParentFolder.RelativePath))
+        //{
+        //    parentNode.AddNode(GetEnvironmentFileReport(environmentFile));
+        //}
     }
 
     private static void ResolveTestCases(
@@ -96,7 +98,7 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         return $"{emoji} [aqua]{initializationScript.File.Name}[/]";
     }
 
-    private static string GetEnvironmentFileReport(File environmentFile)
+    private static string GetEnvironmentFileReport(InternalFile environmentFile)
     {
         var emoji = CompatibilityChecker.SupportsEmoji ? Emoji.Known.LeafFlutteringInWind : "[grey italic]EN[/]";
         return $"{emoji} [purple]{environmentFile.Name}[/]";

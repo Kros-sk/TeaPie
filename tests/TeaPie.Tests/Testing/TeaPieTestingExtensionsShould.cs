@@ -3,10 +3,10 @@ using NSubstitute;
 using TeaPie.Http;
 using TeaPie.Http.Parsing;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using static Xunit.Assert;
-using File = TeaPie.StructureExploration.File;
 using Folder = TeaPie.StructureExploration.Folder;
 using TestCase = TeaPie.StructureExploration.TestCase;
 
@@ -131,7 +131,7 @@ public class TeaPieTestingExtensionsShould
         {
             Context = new TestCaseExecutionContext(
                 new TestCase(
-                    File.Create("path", new Folder(string.Empty, string.Empty, string.Empty, null))))
+                    InternalFile.Create("path", new Folder(string.Empty, string.Empty, string.Empty, null))))
         };
 
         return new(

@@ -9,7 +9,6 @@ using TeaPie.Http.Retrying;
 using TeaPie.StructureExploration;
 using TeaPie.Testing;
 using TeaPie.Variables;
-using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Tests.Http.Parsing;
 
@@ -224,7 +223,7 @@ public class HttpRequestParserShould
 
         var folder =
             new Folder(RequestsIndex.RootFolderFullPath, RequestsIndex.RootFolderName, RequestsIndex.RootFolderName, null);
-        var file = File.Create(path, folder);
+        var file = InternalFile.Create(path, folder);
 
         var requestContext = new RequestExecutionContext(file)
         {
