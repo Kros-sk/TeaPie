@@ -21,7 +21,7 @@ internal class TryLoadVariablesStep(IVariables variables, IPathProvider pathProv
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var variablesFilePath = _pathProvider.VariablesFilePath;
-        if (Directory.Exists(variablesFilePath))
+        if (File.Exists(variablesFilePath))
         {
             await LoadVariables(variablesFilePath);
             context.Logger.LogDebug("Variables were loaded from previous run.");

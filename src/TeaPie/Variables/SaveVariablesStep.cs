@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using TeaPie.Json;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration.Paths;
 
@@ -11,13 +10,6 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
     private readonly IVariables _variables = variables;
     private readonly IPathProvider _pathProvider = pathProvider;
 
-    private static readonly Lazy<JsonSerializerOptions> _jsonSerializerOptions = new(() =>
-    {
-        var options = new JsonSerializerOptions();
-        options.Converters.Add(new JsonElementTypeConverter());
-        return options;
-    });
-
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         await SaveVariables(_pathProvider.VariablesFilePath);
@@ -27,11 +19,34 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
 
     private async Task SaveVariables(string variablesFilePath)
     {
-        // TODO: Implement
+        var variablesByScopes = GetVariablesByScopes();
+        var json = JsonSerializer.Serialize(variablesByScopes);
 
-        //var variablesByScopes = GetVariablesByScopes();
-        //var json = JsonSerializer.Serialize(variablesByScopes, _jsonSerializerOptions.Value);
-        //await SaveToFile(variablesFilePath, json);
+        await SaveToFile(variablesFilePath, json);
+    }
+
+    private static async Task SaveToFile(string variablesFilePath, string content)
+    {
+        CreateParentDirectoryIfNeeded(variablesFilePath);
+
+        await WriteToFile(variablesFilePath, content);
+    }
+
+    private static async Task WriteToFile(string variablesFilePath, string content)
+    {
+        await using var fileStream = new FileStream(variablesFilePath, FileMode.Create, FileAccess.Write);
+        await using var writer = new StreamWriter(fileStream);
+
+        await writer.WriteAsync(content);
+    }
+
+    private static void CreateParentDirectoryIfNeeded(string variablesFilePath)
+    {
+        var directory = Path.GetDirectoryName(variablesFilePath);
+        if (!Directory.Exists(directory) && directory is not null)
+        {
+            Directory.CreateDirectory(directory);
+        }
     }
 
     private Dictionary<string, Dictionary<string, object?>> GetVariablesByScopes()
@@ -50,20 +65,7 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
         {
             scopeVariables[variable.Name] = variable.Value;
         }
+
         return scopeVariables;
-    }
-
-    private static async Task SaveToFile(string variablesFilePath, string content)
-    {
-        var directory = Path.GetDirectoryName(variablesFilePath);
-        if (!Directory.Exists(directory) && directory is not null)
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        await using var fileStream = new FileStream(variablesFilePath, FileMode.Create, FileAccess.Write);
-        await using var writer = new StreamWriter(fileStream);
-
-        await writer.WriteAsync(content);
     }
 }

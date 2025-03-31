@@ -154,7 +154,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     public void SetEnvironment(string name)
     {
         _applicationContext.EnvironmentName = name;
-        Task.Run(() => _applicationContext.ServiceProvider.GetStep<SetEnvironmentStep>().Execute(_applicationContext));
+        _applicationContext.ServiceProvider.GetStep<SetEnvironmentStep>().Execute(_applicationContext).Wait();
     }
     #endregion
 
