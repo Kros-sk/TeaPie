@@ -8,4 +8,7 @@ internal record File(string Path, string RelativePath = "")
     public string Name { get; } = System.IO.Path.GetFileName(Path);
 
     public string GetDisplayPath() => string.IsNullOrEmpty(RelativePath) ? Path : RelativePath;
+
+    public static bool IsExternal(string filePath, string rootPath)
+        => !filePath.Trim().StartsWith(rootPath.Trim());
 }

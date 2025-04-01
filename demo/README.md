@@ -18,7 +18,7 @@ All necessary information about the `TeaPie` tool from the user's perspective ca
 To make this demo work, you need to **start the server first**:
 
 ```sh
-mockoon-cli start --data CarRentalServer.json
+mockoon-cli start --data server/CarRentalServer.json
 ```
 
 By default, the server runs on [http://localhost:3001](http://localhost:3001).
@@ -40,14 +40,14 @@ There are two run modes:
 If you have [already installed](../README.md#how-to-install-locally) `TeaPie.Tool` just run (in `demo` folder):
 
 ```sh
-teapie
+teapie Tests
 ```
 
 If not, use:
 
 ```sh
 cd ./src/TeaPie.DotnetTool
-dotnet run test "../../demo" -i "../../demo/init.csx"
+dotnet run test "../../demo/Tests"
 ```
 
 ### Single Test Case Run
@@ -55,7 +55,7 @@ dotnet run test "../../demo" -i "../../demo/init.csx"
 You can choose which test case should be run, but this one is quite representative, since it contain more features included:
 
 ```sh
-teapie "./Tests/2. Cars/EditCar-req.http" --env-file "../../demo-env.json" -i "../../init.csx
+teapie "./Tests/2. Cars/EditCar-req.http"
 ```
 
 If you still don't have installed tool, use this alternative:

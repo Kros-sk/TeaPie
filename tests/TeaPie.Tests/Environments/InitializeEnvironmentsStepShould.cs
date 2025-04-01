@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Environments;
-using TeaPie.Http.Auth;
-using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.StructureExploration;
-using TeaPie.TestCases;
-using TeaPie.Testing;
+using TeaPie.StructureExploration.Paths;
 using TeaPie.Variables;
 using static Xunit.Assert;
 
@@ -214,6 +211,7 @@ public class InitializeEnvironmentStepShould
         }
 
         var appContext = appContextBuilder
+            .WithPath(_collectionPath)
             .WithServiceProvider(provider)
             .WithReporter(provider.GetRequiredService<ITestResultsSummaryReporter>())
             .Build();
@@ -237,6 +235,11 @@ public class InitializeEnvironmentStepShould
         pipeline = provider.GetRequiredService<IPipeline>();
         variables = provider.GetRequiredService<IVariables>();
         environmentsRegistry = provider.GetRequiredService<IEnvironmentsRegistry>();
+
+        var pathProvider = provider.GetRequiredService<IPathProvider>();
+        pathProvider.UpdatePaths(
+            string.IsNullOrEmpty(collectionPath) ? _collectionPath : collectionPath,
+            Constants.SystemTemporaryFolderPath);
 
         appContextBuilder = new ApplicationContextBuilder()
             .WithPath(string.IsNullOrEmpty(collectionPath) ? _collectionPath : collectionPath)

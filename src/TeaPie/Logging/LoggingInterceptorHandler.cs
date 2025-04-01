@@ -43,7 +43,7 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
             _logger.LogTrace("Response's body ({ContentType}): {NewLine}{BodyContent}",
-                response.Content.Headers.ContentType?.MediaType,
+                response.Content.Headers.ContentType?.MediaType ?? "text",
                 Environment.NewLine,
                 content);
         }

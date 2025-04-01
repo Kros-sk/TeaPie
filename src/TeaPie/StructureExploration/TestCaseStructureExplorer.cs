@@ -10,9 +10,14 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
     {
         var directoryPath = Path.GetDirectoryName(applicationContext.Path)!;
 
-        InitializeStructure(directoryPath, Path.GetFileName(directoryPath)!, out var rootFolder, out var collectionStructure);
+        InitializeStructure(
+            directoryPath,
+            Path.GetFileName(directoryPath)!,
+            out var rootFolder,
+            out var teaPieFolder,
+            out var collectionStructure);
 
-        Explore(applicationContext.Path, rootFolder, applicationContext, collectionStructure);
+        Explore(applicationContext.Path, rootFolder, teaPieFolder, applicationContext, collectionStructure);
 
         UpdateContext(applicationContext, collectionStructure);
 
@@ -22,8 +27,13 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
     #region Exploration
 
     private void Explore(
-        string testCasePath, Folder rootFolder, ApplicationContext applicationContext, CollectionStructure collectionStructure)
+        string testCasePath,
+        Folder rootFolder,
+        Folder teaPieFolder,
+        ApplicationContext applicationContext,
+        CollectionStructure collectionStructure)
     {
+        ExploreTeaPieFolder(teaPieFolder, collectionStructure);
         ExploreTestCase(testCasePath, rootFolder, collectionStructure);
 
         RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);

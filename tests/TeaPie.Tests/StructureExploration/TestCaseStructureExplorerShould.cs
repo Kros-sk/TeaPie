@@ -32,9 +32,11 @@ public class TestCaseStructureExplorerShould
     [Fact]
     public void ThrowProperExceptionWhenCollectionPathIsGiven()
     {
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        var structureExplorer = GetStructureExplorer(pathProvider);
         var builder = new ApplicationContextBuilder();
         var collectionPath = Path.Combine(Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
+        pathProvider.UpdatePaths(collectionPath, string.Empty, string.Empty);
 
         Throws<InvalidOperationException>(() => structureExplorer.Explore(builder.WithPath(collectionPath).Build()));
     }
@@ -48,13 +50,19 @@ public class TestCaseStructureExplorerShould
             StructureExplorationIndex.RootFolderName,
             StructureExplorationIndex.TestCasesRelativePaths[0]);
 
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(
+            testCasePath,
+            Constants.SystemTemporaryFolderPath,
+            Constants.SystemTemporaryFolderPath);
+
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         Single(structureExplorer.Explore(builder.WithPath(testCasePath).Build()).TestCases);
     }
 
     [Fact]
-    public void CreateRemoteFolder()
+    public void FindTeaPieFolder()
     {
         var builder = new ApplicationContextBuilder();
         var testCasePath = Path.Combine(
@@ -62,15 +70,14 @@ public class TestCaseStructureExplorerShould
             StructureExplorationIndex.RootFolderName,
             StructureExplorationIndex.TestCasesRelativePaths[6]);
 
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(testCasePath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var structure = structureExplorer.Explore(builder.WithPath(testCasePath).Build());
-        var remoteFolderPath = Path.Combine(
-            Environment.CurrentDirectory,
-            StructureExplorationIndex.CollectionFolderRelativePath,
-            BaseStructureExplorer.RemoteFolderName);
+        var teaPieFolderPath = Constants.SystemTemporaryFolderPath;
 
-        True(structure.TryGetFolder(remoteFolderPath, out var folder));
+        True(structure.TryGetFolder(teaPieFolderPath, out var folder));
         NotNull(folder);
     }
 
@@ -83,7 +90,9 @@ public class TestCaseStructureExplorerShould
             StructureExplorationIndex.RootFolderName,
             StructureExplorationIndex.TestCasesRelativePaths[6]);
 
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(testCasePath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var structure = structureExplorer.Explore(builder.WithPath(testCasePath).Build());
 
@@ -94,6 +103,8 @@ public class TestCaseStructureExplorerShould
         Single(testCase.PostResponseScripts);
     }
 
-    private static TestCaseStructureExplorer GetStructureExplorer()
-        => new(Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
+    private static TestCaseStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)
+    {
+        return new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
+    }
 }

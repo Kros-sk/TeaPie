@@ -23,7 +23,7 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
             await File.ReadAllTextAsync(scriptExecutionContext.Script.File.Path, cancellationToken);
 
         context.Logger.LogTrace("Content of the script file on path '{ScriptPath}' was read.",
-            scriptExecutionContext.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.GetDisplayPath());
     }
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext)

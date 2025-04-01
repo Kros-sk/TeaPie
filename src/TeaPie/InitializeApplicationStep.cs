@@ -62,7 +62,7 @@ internal class InitializeApplicationStep(
             _pipeline.InsertSteps(this, steps);
 
             logger.LogDebug("Using '{InitScriptPath}' as initialization script.",
-                collectionStructure.InitializationScript.File.RelativePath);
+                collectionStructure.InitializationScript.File.GetDisplayPath());
         }
     }
 }

@@ -399,6 +399,9 @@ FodyWeavers.xsd
 
 # User-defined
 *launchSettings*.json
-demo/reports/
+**/.teapie/cache/
+**/.teapie/temp/
+**/.teapie/packages/
+**/.teapie/reports/
 docs/_site
 docs/api/

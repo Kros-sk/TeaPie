@@ -43,22 +43,21 @@ public class CollectionStructureExplorerShould
     }
 
     [Fact]
-    public void CreateRemoteFolder()
+    public void CreateTeaPieFolder()
     {
         var builder = new ApplicationContextBuilder();
         var collectionPath = Path.Combine(
             Environment.CurrentDirectory,
             StructureExplorationIndex.CollectionFolderRelativePath);
 
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(collectionPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var structure = structureExplorer.Explore(builder.WithPath(collectionPath).Build());
-        var remoteFolderPath = Path.Combine(
-            Environment.CurrentDirectory,
-            StructureExplorationIndex.CollectionFolderRelativePath,
-            BaseStructureExplorer.RemoteFolderName);
+        var teaPieFolderPath = Constants.SystemTemporaryFolderPath;
 
-        True(structure.TryGetFolder(remoteFolderPath, out var folder));
+        True(structure.TryGetFolder(teaPieFolderPath, out var folder));
         NotNull(folder);
     }
 
@@ -80,7 +79,9 @@ public class CollectionStructureExplorerShould
                 Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath, "EmptyFolder");
         }
 
-        var structureExplorer = GetStructureExplorer();
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var testCases = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases;
 
@@ -93,7 +94,10 @@ public class CollectionStructureExplorerShould
         var builder = new ApplicationContextBuilder();
         var tempDirectoryPath = Path.Combine(
             Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
-        var structureExplorer = GetStructureExplorer();
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var testCasesOrder = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases
             .ToList();
@@ -117,7 +121,10 @@ public class CollectionStructureExplorerShould
         var builder = new ApplicationContextBuilder();
         var tempDirectoryPath = Path.Combine(
             Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
-        var structureExplorer = GetStructureExplorer();
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
 
         var testCasesOrder = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases
             .ToList();
@@ -140,6 +147,6 @@ public class CollectionStructureExplorerShould
         }
     }
 
-    private static CollectionStructureExplorer GetStructureExplorer()
-        => new(Substitute.For<IPathProvider>(), Substitute.For<ILogger<CollectionStructureExplorer>>());
+    private static CollectionStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)
+        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<CollectionStructureExplorer>>());
 }

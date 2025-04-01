@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using TeaPie.Environments;
 using TeaPie.Scripts;
 using TeaPie.Variables;
 
@@ -25,19 +27,27 @@ public class ExecuteScriptStepShould
     [Fact]
     public async Task AccessTeaPieLoggerDuringScriptExectutionWithoutAnyProblem()
     {
+        const string envName = "CustomEnvironment";
         var logger = NullLogger.Instance;
         var context = ScriptHelper.GetScriptExecutionContext(ScriptIndex.ScriptAccessingTeaPieLogger);
         var accessor = new ScriptExecutionContextAccessor() { Context = context };
+        var services = new ServiceCollection();
+        services.AddTeaPie(true, () => { });
+        var serviceProvider = services.BuildServiceProvider();
+
+        var environment = new global::TeaPie.Environments.Environment(envName, []);
+        var registry = serviceProvider.GetRequiredService<IEnvironmentsRegistry>();
+        registry.Register(envName, environment);
 
         var step = new ExecuteScriptStep(accessor);
-        var appContext = new ApplicationContextBuilder().Build();
+        var appContext = new ApplicationContextBuilder().WithServiceProvider(serviceProvider).Build();
 
         PrepareTeaPieInstance(logger, appContext);
 
         await ScriptHelper.PrepareScriptForExecution(context);
 
         await step.Execute(appContext);
-        Assert.Equal("CustomEnvironment", TeaPie.Instance!.ApplicationContext.EnvironmentName);
+        Assert.Equal(envName, TeaPie.Instance!.ApplicationContext.EnvironmentName);
     }
 
     [Fact]

@@ -23,7 +23,7 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
     {
         context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' started.",
             GetTypeOfScript(scriptExecutionContext),
-            scriptExecutionContext.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.GetDisplayPath());
 
         await script.RunAsync(
             globals: new Globals() { tp = TeaPie.Instance },
@@ -31,7 +31,7 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
 
         context.Logger.LogTrace("Execution of the {ScriptType} on path '{RelativePath}' finished.",
             GetTypeOfScript(scriptExecutionContext),
-            scriptExecutionContext.Script.File.RelativePath);
+            scriptExecutionContext.Script.File.GetDisplayPath());
     }
 
     private static string GetTypeOfScript(ScriptExecutionContext scriptExecutionContext)
