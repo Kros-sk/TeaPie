@@ -18,6 +18,9 @@ internal class TryLoadVariablesStep(IVariables variables, IPathProvider pathProv
         return options;
     });
 
+    public bool ShouldExecute(ApplicationContext context)
+        => context.PrematureTermination is null && context.CacheVariables;
+
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var variablesFilePath = _pathProvider.VariablesFilePath;

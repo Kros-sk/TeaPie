@@ -12,6 +12,8 @@ internal class ReportTestResultsSummaryStep : IPipelineStep
         await Task.CompletedTask;
     }
 
+    public bool ShouldExecute(ApplicationContext context) => true;
+
     private static void RegisterReporters(string reportFilePath, ITestResultsSummaryReporter reporter)
     {
         reporter.RegisterReporter(new SpectreConsoleTestResultsSummaryReporter());

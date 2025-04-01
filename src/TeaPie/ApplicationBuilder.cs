@@ -29,6 +29,8 @@ public sealed class ApplicationBuilder
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
 
+    private bool _variablesCaching = true;
+
     private Func<IServiceProvider, IPipelineStep[]> _pipelineBuildFunction = ApplicationStepsFactory.CreateDefaultPipelineSteps;
 
     private ApplicationBuilder(IServiceCollection services, bool collectionRun)
@@ -98,6 +100,12 @@ public sealed class ApplicationBuilder
         return this;
     }
 
+    public ApplicationBuilder WithVariablesCaching(bool cacheVariables)
+    {
+        _variablesCaching = cacheVariables;
+        return this;
+    }
+
     public Application Build()
     {
         ConfigureServices();
@@ -120,6 +128,7 @@ public sealed class ApplicationBuilder
             .SetEnvironmentFilePath(_environmentFilePath)
             .SetReportFilePath(_reportFilePath)
             .SetInitializationScriptPath(_initializationScriptPath)
+            .SetVariablesCaching(_variablesCaching)
             .Build();
 
         return new ApplicationContext(

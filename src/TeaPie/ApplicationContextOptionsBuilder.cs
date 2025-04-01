@@ -7,6 +7,7 @@ internal class ApplicationContextOptionsBuilder
     private string _environmentFilePath = string.Empty;
     private string _reportFilePath = string.Empty;
     private string _initializationScriptPath = string.Empty;
+    private bool _variablesCaching = true;
 
     public ApplicationContextOptionsBuilder SetTempFolderPath(string? tempPath)
     {
@@ -38,6 +39,12 @@ internal class ApplicationContextOptionsBuilder
         return this;
     }
 
+    public ApplicationContextOptionsBuilder SetVariablesCaching(bool cacheVariables)
+    {
+        _variablesCaching = cacheVariables;
+        return this;
+    }
+
     public ApplicationContextOptions Build()
     {
         return new ApplicationContextOptions(
@@ -45,7 +52,8 @@ internal class ApplicationContextOptionsBuilder
             _environment,
             _environmentFilePath,
             _reportFilePath,
-            _initializationScriptPath
+            _initializationScriptPath,
+            _variablesCaching
         );
     }
 }

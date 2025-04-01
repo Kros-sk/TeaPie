@@ -25,6 +25,8 @@ internal class ApplicationContext(
 
     public string InitializationScriptPath = options.InitializationScriptPath;
 
+    public bool CacheVariables = options.CacheVariables;
+
     public string StructureName => System.IO.Path.GetFileNameWithoutExtension(Path).TrimSuffix(Constants.RequestSuffix);
 
     public string TeaPieFolderPath { get; internal set; } = string.Empty;
@@ -50,4 +52,6 @@ internal class ApplicationContext(
     }
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
+
+    public PrematureTermination? PrematureTermination { get; set; }
 }

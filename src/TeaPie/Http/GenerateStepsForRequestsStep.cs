@@ -12,6 +12,8 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
     private readonly IPipeline _pipeline = pipeline;
     private readonly ITestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
 
+    public bool ShouldExecute(ApplicationContext context) => context.PrematureTermination is null;
+
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var testCaseExecutionContext, out var content);

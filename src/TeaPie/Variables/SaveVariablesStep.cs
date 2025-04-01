@@ -10,6 +10,8 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
     private readonly IVariables _variables = variables;
     private readonly IPathProvider _pathProvider = pathProvider;
 
+    public bool ShouldExecute(ApplicationContext context) => context.CacheVariables;
+
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         await SaveVariables(_pathProvider.VariablesFilePath);

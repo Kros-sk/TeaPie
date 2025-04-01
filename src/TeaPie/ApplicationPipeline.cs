@@ -1,22 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
+using Spectre.Console;
 using TeaPie.Pipelines;
-using TeaPie.Reporting;
 
 namespace TeaPie;
 
 internal class ApplicationPipeline : IPipeline
 {
     private readonly StepsCollection _pipelineSteps = [];
-    private bool _errorOccured;
     private IPipelineStep? _currentStep;
-    private bool _reported;
 
     public async Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
-
         var enumerator = _pipelineSteps.GetEnumerator();
-
         return await Run(context, enumerator, cancellationToken);
     }
 
@@ -25,57 +20,68 @@ internal class ApplicationPipeline : IPipeline
         IEnumerator<IPipelineStep> enumerator,
         CancellationToken cancellationToken)
     {
+        LogStartOfRun(context);
+
         IPipelineStep step;
         while (enumerator.MoveNext())
         {
             step = enumerator.Current;
-            _currentStep = step;
 
-            await ExecuteStep(step, context, cancellationToken);
-
-            if (_errorOccured)
+            if (step.ShouldExecute(context))
             {
-                await ResolveErrorState(context, cancellationToken);
-                return 1;
+                _currentStep = step;
+
+                await ExecuteStep(step, context, cancellationToken);
             }
         }
 
-        context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
-                _pipelineSteps.Count);
+        LogEndOfRun(context);
 
-        return 0;
+        return ComputeExitCode(context);
     }
 
-    private async Task ResolveErrorState(ApplicationContext context, CancellationToken cancellationToken)
+    private void LogStartOfRun(ApplicationContext context)
+        => context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
+
+    private static int ComputeExitCode(ApplicationContext context)
+        => context.PrematureTermination is null
+            ? 0
+            : (int)context.PrematureTermination.Type;
+
+    private void LogEndOfRun(ApplicationContext context)
     {
-        if (!_reported)
+        if (context.PrematureTermination is not null)
         {
-            var step = context.ServiceProvider.GetStep<ReportTestResultsSummaryStep>();
-            await ExecuteStep(step, context, cancellationToken);
+            LogPrematureTerminationIfNeeded(context);
         }
-
-        context.Logger.LogError("Error occured during pipeline run - terminated with exit code 1.");
+        else
+        {
+            context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
+                _pipelineSteps.Count);
+        }
     }
 
-    private async Task ExecuteStep(IPipelineStep step, ApplicationContext context, CancellationToken cancellationToken)
+    private static void LogPrematureTerminationIfNeeded(ApplicationContext context)
+    {
+        var termination = context.PrematureTermination!;
+        context.Logger.LogError("'{Source}' caused premature termination of application run (exit code 1)." +
+            "{NewLine}Reason: {Reason}{NewLine}Details: {Details}",
+            termination.Source,
+            Environment.NewLine,
+            Enum.GetName(termination.Type)?.SplitPascalCase(),
+            Environment.NewLine,
+            termination.Details);
+    }
+
+    private static async Task ExecuteStep(IPipelineStep step, ApplicationContext context, CancellationToken cancellationToken)
     {
         try
         {
             await step.Execute(context, cancellationToken);
-            AfterStepExecution(step);
         }
         catch (Exception ex)
         {
-            _errorOccured = true;
-            ExceptionHandler.Handle(ex, step.GetType(), context.Logger);
-        }
-    }
-
-    private void AfterStepExecution(IPipelineStep step)
-    {
-        if (step is ReportTestResultsSummaryStep)
-        {
-            _reported = true;
+            ErrorHandler.Handle(context, ex, step.GetType(), context.Logger);
         }
     }
 

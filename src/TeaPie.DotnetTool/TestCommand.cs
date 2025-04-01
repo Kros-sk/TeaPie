@@ -21,6 +21,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFilePath, string.Empty))
             .WithReportFile(PathResolver.Resolve(settings.ReportFilePath, string.Empty))
             .WithInitializationScript(PathResolver.Resolve(settings.InitializationScriptPath, string.Empty))
+            .WithVariablesCaching(!settings.NoVariablesCaching)
             .WithDefaultPipeline();
 
         return appBuilder;
@@ -55,5 +56,10 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         [Description("Path to script, which will be used for initialization before the first test-case execution. " +
             "If this option is not used, first found file within collection with name 'init.csx' is used.")]
         public string? InitializationScriptPath { get; init; }
+
+        [CommandOption("--no-cache-vars|--no-cache-variables")]
+        [DefaultValue(false)]
+        [Description("Disables variables loading from file and caching to file.")]
+        public bool NoVariablesCaching { get; init; }
     }
 }
