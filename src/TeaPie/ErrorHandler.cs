@@ -11,7 +11,7 @@ internal static class ErrorHandler
             source,
             ex.Message);
 
-        appContext.PrematureTermination = new(source, TerminationType.ApplicationError, ex.Message);
+        appContext.PrematureTermination = new(source, TerminationType.ApplicationError, ex.Message, 1);
 
         logger.LogDebug("Stack trace: {StackTrace}", ex.StackTrace);
     }

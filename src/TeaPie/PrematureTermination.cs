@@ -1,10 +1,10 @@
 ﻿namespace TeaPie;
 
-internal record PrematureTermination(string Source, TerminationType Type, string Details = "");
+internal record PrematureTermination(string Source, TerminationType Type, string Details = "", int ExitCode = 0);
 
 internal enum TerminationType
 {
-    User = 0,
+    UserAction = 0,
     ApplicationError = 1,
     Canceled = 130
 }

@@ -19,6 +19,7 @@ public class ApplicationPipelineShould
         {
             step = Substitute.For<IPipelineStep>();
 
+            step.ShouldExecute(context).Returns(true);
             pipeline.AddSteps(step);
             steps[i] = step;
         }

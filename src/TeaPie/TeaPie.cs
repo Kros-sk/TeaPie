@@ -170,4 +170,10 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     internal readonly IAuthProviderRegistry _authenticationProviderRegistry;
     internal readonly IAuthProviderAccessor _authProviderAccessor;
     #endregion
+
+    #region Exit
+    public void Exit(int exitCode = 0, string? reason = null)
+        => _applicationContext.PrematureTermination =
+            new("User", TerminationType.UserAction, reason ?? $"Terminated at: {DateTime.Now}", exitCode);
+    #endregion
 }

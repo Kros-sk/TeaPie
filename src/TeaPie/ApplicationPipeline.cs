@@ -44,9 +44,7 @@ internal class ApplicationPipeline : IPipeline
         => context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
 
     private static int ComputeExitCode(ApplicationContext context)
-        => context.PrematureTermination is null
-            ? 0
-            : (int)context.PrematureTermination.Type;
+        => (context.PrematureTermination?.ExitCode) ?? 0;
 
     private void LogEndOfRun(ApplicationContext context)
     {
@@ -64,9 +62,12 @@ internal class ApplicationPipeline : IPipeline
     private static void LogPrematureTerminationIfNeeded(ApplicationContext context)
     {
         var termination = context.PrematureTermination!;
-        context.Logger.LogError("'{Source}' caused premature termination of application run (exit code 1)." +
+        context.Logger.Log(
+            termination.ExitCode == 0 ? LogLevel.Information : LogLevel.Error,
+            "'{Source}' caused premature termination of application run (exit code {ExitCode})." +
             "{NewLine}Reason: {Reason}{NewLine}Details: {Details}",
             termination.Source,
+            termination.ExitCode,
             Environment.NewLine,
             Enum.GetName(termination.Type)?.SplitPascalCase(),
             Environment.NewLine,
