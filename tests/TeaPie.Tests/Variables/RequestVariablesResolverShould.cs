@@ -14,9 +14,7 @@ public class RequestVariablesResolverShould
     [Theory]
     [MemberData(nameof(GetRequestVariablesTestCases))]
     public void DetermineWhetherItIsRequestVariable(string variable, bool isValid)
-    {
-        RequestVariablesResolver.IsRequestVariable(variable).Should().Be(isValid);
-    }
+        => RequestVariablesResolver.IsRequestVariable(variable).Should().Be(isValid);
 
     [Theory]
     [MemberData(nameof(GetVariableDescriptionTestCases))]

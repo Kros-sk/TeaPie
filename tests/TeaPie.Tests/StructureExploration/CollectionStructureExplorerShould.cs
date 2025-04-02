@@ -8,6 +8,11 @@ namespace TeaPie.Tests.StructureExploration;
 
 public class CollectionStructureExplorerShould
 {
+    public CollectionStructureExplorerShould()
+    {
+        Directory.CreateDirectory(Constants.SystemTemporaryFolderPath);
+    }
+
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
