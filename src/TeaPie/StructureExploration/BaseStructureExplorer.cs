@@ -211,9 +211,25 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
     }
 
     private File GetFile(string foundFile, Folder parentFolder)
-        => File.IsExternal(foundFile, _pathProvider.RootPath)
-            ? new ExternalFile(foundFile)
-            : InternalFile.Create(foundFile, parentFolder);
+        => File.BelongsTo(foundFile, _pathProvider.RootPath)
+            ? InternalFile.Create(foundFile, parentFolder)
+            : GetExternalFile(foundFile);
+
+    private ExternalFile GetExternalFile(string foundFile)
+    {
+        if (File.BelongsTo(foundFile, _pathProvider.TeaPieFolderPath))
+        {
+            return new ExternalFile(foundFile)
+            {
+                RelativePath =
+                    Path.Combine(_pathProvider.StructureName, Constants.TeaPieFolderName, Path.GetFileName(foundFile))
+            };
+        }
+        else
+        {
+            return new ExternalFile(foundFile);
+        }
+    }
 
     #endregion
 

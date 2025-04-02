@@ -1,83 +1,148 @@
 ﻿using Spectre.Console;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
 
-internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
+internal class SpectreConsoleTreeStructureRenderer(IPathProvider pathProvider) : ITreeStructureRenderer
 {
+    private readonly IPathProvider _pathProvider = pathProvider;
+    private Node? _rootNode;
+    private Node? _teaPieNode;
+    private Dictionary<string, List<Folder>> _foldersByParent = [];
+    private Dictionary<string, List<TestCase>> _testCasesByParent = [];
+    private bool _environmentFileResolved;
+    private bool _initializationScriptResolved;
+
     public object Render(IReadOnlyCollectionStructure collectionStructure)
     {
         var folders = collectionStructure.Folders;
-        var foldersByParent = GroupFoldersByParent(folders);
-        var testCasesByParent = GroupTestCasesByParent(collectionStructure.TestCases);
+        _foldersByParent = GroupFoldersByParent(folders);
+        _testCasesByParent = GroupTestCasesByParent(collectionStructure.TestCases);
         var rootFolder = collectionStructure.Root
             ?? throw new InvalidOperationException("Unable to find root of structure.");
 
-        return BuildTree(rootFolder, foldersByParent, testCasesByParent, collectionStructure);
+        return BuildTree(rootFolder, collectionStructure);
     }
 
-    private static Tree BuildTree(
+    private Tree BuildTree(
         Folder rootFolder,
-        Dictionary<string, List<Folder>> foldersByParent,
-        Dictionary<string, List<TestCase>> testCasesByParent,
         IReadOnlyCollectionStructure collectionStructure)
     {
         var tree = new Tree($"[white]{rootFolder.Name}[/]");
         var queue = new Queue<Node>();
-        queue.Enqueue(new Node(rootFolder.RelativePath, tree));
+        var rootNode = new Node(rootFolder.RelativePath, tree);
+        _rootNode = rootNode;
+        queue.Enqueue(rootNode);
 
         while (queue.Count > 0)
         {
             var parentNode = queue.Dequeue();
-            ResolveEnvironmentFile(collectionStructure.EnvironmentFile, parentNode.RelativePath, parentNode.TreeNode);
             ResolveInitilizationScript(collectionStructure.InitializationScript, parentNode.RelativePath, parentNode.TreeNode);
-            ResolveFolders(foldersByParent, queue, parentNode.RelativePath, parentNode.TreeNode);
-            ResolveTestCases(testCasesByParent, parentNode.RelativePath, parentNode.TreeNode);
+            ResolveEnvironmentFile(collectionStructure.EnvironmentFile, parentNode.RelativePath, parentNode.TreeNode);
+            ResolveFolders(queue, parentNode.RelativePath, parentNode.TreeNode);
+            ResolveTestCases(parentNode.RelativePath, parentNode.TreeNode);
         }
 
         return tree;
     }
 
-    private static void ResolveFolders(
-        Dictionary<string, List<Folder>> foldersByParent,
+    private void ResolveFolders(
         Queue<Node> queue,
         string parentRelativePath,
         IHasTreeNodes parentNode)
     {
-        if (foldersByParent.TryGetValue(parentRelativePath, out var childFolders))
+        if (_foldersByParent.TryGetValue(parentRelativePath, out var childFolders))
         {
             foreach (var folder in childFolders)
             {
-                var childNode = parentNode.AddNode(GetFolderReport(folder.Name.EscapeMarkup()));
-                queue.Enqueue(new Node(folder.RelativePath, childNode));
+                ResolveFolder(queue, parentNode, folder);
             }
         }
     }
 
-    private static void ResolveInitilizationScript(Script? initializationScript, string parentRelativePath, IHasTreeNodes parentNode)
+    private void ResolveFolder(Queue<Node> queue, IHasTreeNodes parentNode, Folder folder)
     {
-        parentRelativePath = parentRelativePath.Trim(); // TODO: Remove
-        if (initializationScript is not null) // TODO: &&  parentRelativePath.Equals(initializationScript.File.Name.ParentFolder.RelativePath))
+        var childNode = parentNode.AddNode(GetFolderReport(folder.Name.EscapeMarkup()));
+        var node = new Node(folder.RelativePath, childNode);
+        queue.Enqueue(node);
+
+        UpdateTeaPieFolderIfNeeded(folder, node);
+    }
+
+    private void UpdateTeaPieFolderIfNeeded(Folder folder, Node node)
+    {
+        if (_teaPieNode is null && folder.Path.Equals(_pathProvider.TeaPieFolderPath))
         {
-            parentNode.AddNode(GetInitializationScriptReport(initializationScript));
+            _teaPieNode = node;
         }
     }
 
-    private static void ResolveEnvironmentFile(File? environmentFile, string parentRelativePath, IHasTreeNodes parentNode)
+    private void ResolveInitilizationScript(
+        Script? initializationScript, string parentRelativePath, IHasTreeNodes parentNode)
+        => ResolveSpecialFile(
+            ref _initializationScriptResolved,
+            initializationScript?.File,
+            parentRelativePath,
+            parentNode,
+            GetInitializationScriptReport);
+
+    private void ResolveEnvironmentFile(File? environmentFile, string parentRelativePath, IHasTreeNodes parentNode)
+        => ResolveSpecialFile(
+            ref _environmentFileResolved, environmentFile, parentRelativePath, parentNode, GetEnvironmentFileReport);
+
+    private void ResolveSpecialFile(
+        ref bool indicator,
+        File? specialFile,
+        string parentRelativePath,
+        IHasTreeNodes parentNode,
+        Func<File, string> reportGetter)
     {
-        // TODO: Implement
-        //if (environmentFile is not null && parentRelativePath.Equals(environmentFile.ParentFolder.RelativePath))
-        //{
-        //    parentNode.AddNode(GetEnvironmentFileReport(environmentFile));
-        //}
+        if (!indicator && specialFile is not null)
+        {
+            if (File.BelongsTo(specialFile.Path, _pathProvider.RootPath))
+            {
+                indicator = ResolveInternalFile(indicator, specialFile, parentRelativePath, parentNode, reportGetter);
+            }
+            else if (_teaPieNode is not null && File.BelongsTo(specialFile.Path, _pathProvider.TeaPieFolderPath))
+            {
+                indicator = ResolveFileWithinTeaPieFolder(specialFile, reportGetter);
+            }
+            else if (_rootNode is not null)
+            {
+                indicator = ResolveRemoteFile(specialFile, reportGetter);
+            }
+        }
     }
 
-    private static void ResolveTestCases(
-        Dictionary<string, List<TestCase>> testCasesByParent,
-        string parentRelativePath,
-        IHasTreeNodes parentNode)
+    private static bool ResolveInternalFile(
+        bool indicator, File specialFile, string parentRelativePath, IHasTreeNodes parentNode, Func<File, string> reportGetter)
     {
-        if (testCasesByParent.TryGetValue(parentRelativePath, out var childTestCases))
+        var envFile = (InternalFile)specialFile;
+        if (parentRelativePath.Equals(envFile.ParentFolder.RelativePath))
+        {
+            parentNode.AddNode(reportGetter(specialFile));
+            indicator = true;
+        }
+
+        return indicator;
+    }
+
+    private bool ResolveFileWithinTeaPieFolder(File specialFile, Func<File, string> reportGetter)
+    {
+        _teaPieNode!.TreeNode.AddNode(reportGetter(specialFile));
+        return true;
+    }
+
+    private bool ResolveRemoteFile(File specialFile, Func<File, string> reportGetter)
+    {
+        _rootNode!.TreeNode.AddNode(reportGetter(specialFile));
+        return true;
+    }
+
+    private void ResolveTestCases(string parentRelativePath, IHasTreeNodes parentNode)
+    {
+        if (_testCasesByParent.TryGetValue(parentRelativePath, out var childTestCases))
         {
             foreach (var testCase in childTestCases)
             {
@@ -92,17 +157,33 @@ internal class SpectreConsoleTreeStructureRenderer : ITreeStructureRenderer
         return $"{emoji} [white]{name}[/]";
     }
 
-    private static string GetInitializationScriptReport(Script initializationScript)
+    private string GetInitializationScriptReport(File initializationScriptFile)
     {
         var emoji = CompatibilityChecker.SupportsEmoji ? Emoji.Known.Rocket : "[grey italic]IN[/]";
-        return $"{emoji} [aqua]{initializationScript.File.Name}[/]";
+        return GetFileReport("aqua", initializationScriptFile, emoji);
     }
 
-    private static string GetEnvironmentFileReport(InternalFile environmentFile)
+    private string GetEnvironmentFileReport(File environmentFile)
     {
         var emoji = CompatibilityChecker.SupportsEmoji ? Emoji.Known.LeafFlutteringInWind : "[grey italic]EN[/]";
-        return $"{emoji} [purple]{environmentFile.Name}[/]";
+        return GetFileReport("purple", environmentFile, emoji);
     }
+
+    private string GetFileReport(string style, File file, string emoji)
+    {
+        if (IsInternal(file))
+        {
+            return $"{emoji} [{style}]" + file.Name + "[/]";
+        }
+        else
+        {
+            return $"{emoji} [{style}]" + "[REMOTE] ".EscapeMarkup() + file.Path + "[/]";
+        }
+    }
+
+    private bool IsInternal(File environmentFile)
+        => File.BelongsTo(environmentFile.Path, _pathProvider.RootPath) ||
+            File.BelongsTo(environmentFile.Path, _pathProvider.TeaPieFolderPath);
 
     private static string GetTestCaseReport(TestCase testCase)
     {

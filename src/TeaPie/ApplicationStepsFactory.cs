@@ -21,6 +21,7 @@ internal static class ApplicationStepsFactory
         ];
 
     public static IPipelineStep[] CreateStructureExplorationSteps(IServiceProvider provider)
-        => [provider.GetStep<ExploreStructureStep>(),
+        => [provider.GetStep<ResolvePathsStep>(),
+            provider.GetStep<ExploreStructureStep>(),
             provider.GetStep<DisplayStructureStep>()];
 }
