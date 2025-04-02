@@ -15,10 +15,8 @@ internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineSt
         {
             ResolvePath(context);
         }
-        else
-        {
-            CreateFolderIfNeeded(context);
-        }
+
+        CreateFolderIfNeeded(context);
 
         _pathProvider.UpdatePaths(context.Path, context.TempFolderPath, context.TeaPieFolderPath);
         await Task.CompletedTask;

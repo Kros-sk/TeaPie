@@ -20,10 +20,10 @@ internal class PathProvider : IPathProvider
 
     public string StructureName => Path.GetFileNameWithoutExtension(RootPath).TrimSuffix(Constants.RequestSuffix);
 
-    public string CacheFolderPath => Path.Combine(TeaPieFolderPath, CacheFolderName, GetStructurePathHash());
-    public string TempFolderPath => Path.Combine(TeaPieFolderPath, TempFolderName, GetStructurePathHash());
-    public string ReportsFolderPath => Path.Combine(TeaPieFolderPath, ReportsFolderName, GetStructurePathHash());
-    public string NuGetPackagesFolderPath => Path.Combine(TeaPieFolderPath, NuGetPackagesFolderName);
+    public string CacheFolderPath => Path.Combine(TeaPieFolderPath, CacheFolderName);
+    public string TempFolderPath => Path.Combine(CacheFolderPath, TempFolderName, GetStructurePathHash());
+    public string NuGetPackagesFolderPath => Path.Combine(CacheFolderPath, NuGetPackagesFolderName);
+    public string ReportsFolderPath => Path.Combine(TeaPieFolderPath, ReportsFolderName);
 
     public string RunsFolderPath => Path.Combine(CacheFolderPath, RunsFolderName);
     public string VariablesFolderPath => Path.Combine(TeaPieFolderPath, CacheFolderName, VariablesFolderName);
