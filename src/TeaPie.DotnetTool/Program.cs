@@ -6,6 +6,12 @@ app.Configure(config =>
 {
     config.SetApplicationName("teapie");
 
+    config.AddCommand<InitCommand>("init")
+        .WithAlias("i")
+        .WithDescription("Initialize environment for TeaPie framework.")
+        .WithExample("init")
+        .WithExample("init", "[pathForTeaPieFolder]");
+
     config.AddCommand<TestCommand>("test")
         .WithAlias("t")
         .WithDescription("Runs tests from the collection at the specified path. " +

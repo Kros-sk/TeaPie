@@ -397,11 +397,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# TeaPie
+**/.teapie/cache/
+**/.teapie/reports/
+
 # User-defined
 *launchSettings*.json
-**/.teapie/cache/
-**/.teapie/temp/
-**/.teapie/packages/
-**/.teapie/reports/
 docs/_site
 docs/api/
