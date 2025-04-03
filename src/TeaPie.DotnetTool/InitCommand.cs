@@ -6,7 +6,7 @@ namespace TeaPie.DotnetTool;
 
 internal sealed class InitCommand : Command<InitCommand.Settings>
 {
-    private const string SearchedFile = ".git";
+    private const string SearchingClue = ".git";
     private const string GitIgnoreFileName = ".gitignore";
     private readonly string[] _linesForGitignore =
     [
@@ -26,31 +26,6 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
         return 0;
     }
 
-    private void UpdateGitignore(string path)
-    {
-        var gitignorePath = GetGitIgnorePath(path) ?? Path.Combine(path, GitIgnoreFileName);
-        if (!File.Exists(gitignorePath))
-        {
-            File.Create(gitignorePath);
-            AnsiConsole.MarkupLine("[green]File '.gitignore' was created on path '" + gitignorePath.EscapeMarkup() +
-                "', because it didn't existed before.[/]");
-        }
-
-        AppendLinesToGitIgnore(gitignorePath);
-    }
-
-    private static void CreateTeaPieFolder(string path)
-    {
-        var teaPieFolderPath = Path.Combine(path, Constants.TeaPieFolderName);
-
-        if (!Directory.Exists(teaPieFolderPath))
-        {
-            Directory.CreateDirectory(teaPieFolderPath);
-            AnsiConsole.MarkupLine("[green]TeaPie folder '.teapie' was created on path '" + teaPieFolderPath.EscapeMarkup() +
-                "'.[/]");
-        }
-    }
-
     private static string ResolvePath(Settings settings)
     {
         if (!string.IsNullOrEmpty(settings.Path))
@@ -60,9 +35,28 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
         }
         else
         {
-            var repositoryRoot = FindRepositoryRoot(Directory.GetCurrentDirectory());
-            return repositoryRoot ?? Directory.GetCurrentDirectory();
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var repositoryRoot = FindRepositoryRoot(currentDirectory);
+            return repositoryRoot ?? currentDirectory;
         }
+    }
+    public static string? FindRepositoryRoot(string startPoint)
+    {
+        var currentFolder = new DirectoryInfo(startPoint);
+
+        while (currentFolder is not null)
+        {
+            if (Directory.Exists(Path.Combine(currentFolder.FullName, SearchingClue)))
+            {
+                AnsiConsole.MarkupLine("[green]Repository root was found on path '" + currentFolder.FullName.EscapeMarkup() +
+                    "'.[/]");
+                return currentFolder.FullName;
+            }
+
+            currentFolder = currentFolder.Parent;
+        }
+
+        return null;
     }
 
     private static void CreateIfNeeded(string path)
@@ -75,23 +69,17 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
         }
     }
 
-    public static string? FindRepositoryRoot(string startPoint)
+    private void UpdateGitignore(string path)
     {
-        var currentFolder = new DirectoryInfo(startPoint);
-
-        while (currentFolder is not null)
+        var gitignorePath = GetGitIgnorePath(path) ?? Path.Combine(path, GitIgnoreFileName);
+        if (!File.Exists(gitignorePath))
         {
-            if (Directory.Exists(Path.Combine(currentFolder.FullName, SearchedFile)))
-            {
-                AnsiConsole.MarkupLine("[green]Repository root was found on path '" + currentFolder.FullName.EscapeMarkup() +
-                    "'.[/]");
-                return currentFolder.FullName;
-            }
-
-            currentFolder = currentFolder.Parent;
+            File.Create(gitignorePath);
+            AnsiConsole.MarkupLine("[green]File '.gitignore' was created on path '" + gitignorePath.EscapeMarkup() +
+                "', because it didn't existed before.[/]");
         }
 
-        return null;
+        AppendLinesToGitIgnore(gitignorePath);
     }
 
     public static string? GetGitIgnorePath(string repositoryRoot)
@@ -123,11 +111,23 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
         }
     }
 
+    private static void CreateTeaPieFolder(string path)
+    {
+        var teaPieFolderPath = Path.Combine(path, Constants.TeaPieFolderName);
+
+        if (!Directory.Exists(teaPieFolderPath))
+        {
+            Directory.CreateDirectory(teaPieFolderPath);
+            AnsiConsole.MarkupLine("[green]TeaPie folder '.teapie' was created on path '" + teaPieFolderPath.EscapeMarkup() +
+                "'.[/]");
+        }
+    }
+
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path on which .teapie folder should be created. If not specified, it attempts to find root repository " +
-            "(containing '.git' folder).")]
+        [Description("Path on which .teapie folder should be created. If not specified, it attempts to find root of repository " +
+            "(the one containing '.git' folder).")]
         public string? Path { get; init; }
     }
 }

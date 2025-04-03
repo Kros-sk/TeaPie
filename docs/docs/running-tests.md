@@ -14,7 +14,7 @@ TeaPie supports two execution modes:
 For more advanced usage, here’s the full command specification:
 
 ```sh
-teapie test [path-to-collection-or-test-case] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
+teapie test [path-to-collection-or-test-case] [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>] [--no-cache-vars|--no-cache-variables]
 ```
 
 > 💁‍♂️ You can use alias `t` or **completely omit command name**, since `test` command is considered as **default command** when launching `teapie`.

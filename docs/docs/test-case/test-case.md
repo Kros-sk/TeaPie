@@ -10,7 +10,7 @@
 
 ### Request File
 
-Each test case is represented by a **`.http` file**, referred to as the **[Request File](request-file.md)**.  
+Each test case is represented by a **`.http` file**, referred to as the **[Request File](request-file.md)**.
 It must contain **at least one HTTP request**, following [**these conventions**](https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0).
 
 ### Optional Scripts
@@ -35,17 +35,17 @@ To execute a test case, run:
 teapie <path-to-request-file>
 ```
 
-To try it out, you can run a test case from the `demo` collection.  
+To try it out, you can run a test case from the `demo` collection.
 The following test case is a good example as it demonstrates multiple features:
 
 ```sh
-teapie "./Tests/2. Cars/EditCar-req.http" --env-file "../../demo-env.json" -i "../../init.csx"
+teapie "./Tests/2. Cars/EditCar-req.http"
 ```
 
 For advanced usage, here’s the full command specification:
 
 ```sh
-teapie test <path-to-test-case> [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
+teapie test <path-to-test-case> [--temp-path <path-to-temporary-folder>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [-e|--env|--environment <environment-name>] [--env-file|--environment-file <path-to-environment-file>] [-r|--report-file <path-to-report-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>] [--no-cache-vars|--no-cache-variables]
 ```
 
 > 💡 **Tip:** You can use the alias `t` or **omit the command name entirely**, since `test` is the **default command** when launching TeaPie.

@@ -8,7 +8,7 @@ app.Configure(config =>
 
     config.AddCommand<InitCommand>("init")
         .WithAlias("i")
-        .WithDescription("Initialize environment for TeaPie framework.")
+        .WithDescription("Initialize working environment for TeaPie.")
         .WithExample("init")
         .WithExample("init", "[pathForTeaPieFolder]");
 

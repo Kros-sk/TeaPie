@@ -30,27 +30,26 @@ internal class ApplicationPipeline : IPipeline
             if (step.ShouldExecute(context))
             {
                 _currentStep = step;
-
                 await ExecuteStep(step, context, cancellationToken);
             }
         }
 
         LogEndOfRun(context);
 
-        return ComputeExitCode(context);
+        return GetExitCode(context);
     }
 
     private void LogStartOfRun(ApplicationContext context)
         => context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
 
-    private static int ComputeExitCode(ApplicationContext context)
+    private static int GetExitCode(ApplicationContext context)
         => (context.PrematureTermination?.ExitCode) ?? 0;
 
     private void LogEndOfRun(ApplicationContext context)
     {
         if (context.PrematureTermination is not null)
         {
-            LogPrematureTerminationIfNeeded(context);
+            LogPrematureTermination(context);
         }
         else
         {
@@ -59,7 +58,7 @@ internal class ApplicationPipeline : IPipeline
         }
     }
 
-    private static void LogPrematureTerminationIfNeeded(ApplicationContext context)
+    private static void LogPrematureTermination(ApplicationContext context)
     {
         var termination = context.PrematureTermination!;
         context.Logger.Log(

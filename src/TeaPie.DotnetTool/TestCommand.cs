@@ -59,7 +59,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
 
         [CommandOption("--no-cache-vars|--no-cache-variables")]
         [DefaultValue(false)]
-        [Description("Disables variables loading from file and caching to file.")]
+        [Description("Disables loading variables from file and caching them to file.")]
         public bool NoVariablesCaching { get; init; }
     }
 }
