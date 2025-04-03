@@ -11,8 +11,6 @@ internal static class Setup
     {
         services.AddSingleton<ITreeStructureRenderer, SpectreConsoleTreeStructureRenderer>();
 
-        services.AddSingleton<IPathProvider, PathProvider>();
-
         services.AddSingleton<IExternalFileRegistry, ExternalFilesRegistry>();
 
         services.AddPaths();

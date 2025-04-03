@@ -92,25 +92,26 @@ internal class SpectreConsoleTreeStructureRenderer(IPathProvider pathProvider) :
             ref _environmentFileResolved, environmentFile, parentRelativePath, parentNode, GetEnvironmentFileReport);
 
     private void ResolveSpecialFile(
-        ref bool indicator,
+        ref bool alreadyResolved,
         File? specialFile,
         string parentRelativePath,
         IHasTreeNodes parentNode,
         Func<File, string> reportGetter)
     {
-        if (!indicator && specialFile is not null)
+        if (!alreadyResolved && specialFile is not null)
         {
             if (File.BelongsTo(specialFile.Path, _pathProvider.RootPath))
             {
-                indicator = ResolveInternalFile(indicator, specialFile, parentRelativePath, parentNode, reportGetter);
+                alreadyResolved =
+                    ResolveInternalFile(alreadyResolved, specialFile, parentRelativePath, parentNode, reportGetter);
             }
             else if (_teaPieNode is not null && File.BelongsTo(specialFile.Path, _pathProvider.TeaPieFolderPath))
             {
-                indicator = ResolveFileWithinTeaPieFolder(specialFile, reportGetter);
+                alreadyResolved = ResolveFileWithinTeaPieFolder(specialFile, reportGetter);
             }
             else if (_rootNode is not null)
             {
-                indicator = ResolveRemoteFile(specialFile, reportGetter);
+                alreadyResolved = ResolveExternalFile(specialFile, reportGetter);
             }
         }
     }
@@ -134,7 +135,7 @@ internal class SpectreConsoleTreeStructureRenderer(IPathProvider pathProvider) :
         return true;
     }
 
-    private bool ResolveRemoteFile(File specialFile, Func<File, string> reportGetter)
+    private bool ResolveExternalFile(File specialFile, Func<File, string> reportGetter)
     {
         _rootNode!.TreeNode.AddNode(reportGetter(specialFile));
         return true;

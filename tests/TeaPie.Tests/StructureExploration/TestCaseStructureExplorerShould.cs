@@ -109,7 +109,5 @@ public class TestCaseStructureExplorerShould
     }
 
     private static TestCaseStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)
-    {
-        return new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
-    }
+        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
 }
