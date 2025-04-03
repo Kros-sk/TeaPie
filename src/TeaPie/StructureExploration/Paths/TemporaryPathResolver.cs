@@ -11,7 +11,7 @@ internal class TemporaryPathResolver(IPathProvider pathProvider, RelativePathRes
     /// Resolves temporary path for given <paramref name="path"/>. Parameter <paramref name="basePath"/> is used only if the path
     /// is relative, to root it. Root path and temporary path are provided by the <see cref="PathProvider"/>.
     /// </summary>
-    /// <param name="path">Path according which temporary path should be computed.</param>
+    /// <param name="path">Path from which temporary path should be computed.</param>
     /// <param name="basePath">If the <paramref name="path"/> is relative, this is used for rooting it.</param>
     /// <returns>Temporary path for specified path.</returns>
     public string ResolvePath(string path, string basePath)
@@ -30,7 +30,7 @@ internal class TemporaryPathResolver(IPathProvider pathProvider, RelativePathRes
     {
         if (path.Contains(_pathProvider.TeaPieFolderPath))
         {
-            var relativePath = path.Replace(_pathProvider.TeaPieFolderPath, string.Empty).RemoveSlashInTheBeginning();
+            var relativePath = path.Replace(_pathProvider.TeaPieFolderPath, string.Empty).TrimSlashes();
             return Path.Combine(Constants.TeaPieFolderName, relativePath);
         }
         else if (path.Contains(_pathProvider.RootPath))

@@ -5,7 +5,7 @@ namespace TeaPie.Scripts;
 
 internal interface IScriptLineResolversProvider
 {
-    List<IScriptLineResolver> GetAvailableResolvers();
+    IReadOnlyList<IScriptLineResolver> GetAvailableResolvers();
 }
 
 internal class ScriptLineResolversProvider(
@@ -22,5 +22,5 @@ internal class ScriptLineResolversProvider(
         new PlainLineResolver()
     ];
 
-    public List<IScriptLineResolver> GetAvailableResolvers() => _scriptLineResolvers;
+    public IReadOnlyList<IScriptLineResolver> GetAvailableResolvers() => _scriptLineResolvers;
 }

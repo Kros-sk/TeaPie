@@ -38,37 +38,33 @@ internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineSt
     private static bool TryFindTeaPieFolder(string startingPoint, [NotNullWhen(true)] out string? teaPiePath)
     {
         teaPiePath = null;
-        var currentPath = startingPoint;
+        var current = new DirectoryInfo(startingPoint);
 
-        while (Directory.GetParent(currentPath) is not null)
+        while (current?.Parent is not null)
         {
-            if (IsTeaPieFolder(currentPath))
-            {
-                teaPiePath = currentPath;
-                return true;
-            }
-
-            if (TryFindFromSiblings(currentPath, out teaPiePath))
+            if (TryFindInCurrent(current, out teaPiePath) ||
+                TryFindInSiblings(current, out teaPiePath))
             {
                 return true;
             }
 
-            currentPath = Directory.GetParent(currentPath)?.FullName!;
+            current = current.Parent;
         }
 
         return false;
     }
 
-    private static bool TryFindFromSiblings(string currentPath, [NotNullWhen(true)] out string? teaPieFolder)
+    private static bool TryFindInCurrent(DirectoryInfo directory, [NotNullWhen(true)] out string? teaPieFolder)
     {
-        var parent = Directory.GetParent(currentPath)!;
-        var siblings = Directory.GetDirectories(parent.FullName);
-        teaPieFolder = siblings.FirstOrDefault(IsTeaPieFolder);
-
-        return teaPieFolder is not null;
+        teaPieFolder = Path.Combine(directory.FullName, Constants.TeaPieFolderName);
+        return Directory.Exists(teaPieFolder);
     }
 
-    private static bool IsTeaPieFolder(string currentPath) => Path.GetFileName(currentPath).Equals(Constants.TeaPieFolderName);
+    private static bool TryFindInSiblings(DirectoryInfo directory, [NotNullWhen(true)] out string? teaPieFolder)
+    {
+        teaPieFolder = Path.Combine(directory.Parent!.FullName, Constants.TeaPieFolderName);
+        return Directory.Exists(teaPieFolder);
+    }
 
     private static void CreateFolderIfNeeded(ApplicationContext context)
     {

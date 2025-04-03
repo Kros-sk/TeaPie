@@ -237,7 +237,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
 
     protected static Folder RegisterFolder(Folder currentFolder, CollectionStructure collectionStructure, string subFolderPath)
     {
-        var subFolderName = Path.GetFileName(subFolderPath.RemoveSlashAtTheEnd());
+        var subFolderName = Path.GetFileName(subFolderPath.TrimSlashAtTheEnd());
         Folder subFolder = new(subFolderPath, GetRelativePath(currentFolder, subFolderName), subFolderName, currentFolder);
 
         collectionStructure.TryAddFolder(subFolder);

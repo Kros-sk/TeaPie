@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
+using File = TeaPie.StructureExploration.File;
 
 namespace TeaPie.Scripts;
 
@@ -15,6 +16,8 @@ internal partial class LoadDirectiveLineResolver(
     private readonly IPathProvider _pathProvider = pathProvider;
     private readonly TemporaryPathResolver _tempPathResolver = tempPathResolver;
     private readonly IExternalFileRegistry _externalFileRegistry = externalFileRegistry;
+
+    public bool CanResolve(string line) => LoadReferenceRegex().IsMatch(line);
 
     public async Task<string> ResolveLine(string line, ScriptPreProcessContext context)
     {
@@ -44,17 +47,15 @@ internal partial class LoadDirectiveLineResolver(
 
     private void RegisterFile(ScriptPreProcessContext context, string realPath, string tempPath)
     {
-        var isExternal = !realPath.Contains(_pathProvider.RootPath);
+        var isExternal = !File.BelongsTo(realPath, _pathProvider.RootPath);
 
         if (isExternal)
         {
-            _externalFileRegistry.Register(realPath, new ExternalFile(realPath) { TempPath = tempPath });
+            _externalFileRegistry.Register(realPath, new ExternalFile(realPath));
         }
 
         context.AddScriptReference(new(realPath, tempPath, isExternal));
     }
-
-    public bool CanResolve(string line) => LoadReferenceRegex().IsMatch(line);
 
     private static string GetPathFromLoadDirective(string directive)
     {

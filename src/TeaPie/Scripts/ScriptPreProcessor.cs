@@ -7,7 +7,7 @@ internal interface IScriptPreProcessor
 
 internal class ScriptPreProcessor(IScriptLineResolversProvider resolversProvider) : IScriptPreProcessor
 {
-    private readonly List<IScriptLineResolver> _scriptLineResolvers = resolversProvider.GetAvailableResolvers();
+    private readonly IReadOnlyList<IScriptLineResolver> _scriptLineResolvers = resolversProvider.GetAvailableResolvers();
 
     public async Task ProcessScript(ScriptExecutionContext scriptContext, List<ScriptReference> referencedScripts)
     {

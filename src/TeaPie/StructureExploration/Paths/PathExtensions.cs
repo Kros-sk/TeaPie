@@ -29,10 +29,13 @@ public static class PathExtensions
     internal static string Root(this string path)
         => Path.IsPathRooted(path) ? path : Path.GetFullPath(path);
 
-    internal static string RemoveSlashAtTheEnd(this string path)
+    internal static string TrimSlashes(this string path)
+        => path.TrimSlashAtTheEnd().TrimSlashInTheBeginning();
+
+    internal static string TrimSlashAtTheEnd(this string path)
         => path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-    internal static string RemoveSlashInTheBeginning(this string path)
+    internal static string TrimSlashInTheBeginning(this string path)
         => path.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
     internal static string TrimQuotes(this string path)
@@ -44,5 +47,5 @@ public static class PathExtensions
             : path.NormalizePath();
 
     private static string NormalizePath(this string path)
-        => path.Trim().TrimQuotes().NormalizeSeparators().RemoveSlashAtTheEnd();
+        => path.Trim().TrimQuotes().NormalizeSeparators().TrimSlashAtTheEnd();
 }
