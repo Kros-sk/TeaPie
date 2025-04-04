@@ -12,7 +12,7 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
         _folders.Add(root.Path, root);
     }
 
-    #region Folders, Test-Cases
+    #region Folders, Test Cases
     private readonly Dictionary<string, Folder> _folders = [];
     private readonly Dictionary<string, TestCase> _testCases = [];
 
@@ -30,10 +30,10 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     public bool TryAddFolder(Folder folder) => _folders.TryAdd(folder.Path, folder);
 
     /// <summary>
-    /// Try to add given test-case to the structure. If parent folder is not in the structure yet,
+    /// Try to add given test case to the structure. If parent folder is not in the structure yet,
     /// then attempt to add folder is done.
     /// </summary>
-    /// <param name="testCase">Test-case to be added to the structure.</param>
+    /// <param name="testCase">Test case to be added to the structure.</param>
     public bool TryAddTestCase(TestCase testCase)
     {
         if (!_folders.ContainsKey(testCase.ParentFolder.Path))

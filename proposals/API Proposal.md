@@ -80,9 +80,9 @@ End-user will be able to access variables either generally or on specific level.
 2. `Environment level`
 3. `Collection level` - this level exists only when running collection (not single test case only)
 4. `Scope level`
-5. `Test Case level`
+5. `Test-Case level`
 
-The order of the levels determines in which order will be variables collected. The priority of variables rise with the level. So, for example if variable `foo` is defined on `global level` with the value `moo`, end-user can override its value on all levels from `environment level` to `test case level`.
+The order of the levels determines in which order will be variables collected. The priority of variables rise with the level. So, for example if variable `foo` is defined on `global level` with the value `moo`, end-user can override its value on all levels from `environment level` to `test-case level`.
 
 Working with variables on specific level:
 
@@ -126,7 +126,7 @@ tp.RemoveVariable("IsDevlabEnvironment");
 tp.RemoveVariables("Temp-Collection"); // Removes all variables with such a prefix
 ```
 
-By approaching variables generally, method `GetVariable<T>()` will search for variable from highest level to lowest level (from `test case level` to `global level`) and will return first found. Method `SetVariable<T>()` will automatically store the variable on `scope level`. Methods `RemoveVariable()` and `RemoveVariables()` remove variables on all levels on which occur.
+By approaching variables generally, method `GetVariable<T>()` will search for variable from highest level to lowest level (from `test case-level` to `global level`) and will return first found. Method `SetVariable<T>()` will automatically store the variable on `scope level`. Methods `RemoveVariable()` and `RemoveVariables()` remove variables on all levels on which occur.
 
 ## Test Runner API
 

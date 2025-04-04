@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using File = System.IO.File;
+using Timer = TeaPie.Logging.Timer;
 
 namespace TeaPie.Http;
 
@@ -24,11 +26,15 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
         CancellationToken cancellationToken)
     {
         testCaseExecutionContext.RequestsFileContent =
-            await File.ReadAllTextAsync(testCase.RequestsFile.Path, cancellationToken);
-
-        context.Logger.LogTrace("Content of the requests file on path '{RequestPath}' was read.",
-            testCase.RequestsFile.RelativePath);
+            await Timer.Execute(
+                async () => await File.ReadAllTextAsync(testCase.RequestsFile.Path, cancellationToken),
+                elapsedTime => LogEndOfReading(context, testCase, elapsedTime));
     }
+
+    private static void LogEndOfReading(ApplicationContext context, TestCase testCase, long elapsedTime)
+        => context.Logger.LogTrace("Content of the requests file at path '{RequestPath}' was read in {Time}.",
+            testCase.RequestsFile.RelativePath,
+            elapsedTime.ToHumanReadableTime());
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext, out TestCase testCase)
     {

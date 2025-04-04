@@ -30,7 +30,7 @@ internal partial class Tester(
     private async Task TestBase(string testName, Func<Task> testFunction, bool skipTest = false)
     {
         var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
-            ?? throw new InvalidOperationException("Unable to test if no test case execution context is provided.");
+            ?? throw new InvalidOperationException("Unable to test if no test-case execution context is provided.");
 
         StartRunIfFirstTest();
         var testCase = _testCaseExecutionContextAccessor.Context.TestCase;

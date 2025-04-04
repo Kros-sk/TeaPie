@@ -42,16 +42,17 @@ internal class ExecuteRequestStep(
     {
         var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
-        InsertStepForScheduledTestsIfAny(context.ServiceProvider);
+        InsertStepForScheduledTestsIfAny(context);
 
         return response;
     }
 
-    private void InsertStepForScheduledTestsIfAny(IServiceProvider serviceProvider)
+    private void InsertStepForScheduledTestsIfAny(ApplicationContext context)
     {
         if (_testScheduler.HasScheduledTest())
         {
-            _pipeline.InsertSteps(this, serviceProvider.GetStep<ExecuteScheduledTestsStep>());
+            _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
+            context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
         }
     }
 

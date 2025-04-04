@@ -48,4 +48,19 @@ public static class PathExtensions
 
     private static string NormalizePath(this string path)
         => path.Trim().TrimQuotes().NormalizeSeparators().TrimSlashAtTheEnd();
+
+    internal static bool IsCollectionPath(this string path)
+    {
+        if (Directory.Exists(path))
+        {
+            return true;
+        }
+
+        if (System.IO.File.Exists(path))
+        {
+            return false;
+        }
+
+        throw new InvalidOperationException($"Provided path '{path}' does not exist.");
+    }
 }

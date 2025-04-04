@@ -56,7 +56,7 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
         if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path))
         {
             throw new InvalidOperationException(
-                $"Unable to explore test-case on path '{path}' because such a file doesn't exist.");
+                $"Unable to explore test case at path '{path}' because such a file doesn't exist.");
         }
     }
 
@@ -66,10 +66,10 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
 
     protected override void LogStart(string path) => LogStartOfProcess(path);
 
-    [LoggerMessage("Exploration of the test-case on path: '{path}' started.", Level = LogLevel.Information)]
+    [LoggerMessage("Exploration of the test case at path: '{path}' started.", Level = LogLevel.Information)]
     private partial void LogStartOfProcess(string path);
 
-    protected override void LogEnd(CollectionStructure collectionStructure)
+    protected override void LogEnd(CollectionStructure collectionStructure, string duration)
     {
         var testCase = collectionStructure.TestCases.First();
         var tokens = new List<string>();
@@ -84,11 +84,11 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
             tokens.Add("post-response script");
         }
 
-        LogEnd(tokens.Count != 0 ? $"({string.Join(", ", tokens)})" : string.Empty);
+        LogEnd(duration, tokens.Count != 0 ? $"({string.Join(", ", tokens)})" : string.Empty);
     }
 
-    [LoggerMessage("Test-case explored {foundArtifacts}.", Level = LogLevel.Information)]
-    private partial void LogEnd(string foundArtifacts);
+    [LoggerMessage("The test case explored in {duration} {foundArtifacts}.", Level = LogLevel.Information)]
+    private partial void LogEnd(string duration, string foundArtifacts);
 
     #endregion
 }

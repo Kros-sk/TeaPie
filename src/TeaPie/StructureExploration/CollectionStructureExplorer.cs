@@ -38,12 +38,12 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
 
     /// <summary>
     /// Recursive depth-first algorithm, which examines file system tree. Whole structure is gradually formed within
-    /// <paramref name="collectionStructure"/> parameter in form of folders and test-cases. Each folder can have sub-folders
-    /// and/or test cases. Test-case is represented by <b>'.http'</b> file and possibly by other files
+    /// <paramref name="collectionStructure"/> parameter in form of folders and test cases. Each folder can have sub-folders
+    /// and/or test cases. Test case is represented by <b>'.http'</b> file and possibly by other files
     /// (e.g. script <b>'.csx'</b> files).
     /// </summary>
     /// <param name="currentFolder">Folder to be explored.</param>
-    /// <param name="collectionStructure">List of explored test-cases.</param>
+    /// <param name="collectionStructure">List of explored test cases.</param>
     private void ExploreFolder(Folder currentFolder, CollectionStructure collectionStructure)
     {
         var subFolderPaths = GetFolders(currentFolder);
@@ -81,7 +81,8 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
     {
         if (string.IsNullOrEmpty(path) || !Directory.Exists(path))
         {
-            throw new InvalidOperationException($"Unable to explore collection on path '{path}' because such a path doesn't exist.");
+            throw new InvalidOperationException(
+                $"Unable to explore collection at path '{path}' because such a path doesn't exist.");
         }
     }
 
@@ -98,13 +99,14 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
 
     protected override void LogStart(string path) => LogStartOfExploration(path);
 
-    protected override void LogEnd(CollectionStructure structure) => LogEnd(structure.TestCases.Count);
+    protected override void LogEnd(CollectionStructure structure, string duration)
+        => LogEnd(duration, structure.TestCases.Count);
 
-    [LoggerMessage("Exploration of the collection started on path: '{path}'.", Level = LogLevel.Information)]
+    [LoggerMessage("Exploration of the collection started at path: '{path}'.", Level = LogLevel.Information)]
     partial void LogStartOfExploration(string path);
 
-    [LoggerMessage("Collection explored, found {countOfTestCases} test cases.", Level = LogLevel.Information)]
-    partial void LogEnd(int countOfTestCases);
+    [LoggerMessage("Collection explored in {duration}, found {countOfTestCases} test cases.", Level = LogLevel.Information)]
+    partial void LogEnd(string duration, int countOfTestCases);
 
     #endregion
 }

@@ -103,7 +103,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
         public string Name { get; init; } = "test-case";
 
         [CommandArgument(1, "[path]")]
-        [Description("Path on which test-case will be created.")]
+        [Description("Path at which test case will be created.")]
         public string? Path { get; init; }
 
         [CommandOption("-i|--init|--pre-req")]

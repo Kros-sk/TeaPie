@@ -26,24 +26,32 @@ internal class InitializeApplicationStep(
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        await DownloadAndInstallGlobalNuGetPackages();
+        await DownloadAndInstallGlobalNuGetPackages(context.Logger);
 
-        ResolveAuthProviders();
+        ResolveAuthProviders(context.Logger);
 
         SetTestResultsSummaryObject(context.StructureName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
     }
 
-    private void ResolveAuthProviders()
+    private void ResolveAuthProviders(ILogger logger)
     {
         _authProviderAccessor.DefaultProvider = _authProviderRegistry.Get(AuthConstants.NoAuthKey);
         _authProviderAccessor.SetCurrentProviderToDefault();
         _authProviderRegistry.Register(AuthConstants.OAuth2Key, _oAuth2Provider);
+
+        logger.LogTrace("Pre-defined auth providers were registered: {NoAuth}, {OAuth2}.",
+            AuthConstants.NoAuthKey, AuthConstants.OAuth2Key);
     }
 
-    private async Task DownloadAndInstallGlobalNuGetPackages()
-        => await _nuGetPackageHandler.HandleNuGetPackages(ScriptsConstants.DefaultNuGetPackages);
+    private async Task DownloadAndInstallGlobalNuGetPackages(ILogger logger)
+    {
+        await _nuGetPackageHandler.HandleNuGetPackages(ScriptsConstants.DefaultNuGetPackages);
+
+        logger.LogTrace("Default NuGet packages were successfully added: ({NuGetPackages})",
+            string.Join(", ", ScriptsConstants.DefaultNuGetPackages.Select(x => $"{x.PackageName}, {x.Version}")));
+    }
 
     private void SetTestResultsSummaryObject(string collectionName)
         => _summaryAccessor.Summary = new CollectionTestResultsSummary(collectionName);

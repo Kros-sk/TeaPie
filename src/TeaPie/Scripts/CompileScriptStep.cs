@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
+using Timer = TeaPie.Logging.Timer;
 
 namespace TeaPie.Scripts;
 
@@ -22,14 +24,22 @@ internal sealed class CompileScriptStep(
 
     private void CompileScript(ApplicationContext context, ScriptExecutionContext scriptExecutionContext, string content)
     {
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' started.",
-            scriptExecutionContext.Script.File.GetDisplayPath());
+        LogCompilationStart(context, scriptExecutionContext);
 
-        scriptExecutionContext.ScriptObject = _compiler.CompileScript(content, scriptExecutionContext.Script.File.GetDisplayPath());
-
-        context.Logger.LogTrace("Compilation of the script on path '{ScriptPath}' finished successfully.",
-            scriptExecutionContext.Script.File.GetDisplayPath());
+        scriptExecutionContext.ScriptObject = Timer.Execute(
+            () => _compiler.CompileScript(content, scriptExecutionContext.Script.File.GetDisplayPath()),
+            elapsedTime => LogEndOfCompilation(context, scriptExecutionContext, elapsedTime));
     }
+
+    private static void LogCompilationStart(ApplicationContext context, ScriptExecutionContext scriptExecutionContext)
+        => context.Logger.LogTrace("Compilation of the script at path '{ScriptPath}' started.",
+            scriptExecutionContext.Script.File.GetDisplayPath());
+
+    private static void LogEndOfCompilation(
+        ApplicationContext context, ScriptExecutionContext scriptExecutionContext, long elapsedTime)
+        => context.Logger.LogTrace("Compilation of the script at path '{ScriptPath}' finished successfully in {Time}.",
+            scriptExecutionContext.Script.File.GetDisplayPath(),
+            elapsedTime.ToHumanReadableTime());
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext, out string content)
     {

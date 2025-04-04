@@ -48,7 +48,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         _pipeline.InsertSteps(this, [.. newSteps]);
 
         appContext.Logger.LogDebug(
-            "Steps for all requests ({Count}) within requests file on '{Path}' were scheduled in the pipeline.",
+            "Steps for all requests ({Count}) within the request file at '{Path}' have been scheduled in the pipeline.",
             separatedRequests.Count(),
             testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
     }

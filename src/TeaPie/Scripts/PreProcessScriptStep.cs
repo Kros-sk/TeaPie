@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
+using Timer = TeaPie.Logging.Timer;
 
 namespace TeaPie.Scripts;
 
@@ -20,17 +22,23 @@ internal sealed class PreProcessScriptStep(
     {
         ValidateContext(out var scriptExecutionContext);
 
-        context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' started.",
-            scriptExecutionContext.Script.File.GetDisplayPath());
+        var referencedScriptsPaths = await ProcessScript(context, scriptExecutionContext);
+
+        HandleReferencedScripts(context, referencedScriptsPaths);
+    }
+
+    private async Task<List<ScriptReference>> ProcessScript(
+        ApplicationContext context, ScriptExecutionContext scriptExecutionContext)
+    {
+        LogPreprocessStart(context, scriptExecutionContext);
 
         var referencedScriptsPaths = new List<ScriptReference>();
 
-        await _scriptPreProcessor.ProcessScript(scriptExecutionContext, referencedScriptsPaths);
+        await Timer.Execute(
+            async () => await _scriptPreProcessor.ProcessScript(scriptExecutionContext, referencedScriptsPaths),
+            elapsedTime => LogEndOfPreprocess(context, scriptExecutionContext, elapsedTime));
 
-        HandleReferencedScripts(context, referencedScriptsPaths);
-
-        context.Logger.LogTrace("Pre-process of the script on path '{ScriptPath}' finished.",
-            scriptExecutionContext.Script.File.GetDisplayPath());
+        return referencedScriptsPaths;
     }
 
     private void HandleReferencedScripts(ApplicationContext context, List<ScriptReference> referencedScriptsPaths)
@@ -87,8 +95,17 @@ internal sealed class PreProcessScriptStep(
                 new InternalFile(scriptReference.RealPath, relativePath, folder));
         }
 
-        throw new InvalidOperationException($"Unable to find script on path '{scriptReference.RealPath}'.");
+        throw new InvalidOperationException($"Unable to find script at path '{scriptReference.RealPath}'.");
     }
+
+    private static void LogPreprocessStart(ApplicationContext context, ScriptExecutionContext scriptExecutionContext)
+        => context.Logger.LogTrace("Pre-process of the script at path '{ScriptPath}' started.",
+            scriptExecutionContext.Script.File.GetDisplayPath());
+
+    private static void LogEndOfPreprocess(ApplicationContext context, ScriptExecutionContext scriptExecutionContext, long elapsedTime)
+        => context.Logger.LogTrace("Pre-process of the script at path '{ScriptPath}' finished in {Time}.",
+            scriptExecutionContext.Script.File.GetDisplayPath(),
+            elapsedTime.ToHumanReadableTime());
 
     private void ValidateContext(out ScriptExecutionContext scriptExecutionContext)
     {

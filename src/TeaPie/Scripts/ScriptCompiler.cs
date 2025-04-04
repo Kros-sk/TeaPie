@@ -63,13 +63,13 @@ internal partial class ScriptCompiler(ILogger<ScriptCompiler> logger) : IScriptC
         }
     }
 
-    [LoggerMessage("Script on path '{path}' has {count} warnings.", Level = LogLevel.Warning)]
+    [LoggerMessage("The script at path '{path}' has {count} warnings.", Level = LogLevel.Warning)]
     partial void LogWarningsOccured(string path, int count);
 
-    [LoggerMessage("Script on path '{path}' has {count} syntax errors.", Level = LogLevel.Error)]
+    [LoggerMessage("The script at path '{path}' has {count} syntax errors.", Level = LogLevel.Error)]
     partial void LogErrorsOccured(string path, int count);
 
-    [LoggerMessage("Script warning: {warningMessage}", Level = LogLevel.Debug)]
+    [LoggerMessage("Warning from the script: {warningMessage}", Level = LogLevel.Debug)]
     partial void LogWarning(string warningMessage);
 
     [LoggerMessage("{errorMessage}", Level = LogLevel.Error)]

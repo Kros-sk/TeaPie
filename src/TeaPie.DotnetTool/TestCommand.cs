@@ -1,5 +1,6 @@
 ﻿using Spectre.Console.Cli;
 using System.ComponentModel;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.DotnetTool;
 
@@ -11,7 +12,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         var logLevel = ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, string.Empty);
 
-        var appBuilder = ApplicationBuilder.Create(!Path.HasExtension(path));
+        var appBuilder = ApplicationBuilder.Create(path.IsCollectionPath());
 
         appBuilder
             .WithPath(path)

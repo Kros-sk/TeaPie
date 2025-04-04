@@ -17,7 +17,7 @@ internal sealed class SaveTempScriptStep(IScriptExecutionContextAccessor accesso
         var temporaryPath = await SaveTemporaryScript(scriptExecutionContext, content, cancellationToken);
 
         context.Logger.LogTrace(
-            "Pre-processed script from path '{ScriptPath}' was saved to temporary folder, on path '{TempPath}'",
+            "Pre-processed script from path '{ScriptPath}' was saved to temporary folder - to path '{TempPath}'",
             scriptExecutionContext.Script.File.GetDisplayPath(),
             temporaryPath);
     }

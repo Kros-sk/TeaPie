@@ -41,7 +41,7 @@ internal static class ApplicationProvider
         => config.AddCommand<GenerateCommand>("generate")
             .WithAlias("gen")
             .WithAlias("g")
-            .WithDescription("Generates files for test-case.")
+            .WithDescription("Generates files for test case.")
             .WithExample("generate", "myTestCase", "[path]")
             .WithExample("gen", "myTestCase", "\"path\"")
             .WithExample("g", "myTestCase", "\"path\"", "-i", "FALSE", "-t", "TRUE");

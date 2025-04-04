@@ -18,13 +18,14 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
 
         _pipeline.InsertSteps(this, [.. newSteps]);
 
-        context.Logger.LogDebug("Steps for all test cases ({Count}) were scheduled in the pipeline.",
+        context.Logger.LogDebug("Initialization steps for all test cases ({Count}) were scheduled in the pipeline.",
             context.TestCases.Count);
 
         await Task.CompletedTask;
     }
 
-    private static void AddStepsForTestCase(ApplicationContext context, TestCase testCase, List<IPipelineStep> newSteps)
+    private static void AddStepsForTestCase(
+        ApplicationContext context, TestCase testCase, List<IPipelineStep> newSteps)
     {
         var testCaseExecutionContext = new TestCaseExecutionContext(testCase);
         newSteps.AddRange(TestCaseStepsFactory.CreateStepsForTestsCase(context.ServiceProvider, testCaseExecutionContext));

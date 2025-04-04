@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
+using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
 
@@ -16,11 +17,17 @@ internal class DisplayStructureStep(ITreeStructureRenderer treeRenderer) : IPipe
         }
         else
         {
-            AnsiConsole.Markup($"[red]Collection on path [/][white]'{context.Path.EscapeMarkup()}'[/]" +
-                "[red] is empty - nothing to display.[/]");
+            DisplayEmptyStructure(context);
         }
 
         await Task.CompletedTask;
+    }
+
+    private static void DisplayEmptyStructure(ApplicationContext context)
+    {
+        var structureType = context.Path.IsCollectionPath() ? "collection" : "test case";
+        AnsiConsole.Markup($"[red]The {structureType} at path [/][white]'{context.Path.EscapeMarkup()}'[/]" +
+            "[red] is empty - nothing to display.[/]");
     }
 
     private void DisplayStructure(ApplicationContext context)
@@ -31,14 +38,14 @@ internal class DisplayStructureStep(ITreeStructureRenderer treeRenderer) : IPipe
             Border = TableBorder.Rounded
         };
 
-        if (Path.HasExtension(context.Path))
+        if (context.Path.IsCollectionPath())
         {
-            table.AddColumn($"[bold yellow]Test-Case - {context.StructureName}[/]");
+            table.AddColumn($"[bold yellow]Collection - {context.StructureName}[/] " +
+                $"[italic white](Number of test cases: [/][italic bold yellow]{context.TestCases.Count}[/][italic white])[/]");
         }
         else
         {
-            table.AddColumn($"[bold yellow]Collection - {context.StructureName}[/] " +
-                $"[italic white](Number of test-cases: [/][italic bold yellow]{context.TestCases.Count}[/][italic white])[/]");
+            table.AddColumn($"[bold yellow]Test Case - {context.StructureName}[/]");
         }
 
         table.AddRow(tree!);

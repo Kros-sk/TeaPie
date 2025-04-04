@@ -17,6 +17,8 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         context.CurrentTestCase = testCaseExecutionContext;
         AddSteps(context, testCaseExecutionContext);
 
+        LogTestCase(context, testCaseExecutionContext);
+
         await Task.CompletedTask;
     }
 
@@ -24,14 +26,19 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
     {
         List<IPipelineStep> newSteps = [];
 
-        AddStepsForPreRequestScripts(context, testCaseExecutionContext, newSteps);
-        AddStepsForRequests(context, testCaseExecutionContext, newSteps);
-        AddStepsForPostResponseScripts(context, testCaseExecutionContext, newSteps);
+        AddSteps(context, testCaseExecutionContext, newSteps);
 
         _pipeline.InsertSteps(this, [.. newSteps]);
 
-        context.Logger.LogDebug("Multiple steps for all test cases ({Count}) were scheduled in the pipeline.",
-            context.TestCases.Count);
+        LogAdditionOfSteps(context, testCaseExecutionContext, newSteps);
+    }
+
+    private static void AddSteps(
+        ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext, List<IPipelineStep> newSteps)
+    {
+        AddStepsForPreRequestScripts(context, testCaseExecutionContext, newSteps);
+        AddStepsForRequests(context, testCaseExecutionContext, newSteps);
+        AddStepsForPostResponseScripts(context, testCaseExecutionContext, newSteps);
     }
 
     private static void AddStepsForPreRequestScripts(
@@ -82,6 +89,19 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         List<IPipelineStep> newSteps)
         => newSteps.AddRange(
             TestCaseStepsFactory.CreateStepsForRequestsWithinTestCase(context.ServiceProvider, testCaseExecutionContext));
+
+    private static void LogAdditionOfSteps(
+        ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext, List<IPipelineStep> newSteps)
+        => context.Logger.LogDebug("Multiple steps ({Count}) were scheduled in the pipeline for test-case execution " +
+            "'{Name}'. ({Progress})",
+                newSteps.Count,
+                testCaseExecutionContext.TestCase.Name,
+                $"{testCaseExecutionContext.Id}/{context.TestCases.Count}");
+
+    private static void LogTestCase(ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext)
+        => context.Logger.LogInformation("Test case '{Name}' is going to be executed. ({Progress})",
+            testCaseExecutionContext.TestCase.Name,
+            $"{testCaseExecutionContext.Id}/{context.TestCases.Count}");
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext)
         => ExecutionContextValidator.Validate(

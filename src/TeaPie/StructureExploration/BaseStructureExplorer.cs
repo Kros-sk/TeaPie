@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging;
 using TeaPie.StructureExploration.Paths;
 
 namespace TeaPie.StructureExploration;
@@ -19,9 +20,12 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
 
         LogStart(applicationContext.Path);
 
-        var collectionStructure = ExploreStructure(applicationContext);
+        long elapsedTime = 0;
+        var collectionStructure = Logging.Timer.Execute(
+            () => ExploreStructure(applicationContext),
+            realTime => elapsedTime = realTime);
 
-        LogEnd(collectionStructure);
+        LogEnd(collectionStructure, elapsedTime.ToHumanReadableTime());
 
         return collectionStructure;
     }
@@ -77,7 +81,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
 
         if (!collectionStructure.TryAddTestCase(testCase))
         {
-            throw new InvalidOperationException($"Unable to register same test-case twice. {testCase.RequestsFile.Path}");
+            throw new InvalidOperationException($"Unable to register same test case twice. {testCase.RequestsFile.Path}");
         }
     }
 
@@ -119,7 +123,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         }
         else if (!System.IO.File.Exists(filePath))
         {
-            throw new InvalidOperationException($"Specified {fileName} on path '{filePath}' does not exist.");
+            throw new InvalidOperationException($"Specified {fileName} at path '{filePath}' does not exist.");
         }
     }
 
@@ -308,7 +312,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
 
     protected abstract void LogStart(string path);
 
-    protected abstract void LogEnd(CollectionStructure structure);
+    protected abstract void LogEnd(CollectionStructure structure, string duration);
 
     #endregion
 }

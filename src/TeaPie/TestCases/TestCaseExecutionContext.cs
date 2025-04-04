@@ -6,6 +6,9 @@ namespace TeaPie.TestCases;
 
 internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextExposer
 {
+    private static int _testCaseIndexer = 1;
+    public int Id { get; } = _testCaseIndexer++;
+
     public TestCase TestCase { get; } = testCase;
     public string? RequestsFileContent;
 

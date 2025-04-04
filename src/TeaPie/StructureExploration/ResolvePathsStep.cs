@@ -11,27 +11,30 @@ internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineSt
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
-        if (context.TempFolderPath.Equals(string.Empty))
-        {
-            ResolvePath(context);
-        }
+        ResolvePaths(context);
 
-        CreateFolderIfNeeded(context);
+        CreateTempFolderIfNeeded(context);
 
         _pathProvider.UpdatePaths(context.Path, context.TempFolderPath, context.TeaPieFolderPath);
+
+        LogUpdatedPaths(context);
+
         await Task.CompletedTask;
     }
 
-    private static void ResolvePath(ApplicationContext context)
+    private static void ResolvePaths(ApplicationContext context)
     {
-        if (TryFindTeaPieFolder(context.Path, out var teaPiePath))
+        if (context.TempFolderPath.Equals(string.Empty))
         {
-            context.TempFolderPath = teaPiePath;
-            context.TeaPieFolderPath = teaPiePath;
-        }
-        else
-        {
-            context.TempFolderPath = Constants.SystemTemporaryFolderPath;
+            if (TryFindTeaPieFolder(context.Path, out var teaPiePath))
+            {
+                context.TempFolderPath = teaPiePath;
+                context.TeaPieFolderPath = teaPiePath;
+            }
+            else
+            {
+                context.TempFolderPath = Constants.SystemTemporaryFolderPath;
+            }
         }
     }
 
@@ -66,13 +69,25 @@ internal sealed class ResolvePathsStep(IPathProvider pathProvider) : IPipelineSt
         return Directory.Exists(teaPieFolder);
     }
 
-    private static void CreateFolderIfNeeded(ApplicationContext context)
+    private static void CreateTempFolderIfNeeded(ApplicationContext context)
     {
         if (!Directory.Exists(context.TempFolderPath))
         {
             Directory.CreateDirectory(context.TempFolderPath);
             context.Logger.LogDebug(
-                "Temporary folder was created on path '{TempPath}', since it didn't exist yet.", context.TempFolderPath);
+                "Temporary folder was created at path '{TempPath}', since it didn't exist yet.", context.TempFolderPath);
         }
     }
+
+    private void LogUpdatedPaths(ApplicationContext context)
+        => context.Logger.LogDebug("Application is working with these paths:{NewLine}" +
+            "Path: '{Path}'{NewLine}" +
+            "Temporary folder path: '{TempPath}'{NewLine}" +
+            "TeaPie folder path: '{TeaPieFolderPath}'",
+            Environment.NewLine,
+            _pathProvider.RootPath,
+            Environment.NewLine,
+            _pathProvider.TempRootPath,
+            Environment.NewLine,
+            _pathProvider.TeaPieFolderPath);
 }

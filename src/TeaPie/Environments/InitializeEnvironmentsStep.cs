@@ -41,9 +41,18 @@ internal class InitializeEnvironmentsStep(
 
         var environments = await ParseEnvironmentFile(context.EnvironmentFilePath);
 
+        LogFoundEnvironments(context, environments);
+
         EnsureEnvironmentNameIsSet(context);
         RegisterEnvironmentsAndApplyDefault(environments, context.EnvironmentFilePath, context.Logger);
     }
+
+    private static void LogFoundEnvironments(
+        ApplicationContext context, Dictionary<string, Dictionary<string, object?>> environments)
+        => context.Logger.LogDebug("{Count} environments were found in the file at path '{EnvironmentFile}'. ({Environments})",
+            environments.Keys.Count,
+            context.EnvironmentFilePath,
+            string.Join(", ", environments.Keys));
 
     private static async Task<Dictionary<string, Dictionary<string, object?>>> ParseEnvironmentFile(string environmentFilePath)
     {
@@ -66,7 +75,7 @@ internal class InitializeEnvironmentsStep(
         if (!defaultApplied)
         {
             logger.LogWarning("Default environment '{DefaultEnvironment}' was not found in the environment " +
-                "file on path '{Path}'", Constants.DefaultEnvironmentName, environmentFilePath);
+                "file at path '{Path}'", Constants.DefaultEnvironmentName, environmentFilePath);
         }
     }
 
@@ -96,7 +105,7 @@ internal class InitializeEnvironmentsStep(
     {
         if (!File.Exists(context.EnvironmentFilePath))
         {
-            throw new InvalidOperationException($"Environment file on path '{context.EnvironmentFilePath}' was not found.");
+            throw new InvalidOperationException($"Environment file at path '{context.EnvironmentFilePath}' was not found.");
         }
     }
 }

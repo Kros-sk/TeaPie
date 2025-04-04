@@ -39,7 +39,7 @@ internal partial class LoadDirectiveLineResolver(
         var realPath = _pathResolver.ResolvePath(referencedPath, scriptDirectory);
         if (!System.IO.File.Exists(realPath))
         {
-            throw new InvalidOperationException($"Referenced script on path '{realPath}' doesn't exist.");
+            throw new InvalidOperationException($"Referenced script at path '{realPath}' doesn't exist.");
         }
 
         return realPath;

@@ -12,12 +12,12 @@ TeaPie supports **four levels of variables**, determining **priority and scope**
 | **Global** | Available across all test cases and collections. These **originate from the default `$shared` environment** – [learn more](environments.md#default-environment-shared). |
 | **Environment** | Available across all test cases within a collection **specific to the selected environment** – [learn more](environments.md#active-environment). |
 | **Collection** | Available **during whole collection run**. |
-| **Test Case** | Available **only within a specific test case**. They are deleted once the test case execution ends. |
+| **Test Case** | Available **only within a specific test case**. They are deleted once the test-case execution ends. |
 
 ### **Variable Resolution Order**
 
 TeaPie resolves variables **from the highest level to the lowest**.
-For example, if a variable `foo` is defined at the **global level**, its value **can be overridden** at the **environment, collection, or test case level**.
+For example, if a variable `foo` is defined at the **global level**, its value **can be overridden** at the **environment, collection, or test-case level**.
 
 ---
 
