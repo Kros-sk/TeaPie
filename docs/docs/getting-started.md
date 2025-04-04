@@ -8,7 +8,7 @@ To install **TeaPie CLI**, run:
 dotnet tool install -g TeaPie.Tool
 ```
 
-To install the framework in your project:
+To integrate tool within your project, use:
 
 ```sh
 dotnet add package TeaPie

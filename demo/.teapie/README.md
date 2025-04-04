@@ -1,6 +1,6 @@
 # Folder `.teapie`
 
-`TeaPie` primarily uses the `.teapie` folder to **cache various artifacts**. However, you can also use it to **store shared functionality**.
+`TeaPie` primarily uses the `.teapie` folder to **cache various artifacts**. However, you can also use it to **place there shared functionality**.
 
 When the application is run without a specific `--temp-path`, it searches upward through the directory tree to locate the nearest `.teapie` folder. Once found, its contents are explored — making it an ideal place to store your **environment file** and **initialization script**.
 
