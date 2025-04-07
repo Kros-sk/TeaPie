@@ -4,15 +4,8 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>teapie</ToolCommandName>
     <PackageId>TeaPie.Tool</PackageId>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PackageProjectUrl>https://kros-sk.github.io/TeaPie/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Kros-sk/TeaPie</RepositoryUrl>
+    <Description>CLI-based framework for creation, management, and execution of API Tests.</Description>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>api;testing;cli</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

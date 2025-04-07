@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/github/license/Kros-sk/TeaPie)](LICENSE)
 [![Build](https://github.com/Kros-sk/TeaPie/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Kros-sk/TeaPie/actions)
 
+![Logo](logo.png)
+
 TeaPie is a **lightweight API testing framework** designed for **automation-friendly, scriptable API testing** with `.http` files.
 It provides **pre-request scripting, post-response validation, retry strategies, flexible authentication, environments support and custom test directives**.
 

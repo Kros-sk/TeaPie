@@ -9,10 +9,19 @@
     </PropertyGroup>
 
     <PropertyGroup>
+        <PackageProjectUrl>https://kros-sk.github.io/TeaPie/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Kros-sk/TeaPie</RepositoryUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageTags>api;testing;cli</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <Version>1.0.0</Version>
         <Authors>Matej Grochal</Authors>
         <Company>KROS a.s.</Company>
-        <Description>CLI-based framework for creation, management, and execution of API Tests.</Description>
         <Copyright>Copyright © KROS a.s.</Copyright>
     </PropertyGroup>
 

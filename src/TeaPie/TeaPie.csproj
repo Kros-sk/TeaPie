@@ -1,6 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>TeaPie</PackageId>
+    <Description>The core of TeaPie.Tool in form of library.</Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
@@ -21,6 +28,11 @@
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="xunit.assert" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Include="../../icon.png" Pack="true" PackagePath="" />
+      <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>

@@ -126,7 +126,7 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path on which .teapie folder should be created. If not specified, it attempts to find root of repository " +
+        [Description("Path at which .teapie folder should be created. If not specified, it attempts to find root of repository " +
             "(the one containing '.git' folder).")]
         public string? Path { get; init; }
     }
