@@ -38,7 +38,6 @@ The main benefit of the `.teapie` folder is centralizing shared functionality. I
 
 To reference files inside the `.teapie` folder, use the special `$teapie` wildcard. This placeholder is automatically replaced by the actual path to the folder during execution. Example:
 
-```
+```csharp
 #load "$teapie/ClearVariables.csx"
 ```
-
