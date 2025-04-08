@@ -27,8 +27,7 @@
     "resource": [
       {
         "files": [
-          "images/**"
-        ]
+            "images/**"
       }
     ],
     "output": "_site",
@@ -40,7 +39,8 @@
       "_appName": "TeaPie",
       "_appTitle": "TeaPie",
       "_enableSearch": true,
-      "_appFaviconPath": "favicon.ico",
+      "_appFaviconPath": "images/favicon.ico",
+      "_appLogoPath": "images/logo.svg",
       "pdf": true
     }
   }

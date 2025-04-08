@@ -12,8 +12,8 @@ internal static class ApplicationStepsFactory
     public static IPipelineStep[] CreateDefaultPipelineSteps(IServiceProvider provider)
         => [provider.GetStep<ResolvePathsStep>(),
             provider.GetStep<ExploreStructureStep>(),
-            provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<TryLoadVariablesStep>(),
+            provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<InitializeApplicationStep>(),
             provider.GetStep<GenerateStepsForTestCasesStep>(),
             provider.GetStep<ReportTestResultsSummaryStep>(),
