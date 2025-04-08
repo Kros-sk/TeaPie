@@ -25,7 +25,7 @@ internal class PathProvider : IPathProvider
     public string NuGetPackagesFolderPath => Path.Combine(CacheFolderPath, NuGetPackagesFolderName);
     public string ReportsFolderPath => Path.Combine(TeaPieFolderPath, ReportsFolderName);
 
-    public string RunsFolderPath => Path.Combine(CacheFolderPath, RunsFolderName);
+    public string RunsFolderPath => Path.Combine(TeaPieFolderPath, RunsFolderName);
     public string VariablesFolderPath => Path.Combine(TeaPieFolderPath, CacheFolderName, VariablesFolderName);
     public string VariablesFilePath => Path.Combine(VariablesFolderPath, VariablesFileName);
 

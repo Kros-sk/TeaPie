@@ -17,10 +17,12 @@
   href: how-to-write-tests.md
 - name: Running Tests
   href: running-tests.md
+- name: .teapie Folder
+  href: teapie-folder.md
 - name: Initialization Script
   href: initialization-script.md
 - name: Variables
-  href: variables.md  
+  href: variables.md
 - name: Environments
   href: environments.md
 - name: Authentication

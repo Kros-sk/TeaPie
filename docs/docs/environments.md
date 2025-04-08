@@ -4,6 +4,13 @@ Environments are a crucial part of automating tests, allowing you to define vari
 
 ## Environment File
 
+|   |   |
+|----------------------|----------------|
+| **Definition**       | A `.json` file which contains definitions of environments (named sets of variables). |
+| **Naming Convention** | `env.json` *(can be customized if explicitly specified)* |
+| **Purpose**         | Defines all available environments, on which can application run. |
+| **Example Usage**   | [Demo Environment File](https://github.com/Kros-sk/TeaPie/blob/master/demo/.teapie/env.json) |
+
 To use environments, firstly you must define them in a JSON **environment file**. By default, the tool uses the **first found file** within `.teapie` folder (if exists) or collection (depth-first algorithm) with name `env.json`, respectively first found file in the parent directory of provided test case, when running single test case. However, you can specify a custom environment file by using the following option:
 
 ```sh

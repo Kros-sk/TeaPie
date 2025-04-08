@@ -1,8 +1,8 @@
 ﻿// Referencing multiple scripts is also allowed.
-#load "../ClearVariables.csx"
-#load "../2. Cars/Definitions/Car.csx"
+#load "$teapie/ClearVariables.csx"
+#load "$teapie/Definitions/Car.csx"
 
-// Sometimes, when writing tests, it may be useful to skip certain tests 
+// Sometimes, when writing tests, it may be useful to skip certain tests
 // to speed up development and avoid unnecessary code commenting or deletion.
 tp.Test("Car should be rented successfully.", () =>
 {

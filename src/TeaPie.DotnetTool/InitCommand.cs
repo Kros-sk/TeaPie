@@ -12,7 +12,8 @@ internal sealed class InitCommand : Command<InitCommand.Settings>
     [
         $"{Environment.NewLine}# TeaPie",
         "**/.teapie/cache/",
-        "**/.teapie/reports/"
+        "**/.teapie/reports/",
+        "**/.teapie/runs/"
     ];
 
     public override int Execute(CommandContext context, Settings settings)
