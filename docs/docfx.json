@@ -28,6 +28,7 @@
       {
         "files": [
             "images/**"
+        ]
       }
     ],
     "output": "_site",
