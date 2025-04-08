@@ -2,7 +2,7 @@
 // Path can be absolute or relative (relative path starts from the parent directory).
 // IMPORTANT: Referenced scripts run automatically. Encapsulate logic in methods to avoid unintended execution.
 #load "$teapie/Definitions/GenerateNewCar.csx"
-// Placeholder $teapie will be replaced with actual path to .teapie folder.
+// Placeholder '$teapie' will be replaced with the actual path pointing to .teapie folder.
 
 // Usage of method defined in referenced script.
 var car = GenerateCar();

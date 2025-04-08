@@ -1,14 +1,14 @@
 # TeaPie (TEst API Extension)
 
-Is framework dedicated to ease work with API testing.
+A framework dedicated to ease work with API testing.
 
-## Acceptance criteria
+## Acceptance Criteria
 
 - **CLI-based** application
 - **Convention-based** by default, possibility for **parametrization**
 - **Readable changes** in tests within **pull-requests**
 - **Support for collections**, which will be independently runnable
-- Possibility to have **pre-request** and **post-response** scripts for each _http_ request, respecitevely for each collection
+- Possibility to have **pre-request** and **post-response** scripts for each HTTP request, respectively for each collection
 - **Support** for more, switchable **environments**, with **global variables** included
 - **Comprehensive logging**
 - **Comprehensive reporting system**
@@ -17,7 +17,7 @@ Is framework dedicated to ease work with API testing.
 - **Based** in familiar **backend technology (C#)**
 - Native support for **re-trying**
 - Native support for **service-bus** testing
-- **Smart authorization** - e.g. _OAuth_
+- **Smart authorization** - e.g. OAuth2
 - **Intuitive file structure**
 - **Optimized performance** – after the main logic is implemented
 - **Test runner** will have current context with run-time variables
@@ -31,20 +31,16 @@ Is framework dedicated to ease work with API testing.
 
 ## Definitions
 
-**Script** - indepedently runnable piece of code. In our context, these are `.csx` files
+- **Script** - independently runnable piece of code. In our context, these are `.csx` files
+- **Request** - HTTP request, which is stored in `.http` file
+- **Test Case** - logically encapsulates pre-request script(s), HTTP request(s) within .http file, post-response script(s), testing scenarios, documentation and configuration. None of these parts is mandatory except HTTP request. Test Case can have all its dependencies in one folder (default setting), or it can be distributed. By convention, one folder contains one Test Case, but it is possible for folder to contain more test cases altogether.
+- **Collection** - set of test cases, which are somehow (contextually) connected
+- **End-user** - final user of the framework. Usually a programmer or QA, who writes tests for API
 
-**Request** - HTTP request, which is stored in _.http file_.
-
-**Test Case** - logically encapsulates _pre-request script(s) HTTP request(s) within .http file, post-response script(s), testing scenarios, documentation and configuration._ None of these parts is mandatory except HTTP request. Test Case can have all its dependencies in one folder (default setting), or it can be distributed. By convention, one folder contains one Test Case, but it is possible for folder to contain more test cases altogether.
-
-**Collection** - set of test cases, which are somehow (contextually) connected.
-
-**End-user** - final user of the framework. Usually a programmer or QA, who writes tests for API.
-
-## To consider
+## Considerations
 
 - Check possibility of adding `.md` documentation to tests (e.g. by using comments)
-  - Commenting is bit trickier, since **multi-line comments** are not natively supported and you have to work-around to achieve them. When you use 3 hashtags, it automatically thinks, that you want to make request.
+  - Commenting is bit trickier, since **multi-line comments** are not natively supported and you have to work-around to achieve them. When you use 3 hashtags, it automatically thinks, that you want to make request
   - Maybe usage of double `##` can be interesting for our parser, although this is in conflict with `.md` format of **headers**, since these are also marked by hashtags
 - Consider **usage of solution**, since it is the same thing as collection, only difference is in abstraction
 - Consider inputs of QA from different company (Descartes)
@@ -52,15 +48,15 @@ Is framework dedicated to ease work with API testing.
 
 ## Important Notes
 
-- Usage of `"."` in .http file variables is **forbidden**, so we have to **ban usage of** `"."` **for variables names.**
-- For our special directives and notation within `.http file`, we will use comment starting with `##`
+- Usage of `"."` in .http file variables is **forbidden**, so we have to **ban usage of** `"."` **for variables names**
+- For our special directives and notation within `.http` file, we will use comment starting with `##`
   - Therefore, making `.md` documentation in `.http` file is possible
 - Variables will be in cascade, these are the levels:
-    1. `Global Level` - global variables accessible from everywhere during whole run
-    2. `Environmental Level` - switchable variables accessible from everywhere during whole run
-    3. `Collection Level` - present only when running collection (not for single test-case runs)
-    4. `Scope Level` - level dedicated for user-defined variables
-    5. `Test-Case Level` - temporary variables which are existing only during single test-case execution (if re-trying, they are present whole time)
+  1. `Global Level` - global variables accessible from everywhere during whole run
+  2. `Environmental Level` - switchable variables accessible from everywhere during whole run
+  3. `Collection Level` - present only when running collection (not for single test-case runs)
+  4. `Scope Level` - level dedicated for user-defined variables
+  5. `Test-Case Level` - temporary variables which are existing only during single test-case execution (if re-trying, they are present whole time)
 - Usage of `.csx` files as scripts will be possible
   - Share of current context can be achieved by sending it to `Globals` for the script
   - Cross-scripts referencing is possible, but end-user has to specify the path, although we can provide **relative paths**
@@ -70,12 +66,12 @@ Is framework dedicated to ease work with API testing.
   - `test-name-init.csx`
   - `test-name-req.http`
   - `test-name-test.csx`
-- It is **impossible to comment the contents of request's body** in form of `.json` in request body, which make user unable to run single `.http` file, becasue of parsing problems. Although we can make it possible to run single Test Case which contains these types of variables
-- **Configuration** can be specified in `.json` file, programmatically in scripts and also in `.http` (by using directives). Configuration is merged in the same order as in the previous sentence, so configuration will be **over-written** if needed.
+- It is **impossible to comment the contents of request's body** in form of `.json` in request body, which make user unable to run single `.http` file, because of parsing problems. Although we can make it possible to run single Test Case which contains these types of variables
+- **Configuration** can be specified in `.json` file, programmatically in scripts and also in `.http` (by using directives). Configuration is merged in the same order as in the previous sentence, so configuration will be **over-written** if needed
 
-## Naming conventions
+## Naming Conventions
 
-**kebab-case** - file's name extensions, which specify the type/purpose of the file (-prereq, -req, -postres, -script...)
+- **kebab-case** - file's name extensions, which specify the type/purpose of the file (-prereq, -req, -postres, -script...)
 
 ## File Structure
 
@@ -83,21 +79,17 @@ Is framework dedicated to ease work with API testing.
 
 Each test can be in own folder, or it can be altogether with another tests.
 
-**Structure:**
+#### Test-Case Structure
 
-- `test-name-config.json [OPTIONAL]`
-
-- `test-name-doc.md [OPTIONAL]`
-
-- `test-name-init.csx [OPTIONAL]`
-
+- `test-name-config.json` [OPTIONAL]
+- `test-name-doc.md` [OPTIONAL]
+- `test-name-init.csx` [OPTIONAL]
 - `test-name-req.http`
+- `test-name-test.csx` [OPTIONAL]
 
-- `test-name-test.csx [OPTIONAL]`
+#### Test-Case Files Specification
 
-**Files specification:**
-
-`test-name-config.json [OPTIONAL]`
+##### `test-name-config.json` [OPTIONAL]
 
 - describes configuration of test (re-trying options, await)
 - overrides its collection's configuration
@@ -106,20 +98,20 @@ Each test can be in own folder, or it can be altogether with another tests.
 - overrides values of same-name variables (located on global, environment and collection levels)
 - template: [Test Configuration Template](#test-configuration-file)
 
-`test-name-doc.md [OPTIONAL]`
+##### `test-name-doc.md` [OPTIONAL]
 
 - optional human-readable description of the test
 
-`test-name-init.csx [OPTIONAL]`
+##### `test-name-init.csx` [OPTIONAL]
 
 - pre-request script that can alter behavior before sending a request
 
-`test-name-req.http`
+##### `test-name-req.http`
 
 - request definition in .http format
 - from the beginning, it will contain only one request, later multiple requests will be supported
 
-`test-name-test.csx [OPTIONAL]`
+##### `test-name-test.csx` [OPTIONAL]
 
 - script that defines post-response behavior, mainly define tests
 
@@ -127,52 +119,47 @@ Each test can be in own folder, or it can be altogether with another tests.
 
 Contains at least one test and can contain other collections
 
-**Structure:**
+#### Collection Structure
 
-- `Seed [OPTIONAL]`
-
+- `Seed` [OPTIONAL]
 - `Tests`
-
 - `collection-name-config.json`
+- `collection-name-doc.md` [OPTIONAL]
+- `collection-vars.json` [OPTIONAL]
+- `collection-name-init.csx` [OPTIONAL]
+- `collection-name-test.csx` [OPTIONAL]
 
-- `collection-name-doc.md [OPTIONAL]`
+#### Collection Files Specification
 
-- `collection-vars.json [OPTIONAL]`
-
-- `collection-name-init.csx [OPTIONAL]`
-
-- `collection-name-test.csx [OPTIONAL]`
-
-**Files specification:**
-`Seed [OPTIONAL]`
+##### `Seed` [OPTIONAL]
 
 - folder, that contains requests/tests for data initialization
 
-`Tests`
+##### `Tests`
 
 - folder, that contains tests, respectively other inner-collections
 
-`collection-name-config.json`
+##### `collection-name-config.json`
 
 - defines configuration of the collection – tests to ignore, their order (if different from alphabetical order), re-trying options, etc.
 - template: [Collection Configuration Template](#collection-configuration-file)
 
-`collection-vars.json [OPTIONAL]`
+##### `collection-vars.json` [OPTIONAL]
 
 - contains variables specific for the collection
 - adds new variables besides environment variables
 - overrides values of same-name variables (located on global and environment level)
 - template: [Collection Variables Template](#general-variables-file)
 
-`collection-doc.md [OPTIONAL]`
+##### `collection-doc.md` [OPTIONAL]
 
 - human-readable description of collection
 
-`collection-name-init.csx [OPTIONAL]`
+##### `collection-name-init.csx` [OPTIONAL]
 
 - pre-request script that can alter behavior before collection run
 
-`collection-name-test.csx [OPTIONAL]`
+##### `collection-name-test.csx` [OPTIONAL]
 
 - script which is called after finish of the collection
 
@@ -180,47 +167,46 @@ Contains at least one test and can contain other collections
 
 The highest level folder, which encapsulates all desired collections altogether with environment files, shared scripts and general configuration. Collections and tests are runnable without this folder. Basically it is only logical frame over a single super-collection.
 
-**Structure:**
+#### Structure
 
-- `Seed [OPTIONAL]`
+- `Seed` [OPTIONAL]
 - `Collections`
 - `Environments`
 - `Shared`
 - `global-variables.json`
 - `solution-configuration.json`
 
-**Files specification:**
-`Seed [OPTIONAL]`
+#### Files Specification
+
+##### Solution `Seed` [OPTIONAL]
 
 - folder, that contains tests for data initialization for all collections/tests
 
-`Collections`
+##### `Collections`
 
 - folder, that contains collections and tests
 
-`Environments`
+##### `Environments`
 
 - folder, that contains supported environments
 - template: [Environment Template](#environment-file)
 
-`Shared`
+##### `Shared`
 
 - folder, that contains functionality that can be re-used all over solution (scripts)
 
-`global-vars.json`
+##### `global-vars.json`
 
 - contains variables which will be available across all environments
 - template: [Global Variables Template](#general-variables-file)
 
-`solution-config.json`
+##### `solution-config.json`
 
 - defines configuration of the solution – collections/tests to ignore, their order (if different from alphabetical order), re-trying options, etc.
 
 ## Templates
 
 ### Test Configuration File
-
-[Go Back](#test-case)
 
 ```json
 {
@@ -237,15 +223,15 @@ The highest level folder, which encapsulates all desired collections altogether 
     "variables": [
         {
             "name": string,
-            "value": any,
+            "value": any
         },
         {
             "name": string,
-            "value": any,
+            "value": any
         },
         {
             "name": string,
-            "value": any,
+            "value": any
         }
     ]
 }
@@ -253,36 +239,28 @@ The highest level folder, which encapsulates all desired collections altogether 
 
 ### General Variables File
 
-[Go Back to Test](#test-case)
-
-[Go Back to Collection](#collection)
-
-[Go Back to Solution](#solution-optional)
-
 ```json
 [
     {
         "name": string,
-        "value": any,
+        "value": any
     },
     {
         "name": string,
-        "value": any,
+        "value": any
     },
     {
         "name": string,
-        "value": any,
+        "value": any
     },
     {
         "name": string,
-        "value": any,
+        "value": any
     }
 ]
 ```
 
 ### Collection Configuration File
-
-[Go Back](#collection)
 
 ```json
 {
@@ -291,7 +269,6 @@ The highest level folder, which encapsulates all desired collections altogether 
         "ignoreTests": [] // names of tests to ignore
     },
     "testsOrder": [], // names of tests and collections in desired order, if empty or not provided, alphabetical order is applied
-    {
     "retryPolicy": {
         "maxRertryAttempts": 3,
         "backoffType": "Exponential",
@@ -304,23 +281,21 @@ The highest level folder, which encapsulates all desired collections altogether 
     "variables": [
         {
             "name": string,
-            "value": any,
+            "value": any
         },
         {
             "name": string,
-            "value": any,
+            "value": any
         },
         {
             "name": string,
-            "value": any,
+            "value": any
         }
     ]
 }
 ```
 
 ### Environment File
-
-[Go Back](#solution-optional)
 
 ```json
 {

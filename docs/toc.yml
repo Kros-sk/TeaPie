@@ -4,3 +4,5 @@
   href: api/
 - name: Repository
   href: https://github.com/Kros-sk/TeaPie
+- name: VS Code Extension
+  href: extension.md

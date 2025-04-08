@@ -28,8 +28,8 @@ This command will attempt to find the root of your repository (by searching for 
 
 The `.teapie` folder typically contains the following subfolders:
 
-- `cache` – Caches necessary data from TeaPie, such as resolved scripts, variables, and more.
-- `reports` – Default location for storing summary reports of test results.
+- `cache` – Caches necessary data from TeaPie, such as resolved scripts, variables, NuGet packages and so on...
+- `reports` – Folder prepared for reports (users may not use it).
 - `runs` – *(Planned feature)* This will store detailed request and response artifacts during application runs, organized in a structured way to help users investigate failures more effectively.
 
 ## Usage

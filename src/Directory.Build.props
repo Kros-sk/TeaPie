@@ -11,11 +11,9 @@
     <PropertyGroup>
         <PackageProjectUrl>https://kros-sk.github.io/TeaPie/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Kros-sk/TeaPie</RepositoryUrl>
-        <PackageIcon>icon.png</PackageIcon>
         <PackageTags>api;testing;cli</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup>

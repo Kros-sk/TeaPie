@@ -43,7 +43,7 @@ var app = appBuilder
     .WithLogging(LogLevel.Information, "path/to/log-file.log", LogLevel.Debug)
     .WithEnvironment("testlab")
     .WithEnvironmentFile("path/to/my/environment-file.json")
-    .WithReportFile("path/to/output-file.xml")
+    .WithReportFile("path/to/report-file.xml")
     .WithInitializationScript("path/to/my/init-script.csx")
     .WithVariablesCaching(false)
     .WithDefaultPipeline(); // Default pipeline runs tests
