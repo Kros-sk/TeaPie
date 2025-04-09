@@ -14,6 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Fonts\small.flf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Spectre.Console.Cli" />
   </ItemGroup>
 
@@ -24,12 +28,6 @@
   <ItemGroup>
     <None Include="../../icon.png" Pack="true" PackagePath="" />
     <None Include="../../README.md" Pack="true" PackagePath="" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Assets\Fonts\small.flf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

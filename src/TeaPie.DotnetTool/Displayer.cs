@@ -5,13 +5,13 @@ namespace TeaPie.DotnetTool;
 
 internal static class Displayer
 {
-    private static readonly Color _teaColor = Color.Teal;
+    private static readonly Color _teaColor = new(10, 131, 174);
     private static readonly Color _pieColor = new(195, 124, 36);
     private static readonly Color _versionColor = Color.White;
 
-    private static readonly FigletFont _font = FigletFont.Load(FigletFontPath);
+    private static FigletFont _font = FigletFont.Default;
 
-    private const string FigletFontPath = "Assets/Fonts/small.flf";
+    private const string FigletFontResourcePath = "TeaPie.DotnetTool.Assets.Fonts.small.flf";
     private const int TeaFigletWidth = 21;
     private const int PieFigletWidth = 17;
 
@@ -20,8 +20,24 @@ internal static class Displayer
 
     public static void DisplayApplicationHeader()
     {
+        ResolveFont();
         var table = RenderTable();
         AnsiConsole.Write(table);
+    }
+
+    private static void ResolveFont()
+    {
+        try
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            using var stream = assembly.GetManifestResourceStream(FigletFontResourcePath);
+            _font = FigletFont.Load(stream!);
+        }
+        catch (Exception)
+        {
+            _font = FigletFont.Default;
+        }
     }
 
     public static Table RenderTable()

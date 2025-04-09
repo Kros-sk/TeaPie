@@ -1,6 +1,6 @@
 # TeaPie Extension for Visual Studio Code
 
-![TeaPie Extension Logo](images/teapie-extension-logo.png)
+![TeaPie Extension Logo](./images/teapie-extension-logo.png)
 
 For more convenient development with TeaPie tool in **Visual Studio Code**, respectively **Cursor AI**, there is **available experimental extension**.
 
