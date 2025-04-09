@@ -34,7 +34,7 @@ internal static class Displayer
             using var stream = assembly.GetManifestResourceStream(FigletFontResourcePath);
             _font = FigletFont.Load(stream!);
         }
-        catch (Exception)
+        catch
         {
             _font = FigletFont.Default;
         }
