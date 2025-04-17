@@ -27,6 +27,6 @@ internal class DirectivesLineParser : ILineParser
             }
         }
 
-        throw new InvalidOperationException("Unable to parse any of supported directive.");
+        throw new InvalidOperationException($"Unable to parse any of supported directive on line '{line}'.");
     }
 }

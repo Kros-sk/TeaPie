@@ -50,7 +50,7 @@ internal static partial class DefaultDirectivesProvider
 
         if (!statusCodes.Contains(response.StatusCode()))
         {
-            Fail($"Expected status should be one of these {statusCodesText.EscapeMarkup()} " +
+            Fail($"Status code should be one of expected {statusCodesText.EscapeMarkup()} " +
                 $"but received {response.StatusCode()} ({response.ReasonPhrase}).");
         }
 

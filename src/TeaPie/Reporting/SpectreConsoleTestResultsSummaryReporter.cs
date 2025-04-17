@@ -57,12 +57,12 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 
     private static string GetTestSkippedText(TestResult result)
         => $"[bold orange1]Test skipped: [/][bold yellow]\"{result.TestName.EscapeMarkup()}\"[/]" + Environment.NewLine +
-            $"[bold orange1]Test case: [/][italic aqua]{result.TestCasePath}[/]";
+            $"[bold orange1]Test case: [/][italic aqua]{result.TestCasePath.EscapeMarkup()}[/]";
 
     private static string GetTestFailedText(TestResult result)
         => $"[bold red]Test failed: [/][bold yellow]\"{result.TestName.EscapeMarkup()}\"[/]" + Environment.NewLine +
-            $"[bold red]Test case: [/][italic aqua]{result.TestCasePath}[/]" + Environment.NewLine +
-            $"[bold red]Reason: [/][white]{((TestResult.Failed)result).ErrorMessage}[/]";
+            $"[bold red]Test case: [/][italic aqua]{result.TestCasePath.EscapeMarkup()}[/]" + Environment.NewLine +
+            $"[bold red]Reason: [/][white]{((TestResult.Failed)result).ErrorMessage.EscapeMarkup()}[/]";
 
     private static void ReportTestsGroup(
         Table table,
@@ -107,7 +107,7 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
 
         var panel = new Panel(paddedMarkup)
             .Border(BoxBorder.Rounded)
-            .Header($"[bold aqua] {sectionName} [/]")
+            .Header($"[bold aqua] {sectionName.EscapeMarkup()} [/]")
             .Expand();
 
         table.AddRow(panel);
