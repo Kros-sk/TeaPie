@@ -22,7 +22,8 @@ internal class ScriptPreProcessor(IScriptLineResolversProvider resolversProvider
 
     private async Task<List<string>> ResolveLines(string scriptContent, ScriptPreProcessContext context)
     {
-        var lines = scriptContent.Split(Environment.NewLine, StringSplitOptions.None);
+        scriptContent = scriptContent.Replace(Constants.WindowsEndOfLine, Constants.UnixEndOfLine);
+        var lines = scriptContent.Split(Constants.UnixEndOfLine);
         List<string> resolvedLines = [];
 
         foreach (var line in lines)

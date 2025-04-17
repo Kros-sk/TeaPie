@@ -22,4 +22,7 @@ internal static class Constants
     public static readonly string SystemTemporaryFolderPath = Path.Combine(Path.GetTempPath(), TeaPieFolderName);
 
     public const string TeaPieFolderName = ".teapie";
+
+    public const string UnixEndOfLine = "\n";
+    public const string WindowsEndOfLine = "\r\n";
 }

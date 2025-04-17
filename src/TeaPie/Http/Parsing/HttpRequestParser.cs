@@ -49,7 +49,8 @@ internal class HttpRequestParser(
             throw new InvalidOperationException("Unable to parse file, which content is null.");
         }
 
-        foreach (var line in requestExecutionContext.RawContent.Split(Environment.NewLine))
+        var content = requestExecutionContext.RawContent.Replace(Constants.WindowsEndOfLine, Constants.UnixEndOfLine);
+        foreach (var line in content.Split(Constants.UnixEndOfLine))
         {
             var resolvedLine = _variablesResolver.ResolveVariablesInLine(line, requestExecutionContext);
             ParseLine(resolvedLine, parsingContext);
