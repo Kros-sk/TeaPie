@@ -5,6 +5,7 @@ using TeaPie.Http.Retrying;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
+using TeaPie.Scripts;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
@@ -19,6 +20,7 @@ public sealed class ApplicationBuilder
 
     private string? _path;
     private string? _tempPath;
+    private string? _scriptPath;
 
     private string? _environment;
     private string? _environmentFilePath;
@@ -76,6 +78,13 @@ public sealed class ApplicationBuilder
         return this;
     }
 
+    public ApplicationBuilder WithScriptCompilationPipeline(string scriptPath)
+    {
+        _scriptPath = scriptPath;
+        _pipelineBuildFunction = ApplicationStepsFactory.CreateScriptCompilationSteps;
+        return this;
+    }
+
     public ApplicationBuilder WithEnvironment(string environmentName)
     {
         _environment = environmentName;
@@ -115,7 +124,7 @@ public sealed class ApplicationBuilder
 
         CreateUserContext(provider, applicationContext);
 
-        var pipeline = BuildDefaultPipeline(provider);
+        var pipeline = BuildPipeline(provider);
 
         return new Application(pipeline, applicationContext);
     }
@@ -159,11 +168,27 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<IAuthProviderAccessor>(),
             provider.GetRequiredService<ITestFactory>());
 
-    private ApplicationPipeline BuildDefaultPipeline(IServiceProvider provider)
+    private ApplicationPipeline BuildPipeline(IServiceProvider provider)
+        => !string.IsNullOrEmpty(_scriptPath)
+            ? GetScriptCompilationPipeline(provider)
+            : GetPipeline(provider);
+
+    private ApplicationPipeline GetScriptCompilationPipeline(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var provider = scope.ServiceProvider;
+
+        var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
+        accessor.Context = new ScriptExecutionContext(
+            new StructureExploration.Script(new StructureExploration.File(_scriptPath!)));
+
+        return GetPipeline(provider);
+    }
+
+    private ApplicationPipeline GetPipeline(IServiceProvider provider)
     {
         var pipeline = provider.GetRequiredService<IPipeline>();
         pipeline.AddSteps(_pipelineBuildFunction.Invoke(provider));
-
         return (ApplicationPipeline)pipeline;
     }
 }

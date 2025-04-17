@@ -1,6 +1,7 @@
 ﻿using TeaPie.Environments;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
+using TeaPie.Scripts;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Variables;
@@ -24,4 +25,11 @@ internal static class ApplicationStepsFactory
         => [provider.GetStep<ResolvePathsStep>(),
             provider.GetStep<ExploreStructureStep>(),
             provider.GetStep<DisplayStructureStep>()];
+
+    public static IPipelineStep[] CreateScriptCompilationSteps(IServiceProvider provider)
+        => [provider.GetStep<ResolvePathsStep>(),
+            provider.GetStep<InitializeApplicationStep>(),
+            provider.GetStep<ReadScriptFileStep>(),
+            provider.GetStep<PreProcessScriptStep>(),
+            provider.GetStep<CompileScriptStep>()];
 }

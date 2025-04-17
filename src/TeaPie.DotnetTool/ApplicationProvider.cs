@@ -26,6 +26,7 @@ internal static class ApplicationProvider
         AddTestCommand(config);
         AddGenerateCommand(config);
         AddExploreCommand(config);
+        AddScriptCompilationCommand(config);
     }
 
     private static void AddExploreCommand(IConfigurator config)
@@ -61,6 +62,15 @@ internal static class ApplicationProvider
             .WithDescription("Initialize working environment for TeaPie.")
             .WithExample("init")
             .WithExample("init", "[pathForTeaPieFolder]");
+
+    private static void AddScriptCompilationCommand(IConfigurator config)
+        => config.AddCommand<CompileScriptCommand>("compile")
+            .WithAlias("comp")
+            .WithAlias("c")
+            .WithDescription("Attempts to compile script at specified path.")
+            .WithExample("compile", "<path>")
+            .WithExample("comp", "\"path\\to\\script\"")
+            .WithExample("c", "\"path\\to\\script\"");
 
     private static void ConfigureDebugIfNeeded(IConfigurator config)
     {

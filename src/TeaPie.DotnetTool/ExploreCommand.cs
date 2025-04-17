@@ -9,7 +9,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
     protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
-        var logLevel = ResolveLogLevel(settings);
+        var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, string.Empty);
 
         var appBuilder = ApplicationBuilder.Create(path.IsCollectionPath());
