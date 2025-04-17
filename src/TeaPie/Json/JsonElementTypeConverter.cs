@@ -46,7 +46,8 @@ internal class JsonElementTypeConverter : JsonConverter<Dictionary<string, objec
             JsonValueKind.True or JsonValueKind.False => element.GetBoolean(),
             JsonValueKind.Number => ResolveNumber(element),
             JsonValueKind.Array => ResolveArray(element),
-            _ => ResolveString(element),
+            JsonValueKind.Object => ResolveObject(element),
+            _ => element.GetString(),
         };
 
     private static object? ResolveString(JsonElement element)
@@ -67,5 +68,15 @@ internal class JsonElementTypeConverter : JsonConverter<Dictionary<string, objec
         }
 
         return list;
+    }
+
+    private static Dictionary<string, object?> ResolveObject(JsonElement element)
+    {
+        var dictionary = new Dictionary<string, object?>();
+        foreach (var property in element.EnumerateObject())
+        {
+            dictionary[property.Name] = Convert(property.Value);
+        }
+        return dictionary;
     }
 }
