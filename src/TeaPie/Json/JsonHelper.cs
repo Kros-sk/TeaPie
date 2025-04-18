@@ -135,8 +135,8 @@ internal static class JsonHelper
         if (elementA.ValueKind != elementB.ValueKind)
         {
             error = (
-                $"to have property '{propertyName}' of '{elementA.ValueKind}' type",
-                $"'{propertyName}' with '{elementB.ValueKind}' found");
+                $"to have property '{propertyName}' of '{elementB.ValueKind}' type",
+                $"'{propertyName}' with '{elementA.ValueKind}' found");
             return false;
         }
 

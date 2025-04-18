@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Spectre.Console;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 
 namespace TeaPie;
@@ -12,7 +13,9 @@ internal class ApplicationPipeline : IPipeline
     public async Task<int> Run(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         var enumerator = _pipelineSteps.GetEnumerator();
-        return await Run(context, enumerator, cancellationToken);
+        return await Logging.Timer.Execute(
+            async () => await Run(context, enumerator, cancellationToken),
+            elapsedTime => LogEndOfRun(context, elapsedTime));
     }
 
     private async Task<int> Run(
@@ -34,8 +37,6 @@ internal class ApplicationPipeline : IPipeline
             }
         }
 
-        LogEndOfRun(context);
-
         return GetExitCode(context);
     }
 
@@ -45,27 +46,35 @@ internal class ApplicationPipeline : IPipeline
     private static int GetExitCode(ApplicationContext context)
         => (context.PrematureTermination?.ExitCode) ?? 0;
 
-    private void LogEndOfRun(ApplicationContext context)
+    private void LogEndOfRun(ApplicationContext context, long elapsedTime)
     {
         if (context.PrematureTermination is not null)
         {
-            LogPrematureTermination(context);
+            LogPrematureTermination(context, elapsedTime);
         }
         else
         {
-            context.Logger.LogDebug("Application pipeline finished successfully. Number of executed steps: {Count}.",
-                _pipelineSteps.Count);
+            LogSuccessfulEnd(context, elapsedTime);
         }
     }
 
-    private static void LogPrematureTermination(ApplicationContext context)
+    private void LogSuccessfulEnd(ApplicationContext context, long elapsedTime)
+    {
+        context.Logger.LogInformation("Application pipeline finished successfully in {Time}.",
+            elapsedTime.ToHumanReadableTime());
+
+        context.Logger.LogDebug("Number of executed steps: {Count}.", _pipelineSteps.Count);
+    }
+
+    private static void LogPrematureTermination(ApplicationContext context, long elapsedTime)
     {
         var termination = context.PrematureTermination!;
         context.Logger.Log(
             termination.ExitCode == 0 ? LogLevel.Information : LogLevel.Error,
-            "'{Source}' caused premature termination of application run (exit code {ExitCode})." +
+            "'{Source}' caused premature termination of application run after {Time} (exit code {ExitCode})." +
             "{NewLine}Reason: {Reason}{NewLine}Details: {Details}",
             termination.Source,
+            elapsedTime.ToHumanReadableTime(),
             termination.ExitCode,
             Environment.NewLine,
             Enum.GetName(termination.Type)?.SplitPascalCase(),
