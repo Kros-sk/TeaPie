@@ -1,3 +1,4 @@
+- name: Basics
 - name: Introduction
   href: introduction.md
 - name: Getting Started
@@ -17,6 +18,7 @@
   href: how-to-write-tests.md
 - name: Running Tests
   href: running-tests.md
+- name: Features
 - name: .teapie Folder
   href: teapie-folder.md
 - name: Initialization Script
@@ -33,7 +35,13 @@
   href: reporting.md
 - name: Logging
   href: logging.md
+- name: JSON Handling
+  href: json.md
+- name: Debugging
+- name: Common Mistakes
+  href: common-mistakes.md
+- name: Appendix
+- name: Commands
+  href: commands.md
 - name: Directives
   href: directives.md
-- name: For Contributors
-  href: https://github.com/Kros-sk/TeaPie/blob/master/CONTRIBUTING.md

@@ -37,7 +37,7 @@ Not sure what a **collection** is? Read [about collections](collection.md).
 ### **3️⃣ Execute a Single Test Case**
 
 ```sh
-teapie test "./demo/Tests/2. Cars/EditCar-req.http"
+teapie test "./demo/Tests/002-Cars/002-Edit-Car-req.http"
 ```
 
 Whether you want to run single test case or collection, [read more](running-tests.md).

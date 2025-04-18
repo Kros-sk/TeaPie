@@ -5,12 +5,12 @@
 | **Definition**       | The first `.csx` script executed within a test case. |
 | **Naming Convention** | `<test-case-name>-init.csx` |
 | **Purpose**         | Initialization of data and variables before executing any HTTP request. |
-| **Example Usage**         | [Demo Pre-Request Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-init.csx) |
+| **Example Usage**         | [Demo Pre-Request Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-init.csx) |
 
 ## Features
 
 ### Variables
-  
+
 You can access the **test runner context** using the globally available `tp` identifier for various purposes. One of them is variables setting/getting:
 
 ```csharp
@@ -24,7 +24,7 @@ var time = tp.GetVariable("TimeOfExecution");
 #### Load Directive
 
 `#load` directive for **referencing another scripts**
-  
+
 You can provide either an *absolute* or a *relative path*.
 
 **IMPORTANT:** Referenced script is **automatically executed**. For this reason, rather encapsulate logic in methods, to prevent unwanted execution.
@@ -47,6 +47,6 @@ You can provide either an *absolute* or a *relative path*.
 
 ### Data Generation
 
-As you can see in the provided example [Demo Pre-Request Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-init.csx), there is method which generates the data - `GenerateCar()`, which is defined in script [GenerateNewCar.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/Definitions/GenerateNewCar.csx). The foundation of the data generation is in the class [CarFaker.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/Definitions/CarFaker.csx).
+As you can see in the provided example [Demo Pre-Request Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-init.csx), there is method which generates the data - `GenerateCar()`, which is defined in script [GenerateNewCar.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/Definitions/GenerateNewCar.csx). The foundation of the data generation is in the class [CarFaker.csx](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/Definitions/CarFaker.csx).
 
 The example for data generation uses NuGet packagte `AutoBogus`.

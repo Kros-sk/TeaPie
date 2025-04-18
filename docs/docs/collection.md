@@ -10,6 +10,8 @@
 
 Collection is represented by directory, which **contains at least one [test case](test-case/test-case.md)**
 
+We **strongly recommend** indexing test cases with a zero-padded number prefix (e.g., `001-Add-Car-req.http`). This approach ensures consistent ordering across environments, as some systems may incorrectly sort `10` before `2`.
+
 When running a collection, you can also reference optional files:
 
 - **[Environment File](environments.md#environment-file)** – Defines environmental variables.

@@ -29,6 +29,7 @@ tp.ConfigureOAuth2Provider(OAuth2OptionsBuilder.Create()
     .WithClientId("test-client")
     .WithClientSecret("test-secret")
     .AddParameter("custom_parameter", "true") // Add another/custom parameters.
+    .WithAccessTokenVariableName("AccessToken") // Name of the variable where the access token will be stored. This variable is not cached to the file.
     .Build()
 );
 

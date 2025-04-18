@@ -18,6 +18,7 @@ tp.ConfigureOAuth2Provider(OAuth2OptionsBuilder.Create()
     .WithClientId("test-client")
     .WithClientSecret("test-secret")
     .AddParameter("custom_parameter", "true") // Add custom parameters if needed.
+    .WithAccessTokenVariableName("MyAccessToken") // Access token will be stored to the variable with given name, so it will be accessible during application run. Such a variable is not cached since it is marked with 'secret' and 'no-cache' tags.
     .Build()
 );
 ```

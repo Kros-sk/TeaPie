@@ -9,7 +9,7 @@ To speed processes up, `TeaPie` comes with various directives. They can be used 
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `#load "<path-to-script>"` |
-| **Example Usage**         | `#load "./Definitions/GenerateNewCar.csx"` or [Pre-Request Script with Load Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-init.csx)  |
+| **Example Usage**         | `#load "./Definitions/GenerateNewCar.csx"` or [Pre-Request Script with Load Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-AddCar-init.csx)  |
 | **Purpose**         | Referencing another `.csx` script to use its functionality. |
 | **Parameters**         | `path-to-script` - *absolute* or *relative* path (relative to parent directory of the script) to another script |
 | **❗IMPORTANT❗**         | Referenced script is **automatically executed**. For this reason, rather encapsulate logic in methods, to prevent unwanted execution. |
@@ -19,7 +19,7 @@ To speed processes up, `TeaPie` comes with various directives. They can be used 
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `#nuget "<package-name>, <version>"` |
-| **Example Usage** | `#nuget "AutoBogus, 2.13.1"` or [Script with Nuget Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/Definitions/CarFaker.csx) |
+| **Example Usage** | `#nuget "AutoBogus, 2.13.1"` or [Script with Nuget Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/.teapie/Definitions/CarFaker.csx) |
 | **Purpose** | Installs a NuGet package to be used in the scripts. |
 | **Parameters** | `package-name` - The NuGet package ID. `version` – Version of NuGet package to be installed. |
 | **❗IMPORTANT❗** | Even though NuGet packages are installed globally across all scripts, you must use the `using` directive to access them in the code. |
@@ -39,7 +39,7 @@ Directives in `.http` files can be divided scope-wise as follows:
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## AUTH-PROVIDER: [provider-name]` |
-| **Example Usage** | `## AUTH-PROVIDER: MyAuth` or `## AUTH-PROVIDER: None` or [Request File with Authentication Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http) |
+| **Example Usage** | `## AUTH-PROVIDER: MyAuth` or `## AUTH-PROVIDER: None` or [Request File with Authentication Directive](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http) |
 | **Purpose** | Specifies the authentication provider to be used for a request. If no provider is explicitly set, requests default to `"None"` (no authentication). |
 | **Parameters** | `provider-name` – The name of the authentication provider to be used for the request. Use `"None"` to disable authentication for a specific request. `OAuth2` is supported natively, but requires prior configuration of its options. |
 
@@ -54,7 +54,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## RETRY-STRATEGY: <strategy-name>` |
-| **Example Usage** | `## RETRY-STRATEGY: Default retry` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http) |
+| **Example Usage** | `## RETRY-STRATEGY: Default retry` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-req.http) |
 | **Purpose** | Selects a predefined retry strategy by name and apply it to the request. |
 | **Parameters** | `strategy-name` – The name of a previously registered retry strategy. |
 
@@ -63,7 +63,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## RETRY-UNTIL-STATUS: <status-codes>` |
-| **Example Usage** | `## RETRY-UNTIL-STATUS: [200, 201]` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http) |
+| **Example Usage** | `## RETRY-UNTIL-STATUS: [200, 201]` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-req.http) |
 | **Purpose** | Retries the request until one of the specified HTTP status codes is received. |
 | **Parameters** | `status-codes` – A list of acceptable status codes that should stop the retry process. |
 
@@ -72,7 +72,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## RETRY-MAX-ATTEMPTS: <number>` |
-| **Example Usage** | `## RETRY-MAX-ATTEMPTS: 5` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http) |
+| **Example Usage** | `## RETRY-MAX-ATTEMPTS: 5` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-req.http) |
 | **Purpose** | Sets the maximum number of retry attempts for the request. |
 | **Parameters** | `number` – The maximum number of retries allowed. |
 
@@ -81,7 +81,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## RETRY-BACKOFF-TYPE: <type>` |
-| **Example Usage** | `## RETRY-BACKOFF-TYPE: Linear` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http) |
+| **Example Usage** | `## RETRY-BACKOFF-TYPE: Linear` or [Request File with Retrying Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-req.http) |
 | **Purpose** | Defines the backoff strategy applied between retries. |
 | **Parameters** | `type` – Can be `Constant`, `Linear`, `Exponential`, or another strategy supported by [DelayBackoffType](https://www.pollydocs.org/api/Polly.DelayBackoffType.html). |
 
@@ -101,7 +101,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## TEST-EXPECT-STATUS: [status-codes]` |
-| **Example Usage** | `## TEST-EXPECT-STATUS: [200, 201]` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http) |
+| **Example Usage** | `## TEST-EXPECT-STATUS: [200, 201]` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http) |
 | **Purpose** | Ensures the response status code matches any value in the provided array. |
 | **Parameters** | `status-codes` – A list of expected HTTP status codes (as integers). |
 
@@ -110,7 +110,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## TEST-HAS-BODY` or `## TEST-HAS-BODY: <should-have-body>` |
-| **Example Usage** | `## TEST-HAS-BODY` (Equivalent to `## TEST-HAS-BODY: True`) or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http) |
+| **Example Usage** | `## TEST-HAS-BODY` (Equivalent to `## TEST-HAS-BODY: True`) or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http) |
 | **Purpose** | Checks if the response contains a body. |
 | **Parameters** | `should-have-body` - optional parameter, which determines whether body should or shouldn't contain body. If not specified, `true` is default value. |
 
@@ -119,7 +119,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## TEST-HAS-HEADER: <header-name>` |
-| **Example Usage** | `## TEST-HAS-HEADER: Content-Type` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http) |
+| **Example Usage** | `## TEST-HAS-HEADER: Content-Type` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http) |
 | **Purpose** | Verifies that the specified header is present in the response. |
 | **Parameters** | `header-name` – The name of the HTTP header to check. |
 
@@ -128,7 +128,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |   |   |
 |----------------------|----------------|
 | **Syntax** | `## TEST-<directive-name>: [parameter1]; [parameter2]; ...` |
-| **Example Usage** | `## TEST-SUCCESSFUL-STATUS: True` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http) |
+| **Example Usage** | `## TEST-SUCCESSFUL-STATUS: True` or [Request File with Testing Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http) |
 | **Purpose** | Allows users to define **custom testing directives** with a unique name and an optional list of parameters of various types. |
 | **Parameters** | `directive-name` – The custom directive name, appended after the `TEST-` prefix. `parameter[index]` – Optional parameters, delimited by `;`, supporting multiple data types. A directive can have zero or multiple parameters and they can have custom names. |
 | **Registration** | Custom test directives must be registered in the script before first use. [Registration Example (CUSTOM TEST DIRECTIVE section)](https://github.com/Kros-sk/TeaPie/blob/master/demo/init.csx). |

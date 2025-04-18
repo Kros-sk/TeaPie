@@ -31,7 +31,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to the collection which will be tested. Defaults to the current directory.")]
+        [Description("Path to the collection or test case which will be tested. Defaults to the current directory.")]
         public string? Path { get; init; }
 
         [CommandOption("--temp-path")]
@@ -40,12 +40,13 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         public string? TemporaryPath { get; init; }
 
         [CommandOption("-e|--env|--environment")]
-        [Description("Name of the environment on which collection will be run.")]
+        [Description("Name of the environment on which application will be run.")]
         public string? Environment { get; init; }
 
         [CommandOption("--env-file|--environment-file")]
-        [Description("Path to file, which contains definitions of available environments. If this option is not used, " +
-            "first found file within collection with name '<collection-name>-env.json' is used.")]
+        [Description("Path to file, which contains definitions of available environments. If not provided, " +
+            "the tool will use the first matching 'env.json' file found in '.teapie' folder or the collection " +
+            "(respectively parent folder of test case).")]
         public string? EnvironmentFilePath { get; init; }
 
         [CommandOption("-r|--report-file")]
@@ -55,7 +56,8 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
 
         [CommandOption("-i|--init-script|--initialization-script")]
         [Description("Path to script, which will be used for initialization before the first test-case execution. " +
-            "If this option is not used, first found file within collection with name 'init.csx' is used.")]
+            "If not provided, the tool will use the first matching 'init.csx' file found in '.teapie' folder or the collection" +
+            " (respectively parent folder of test case).")]
         public string? InitializationScriptPath { get; init; }
 
         [CommandOption("--no-cache-vars|--no-cache-variables")]

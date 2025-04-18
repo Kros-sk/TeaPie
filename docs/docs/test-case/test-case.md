@@ -4,7 +4,7 @@
 |----------------------|----------------|
 | **Definition**       | The fundamental unit representing a single test scenario that can be executed independently. It consists of a `.http` file and optional supporting scripts that define setup, execution, and validation of API tests. Test cases can be grouped into a collection. |
 | **Purpose**         | Encapsulates a single test scenario (not only) for isolated execution. |
-| **Example Usage**   | [Request File of a Complete Test Case](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/1.%20Customers/AddCustomer-req.http) |
+| **Example Usage**   | [Request File of a Complete Test Case](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-req.http) |
 
 ## Structure
 
@@ -39,7 +39,7 @@ To try it out, you can run a test case from the `demo` collection.
 The following test case is a good example as it demonstrates multiple features:
 
 ```sh
-teapie "./Tests/2. Cars/EditCar-req.http"
+teapie "./Tests/002-Cars/002-Edit-Car-req.http"
 ```
 
 For advanced usage, here’s the full command specification:

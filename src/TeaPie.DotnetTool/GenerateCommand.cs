@@ -13,7 +13,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
 
         GenerateFiles(settings, path);
 
-        ReportSuccessfullCreation(settings);
+        ReportSuccessfullCreation(settings, path);
 
         return 0;
     }
@@ -74,11 +74,11 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     private static string GetPostResponseFileName(string name)
         => name + Constants.PostResponseSuffix + Constants.ScriptFileExtension;
 
-    private static void ReportSuccessfullCreation(Settings settings)
+    private static void ReportSuccessfullCreation(Settings settings, string path)
     {
         const string beginningOfSentence = "[green]Test case [/]";
         var testCaseName = $"[white]'{settings.Name.EscapeMarkup()}'[/]";
-        const string endOfSentence = "[green] was successfully created.[/]";
+        var endOfSentence = $"[green] was successfully created at path [/][white]'{path.EscapeMarkup()}'.[/]";
         var description = GetDescription(settings);
 
         AnsiConsole.Markup(beginningOfSentence + testCaseName + endOfSentence + description);
@@ -107,12 +107,12 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
         public string? Path { get; init; }
 
         [CommandOption("-i|--init|--pre-req")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [Description("Indicates whether to generate pre-request script (with '-init' suffix).")]
         public bool HasPreRequestScript { get; init; }
 
         [CommandOption("-t|--test|--post-res")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [Description("Indicates whether to generate post-response script (with '-test' suffix).")]
         public bool HasPostResponseScript { get; init; }
     }

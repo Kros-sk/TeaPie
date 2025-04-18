@@ -56,12 +56,12 @@ dotnet run test "../../demo/Tests"
 You can choose which test case should be run, but this one is quite representative, since it contains more features included:
 
 ```sh
-teapie "./Tests/2. Cars/EditCar-req.http"
+teapie "./Tests/002-Cars/002-Edit-Car-req.http"
 ```
 
 If you still don't have installed tool, use this alternative:
 
 ```sh
 cd ./src/TeaPie.DotnetTool
-dotnet run test "../../demo/Tests/2. Cars/EditCar-req.http"
+dotnet run test "../../demo/Tests/002-Cars/002-Edit-Car-req.http"
 ```

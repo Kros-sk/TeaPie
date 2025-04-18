@@ -79,6 +79,12 @@ tp.SetVariable("City", "Zilina", "production");
 tp.RemoveVariablesWithTag("test"); // Removes 'PersonalNumber' and 'Password', but keeps 'Country' and 'City'.
 ```
 
+### Built-in Tags
+
+If you want to **prevent a variable from being cached** to a plaintext file, you can tag the variable with at least one of the built-in tags: `secret` or `no-cache`.
+
+> When using an `OAuth2` provider, you can specify the variable that will store the access token during execution. This variable is automatically tagged with both `secret` and `no-cache`. [Example](https://github.com/Kros-sk/TeaPie/blob/master/demo/.teapie/init.csx)
+
 ## Request Variables
 
 Request variables **enable data sharing across multiple requests** within the **same `.http` file**.

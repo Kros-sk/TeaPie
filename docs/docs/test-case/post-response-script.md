@@ -5,7 +5,7 @@
 | **Definition**       | `.csx` script to be executed after all HTTP requests within test case. |
 | **Naming Convention** | `<test-case-name>-test.csx` |
 | **Purpose**         | Testing given response(s) and tear-down of data. |
-| **Example Usage**         | [Simple Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/1.%20Customers/AddCustomer-test.csx), [Manipulation with Body](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-test.csx), [Another Example](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-test.csx), [Advanced Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-test.csx) |
+| **Example Usage**         | [Simple Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/001-Customers/001-Add-Customer-test.csx), [Manipulation with Body](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-test.csx), [Another Example](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-test.csx), [Advanced Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-test.csx) |
 
 ## Features
 

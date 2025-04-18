@@ -5,7 +5,7 @@
 | **Definition**       | An `.http` file which contains definition of (multiple) HTTP request(s). |
 | **Naming Convention** | `<test-case-name>-req.http` |
 | **Purpose**         | Definition of HTTP requests which will be executed within test case. |
-| **Example Usage**         | [Single Request](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/1.%20Customers/AddCustomer-req.http), [Multiple (Named) Requests](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/AddCar-req.http), [Advanced Request File with Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/2.%20Cars/EditCar-req.http), [Request File with Retry Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/3.%20Car%20Rentals/RentCar-req.http)  |
+| **Example Usage**         | [Single Request](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/001-Customers/001-Add-Customer-req.http), [Multiple (Named) Requests](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-req.http), [Advanced Request File with Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-req.http), [Request File with Retry Directives](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-req.http)  |
 
 ## Features
 

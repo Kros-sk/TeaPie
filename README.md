@@ -64,7 +64,7 @@ teapie test demo
 Execute a single test case:
 
 ```sh
-teapie test ".\demo\Tests\2. Cars\EditCar-req.http" --env-file ".\demo\demo-env.json" i- ".\demo\init.csx"
+teapie test ".\demo\Tests\002-Cars\002-Edit-Car-req.http"
 ```
 
 For more usage details, visit the **[Wiki](https://kros-sk.github.io/TeaPie/docs/introduction.html)**.
