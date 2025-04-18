@@ -7,7 +7,7 @@ await tp.Test("Customer should be created successfully.", async () =>
 
     // For easier access to content body, there are few handy methods in sync and async form.
     // To use dynamic expando objects, explicitly declare them as 'dynamic' (not 'var').
-    var customer = await tp.Request.GetBodyAsExpandoAsync();
+    dynamic customer = await tp.Request.GetBodyAsExpandoAsync();
 
     // Access expando properties dynamically and case-insensitively.
     // When storing to variables, type has to be explicitly written.
