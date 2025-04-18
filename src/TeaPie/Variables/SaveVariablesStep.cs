@@ -65,7 +65,10 @@ internal class SaveVariablesStep(IVariables variables, IPathProvider pathProvide
         var scopeVariables = new Dictionary<string, object?>();
         foreach (var variable in variablesCollection)
         {
-            scopeVariables[variable.Name] = variable.Value;
+            if (!variable.HasTag(Constants.SecretVariableTag) && !variable.HasTag(Constants.NoCacheVariableTag))
+            {
+                scopeVariables[variable.Name] = variable.Value;
+            }
         }
 
         return scopeVariables;

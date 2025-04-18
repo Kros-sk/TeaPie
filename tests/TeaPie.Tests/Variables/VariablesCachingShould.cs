@@ -60,6 +60,35 @@ public class VariablesCachingShould
     }
 
     [Fact]
+    public async Task DoNotSaveVariablesWithSecretOrNoCacheTag()
+    {
+        const string json = "{\"GlobalVariables\":{\"BaseUrl\":\"https://my-website-url.com/\"},\"EnvironmentVariables\":{\"BaseUrl\":\"https://localhost:8080/\",\"IsTestlab\":true},\"CollectionVariables\":{\"UserId\":1,\"CarId\":\"5f794223-4f3f-4d81-a68f-12a65a633c60\"},\"TestCaseVariables\":{\"JsonBody\":\"{ \\u0022id\\u0022:\\u002212\\u0022, \\u0022brand\\u0022:\\u0022Toyota\\u0022 }\"}}";
+        var serviceProvider = GetServiceProvider();
+
+        var saveStep = serviceProvider.GetStep<SaveVariablesStep>();
+        var applicationContext = GetApplicationContext(serviceProvider);
+
+        var variables = serviceProvider.GetRequiredService<IVariables>();
+
+        AddVariables(variables);
+        variables.SetVariable("MySecret", "seefvbuaoafgawba--adaw", Constants.SecretVariableTag);
+        variables.SetVariable("AccessToken", "eyaabcvesfegseges...", Constants.NoCacheVariableTag);
+
+        await saveStep.Execute(applicationContext);
+
+        var content = await File.ReadAllTextAsync(_variablesFilePath);
+
+        try
+        {
+            Equal(json, content);
+        }
+        finally
+        {
+            File.Delete(_variablesFilePath);
+        }
+    }
+
+    [Fact]
     public async Task SaveAndThenLoadVariablesToFileCorrectly()
     {
         var serviceProvider = GetServiceProvider();

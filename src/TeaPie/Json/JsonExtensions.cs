@@ -53,7 +53,7 @@ public static class JsonExtensions
     /// <param name="otherJson">The JSON string containing properties to merge into <paramref name="baseJson"/>.</param>
     /// <returns>A new JSON string representing the merged result of <paramref name="baseJson"/> and
     /// <paramref name="otherJson"/>.</returns>
-    public static string CombineWith(this string baseJson, string otherJson)
+    public static string CombineWithJson(this string baseJson, string otherJson)
         => JsonHelper.Merge(baseJson, otherJson);
 
     /// <summary>

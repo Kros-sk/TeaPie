@@ -25,4 +25,7 @@ internal static class Constants
 
     public const string UnixEndOfLine = "\n";
     public const string WindowsEndOfLine = "\r\n";
+
+    public const string SecretVariableTag = "secret";
+    public const string NoCacheVariableTag = "no-cache";
 }

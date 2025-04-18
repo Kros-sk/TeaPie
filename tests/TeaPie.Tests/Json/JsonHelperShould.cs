@@ -359,7 +359,7 @@ public class JsonHelperShould
     [InlineData("nullProp")]
     public void AddNullPropertyValue(string propName)
     {
-        var result = JsonHelper.AddProperty<string>(EmptyJson, propName, null);
+        var result = JsonHelper.AddProperty<string>(EmptyJson, propName, null!);
 
         var resultObj = JsonNode.Parse(result)!.AsObject();
         Null(resultObj[propName]);

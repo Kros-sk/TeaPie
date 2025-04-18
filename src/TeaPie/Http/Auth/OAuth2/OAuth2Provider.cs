@@ -54,7 +54,8 @@ internal class OAuth2Provider(
     {
         if (_configuration.AccessTokenVariableName is not null)
         {
-            _variables.SetVariable(_configuration.AccessTokenVariableName, newToken);
+            _variables.SetVariable(
+                _configuration.AccessTokenVariableName, newToken, Constants.SecretVariableTag, Constants.NoCacheVariableTag);
         }
     }
 
