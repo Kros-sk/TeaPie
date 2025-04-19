@@ -10,7 +10,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
-        var path = PathResolver.Resolve(settings.Path, string.Empty);
+        var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
 
         var appBuilder = ApplicationBuilder.Create(path.IsCollectionPath());
 
