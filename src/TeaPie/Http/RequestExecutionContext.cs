@@ -7,7 +7,7 @@ using TeaPie.TestCases;
 namespace TeaPie.Http;
 
 [DebuggerDisplay("{RequestFile}")]
-internal class RequestExecutionContext(InternalFile requestFile, TestCaseExecutionContext? testCaseExecutionContext = null)
+internal class RequestExecutionContext(InternalFile requestFile, TestCaseExecutionContext? testCaseExecutionContext = null) : IDisposable
 {
     public TestCaseExecutionContext? TestCaseExecutionContext { get; set; } = testCaseExecutionContext;
     public InternalFile RequestFile { get; set; } = requestFile;
@@ -17,4 +17,9 @@ internal class RequestExecutionContext(InternalFile requestFile, TestCaseExecuti
     public HttpResponseMessage? Response { get; set; }
     public ResiliencePipeline<HttpResponseMessage>? ResiliencePipeline { get; set; }
     public IAuthProvider? AuthProvider { get; set; }
+
+    public void Dispose()
+    {
+        RawContent = null;
+    }
 }

@@ -32,12 +32,14 @@ internal static class ScriptStepsFactory
     private static IPipelineStep[] GetStepsForScriptPreProcess(IServiceProvider provider)
         => [provider.GetStep<ReadScriptFileStep>(),
             provider.GetStep<PreProcessScriptStep>(),
-            provider.GetStep<SaveTempScriptStep>()];
+            provider.GetStep<SaveTempScriptStep>(),
+            provider.GetStep<DisposeScriptStep>()];
 
     private static IPipelineStep[] GetStepsForScriptPreProcessAndExecution(IServiceProvider provider)
         => [provider.GetStep<ReadScriptFileStep>(),
             provider.GetStep<PreProcessScriptStep>(),
             provider.GetStep<SaveTempScriptStep>(),
             provider.GetStep<CompileScriptStep>(),
-            provider.GetStep<ExecuteScriptStep>()];
+            provider.GetStep<ExecuteScriptStep>(),
+            provider.GetStep<DisposeScriptStep>()];
 }

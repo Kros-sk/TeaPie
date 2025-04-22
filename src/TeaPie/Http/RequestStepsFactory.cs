@@ -20,5 +20,6 @@ internal static class RequestStepsFactory
 
     private static IPipelineStep[] CreateSteps(IServiceProvider provider)
         => [provider.GetStep<ParseHttpRequestStep>(),
-            provider.GetStep<ExecuteRequestStep>()];
+            provider.GetStep<ExecuteRequestStep>(),
+            provider.GetStep<DisposeRequestStep>()];
 }
