@@ -166,7 +166,8 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<IRetryStrategyRegistry>(),
             provider.GetRequiredService<IAuthProviderRegistry>(),
             provider.GetRequiredService<IAuthProviderAccessor>(),
-            provider.GetRequiredService<ITestFactory>());
+            provider.GetRequiredService<ITestFactory>(),
+            provider.GetRequiredService<IHttpClientFactory>());
 
     private ApplicationPipeline BuildPipeline(IServiceProvider provider)
         => !string.IsNullOrEmpty(_scriptPath)

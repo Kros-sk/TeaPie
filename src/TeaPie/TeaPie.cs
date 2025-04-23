@@ -24,7 +24,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
         IAuthProviderAccessor defaultAuthProviderAccessor,
-        ITestFactory predefinedTestFactory)
+        ITestFactory predefinedTestFactory,
+        IHttpClientFactory httpClientFactory)
     {
         Instance = new(
             applicationContext,
@@ -37,7 +38,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             retryStrategiesRegistry,
             authenticationProviderRegistry,
             defaultAuthProviderAccessor,
-            predefinedTestFactory);
+            predefinedTestFactory,
+            httpClientFactory);
 
         return Instance;
     }
@@ -53,7 +55,8 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         IRetryStrategyRegistry retryStrategiesRegistry,
         IAuthProviderRegistry authenticationProviderRegistry,
         IAuthProviderAccessor authProviderAccessor,
-        ITestFactory predefinedTestFactory)
+        ITestFactory predefinedTestFactory,
+        IHttpClientFactory httpClientFactory)
     {
         _applicationContext = applicationContext;
         _serviceProvider = serviceProvider;
@@ -67,6 +70,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _authenticationProviderRegistry = authenticationProviderRegistry;
         _authProviderAccessor = authProviderAccessor;
         _testFactory = predefinedTestFactory;
+        _httpClientFactory = httpClientFactory;
     }
 
     internal IServiceProvider _serviceProvider;
@@ -171,7 +175,17 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     internal readonly IAuthProviderAccessor _authProviderAccessor;
     #endregion
 
-    #region Exit
+    #region HTTP
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public HttpClient GetHttpClient(string? name = null)
+        => name is null
+            ? _httpClientFactory.CreateClient()
+            : _httpClientFactory.CreateClient(name);
+
+    #endregion
+
+    #region Premature Termination
     public void Exit(int exitCode = 0, string? reason = null)
         => _applicationContext.PrematureTermination =
             new("User", TerminationType.UserAction, reason ?? $"Terminated at: {DateTime.Now}", exitCode);
