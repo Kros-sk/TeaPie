@@ -6,7 +6,7 @@ namespace TeaPie.Reporting;
 
 internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsSummary>
 {
-    public void Report(TestResultsSummary report)
+    public async Task Report(TestResultsSummary report)
     {
         if (report.NumberOfTests > 0)
         {
@@ -16,6 +16,8 @@ internal class SpectreConsoleTestResultsSummaryReporter : IReporter<TestResultsS
         {
             ReportZeroTests();
         }
+
+        await Task.CompletedTask;
     }
 
     private static void ReportTestResultsSummary(TestResultsSummary summary)

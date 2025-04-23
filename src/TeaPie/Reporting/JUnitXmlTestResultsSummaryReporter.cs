@@ -7,7 +7,7 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
 {
     private readonly string _reportFilePath = reportFilePath;
 
-    public void Report(TestResultsSummary report)
+    public async Task Report(TestResultsSummary report)
     {
         using var writer = new JUnitXmlWriter(_reportFilePath);
 
@@ -15,6 +15,8 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
         {
             WriteCollectionReport(writer, collectionSummary);
         }
+
+        await Task.CompletedTask;
     }
 
     private static void WriteCollectionReport(

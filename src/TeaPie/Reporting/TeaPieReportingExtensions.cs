@@ -23,7 +23,7 @@ public static class TeaPieReportingExtensions
     /// </summary>
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="onReportAction">The action to be executed for test results summary report.</param>
-    public static void RegisterReporter(this TeaPie teaPie, Action<TestResultsSummary> onReportAction)
+    public static void RegisterReporter(this TeaPie teaPie, Func<TestResultsSummary, Task> onReportAction)
     {
         teaPie._reporter.RegisterReporter(new InlineTestResultsSummaryReporter(onReportAction));
         teaPie.Logger.LogInformation("Custom reporter was successfully registered.");

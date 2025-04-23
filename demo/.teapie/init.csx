@@ -71,7 +71,7 @@ tp.RegisterRetryStrategy("Custom retry", new() { MaxRetryAttempts = 2 });
 
 // At the end of the collection run, a test results report is generated.
 // Users can add a custom reporting method that will be triggered automatically.
-tp.RegisterReporter(summary =>
+tp.RegisterReporter(async summary =>
 {
     Console.Write("Custom reporter report: ");
 
@@ -88,6 +88,7 @@ tp.RegisterReporter(summary =>
     }
 
     Console.ResetColor();
+    await Task.CompletedTask;
 });
 
 // For more advanced and customized reporting, use:

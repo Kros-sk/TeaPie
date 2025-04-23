@@ -32,11 +32,11 @@ internal class TestResultsSummaryReporter(ITestResultsSummaryAccessor accessor) 
         }
     }
 
-    public void Report()
+    public async Task Report()
     {
         foreach (var reporter in _reporters)
         {
-            reporter.Report(_summary);
+            await reporter.Report(_summary);
         }
     }
 

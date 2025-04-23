@@ -2,9 +2,9 @@
 
 namespace TeaPie.Reporting;
 
-internal class InlineTestResultsSummaryReporter(Action<TestResultsSummary> reportAction) : IReporter<TestResultsSummary>
+internal class InlineTestResultsSummaryReporter(Func<TestResultsSummary, Task> reportAction) : IReporter<TestResultsSummary>
 {
-    private readonly Action<TestResultsSummary> _reportAction = reportAction;
+    private readonly Func<TestResultsSummary, Task> _reportAction = reportAction;
 
-    public void Report(TestResultsSummary report) => _reportAction(report);
+    public Task Report(TestResultsSummary report) => _reportAction(report);
 }

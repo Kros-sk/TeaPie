@@ -2,10 +2,10 @@
 
 public interface IReporter
 {
-    void Report();
+    Task Report();
 }
 
 public interface IReporter<TReportedObject>
 {
-    void Report(TReportedObject report);
+    Task Report(TReportedObject report);
 }

@@ -7,9 +7,7 @@ internal class ReportTestResultsSummaryStep : IPipelineStep
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         RegisterReporters(context.ReportFilePath, context.Reporter);
-        context.Reporter.Report();
-
-        await Task.CompletedTask;
+        await context.Reporter.Report();
     }
 
     public bool ShouldExecute(ApplicationContext context) => true;

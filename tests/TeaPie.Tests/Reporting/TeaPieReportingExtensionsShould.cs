@@ -8,7 +8,7 @@ namespace TeaPie.Tests.Reporting;
 public class TeaPieReportingExtensionsShould
 {
     [Fact]
-    public void RegisterReporterCorrectly()
+    public async Task RegisterReporterCorrectly()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
         var reporter = new TestResultsSummaryReporter(accessor);
@@ -17,22 +17,26 @@ public class TeaPieReportingExtensionsShould
 
         teaPie.RegisterReporter(dummyReporter);
 
-        reporter.Report();
+        await reporter.Report();
 
         True(dummyReporter.Reported);
     }
 
     [Fact]
-    public void RegisterInlineReporterCorrectly()
+    public async Task RegisterInlineReporterCorrectly()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
         var reporter = new TestResultsSummaryReporter(accessor);
         var teaPie = PrepareTeaPieInstance(reporter);
         var reported = false;
 
-        teaPie.RegisterReporter(_ => reported = true);
+        teaPie.RegisterReporter(async _ =>
+        {
+            reported = true;
+            await Task.CompletedTask;
+        });
 
-        reporter.Report();
+        await reporter.Report();
 
         True(reported);
     }
