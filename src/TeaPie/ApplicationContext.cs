@@ -53,5 +53,9 @@ internal class ApplicationContext(
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
 
+    public bool AllTestsPassed { get; set; }
+
     public PrematureTermination? PrematureTermination { get; set; }
+
+    public int ExitCode { get; set; }
 }

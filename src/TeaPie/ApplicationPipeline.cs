@@ -37,14 +37,15 @@ internal class ApplicationPipeline : IPipeline
             }
         }
 
-        return GetExitCode(context);
+        return ResolveExitCode(context);
     }
 
     private void LogStartOfRun(ApplicationContext context)
         => context.Logger.LogDebug("Application pipeline started. Number of planned steps: {Count}.", _pipelineSteps.Count);
 
-    private static int GetExitCode(ApplicationContext context)
-        => (context.PrematureTermination?.ExitCode) ?? 0;
+    private static int ResolveExitCode(ApplicationContext context)
+        => context.ExitCode = (context.PrematureTermination?.ExitCode)
+            ?? (int)(context.AllTestsPassed ? ExitCode.Success : ExitCode.TestsFailed);
 
     private void LogEndOfRun(ApplicationContext context, long elapsedTime)
     {
@@ -60,8 +61,10 @@ internal class ApplicationPipeline : IPipeline
 
     private void LogSuccessfulEnd(ApplicationContext context, long elapsedTime)
     {
-        context.Logger.LogInformation("Application pipeline finished successfully in {Time}.",
-            elapsedTime.ToHumanReadableTime());
+        context.Logger.LogInformation("Application pipeline finished successfully in {Time} with exit code {ExitCode}{Reason}.",
+            elapsedTime.ToHumanReadableTime(),
+            context.ExitCode,
+            context.ExitCode == (int)ExitCode.TestsFailed ? " (because tests failed)" : string.Empty);
 
         context.Logger.LogDebug("Number of executed steps: {Count}.", _pipelineSteps.Count);
     }

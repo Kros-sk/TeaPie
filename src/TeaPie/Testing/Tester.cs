@@ -128,7 +128,10 @@ internal partial class Tester(
         LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
         return test;
     }
+
     #endregion
+
+    #region Logging
 
     [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]
     partial void LogTestSkip(string Name, string Path);
@@ -144,4 +147,6 @@ internal partial class Tester(
 
     [LoggerMessage(Message = "Reason: {Reason}", Level = LogLevel.Error)]
     partial void LogTestFailureReason(string Reason);
+
+    #endregion
 }

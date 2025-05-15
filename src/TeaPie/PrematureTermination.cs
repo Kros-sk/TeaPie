@@ -1,6 +1,7 @@
 ﻿namespace TeaPie;
 
-internal record PrematureTermination(string Source, TerminationType Type, string Details = "", int ExitCode = 0);
+internal record PrematureTermination(
+    string Source, TerminationType Type, string Details = "", int ExitCode = (int)ExitCode.Success);
 
 internal enum TerminationType
 {
