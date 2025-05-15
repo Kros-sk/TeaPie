@@ -27,6 +27,7 @@ internal static class ApplicationProvider
         AddGenerateCommand(config);
         AddExploreCommand(config);
         AddScriptCompilationCommand(config);
+        AddClearCacheCommand(config);
     }
 
     private static void AddExploreCommand(IConfigurator config)
@@ -71,6 +72,9 @@ internal static class ApplicationProvider
             .WithExample("compile", "<path>")
             .WithExample("comp", "\"path\\to\\script\"")
             .WithExample("c", "\"path\\to\\script\"");
+
+    private static void AddClearCacheCommand(IConfigurator config)
+        => config.AddBranch<CacheSettings>("cache", cache => cache.AddCommand<ClearCacheCommand>("clear"));
 
     private static void ConfigureDebugIfNeeded(IConfigurator config)
     {

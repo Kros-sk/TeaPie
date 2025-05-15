@@ -53,7 +53,7 @@ internal class ApplicationContext(
 
     public ITestResultsSummaryReporter Reporter { get; } = reporter;
 
-    public bool AllTestsPassed { get; set; }
+    public bool AllTestsPassed { get; set; } = true;
 
     public PrematureTermination? PrematureTermination { get; set; }
 

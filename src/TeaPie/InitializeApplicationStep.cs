@@ -4,6 +4,7 @@ using TeaPie.Http.Auth.OAuth2;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.StructureExploration.Paths;
 using TeaPie.Testing;
 
 namespace TeaPie;
@@ -14,6 +15,7 @@ internal class InitializeApplicationStep(
     INuGetPackageHandler nuGetPackageHandler,
     IAuthProviderAccessor authProviderAccessor,
     IAuthProviderRegistry authProviderRegistry,
+    IPathProvider pathProvider,
     OAuth2Provider oAuth2Provider)
     : IPipelineStep
 {
@@ -23,9 +25,12 @@ internal class InitializeApplicationStep(
     private readonly IAuthProviderAccessor _authProviderAccessor = authProviderAccessor;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
     private readonly OAuth2Provider _oAuth2Provider = oAuth2Provider;
+    private readonly IPathProvider _pathProvider = pathProvider;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
+        DeleteOldTempFolderIfNeeded();
+
         await DownloadAndInstallGlobalNuGetPackages(context.Logger);
 
         ResolveAuthProviders(context.Logger);
@@ -33,6 +38,14 @@ internal class InitializeApplicationStep(
         SetTestResultsSummaryObject(context.StructureName);
 
         ResolveInitializationScript(context.CollectionStructure, context.ServiceProvider, context.Logger);
+    }
+
+    private void DeleteOldTempFolderIfNeeded()
+    {
+        if (Directory.Exists(_pathProvider.TempFolderPath))
+        {
+            Directory.Delete(_pathProvider.TempFolderPath, true);
+        }
     }
 
     private void ResolveAuthProviders(ILogger logger)

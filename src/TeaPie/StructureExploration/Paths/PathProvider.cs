@@ -1,4 +1,7 @@
-﻿namespace TeaPie.StructureExploration.Paths;
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace TeaPie.StructureExploration.Paths;
 
 internal class PathProvider : IPathProvider
 {
@@ -29,7 +32,7 @@ internal class PathProvider : IPathProvider
     public string VariablesFolderPath => Path.Combine(TeaPieFolderPath, CacheFolderName, VariablesFolderName);
     public string VariablesFilePath => Path.Combine(VariablesFolderPath, VariablesFileName);
 
-    private string GetStructurePathHash() => $"{StructureName}-{RootPath.GetHashCode()}";
+    private string GetStructurePathHash() => $"{StructureName}-{GetHash(RootPath)}";
 
     public void UpdatePaths(string rootPath, string tempRootPath, string teaPieFolderPath = "")
     {
@@ -38,5 +41,25 @@ internal class PathProvider : IPathProvider
         TeaPieFolderPath = string.IsNullOrEmpty(teaPieFolderPath)
             ? TempRootPath
             : teaPieFolderPath;
+    }
+
+    private static readonly Dictionary<string, string> _hashes = [];
+
+    private static string GetHash(string path)
+    {
+        if (!_hashes.TryGetValue(path, out var hash))
+        {
+            hash = GenerateHash(path);
+            _hashes.Add(path, hash);
+        }
+
+        return hash;
+    }
+
+    private static string GenerateHash(string path)
+    {
+        var inputBytes = Encoding.UTF8.GetBytes(Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar).ToLowerInvariant());
+        var hashBytes = MD5.HashData(inputBytes);
+        return Convert.ToHexString(hashBytes).ToLowerInvariant();
     }
 }
