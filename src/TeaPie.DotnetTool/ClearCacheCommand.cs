@@ -9,7 +9,7 @@ internal class CacheSettings : CommandSettings
 {
     [CommandOption("-g|--glob|--global")]
     [DefaultValue(false)]
-    [Description("Indicates whether to clear global cache (in system temporary folder)")]
+    [Description("Indicates whether to clear global cache (in system temporary folder).")]
     public bool Global { get; init; }
 }
 
@@ -24,19 +24,11 @@ internal class ClearCacheCommand : Command<CacheSettings>
         return 0;
     }
 
-    private static void DeleteGlobalCacheIfNeeded(bool shouldDelete)
-    {
-        if (shouldDelete)
-        {
-            DeleteIfExists(Constants.SystemTemporaryFolderPath, "global cache folder");
-        }
-    }
-
     private static void TryDeleteCacheInTeaPieFolder()
     {
         if (TryFindTeaPieFolder(Directory.GetCurrentDirectory(), out var teaPieFolderPath))
         {
-            DeleteIfExists(teaPieFolderPath, ".teapie folder");
+            DeleteCacheFolderIfExists(teaPieFolderPath, ".teapie folder");
         }
         else
         {
@@ -44,7 +36,15 @@ internal class ClearCacheCommand : Command<CacheSettings>
         }
     }
 
-    private static void DeleteIfExists(string rootFolderPath, string cacheLocation)
+    private static void DeleteGlobalCacheIfNeeded(bool shouldDelete)
+    {
+        if (shouldDelete)
+        {
+            DeleteCacheFolderIfExists(Constants.SystemTemporaryFolderPath, "global cache folder");
+        }
+    }
+
+    private static void DeleteCacheFolderIfExists(string rootFolderPath, string cacheLocation)
     {
         var cacheFolder = Path.Combine(rootFolderPath, CacheFolderName);
         if (Directory.Exists(cacheFolder))
