@@ -11,6 +11,13 @@ TeaPie supports two execution modes:
 - **Collection Run** - If a **directory path** is provided, tool runs all **test cases** found in the specified folder and its subfolders.
 - **Single Test-Case Run** - If a `.http` **file path** is provided, then tool executes **only that specific test case**.
 
+Both single test case and collection runs follow these two main steps:
+
+1. **Structure Exploration** – TeaPie scans the directory or test-case structure to identify all test cases and related files.
+2. **Test Execution** – Each detected test is executed based on the provided configuration.
+
+## Advanced Usage
+
 For more advanced usage, here’s the full command specification:
 
 ```sh
@@ -25,7 +32,14 @@ To view detailed information about each argument and option, run:
 teapie --help
 ```
 
-Both single test case and collection runs follow these two main steps:
+## Test Results
 
-1. **Structure Exploration** – TeaPie scans the directory or test-case structure to identify all test cases and related files.
-2. **Test Execution** – Each detected test is executed based on the provided configuration.
+**Test results** can be accessed in the following ways:
+
+- **Console output**: Displays a visually structured summary of test results in the end of application run.
+- **JUnit XML report**: Use the `-r` or `--report-file` option to generate a report compatible with CI tools.
+- **Exit codes**: Useful for scripting and automation:
+  - `0` – Successful execution; all tests passed (or no tests were found).
+  - `1` – An error occurred during application execution.
+  - `2` – Execution succeeded, but some tests failed (commonly treated as a failure in CI/CD).
+  - `130` – Premature termination via `Ctrl+C` (note: not fully supported yet).
