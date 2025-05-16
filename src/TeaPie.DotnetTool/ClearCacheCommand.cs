@@ -28,16 +28,7 @@ internal class ClearCacheCommand : Command<CacheSettings>
     {
         if (shouldDelete)
         {
-            var cacheFolder = Path.Combine(Constants.SystemTemporaryFolderPath, CacheFolderName);
-            if (Directory.Exists(cacheFolder))
-            {
-                Directory.Delete(cacheFolder, true);
-                AnsiConsole.MarkupLine("[green]Global cache was cleared.[/]");
-            }
-            else
-            {
-                AnsiConsole.MarkupLine("[green]Nothing to clear in global cache.[/]");
-            }
+            DeleteIfExists(Constants.SystemTemporaryFolderPath, "global cache folder");
         }
     }
 
@@ -45,20 +36,25 @@ internal class ClearCacheCommand : Command<CacheSettings>
     {
         if (TryFindTeaPieFolder(Directory.GetCurrentDirectory(), out var teaPieFolderPath))
         {
-            var cacheFolder = Path.Combine(teaPieFolderPath, CacheFolderName);
-            if (Directory.Exists(cacheFolder))
-            {
-                Directory.Delete(cacheFolder, true);
-                AnsiConsole.MarkupLine("[green]Cache file within .teapie folder was cleared.[/]");
-            }
-            else
-            {
-                AnsiConsole.MarkupLine("[green]Nothing to clear within .teapie folder.[/]");
-            }
+            DeleteIfExists(teaPieFolderPath, ".teapie folder");
         }
         else
         {
             AnsiConsole.MarkupLine("[orange1].teapie folder was not found.[/]");
+        }
+    }
+
+    private static void DeleteIfExists(string rootFolderPath, string cacheLocation)
+    {
+        var cacheFolder = Path.Combine(rootFolderPath, CacheFolderName);
+        if (Directory.Exists(cacheFolder))
+        {
+            Directory.Delete(cacheFolder, true);
+            AnsiConsole.MarkupLine($"[green]Cache within {cacheLocation} was cleared.[/]");
+        }
+        else
+        {
+            AnsiConsole.MarkupLine($"[green]Nothing to clear within {cacheLocation}.[/]");
         }
     }
 
@@ -82,14 +78,14 @@ internal class ClearCacheCommand : Command<CacheSettings>
     }
 
     private static bool TryFindInCurrent(DirectoryInfo directory, [NotNullWhen(true)] out string? teaPieFolder)
-    {
-        teaPieFolder = Path.Combine(directory.FullName, Constants.TeaPieFolderName);
-        return Directory.Exists(teaPieFolder);
-    }
+        => TryFindInCurrent(directory.FullName, out teaPieFolder);
 
     private static bool TryFindInSiblings(DirectoryInfo directory, [NotNullWhen(true)] out string? teaPieFolder)
+        => TryFindInCurrent(directory.Parent!.FullName, out teaPieFolder);
+
+    private static bool TryFindInCurrent(string basePath, [NotNullWhen(true)] out string? teaPieFolder)
     {
-        teaPieFolder = Path.Combine(directory.Parent!.FullName, Constants.TeaPieFolderName);
+        teaPieFolder = Path.Combine(basePath, Constants.TeaPieFolderName);
         return Directory.Exists(teaPieFolder);
     }
 }
