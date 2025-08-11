@@ -13,7 +13,7 @@ internal class LoggingSettings : CommandSettings
     [CommandOption("--log-file-log-level")]
     [Description("Log level for the log file (if the log file path is specified). " +
         "Supported levels: Trace, Debug, Information, Warning, Error, Critical, None.")]
-    public LogLevel LogFileLogLevel { get; init; } = LogLevel.Trace;
+    public LogLevel LogFileLogLevel { get; init; } = LogLevel.Information;
 
     [CommandOption("--request-response-log-file")]
     [Description("Path to the file where only request/response logs will be saved.")]

@@ -30,7 +30,7 @@ public sealed class ApplicationBuilder
     private LogLevel _minimumLogLevel = LogLevel.None;
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
-    private string _requestResponseLogFile = string.Empty; 
+    private string _requestResponseLogFile = string.Empty;
 
     private bool _variablesCaching = true;
 
