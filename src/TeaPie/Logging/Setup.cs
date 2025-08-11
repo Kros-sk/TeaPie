@@ -22,7 +22,8 @@ internal static class Setup
         this IServiceCollection services,
         LogLevel minimumLevel,
         string pathToLogFile = "",
-        LogLevel minimumLevelForLogFile = LogLevel.Debug)
+        LogLevel minimumLevelForLogFile = LogLevel.Debug,
+        string requestResponseLogFile = "")
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -39,6 +40,18 @@ internal static class Setup
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
+            }
+
+            if (!requestResponseLogFile.Equals(string.Empty))
+            {
+                config.WriteTo.Logger(lc => lc
+                    .Filter.ByIncludingOnly(evt =>
+                        evt.MessageTemplate.Text.Contains("[RequestResponse]") ||
+                        (evt.Properties.ContainsKey("SourceContext") &&
+                         evt.Properties["SourceContext"].ToString().Contains("LoggingInterceptorHandler")))
+                    .WriteTo.File(requestResponseLogFile,
+                                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel(),
+                                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"));
             }
 
             Log.Logger = config.CreateLogger();
