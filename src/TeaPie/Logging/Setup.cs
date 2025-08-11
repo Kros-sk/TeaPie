@@ -46,9 +46,7 @@ internal static class Setup
             {
                 config.WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(evt =>
-                        evt.MessageTemplate.Text.Contains("[RequestResponse]") ||
-                        (evt.Properties.ContainsKey("SourceContext") &&
-                         evt.Properties["SourceContext"].ToString().Contains("LoggingInterceptorHandler")))
+                        evt.MessageTemplate.Text.Contains($"[{LogCategory.RequestResponseInformation}]"))
                     .WriteTo.File(requestResponseLogFile,
                                  restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel(),
                                  outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"));
