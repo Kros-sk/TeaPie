@@ -32,6 +32,7 @@ internal static class Setup
         else
         {
             var config = new LoggerConfiguration()
+                .Enrich.FromLogContext()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
@@ -46,7 +47,8 @@ internal static class Setup
             {
                 config.WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(evt =>
-                        evt.MessageTemplate.Text.Contains($"[{LogCategory.RequestResponseInformation}]"))
+                        evt.Properties.TryGetValue("Category", out var categoryValue) &&
+                        categoryValue.ToString().Trim('"') == nameof(LogCategory.RequestResponseInformation))
                     .WriteTo.File(requestResponseLogFile,
                                  restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel(),
                                  outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"));

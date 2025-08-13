@@ -1,36 +1,23 @@
 ﻿using Microsoft.Extensions.Logging;
+using Serilog.Context;
 
 namespace TeaPie.Logging;
 
 internal static class CategorizedLoggingExtensions
 {
-    public static void LogWithCategory<T>(this ILogger<T> logger, LogLevel logLevel, LogCategory category, string? message, params object?[] args)
+    public static void LogTrace<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
     {
-        var categorizedMessage = $"[{category}] {message}";
-        logger.Log(logLevel, categorizedMessage, args);
+        using (LogContext.PushProperty("Category", category.ToString()))
+        {
+            logger.LogTrace(message, args);
+        }
     }
 
-    public static void LogTraceWithCategory<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
+    public static void Log<T>(this ILogger<T> logger, LogLevel logLevel, LogCategory category, string? message, params object?[] args)
     {
-        var categorizedMessage = $"[{category}] {message}";
-        logger.LogTrace(categorizedMessage, args);
-    }
-
-    public static void LogInformationWithCategory<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
-    {
-        var categorizedMessage = $"[{category}] {message}";
-        logger.LogInformation(categorizedMessage, args);
-    }
-
-    public static void LogWarningWithCategory<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
-    {
-        var categorizedMessage = $"[{category}] {message}";
-        logger.LogWarning(categorizedMessage, args);
-    }
-
-    public static void LogErrorWithCategory<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
-    {
-        var categorizedMessage = $"[{category}] {message}";
-        logger.LogError(categorizedMessage, args);
+        using (LogContext.PushProperty("Category", category.ToString()))
+        {
+            logger.Log(logLevel, message, args);
+        }
     }
 }

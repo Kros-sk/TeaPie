@@ -22,7 +22,7 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
         {
             var content = await request.Content.ReadAsStringAsync(cancellationToken);
 
-            _logger.LogTraceWithCategory(LogCategory.RequestResponseInformation,
+            _logger.LogTrace(LogCategory.RequestResponseInformation,
                 "Following HTTP request's body ({ContentType}):{NewLine}{Body}",
                 request.Content.Headers.ContentType?.MediaType,
                 Environment.NewLine,
@@ -30,14 +30,14 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
         }
         else
         {
-            _logger.LogTraceWithCategory(LogCategory.RequestResponseInformation,
+            _logger.LogTrace(LogCategory.RequestResponseInformation,
                 "Following HTTP request doesn't have any body.");
         }
     }
 
     private async Task LogResponse(HttpResponseMessage response, CancellationToken cancellationToken)
     {
-        _logger.LogTraceWithCategory(LogCategory.RequestResponseInformation,
+        _logger.LogTrace(LogCategory.RequestResponseInformation,
             "HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
 
@@ -45,7 +45,7 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
         {
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            _logger.LogTraceWithCategory(LogCategory.RequestResponseInformation,
+            _logger.LogTrace(LogCategory.RequestResponseInformation,
                 "Response's body ({ContentType}): {NewLine}{BodyContent}",
                 response.Content.Headers.ContentType?.MediaType ?? "text",
                 Environment.NewLine,
@@ -53,7 +53,7 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
         }
         else
         {
-            _logger.LogTraceWithCategory(LogCategory.RequestResponseInformation,
+            _logger.LogTrace(LogCategory.RequestResponseInformation,
                 "Response is without body.");
         }
     }
