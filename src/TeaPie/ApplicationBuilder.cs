@@ -30,7 +30,7 @@ public sealed class ApplicationBuilder
     private LogLevel _minimumLogLevel = LogLevel.None;
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
-    private string _requestResponseLogFile = string.Empty;
+    private string _categorizedJsonLogFile = string.Empty;
 
     private bool _variablesCaching = true;
 
@@ -60,12 +60,12 @@ public sealed class ApplicationBuilder
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.None,
-        string requestResponseLogFile = "")
+        string categorizedJsonLogFile = "")
     {
         _minimumLogLevel = minimumLevel;
         _pathToLogFile = pathToLogFile;
         _minimumLevelForLogFile = minimumLevelForLogFile;
-        _requestResponseLogFile = requestResponseLogFile;
+        _categorizedJsonLogFile = categorizedJsonLogFile;
         return this;
     }
 
@@ -155,7 +155,7 @@ public sealed class ApplicationBuilder
     private void ConfigureServices()
         => _services.AddTeaPie(
             _isCollectionRun,
-            () => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile, _requestResponseLogFile));
+            () => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile, _categorizedJsonLogFile));
 
     private static TeaPie CreateUserContext(IServiceProvider provider, ApplicationContext applicationContext)
         => TeaPie.Create(

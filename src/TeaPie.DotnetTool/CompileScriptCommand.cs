@@ -20,7 +20,11 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
             .WithPath(path)
             .WithTemporaryPath(string.Empty)
             .WithScriptCompilationPipeline(path)
-            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel);
+            .WithLogging(
+                logLevel,
+                pathToLogFile,
+                settings.LogFileLogLevel,
+                settings.CategorizedJsonLogFile ?? string.Empty);
 
         return appBuilder;
     }

@@ -9,7 +9,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
     protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
-        var requestResponseLogFile = settings.RequestResponseLogFile ?? string.Empty;
+        var categorizedJsonLogFile = settings.CategorizedJsonLogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
 
@@ -18,7 +18,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         appBuilder
             .WithPath(path)
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
-            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, requestResponseLogFile)
+            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, categorizedJsonLogFile)
             .WithEnvironment(settings.Environment ?? string.Empty)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFilePath, string.Empty))
             .WithReportFile(PathResolver.Resolve(settings.ReportFilePath, string.Empty))

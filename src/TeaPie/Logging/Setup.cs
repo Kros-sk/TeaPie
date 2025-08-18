@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Formatting.Compact;
 
 namespace TeaPie.Logging;
 
@@ -23,7 +24,7 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string requestResponseLogFile = "")
+        string categorizedJsonLogFile = "")
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -43,15 +44,15 @@ internal static class Setup
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
             }
 
-            if (!requestResponseLogFile.Equals(string.Empty))
+            if (!categorizedJsonLogFile.Equals(string.Empty))
             {
                 config.WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(evt =>
-                        evt.Properties.TryGetValue("Category", out var categoryValue) &&
-                        categoryValue.ToString().Trim('"') == nameof(LogCategory.RequestResponseInformation))
-                    .WriteTo.File(requestResponseLogFile,
-                                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel(),
-                                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"));
+                        evt.Properties.ContainsKey("Category") ||
+                        (evt.Properties.TryGetValue("SourceContext", out var sourceContext) &&
+                          sourceContext.ToString().Contains("System.Net.Http.HttpClient.ExecuteRequestStep")))
+                    .WriteTo.File(new CompactJsonFormatter(), categorizedJsonLogFile,
+                                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
             }
 
             Log.Logger = config.CreateLogger();

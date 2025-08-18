@@ -16,7 +16,11 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
 
         appBuilder
             .WithPath(path)
-            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel)
+            .WithLogging(
+                logLevel,
+                pathToLogFile,
+                settings.LogFileLogLevel,
+                settings.CategorizedJsonLogFile ?? string.Empty)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFile, string.Empty))
             .WithInitializationScript(PathResolver.Resolve(settings.InitializationScriptPath, string.Empty))
             .WithStructureExplorationPipeline();
