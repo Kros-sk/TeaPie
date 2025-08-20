@@ -11,7 +11,7 @@ internal static class HttpFileParserConstants
 
     private const string StructureFunctionNamePatternBase = "\\$[a-zA-Z0-9_.$-]*";
     public const string FunctionNamePattern = "^" + StructureFunctionNamePatternBase + "$";
-    public const string FunctionNotationPattern = "{{(\\$.*)}}";
+    public const string FunctionNotationPattern = "{{(\\$[a-zA-Z0-9_]+(?:\\s+[^}]*)?)}}";
 
     public const string HeaderNameBasePattern = "[A-Za-z0-9!#$%&'*+.^_`|~-]+";
     public const string HeaderNamePattern = "^" + HeaderNameBasePattern + "$";

@@ -4,7 +4,7 @@ internal interface IFunctions : IFunctionsOperations, IFunctionsExposer;
 
 internal class Functions : IFunctions
 {
-    public FunctionsCollection DefaultFunctions { get; } = [];
+    private FunctionsCollection DefaultFunctions { get; } = [];
     public FunctionsCollection CustomFunctions { get; } = [];
 
     public Functions()
@@ -15,33 +15,48 @@ internal class Functions : IFunctions
     private IEnumerable<FunctionsCollection> GetAllFunctions()
         => [DefaultFunctions, CustomFunctions];
 
-    public T? ExecFunction<T>(string name, params object[] args)
+    public T? Execute<T>(string name, params object[] args)
     {
         var collectionWithFunction = GetCollectionWithFunction(name);
-        return collectionWithFunction is not null ? collectionWithFunction.ExecFunction<T>(name, args) : default;
+        return collectionWithFunction is not null ? collectionWithFunction.Execute<T>(name, args) : default;
     }
 
-    public T? ExecFunction<T>(string name)
+    public T? Execute<T>(string name)
     {
         var collectionWithFunction = GetCollectionWithFunction(name);
-        return collectionWithFunction is not null ? collectionWithFunction.ExecFunction<T>(name) : default;
+        return collectionWithFunction is not null ? collectionWithFunction.Execute<T>(name) : default;
     }
 
     private FunctionsCollection? GetCollectionWithFunction(string name)
         => GetAllFunctions().FirstOrDefault(vc => vc.Contains(name));
 
-    public bool ContainsFunction(string name) => GetAllFunctions().Any(vc => vc.Contains(name));
+    public bool Contains(string name) => GetAllFunctions().Any(vc => vc.Contains(name));
 
-    public void RegisterFunction<T>(string name, Func<T> func)
-        => CustomFunctions.Set(name, func);
+    public void Register<T>(string name, Func<T> func)
+    {
+        if (!DefaultFunctions.Contains(name))
+        {
+            CustomFunctions.Register(name, func);
+        }
+    }
 
-    public void RegisterFunction<T1, T>(string name, Func<T1, T> func)
-        => CustomFunctions.Set(name, func);
+    public void Register<T1, T>(string name, Func<T1, T> func)
+    {
+        if (!DefaultFunctions.Contains(name))
+        {
+            CustomFunctions.Register(name, func);
+        }
+    }
 
-    public void RegisterFunction<T1, T2, T>(string name, Func<T1, T2, T> func)
-        => CustomFunctions.Set(name, func);
+    public void Register<T1, T2, T>(string name, Func<T1, T2, T> func)
+    {
+        if (!DefaultFunctions.Contains(name))
+        {
+            CustomFunctions.Register(name, func);
+        }
+    }
 
-    public bool RemoveFunction(string name)
+    public bool Remove(string name)
         => Remove(name, (coll, name) => coll.Contains(name), (coll, name) => coll.Remove(name));
 
     private bool Remove(
@@ -50,15 +65,13 @@ internal class Functions : IFunctions
         Func<FunctionsCollection, string, bool> removalFunction)
     {
         var found = false;
-        foreach (var fucntionCollection in GetAllFunctions())
+
+        if (containsFunction(CustomFunctions, key))
         {
-            if (containsFunction(fucntionCollection, key))
+            found = true;
+            if (!removalFunction(CustomFunctions, key))
             {
-                found = true;
-                if (!removalFunction(fucntionCollection, key))
-                {
-                    return false;
-                }
+                return false;
             }
         }
 

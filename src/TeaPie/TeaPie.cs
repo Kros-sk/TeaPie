@@ -95,7 +95,6 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
     public VariablesCollection TestCaseVariables => _variables.TestCaseVariables;
     public FunctionsCollection CustomFunctions => _functions.CustomFunctions;
-    public FunctionsCollection DefaultFunctions => _functions.DefaultFunctions;
 
     /// <summary>
     /// Attempts to retrieve the <b>first matching</b> variable with the specified <paramref name="name"/> of type
@@ -129,13 +128,13 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     /// <param name="name">The name under which the function will be stored.</param>
     /// <param name="func">Predicate of stored function.</param>
     public void RegisterFunction<T>(string name, Func<T> func)
-        => _functions.RegisterFunction(name, func);
+        => _functions.Register(name, func);
 
     public void RegisterFunction<T1, T>(string name, Func<T1, T> func)
-       => _functions.RegisterFunction(name, func);
+       => _functions.Register(name, func);
 
     public void RegisterFunction<T1, T2, T>(string name, Func<T1, T2, T> func)
-        => _functions.RegisterFunction(name, func);
+        => _functions.Register(name, func);
 
     /// <summary>
     /// Executes a function with the specified <paramref name="name"/> and returns its result.
@@ -144,7 +143,7 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     /// <param name="name">The name of the function to retrieve.</param>
     /// <param name="args">if no matching function is found.</param>
     public T? ExecFunction<T>(string name, params object[] args)
-        => _functions.ExecFunction<T>(name, args);
+        => _functions.Execute<T>(name, args);
 
     /// <summary>
     /// Executes a function with the specified <paramref name="name"/> and returns its result.
@@ -152,7 +151,7 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     /// <typeparam name="T">The type of the resutl of the function to retrieve.</typeparam>
     /// <param name="name">The name of the function to retrieve.</param>
     public T? ExecFunction<T>(string name)
-       => _functions.ExecFunction<T>(name);
+       => _functions.Execute<T>(name);
 
     #endregion
 
@@ -192,7 +191,7 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
 
     #region Environments
     /// <summary>
-    /// Set environment to one with given <paramref name="name"/>. Environment <b>must be defined in the environment file</b>.
+    /// Register environment to one with given <paramref name="name"/>. Environment <b>must be defined in the environment file</b>.
     /// </summary>
     /// <param name="name">Name of the environment to be set.</param>
     public void SetEnvironment(string name)

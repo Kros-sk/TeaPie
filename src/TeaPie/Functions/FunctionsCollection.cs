@@ -10,19 +10,19 @@ public class FunctionsCollection : IEnumerable<Function>
 
     public int Count => _functions.Count;
 
-    public void Set<T>(string functionName, Func<T> func)
+    public void Register<T>(string functionName, Func<T> func)
     {
         FunctionNameValidator.Resolve(functionName);
         _functions[functionName] = new Function<T>(functionName, func);
     }
 
-    public void Set<T, T1>(string functionName, Func<T, T1> func)
+    public void Register<T, T1>(string functionName, Func<T, T1> func)
     {
         FunctionNameValidator.Resolve(functionName);
         _functions[functionName] = new Function<T, T1>(functionName, func);
     }
 
-    public void Set<T, T1, T2>(string functionName, Func<T, T1, T2> func)
+    public void Register<T, T1, T2>(string functionName, Func<T, T1, T2> func)
     {
         FunctionNameValidator.Resolve(functionName);
         _functions[functionName] = new Function<T, T1, T2>(functionName, func);
@@ -36,13 +36,13 @@ public class FunctionsCollection : IEnumerable<Function>
     /// <param name="name">Name of the function.</param>
     /// <param name="args">Function argumetns</param>
     /// <returns>Function result or default if no function with given <paramref name="name"/> of type was found.</returns>
-    public T? ExecFunction<T>(string name, params object[] args)
+    public T? Execute<T>(string name, params object[] args)
     {
         var function = _functions[name];
         return (T?)function.InvokeFunction(args);
     }
 
-    public T? ExecFunction<T>(string name)
+    public T? Execute<T>(string name)
     {
         var function = _functions[name];
         return (T?)function.InvokeFunction(null);

@@ -23,17 +23,17 @@ internal partial class FunctionsResolver(IFunctions functions) : IFunctionsResol
             var functionName = tokens.First();
             string[] args = [.. tokens.Skip(1)];
 
-            if (_functions.ContainsFunction(functionName))
+            if (_functions.Contains(functionName))
             {
                 object? result;
 
                 if (!args.Any())
                 {
-                    result = _functions.ExecFunction<object>(functionName);
+                    result = _functions.Execute<object>(functionName);
                 }
                 else
                 {
-                    result = _functions.ExecFunction<object>(functionName, args);
+                    result = _functions.Execute<object>(functionName, args);
                 }
                 return result?.ToString() ?? "null";
             }
