@@ -1,33 +1,32 @@
 ﻿using System.CommandLine.Parsing;
 using System.Text.RegularExpressions;
-using TeaPie.Http;
 using TeaPie.Http.Parsing;
 
 namespace TeaPie.Functions;
 
 internal interface IFunctionsResolver
 {
-    string ResolveFunctionsInLine(string line, RequestExecutionContext requestExecutionContext);
+    string ResolveFunctionsInLine(string line);
 }
 
 internal partial class FunctionsResolver(IFunctions functions) : IFunctionsResolver
 {
     private readonly IFunctions _functions = functions;
 
-    public string ResolveFunctionsInLine(string line, RequestExecutionContext requestExecutionContext)
+    public string ResolveFunctionsInLine(string line)
         => FunctionNotationPatternRegex().Replace(line, match =>
         {
             string input = match.Groups[1].Value;
             IEnumerable<string> tokens = CommandLineParser.SplitCommandLine(input);
 
             var functionName = tokens.First();
-            string[] args = [.. tokens.Skip(1)];
 
             if (_functions.Contains(functionName))
             {
                 object? result;
+                string[] args = [.. tokens.Skip(1)];
 
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     result = _functions.Execute<object>(functionName);
                 }

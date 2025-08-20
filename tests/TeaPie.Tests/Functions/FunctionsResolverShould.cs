@@ -2,7 +2,7 @@
 using NSubstitute;
 using System.Text;
 using TeaPie.Functions;
-using TeaPie.Http;
+using TeaPie.Variables;
 
 namespace TeaPie.Tests.Functions;
 
@@ -15,9 +15,8 @@ public class FunctionsResolverShould
     {
         const string line = "Console.Writeline(\"Hello World!\");";
         var resolver = new FunctionsResolver(Substitute.For<IFunctions>());
-        var context = GetRequestExecutionContextMock();
 
-        resolver.ResolveFunctionsInLine(line, context).Should().BeEquivalentTo(line);
+        resolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(line);
     }
 
     [Fact]
@@ -25,22 +24,18 @@ public class FunctionsResolverShould
     {
         const string invalidFunctionName = "My<Function>";
         var line = "Console.Writeline(" + GetFunctionNotation(invalidFunctionName) + ");";
-        var context = GetRequestExecutionContextMock();
-
         var resolver = new FunctionsResolver(Substitute.For<IFunctions>());
 
-        resolver.ResolveFunctionsInLine(line, context).Should().BeEquivalentTo(line);
+        resolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(line);
     }
 
     [Fact]
     public void ThrowProperExceptionWhenAttemptingToResolveNonExistingFunction()
     {
         var line = "Console.Writeline(" + GetFunctionNotation(FunctionName) + ");";
-        var context = GetRequestExecutionContextMock();
-
         var resolver = new FunctionsResolver(Substitute.For<IFunctions>());
 
-        resolver.Invoking(r => r.ResolveFunctionsInLine(line, context)).Should().Throw<InvalidOperationException>();
+        resolver.Invoking(r => r.ResolveFunctionsInLine(line)).Should().Throw<InvalidOperationException>();
     }
 
     [Fact]
@@ -52,10 +47,9 @@ public class FunctionsResolverShould
 
         var functions = new global::TeaPie.Functions.Functions();
         var resolver = new FunctionsResolver(functions);
-        var context = GetRequestExecutionContextMock();
 
         functions.Register(FunctionName, () => value);
-        resolver.ResolveFunctionsInLine(line, context).Should().BeEquivalentTo(resolvedLine);
+        resolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(resolvedLine);
     }
 
     [Fact]
@@ -67,10 +61,9 @@ public class FunctionsResolverShould
 
         var functions = new global::TeaPie.Functions.Functions();
         var resolver = new FunctionsResolver(functions);
-        var context = GetRequestExecutionContextMock();
 
         functions.Register(FunctionName, () => value);
-        resolver.ResolveFunctionsInLine(line, context).Should().BeEquivalentTo(resolvedLine);
+        resolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(resolvedLine);
     }
 
     [Fact]
@@ -82,10 +75,9 @@ public class FunctionsResolverShould
 
         var functions = new global::TeaPie.Functions.Functions();
         var resolver = new FunctionsResolver(functions);
-        var context = GetRequestExecutionContextMock();
 
         functions.Register(FunctionName, () => value);
-        resolver.ResolveFunctionsInLine(line, context).Should().BeEquivalentTo(resolvedLine);
+        resolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(resolvedLine);
     }
 
     [Fact]
@@ -99,7 +91,6 @@ public class FunctionsResolverShould
 
         var functions = new global::TeaPie.Functions.Functions();
         var resolver = new FunctionsResolver(functions);
-        var context = GetRequestExecutionContextMock();
 
         for (var i = 0; i < count; i++)
         {
@@ -110,10 +101,28 @@ public class FunctionsResolverShould
             functions.Register(functionsNames[i], (int i) => $"Test{i}");
         }
 
-        resolver.ResolveFunctionsInLine(lineBuilder.ToString(), context).Should().BeEquivalentTo(resolvedLineBuilder.ToString());
+        resolver.ResolveFunctionsInLine(lineBuilder.ToString()).Should().BeEquivalentTo(resolvedLineBuilder.ToString());
     }
 
-    private static RequestExecutionContext GetRequestExecutionContextMock() => new(null!, null);
+    [Fact]
+    public void ResolveFunctionWithVariableAsParamterCorrectly()
+    {
+        string variableName = "MyVariable";
+        int value = 42;
+        string function = $"{{{{{FunctionName} {{{{{variableName}}}}}}}}}";
+        var line = "Console.Writeline(" + function + ");";
+        var resolvedLine = "Console.Writeline(" + value + ");";
+
+        var variables = new global::TeaPie.Variables.Variables();
+        var functions = new global::TeaPie.Functions.Functions();
+        var funResolver = new FunctionsResolver(functions);
+        var varResolver = new VariablesResolver(variables, Substitute.For<IServiceProvider>());
+
+        variables.SetVariable(variableName, value);
+        functions.Register(FunctionName, () => value);
+        line = varResolver.ResolveVariablesInLine(line, new(null!, null));
+        funResolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(resolvedLine);
+    }
 
     private static string GetFunctionNotation(string functionName) => "{{" + functionName + "}}";
 

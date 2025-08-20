@@ -56,7 +56,7 @@ internal class HttpRequestParser(
         foreach (var line in content.Split(Constants.UnixEndOfLine))
         {
             var resolvedLine = _variablesResolver.ResolveVariablesInLine(line, requestExecutionContext);
-            resolvedLine = _functionsResolver.ResolveFunctionsInLine(resolvedLine, requestExecutionContext);
+            resolvedLine = _functionsResolver.ResolveFunctionsInLine(resolvedLine);
 
             ParseLine(resolvedLine, parsingContext);
         }
