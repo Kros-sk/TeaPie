@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
+using TeaPie.Functions;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Reporting;
@@ -9,7 +10,7 @@ using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
+public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionContextExposer
 {
     public static TeaPie? Instance { get; private set; }
 
@@ -17,6 +18,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IServiceProvider serviceProvider,
         IVariables variables,
+        IFunctions functions,
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
@@ -31,6 +33,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             applicationContext,
             serviceProvider,
             variables,
+            functions,
             logger,
             tester,
             currentTestCaseExecutionContextAccessor,
@@ -48,6 +51,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IServiceProvider serviceProvider,
         IVariables variables,
+        IFunctions functions,
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
@@ -62,6 +66,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _serviceProvider = serviceProvider;
 
         _variables = variables;
+        _functions = functions;
         Logger = logger;
         _tester = tester;
         _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
@@ -84,10 +89,13 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Variables
     internal readonly IVariables _variables;
+    internal readonly IFunctions _functions;
     public VariablesCollection GlobalVariables => _variables.GlobalVariables;
     public VariablesCollection EnvironmentVariables => _variables.EnvironmentVariables;
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
     public VariablesCollection TestCaseVariables => _variables.TestCaseVariables;
+    public FunctionsCollection CustomFunctions => _functions.CustomFunctions;
+    public FunctionsCollection DefaultFunctions => _functions.DefaultFunctions;
 
     /// <summary>
     /// Attempts to retrieve the <b>first matching</b> variable with the specified <paramref name="name"/> of type
@@ -114,6 +122,38 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     /// <param name="tags">An optional list of tags associated with the variable.</param>
     public void SetVariable<T>(string name, T value, params string[] tags)
         => _variables.SetVariable(name, value, tags);
+
+    /// <summary>
+    /// Stores a function with the specified <paramref name="name"/>.
+    /// </summary>
+    /// <param name="name">The name under which the function will be stored.</param>
+    /// <param name="func">Predicate of stored function.</param>
+    public void RegisterFunction<T>(string name, Func<T> func)
+        => _functions.RegisterFunction(name, func);
+
+    public void RegisterFunction<T1, T>(string name, Func<T1, T> func)
+       => _functions.RegisterFunction(name, func);
+
+    public void RegisterFunction<T1, T2, T>(string name, Func<T1, T2, T> func)
+        => _functions.RegisterFunction(name, func);
+
+    /// <summary>
+    /// Executes a function with the specified <paramref name="name"/> and returns its result.
+    /// </summary>
+    /// <typeparam name="T">The type of the resutl of the function to retrieve.</typeparam>
+    /// <param name="name">The name of the function to retrieve.</param>
+    /// <param name="args">if no matching function is found.</param>
+    public T? ExecFunction<T>(string name, params object[] args)
+        => _functions.ExecFunction<T>(name, args);
+
+    /// <summary>
+    /// Executes a function with the specified <paramref name="name"/> and returns its result.
+    /// </summary>
+    /// <typeparam name="T">The type of the resutl of the function to retrieve.</typeparam>
+    /// <param name="name">The name of the function to retrieve.</param>
+    public T? ExecFunction<T>(string name)
+       => _functions.ExecFunction<T>(name);
+
     #endregion
 
     #region Execution Context

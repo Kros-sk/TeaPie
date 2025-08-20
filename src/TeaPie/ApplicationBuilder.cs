@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TeaPie.Functions;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Logging;
@@ -159,6 +160,7 @@ public sealed class ApplicationBuilder
             applicationContext,
             provider,
             provider.GetRequiredService<IVariables>(),
+            provider.GetRequiredService<IFunctions>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
             provider.GetRequiredService<ITester>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),

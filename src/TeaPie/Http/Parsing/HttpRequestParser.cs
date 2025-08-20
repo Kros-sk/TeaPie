@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TeaPie.Functions;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Http.Retrying;
@@ -15,6 +16,7 @@ internal interface IHttpRequestParser
 internal class HttpRequestParser(
     IHttpRequestHeadersProvider headersProvider,
     IVariablesResolver variablesResolver,
+    IFunctionsResolver functionsResolver,
     IHeadersHandler headersResolver,
     IResiliencePipelineProvider resiliencePipelineProvider,
     IAuthProviderRegistry authProviderRegistry,
@@ -24,6 +26,7 @@ internal class HttpRequestParser(
 {
     private readonly IHttpRequestHeadersProvider _headersProvider = headersProvider;
     private readonly IVariablesResolver _variablesResolver = variablesResolver;
+    private readonly IFunctionsResolver _functionsResolver = functionsResolver;
     private readonly IHeadersHandler _headersResolver = headersResolver;
     private readonly IResiliencePipelineProvider _resiliencePipelineProvider = resiliencePipelineProvider;
     private readonly IAuthProviderRegistry _authProviderRegistry = authProviderRegistry;
@@ -53,6 +56,8 @@ internal class HttpRequestParser(
         foreach (var line in content.Split(Constants.UnixEndOfLine))
         {
             var resolvedLine = _variablesResolver.ResolveVariablesInLine(line, requestExecutionContext);
+            resolvedLine = _functionsResolver.ResolveFunctionsInLine(resolvedLine, requestExecutionContext);
+
             ParseLine(resolvedLine, parsingContext);
         }
 

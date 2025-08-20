@@ -5,9 +5,13 @@ internal static class HttpFileParserConstants
     #region Naming Patterns
 
     private const string SimpleNamePattern = "[a-zA-Z0-9_-]+";
-    private const string StructureVariableNamePatternBase = "[a-zA-Z0-9_.$-]+";
+    private const string StructureVariableNamePatternBase = "(?!\\$)[a-zA-Z0-9_.-][a-zA-Z0-9_.$-]*";
     public const string VariableNamePattern = "^" + StructureVariableNamePatternBase + "$";
     public const string VariableNotationPattern = "{{(" + StructureVariableNamePatternBase + ")}}";
+
+    private const string StructureFunctionNamePatternBase = "\\$[a-zA-Z0-9_.$-]*";
+    public const string FunctionNamePattern = "^" + StructureFunctionNamePatternBase + "$";
+    public const string FunctionNotationPattern = "{{(\\$.*)}}";
 
     public const string HeaderNameBasePattern = "[A-Za-z0-9!#$%&'*+.^_`|~-]+";
     public const string HeaderNamePattern = "^" + HeaderNameBasePattern + "$";
