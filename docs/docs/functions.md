@@ -1,7 +1,14 @@
 # Functions
 
 TeaPie provides a lightweight function system for generating dynamic values in scripts and `.http` files.
-Function names must start with a `$` and can contain letters, digits, underscores (`_`), dollar signs (`$`), periods (`.`), and hyphens (`-`).
+
+## Function Naming Rules
+
+- Must start with `$`
+- Allowed characters: letters, digits, `_`, `.`, `$`, `-`
+- Pattern used by parser: `^\$[a-zA-Z0-9_.$-]*$`
+- Function names are case-sensitive.
+- Function notation in `.http` files follows: `{{(\$.*)}}`
 
 ## Function Levels
 
@@ -33,22 +40,18 @@ Notes:
 - Arguments are whitespace-separated tokens (maximum two per function).
 - Use quotes for values with spaces: `{{$now "yyyy-MM-dd HH:mm"}}`
 - Both single and double quotes are supported.
+- Function names are case-sensitive.
 - Internally, arguments are tokenized using a command-line parser and converted to the target parameter types.
 
-Example:
-
-```
-# Generate values with functions
-POST https://example.com/api/items
-Content-Type: application/json
-
-{
-  "id": "{{$guid}}",
-  "createdAt": "{{$now "yyyy-MM-dd'T'HH:mm:ss"}}",
-  "score": {{$randomInt 10 20}},
-  "ratio": {{$rand}}
-}
-```
+Using together with Variables:
+- You can pass Variables as function arguments by embedding variable notation inside the function call.
+- Variable notation must follow variable rules (name pattern, `{{variableName}}`).
+- Examples:
+  - `{{$add {{MyNumber}} 2}}`            // passes variable MyNumber as first argument
+  - `{{$upper "{{FullName}}"}}`        // if the variable value may contain spaces, wrap it in quotes
+- You can also mix standalone variables and functions in the same line, e.g.:
+  - `X-Trace-Id: {{RequestId}}-{{$guid}}`
+  - `X-Date: {{$now "yyyyMMdd"}}-{{EnvironmentName}}`
 
 If a function is not found, TeaPie throws an error during resolution.
 
@@ -66,9 +69,22 @@ The following functions are available by default:
 | `$randomInt` | `int $randomInt(int min, int max)` | Random integer in the range [min, max). | `{{$randomInt 1 100}}` |
 
 Notes:
-- `$guid` renders as a string when placed in an HTTP file.
 - `$now` uses `DateTime.Now` and the same formatting behavior as `DateTime.ToString(string?)`.
 
+Example:
+
+```
+# Generate values with functions
+POST https://example.com/api/items
+Content-Type: application/json
+
+{
+  "id": "{{$guid}}",
+  "createdAt": "{{$now "yyyy-MM-dd'T'HH:mm:ss"}}",
+  "score": {{$randomInt 10 20}},
+  "ratio": {{$rand}}
+}
+```
 ---
 
 ## Working with Functions in C#
@@ -105,36 +121,8 @@ var when = tp.ExecFunction<string>("$now", "yyyy-MM-dd");
 var sum = tp.ExecFunction<int>("$add", 2, 3);
 ```
 
-If a function is not found or execution fails, `ExecFunction<T>` returns `default`.
+If a function is not found or execution fails, TeaPie throws an error during resolution.
 
-### Working with collections directly
-
-You can also manage functions via exposed collections on `tp`:
-
-```
-// Access
-var defaults = tp.DefaultFunctions;
-var custom = tp.CustomFunctions;
-
-// Register directly into a collection
-custom.Register("$hello", () => "world");
-custom.Register("$repeat", (string s) => string.Concat(s, s));
-custom.Register("$between", (int a, int b) => Random.Shared.Next(a, b));
-
-// Execute directly from a collection
-var guid = defaults.Execute<Guid>("$guid");
-var today = defaults.Execute<string>("$now", "yyyy-MM-dd");
-var n = custom.Execute<int>("$between", 10, 20);
-```
-
----
-
-## Function Naming Rules
-
-- Must start with `$`
-- Allowed characters: letters, digits, `_`, `.`, `$`, `-`
-- Pattern used by parser: `^\$[a-zA-Z0-9_.$-]*$`
-- Function notation in `.http` files follows: `{{(\$.*)}}`
 
 ---
 
