@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace TeaPie.Functions;
+
 internal static class Setup
 {
     public static IServiceCollection AddFunctions(this IServiceCollection services)

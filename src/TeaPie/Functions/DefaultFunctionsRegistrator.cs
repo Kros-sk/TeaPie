@@ -1,4 +1,5 @@
 ﻿namespace TeaPie.Functions;
+
 internal static class DefaultFunctionsRegistrator
 {
     public static void Register(FunctionsCollection defaultFunctions)

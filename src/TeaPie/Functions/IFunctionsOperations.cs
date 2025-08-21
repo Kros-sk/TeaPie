@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Functions;
 
-public interface IFunctionsOperations
+internal interface IFunctionsOperations
 {
     T? Execute<T>(string name, params object[] args);
 
