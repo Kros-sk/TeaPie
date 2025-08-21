@@ -1,6 +1,6 @@
 ﻿namespace TeaPie.Functions;
 
-public abstract class Function(string name)
+internal abstract class Function(string name)
 {
     public string Name { get; set; } = name;
     public abstract object? InvokeFunction(params object[]? args);

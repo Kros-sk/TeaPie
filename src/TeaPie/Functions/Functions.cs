@@ -1,11 +1,11 @@
 ﻿namespace TeaPie.Functions;
 
-internal interface IFunctions : IFunctionsOperations, IFunctionsExposer;
+internal interface IFunctions : IFunctionsOperations;
 
 internal class Functions : IFunctions
 {
     private FunctionsCollection DefaultFunctions { get; } = [];
-    public FunctionsCollection CustomFunctions { get; } = [];
+    private FunctionsCollection CustomFunctions { get; } = [];
 
     public Functions()
     {

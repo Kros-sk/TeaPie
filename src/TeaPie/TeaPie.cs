@@ -10,7 +10,7 @@ using TeaPie.Variables;
 
 namespace TeaPie;
 
-public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionContextExposer
+public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 {
     public static TeaPie? Instance { get; private set; }
 
@@ -89,7 +89,7 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
 
     #region Variables
     internal readonly IVariables _variables;
-    internal readonly IFunctions _functions;
+
     public VariablesCollection GlobalVariables => _variables.GlobalVariables;
     public VariablesCollection EnvironmentVariables => _variables.EnvironmentVariables;
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
@@ -123,48 +123,8 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     #endregion
 
     #region Functions
-    public FunctionsCollection CustomFunctions => _functions.CustomFunctions;
 
-    /// <summary>
-    /// Register a function with the specified <paramref name="name"/>.
-    /// </summary>
-    /// <param name="name">The name under which the function will be registered.</param>
-    /// <param name="func">Predicate of registered function.</param>
-    public void RegisterFunction<T>(string name, Func<T> func)
-        => _functions.Register(name, func);
-
-    /// <summary>
-    /// Register a function with the specified <paramref name="name"/>.
-    /// </summary>
-    /// <param name="name">The name under which the function will be registered.</param>
-    /// <param name="func">Predicate of registered function.</param>
-    public void RegisterFunction<T1, T>(string name, Func<T1, T> func)
-       => _functions.Register(name, func);
-
-    /// <summary>
-    /// Register a function with the specified <paramref name="name"/>.
-    /// </summary>
-    /// <param name="name">The name under which the function will be registered.</param>
-    /// <param name="func">Predicate of registered function.</param>
-    public void RegisterFunction<T1, T2, T>(string name, Func<T1, T2, T> func)
-        => _functions.Register(name, func);
-
-    /// <summary>
-    /// Executes a function with the specified <paramref name="name"/> and returns its result.
-    /// </summary>
-    /// <typeparam name="T">The type of the result of the function to retrieve.</typeparam>
-    /// <param name="name">The name of the function to retrieve.</param>
-    /// <param name="args">Function's arguments.</param>
-    public T? ExecFunction<T>(string name, params object[] args)
-        => _functions.Execute<T>(name, args);
-
-    /// <summary>
-    /// Executes a function with the specified <paramref name="name"/> and returns its result.
-    /// </summary>
-    /// <typeparam name="T">The type of the result of the function to retrieve.</typeparam>
-    /// <param name="name">The name of the function to retrieve.</param>
-    public T? ExecFunction<T>(string name)
-       => _functions.Execute<T>(name);
+    internal readonly IFunctions _functions;
 
     #endregion
 

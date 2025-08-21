@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace TeaPie.Functions;
 
 [DebuggerDisplay("{_functions}")]
-public class FunctionsCollection : IEnumerable<Function>
+internal class FunctionsCollection : IEnumerable<Function>
 {
     private readonly Dictionary<string, Function> _functions = [];
 
