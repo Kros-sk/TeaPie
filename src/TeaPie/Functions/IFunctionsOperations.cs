@@ -5,7 +5,7 @@ public interface IFunctionsOperations
     T? Execute<T>(string name, params object[] args);
     T? Execute<T>(string name);
 
-    bool Contains(string name);
+    bool Contains(string name, int argsCount);
 
     void Register<T>(string name, Func<T> func);
 

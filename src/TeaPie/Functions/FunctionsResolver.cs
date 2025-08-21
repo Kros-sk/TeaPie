@@ -20,12 +20,11 @@ internal partial class FunctionsResolver(IFunctions functions) : IFunctionsResol
             IEnumerable<string> tokens = CommandLineParser.SplitCommandLine(input);
 
             var functionName = tokens.First();
+            string[] args = [.. tokens.Skip(1)];
 
-            if (_functions.Contains(functionName))
+            if (_functions.Contains(functionName, args.Length))
             {
                 object? result;
-                string[] args = [.. tokens.Skip(1)];
-
                 if (args.Length == 0)
                 {
                     result = _functions.Execute<object>(functionName);

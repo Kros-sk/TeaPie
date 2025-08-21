@@ -11,7 +11,7 @@ public class FunctionsCollectionShould
     [InlineData("<", "name with forbidden character '<'")]
     [InlineData(">", "name with forbidden character '>'")]
     [InlineData("<script>", "name with forbidden characters")]
-    public void ThrowProperExceptionWhenSettingFunctionWithInvalidName(string? name, string reason)
+    public void ThrowProperExceptionWhenRegisterFunctionWithInvalidName(string? name, string reason)
     {
         FunctionsCollection collection = [];
 
@@ -21,7 +21,7 @@ public class FunctionsCollectionShould
     }
 
     [Fact]
-    public void SetSingleFucntionWithoutAnyProblem()
+    public void RegisterSingleFucntionWithoutAnyProblem()
     {
         FunctionsCollection collection = [];
         const string name = "$MyAge";
@@ -31,11 +31,11 @@ public class FunctionsCollectionShould
         var result = collection.Execute<int>(name);
 
         result.Should().Be(value);
-        collection.Contains(name).Should().BeTrue();
+        collection.Contains(name, 0).Should().BeTrue();
     }
 
     [Fact]
-    public void SetAndThenExecuteTheSameFunction()
+    public void RegisterAndThenExecuteTheSameFunction()
     {
         FunctionsCollection collection = [];
         const string name = "$MyAge";
@@ -64,7 +64,27 @@ public class FunctionsCollectionShould
     }
 
     [Fact]
-    public void SetMultipleFunctionsWithoutAnyProblem()
+    public void RegisterSameFunctionWithDifferentArgumentCount()
+    {
+        FunctionsCollection collection = [];
+        const string name = "$MyAge";
+        const int value1 = 24;
+        const int value2 = 42;
+        const int value3 = 66;
+
+        collection.Register(name, () => value1);
+        collection.Register(name, (int val) => val);
+        collection.Register(name, (int val, int val2) => val + val2);
+
+        var result = collection.Execute<int>(name);
+
+        collection.Execute<int>(name).Should().Be(value1);
+        collection.Execute<int>(name, value2).Should().Be(value2);
+        collection.Execute<int>(name, value1, value2).Should().Be(value3);
+    }
+
+    [Fact]
+    public void RegisterMultipleFunctionsWithoutAnyProblem()
     {
         FunctionsCollection collection = [];
         const int numberOfFunctions = 10;
@@ -86,7 +106,7 @@ public class FunctionsCollectionShould
         {
             var result = collection.Execute<decimal>(names[i], i);
             result.Should().Be(values[i]);
-            collection.Contains(names[i]).Should().BeTrue();
+            collection.Contains(names[i], 1).Should().BeTrue();
         }
     }
 }

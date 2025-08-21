@@ -119,7 +119,7 @@ public class FunctionsResolverShould
         var varResolver = new VariablesResolver(variables, Substitute.For<IServiceProvider>());
 
         variables.SetVariable(variableName, value);
-        functions.Register(FunctionName, () => value);
+        functions.Register(FunctionName, (int val) => val);
         line = varResolver.ResolveVariablesInLine(line, new(null!, null));
         funResolver.ResolveFunctionsInLine(line).Should().BeEquivalentTo(resolvedLine);
     }
