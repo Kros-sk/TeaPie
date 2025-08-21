@@ -50,10 +50,6 @@ public class FunctionsCollection : IEnumerable<Function>
 
     public bool Contains(string functionName) => _functions.ContainsKey(functionName);
 
-    public bool Remove(string functionName) => _functions.Remove(functionName);
-
-    public void Clear() => _functions.Clear();
-
     public IEnumerator<Function> GetEnumerator() => _functions.Values.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

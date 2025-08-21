@@ -12,6 +12,4 @@ public interface IFunctionsOperations
     void Register<T1, T>(string name, Func<T1, T> func);
 
     void Register<T1, T2, T>(string name, Func<T1, T2, T> func);
-
-    bool Remove(string name);
 }

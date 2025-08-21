@@ -89,31 +89,4 @@ public class FunctionsCollectionShould
             collection.Contains(names[i]).Should().BeTrue();
         }
     }
-
-    [Fact]
-    public void IndicateRemovalOfNonExistingByReturningFalse()
-    {
-        FunctionsCollection collection = [];
-        const string name = "$MyFunction";
-        const string nonExistingFunctionName = "$NonExisting";
-
-        collection.Register(name, () => "");
-        var resultOfRemoval = collection.Remove(nonExistingFunctionName);
-
-        resultOfRemoval.Should().BeFalse();
-    }
-
-    [Fact]
-    public void RemoveFunctionWithoutAnyProblem()
-    {
-        FunctionsCollection collection = [];
-        const string name = "$MyFunction";
-
-        collection.Register(name, () => "");
-        var resultOfRemoval = collection.Remove(name);
-
-        resultOfRemoval.Should().BeTrue();
-    }
-
-    private class Dummy() { }
 }

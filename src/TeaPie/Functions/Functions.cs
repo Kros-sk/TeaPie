@@ -55,26 +55,4 @@ internal class Functions : IFunctions
             CustomFunctions.Register(name, func);
         }
     }
-
-    public bool Remove(string name)
-        => Remove(name, (coll, name) => coll.Contains(name), (coll, name) => coll.Remove(name));
-
-    private bool Remove(
-        string key,
-        Func<FunctionsCollection, string, bool> containsFunction,
-        Func<FunctionsCollection, string, bool> removalFunction)
-    {
-        var found = false;
-
-        if (containsFunction(CustomFunctions, key))
-        {
-            found = true;
-            if (!removalFunction(CustomFunctions, key))
-            {
-                return false;
-            }
-        }
-
-        return found;
-    }
 }

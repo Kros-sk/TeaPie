@@ -44,7 +44,9 @@ Content-Type: application/json
 
 {
   "id": "{{$guid}}",
-  "createdAt": "{{$now "yyyy-MM-dd'T'HH:mm:ss"}}"
+  "createdAt": "{{$now "yyyy-MM-dd'T'HH:mm:ss"}}",
+  "score": {{$randomInt 10 20}},
+  "ratio": {{$rand}}
 }
 ```
 
@@ -60,6 +62,8 @@ The following functions are available by default:
 |------|-----------|-------------|---------|
 | `$guid` | `Guid $guid()` | Generates a new GUID. | `{{$guid}}` |
 | `$now` | `string $now(string? format)` | Current local time formatted via `DateTime.ToString(format)`. If `format` is omitted, default formatting is used. | `{{$now "yyyy-MM-dd"}}` |
+| `$rand` | `double $rand()` | Random double in the range [0, 1). | `{{$rand}}` |
+| `$randomInt` | `int $randomInt(int min, int max)` | Random integer in the range [min, max). | `{{$randomInt 1 100}}` |
 
 Notes:
 - `$guid` renders as a string when placed in an HTTP file.
@@ -71,7 +75,7 @@ Notes:
 
 Access functions through the `TeaPie` instance (`tp`).
 
-### Registering
+### Registering via TeaPie
 
 TeaPie supports registering functions with 0–2 parameters (maximum two arguments).
 
@@ -93,7 +97,7 @@ Use them in `.http` files:
 {{$add 40 2}}
 ```
 
-### Executing in Code
+### Executing via TeaPie
 
 ```
 var id = tp.ExecFunction<Guid>("$guid");
@@ -102,6 +106,26 @@ var sum = tp.ExecFunction<int>("$add", 2, 3);
 ```
 
 If a function is not found or execution fails, `ExecFunction<T>` returns `default`.
+
+### Working with collections directly
+
+You can also manage functions via exposed collections on `tp`:
+
+```
+// Access
+var defaults = tp.DefaultFunctions;
+var custom = tp.CustomFunctions;
+
+// Register directly into a collection
+custom.Register("$hello", () => "world");
+custom.Register("$repeat", (string s) => string.Concat(s, s));
+custom.Register("$between", (int a, int b) => Random.Shared.Next(a, b));
+
+// Execute directly from a collection
+var guid = defaults.Execute<Guid>("$guid");
+var today = defaults.Execute<string>("$now", "yyyy-MM-dd");
+var n = custom.Execute<int>("$between", 10, 20);
+```
 
 ---
 
@@ -123,28 +147,3 @@ If a function is not found or execution fails, `ExecFunction<T>` returns `defaul
 - If conversion fails, execution throws an exception
 
 Tip: Prefer culture-invariant formats in `.http` files for dates and decimals when needed.
-
----
-
-## Managing Functions
-
-You can manage functions via collections:
-
-```
-// Access
-var defaults = tp.DefaultFunctions;
-var custom = tp.CustomFunctions;
-
-// Check and remove
-bool hasGuid = defaults.Contains("$guid");
-bool removed = custom.Remove("$add");
-
-// Enumerate
-foreach (var f in custom) {
-    tp.Logger.LogInformation("Function: {Name}", f.Name);
-}
-```
-
-For convenience methods, see:
-- [TeaPie](xref:TeaPie.TeaPie)
-- [TeaPie.Functions.FunctionsCollection](xref:TeaPie.Functions.FunctionsCollection)
