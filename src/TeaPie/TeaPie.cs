@@ -94,7 +94,6 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     public VariablesCollection EnvironmentVariables => _variables.EnvironmentVariables;
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
     public VariablesCollection TestCaseVariables => _variables.TestCaseVariables;
-    public FunctionsCollection CustomFunctions => _functions.CustomFunctions;
 
     /// <summary>
     /// Attempts to retrieve the <b>first matching</b> variable with the specified <paramref name="name"/> of type
@@ -121,34 +120,48 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
     /// <param name="tags">An optional list of tags associated with the variable.</param>
     public void SetVariable<T>(string name, T value, params string[] tags)
         => _variables.SetVariable(name, value, tags);
+    #endregion
+
+    #region Functions
+    public FunctionsCollection CustomFunctions => _functions.CustomFunctions;
 
     /// <summary>
-    /// Stores a function with the specified <paramref name="name"/>.
+    /// Register a function with the specified <paramref name="name"/>.
     /// </summary>
-    /// <param name="name">The name under which the function will be stored.</param>
-    /// <param name="func">Predicate of stored function.</param>
+    /// <param name="name">The name under which the function will be registered.</param>
+    /// <param name="func">Predicate of registered function.</param>
     public void RegisterFunction<T>(string name, Func<T> func)
         => _functions.Register(name, func);
 
+    /// <summary>
+    /// Register a function with the specified <paramref name="name"/>.
+    /// </summary>
+    /// <param name="name">The name under which the function will be registered.</param>
+    /// <param name="func">Predicate of registered function.</param>
     public void RegisterFunction<T1, T>(string name, Func<T1, T> func)
        => _functions.Register(name, func);
 
+    /// <summary>
+    /// Register a function with the specified <paramref name="name"/>.
+    /// </summary>
+    /// <param name="name">The name under which the function will be registered.</param>
+    /// <param name="func">Predicate of registered function.</param>
     public void RegisterFunction<T1, T2, T>(string name, Func<T1, T2, T> func)
         => _functions.Register(name, func);
 
     /// <summary>
     /// Executes a function with the specified <paramref name="name"/> and returns its result.
     /// </summary>
-    /// <typeparam name="T">The type of the resutl of the function to retrieve.</typeparam>
+    /// <typeparam name="T">The type of the result of the function to retrieve.</typeparam>
     /// <param name="name">The name of the function to retrieve.</param>
-    /// <param name="args">if no matching function is found.</param>
+    /// <param name="args">Function's arguments.</param>
     public T? ExecFunction<T>(string name, params object[] args)
         => _functions.Execute<T>(name, args);
 
     /// <summary>
     /// Executes a function with the specified <paramref name="name"/> and returns its result.
     /// </summary>
-    /// <typeparam name="T">The type of the resutl of the function to retrieve.</typeparam>
+    /// <typeparam name="T">The type of the result of the function to retrieve.</typeparam>
     /// <param name="name">The name of the function to retrieve.</param>
     public T? ExecFunction<T>(string name)
        => _functions.Execute<T>(name);
@@ -191,7 +204,7 @@ public sealed class TeaPie : IVariablesExposer, IFunctionsExposer, IExecutionCon
 
     #region Environments
     /// <summary>
-    /// Register environment to one with given <paramref name="name"/>. Environment <b>must be defined in the environment file</b>.
+    /// Set environment to one with given <paramref name="name"/>. Environment <b>must be defined in the environment file</b>.
     /// </summary>
     /// <param name="name">Name of the environment to be set.</param>
     public void SetEnvironment(string name)

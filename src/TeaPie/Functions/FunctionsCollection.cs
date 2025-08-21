@@ -31,14 +31,6 @@ public class FunctionsCollection : IEnumerable<Function>
         _functions[key] = new Function<T, T1, T2>(name, func);
     }
 
-    /// <summary>
-    /// Attempts to run function with given <paramref name="name"/> of <typeparamref name="T"/> type. If no such function is
-    /// found, default is retrieved.
-    /// </summary>
-    /// <typeparam name="T">Type of the result of the function.</typeparam>
-    /// <param name="name">Name of the function.</param>
-    /// <param name="args">Function argumetns</param>
-    /// <returns>Function result or default if no function with given <paramref name="name"/> of type was found.</returns>
     public T? Execute<T>(string name, params object[] args)
     {
         var function = _functions[GenerateFunctionNameKey(name, args.Length)];
