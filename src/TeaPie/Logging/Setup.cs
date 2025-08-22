@@ -48,7 +48,9 @@ internal static class Setup
             {
                 config.WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(evt =>
-                        evt.Properties.ContainsKey("Category") ||
+                        (evt.Properties.TryGetValue("Category", out var categoryValue) &&
+                         (categoryValue.ToString().Trim('"') == nameof(LogCategory.RequestInformation) ||
+                          categoryValue.ToString().Trim('"') == nameof(LogCategory.RetryInformation))) ||
                         (evt.Properties.TryGetValue("SourceContext", out var sourceContext) &&
                           sourceContext.ToString().Contains("System.Net.Http.HttpClient.ExecuteRequestStep")))
                     .WriteTo.File(new CompactJsonFormatter(), requestsLogFile,

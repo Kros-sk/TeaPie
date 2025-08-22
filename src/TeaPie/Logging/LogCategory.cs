@@ -3,5 +3,6 @@
 public enum LogCategory
 {
     Default,
-    RequestResponseInformation
+    RequestInformation,
+    RetryInformation
 }

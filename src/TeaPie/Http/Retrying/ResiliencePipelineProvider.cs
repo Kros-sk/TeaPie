@@ -3,6 +3,7 @@ using Polly;
 using Polly.Retry;
 using System.Net;
 using System.Text;
+using TeaPie.Logging;
 using ResiliencePipeline = Polly.ResiliencePipeline<System.Net.Http.HttpResponseMessage>;
 using RetryStrategy = Polly.Retry.RetryStrategyOptions<System.Net.Http.HttpResponseMessage>;
 
@@ -184,11 +185,14 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
     {
         var isDefault = finalRetryStrategy.Name?.Equals(string.Empty) == true;
 
-        _logger.LogDebug("Using{Altered}{Type} retry strategy with name '{Name}' for next request.",
+        _logger.LogDebug(LogCategory.RetryInformation,
+            "Using{Altered}{Type} retry strategy with name '{Name}' for next request.",
             altered ? " altered" : string.Empty,
             isDefault ? " default" : string.Empty,
             isDefault ? string.Empty : nameOfFinalStrategy);
-        _logger.LogDebug("Default retry strategy: {Description}", GetRetryStrategyDescription(finalRetryStrategy));
+        _logger.LogDebug(LogCategory.RetryInformation,
+            "Default retry strategy: {Description}",
+            GetRetryStrategyDescription(finalRetryStrategy));
     }
 
     private static string? GetRetryStrategyDescription(RetryStrategy finalRetryStrategy)
