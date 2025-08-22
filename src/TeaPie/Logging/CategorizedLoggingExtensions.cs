@@ -21,6 +21,14 @@ internal static class CategorizedLoggingExtensions
         }
     }
 
+    public static void LogDebug(this ILogger logger, LogCategory category, string? message, params object?[] args)
+    {
+        using (LogContext.PushProperty("Category", category.ToString()))
+        {
+            logger.LogDebug(message, args);
+        }
+    }
+
     public static void LogInformation<T>(this ILogger<T> logger, LogCategory category, string? message, params object?[] args)
     {
         using (LogContext.PushProperty("Category", category.ToString()))

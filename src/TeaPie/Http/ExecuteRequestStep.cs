@@ -2,6 +2,7 @@
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
 
@@ -113,7 +114,8 @@ internal class ExecuteRequestStep(
         retryAttempt++;
         if (retryAttempt > 0)
         {
-            logger.LogDebug("Retry attempt number {Number}.", retryAttempt);
+            logger.LogDebug(LogCategory.RetryInformation,
+                "Retry attempt number {Number}.", retryAttempt);
         }
 
         return retryAttempt;
