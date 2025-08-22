@@ -9,6 +9,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
     protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
+        var pathToRequestsLogFile = settings.RequestsLogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
 
@@ -20,7 +21,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
                 logLevel,
                 pathToLogFile,
                 settings.LogFileLogLevel,
-                settings.CategorizedJsonLogFile ?? string.Empty)
+                pathToRequestsLogFile)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFile, string.Empty))
             .WithInitializationScript(PathResolver.Resolve(settings.InitializationScriptPath, string.Empty))
             .WithStructureExplorationPipeline();

@@ -11,6 +11,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
     protected override ApplicationBuilder ConfigureApplication(Settings settings)
     {
         var pathToLogFile = settings.LogFile ?? string.Empty;
+        var pathToRequestsLogFile = settings.RequestsLogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
 
@@ -24,7 +25,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
                 logLevel,
                 pathToLogFile,
                 settings.LogFileLogLevel,
-                settings.CategorizedJsonLogFile ?? string.Empty);
+                pathToRequestsLogFile);
 
         return appBuilder;
     }
