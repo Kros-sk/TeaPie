@@ -41,8 +41,8 @@ internal class ExecuteRequestStep(
     }
 
     private async Task<StructuredRequestLog> CreateStructuredLog(
-        RequestExecutionContext requestExecutionContext, 
-        HttpRequestMessage request, 
+        RequestExecutionContext requestExecutionContext,
+        HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
         var structuredLog = new StructuredRequestLog
@@ -82,8 +82,8 @@ internal class ExecuteRequestStep(
     }
 
     private async Task FinalizeStructuredLog(
-        StructuredRequestLog structuredLog, 
-        HttpResponseMessage response, 
+        StructuredRequestLog structuredLog,
+        HttpResponseMessage response,
         CancellationToken cancellationToken)
     {
         structuredLog.EndTime = DateTime.UtcNow;

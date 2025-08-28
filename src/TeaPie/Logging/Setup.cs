@@ -27,16 +27,6 @@ internal static class Setup
         string requestsLogFile = "",
         string? structuredRequestsDirectory = null)
     {
-        if (!string.IsNullOrEmpty(structuredRequestsDirectory))
-        {
-            services.AddSingleton<IStructuredRequestLogger>(
-                _ => new StructuredRequestLogger(structuredRequestsDirectory));
-        }
-        else
-        {
-            services.AddSingleton<IStructuredRequestLogger, NullStructuredRequestLogger>();
-        }
-
         if (minimumLevel == LogLevel.None)
         {
             Log.Logger = Serilog.Core.Logger.None;
@@ -69,6 +59,12 @@ internal static class Setup
             }
 
             Log.Logger = config.CreateLogger();
+        }
+
+        if(!string.IsNullOrEmpty(structuredRequestsDirectory))
+        {
+            var logger = new StructuredRequestLogger(structuredRequestsDirectory);
+            services.AddSingleton<IStructuredRequestLogger>(logger);
         }
 
         return services;
