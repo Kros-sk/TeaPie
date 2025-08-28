@@ -19,6 +19,10 @@ internal class LoggingSettings : CommandSettings
     [Description("Path to the file where request/response logs will be saved in JSON format.")]
     public string? RequestsLogFile { get; init; }
 
+    [CommandOption("--structured-requests-dir")]
+    [Description("Directory path where structured request JSON files will be saved. Each request gets its own complete JSON file.")]
+    public string? StructuredRequestsDirectory { get; init; }
+
     [CommandOption("-l|--log-level")]
     [Description("Log level for console output. " +
         "Supported levels: Trace, Debug, Information, Warning, Error, Critical, None.")]

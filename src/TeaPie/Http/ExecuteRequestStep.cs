@@ -14,7 +14,8 @@ internal class ExecuteRequestStep(
     IHeadersHandler headersHandler,
     IAuthProviderAccessor defaultAuthProviderAccessor,
     ITestScheduler testScheduler,
-    IPipeline pipeline)
+    IPipeline pipeline,
+    IStructuredRequestLogger? structuredLogger = null)
     : IPipelineStep
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory;
@@ -23,15 +24,82 @@ internal class ExecuteRequestStep(
     private readonly IAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
     private readonly IPipeline _pipeline = pipeline;
     private readonly ITestScheduler _testScheduler = testScheduler;
+    private readonly IStructuredRequestLogger? _structuredLogger = structuredLogger;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var requestExecutionContext, out var request, out var resiliencePipeline);
 
-        var response = await Execute(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
+        var structuredLog = await CreateStructuredLog(requestExecutionContext, request, cancellationToken);
+
+        var response = await Execute(context, requestExecutionContext, resiliencePipeline, request, structuredLog, cancellationToken);
 
         requestExecutionContext.Response = response;
         requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
+
+        await FinalizeStructuredLog(structuredLog, response, cancellationToken);
+    }
+
+    private async Task<StructuredRequestLog> CreateStructuredLog(
+        RequestExecutionContext requestExecutionContext, 
+        HttpRequestMessage request, 
+        CancellationToken cancellationToken)
+    {
+        var structuredLog = new StructuredRequestLog
+        {
+            Request = new RequestInfo
+            {
+                Name = requestExecutionContext.Name,
+                Method = request.Method.ToString(),
+                Uri = request.RequestUri?.ToString() ?? string.Empty,
+                Headers = request.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+                Body = request.Content != null ? await request.Content.ReadAsStringAsync(cancellationToken) : null,
+                ContentType = request.Content?.Headers.ContentType?.MediaType,
+                FilePath = requestExecutionContext.RequestFile.RelativePath
+            },
+            Authentication = CreateAuthInfo(),
+            Metadata = new Dictionary<string, object>
+            {
+                ["testCaseId"] = requestExecutionContext.TestCaseExecutionContext?.Id.ToString() ?? "none",
+                ["hasResiliencePipeline"] = requestExecutionContext.ResiliencePipeline != null
+            }
+        };
+
+        return structuredLog;
+    }
+
+    private AuthInfo? CreateAuthInfo()
+    {
+        var currentProvider = _authProviderAccessor.CurrentProvider;
+        return currentProvider == null
+            ? null
+            : new AuthInfo
+        {
+            ProviderType = currentProvider.GetType().Name,
+            IsDefault = currentProvider == _authProviderAccessor.DefaultProvider,
+            AuthenticatedAt = DateTime.UtcNow
+        };
+    }
+
+    private async Task FinalizeStructuredLog(
+        StructuredRequestLog structuredLog, 
+        HttpResponseMessage response, 
+        CancellationToken cancellationToken)
+    {
+        structuredLog.EndTime = DateTime.UtcNow;
+        structuredLog.Response = new ResponseInfo
+        {
+            StatusCode = (int)response.StatusCode,
+            ReasonPhrase = response.ReasonPhrase,
+            Headers = response.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+            Body = response.Content != null ? await response.Content.ReadAsStringAsync(cancellationToken) : null,
+            ContentType = response.Content?.Headers.ContentType?.MediaType
+        };
+
+        if (_structuredLogger != null)
+        {
+            await _structuredLogger.LogRequestAsync(structuredLog, cancellationToken);
+        }
     }
 
     private async Task<HttpResponseMessage> Execute(
@@ -39,9 +107,10 @@ internal class ExecuteRequestStep(
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
+        StructuredRequestLog structuredLog,
         CancellationToken cancellationToken = default)
     {
-        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
+        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, structuredLog, cancellationToken);
 
         InsertStepForScheduledTestsIfAny(context);
 
@@ -62,13 +131,14 @@ internal class ExecuteRequestStep(
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
+        StructuredRequestLog structuredLog,
         CancellationToken cancellationToken)
     {
         ResolveAuthProvider(requestExecutionContext);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
         var response = await ExecuteRequest(
-            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
+            requestExecutionContext, resiliencePipeline, request, client, context.Logger, structuredLog, cancellationToken);
 
         _authProviderAccessor.SetCurrentProviderToDefault();
         return response;
@@ -92,6 +162,7 @@ internal class ExecuteRequestStep(
         HttpRequestMessage request,
         HttpClient client,
         ILogger logger,
+        StructuredRequestLog structuredLog,
         CancellationToken cancellationToken)
     {
         var originalMessage = request;
@@ -103,22 +174,50 @@ internal class ExecuteRequestStep(
 
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
-            retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
-            var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-            return await client.SendAsync(request, token);
+            retryAttemptNumber++;
+            var attemptStartTime = DateTime.UtcNow;
+            var retryAttempt = new RetryAttempt
+            {
+                AttemptNumber = retryAttemptNumber + 1,
+                Timestamp = attemptStartTime,
+                Reason = retryAttemptNumber > 0 ? "Resilience policy triggered retry" : "Initial attempt"
+            };
+
+            try
+            {
+                if (retryAttemptNumber > 0)
+                {
+                    logger.LogDebug(LogCategory.RetryInformation,
+                        "Retry attempt number {Number}.", retryAttemptNumber);
+                }
+
+                var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+                var response = await client.SendAsync(request, token);
+                retryAttempt.Response = new ResponseInfo
+                {
+                    StatusCode = (int)response.StatusCode,
+                    ReasonPhrase = response.ReasonPhrase,
+                    Headers = response.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+                    Body = response.Content != null ? await response.Content.ReadAsStringAsync(token) : null,
+                    ContentType = response.Content?.Headers.ContentType?.MediaType,
+                    ReceivedAt = DateTime.UtcNow
+                };
+                retryAttempt.IsSuccessful = response.IsSuccessStatusCode;
+                retryAttempt.DurationMs = (DateTime.UtcNow - attemptStartTime).TotalMilliseconds;
+                structuredLog.Retries.Attempts.Add(retryAttempt);
+                structuredLog.Retries.AttemptCount = retryAttemptNumber + 1;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                retryAttempt.Exception = ex;
+                retryAttempt.IsSuccessful = false;
+                retryAttempt.DurationMs = (DateTime.UtcNow - attemptStartTime).TotalMilliseconds;
+                structuredLog.Retries.Attempts.Add(retryAttempt);
+                structuredLog.Retries.AttemptCount = retryAttemptNumber + 1;
+                throw;
+            }
         }, cancellationToken);
-    }
-
-    private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)
-    {
-        retryAttempt++;
-        if (retryAttempt > 0)
-        {
-            logger.LogDebug(LogCategory.RetryInformation,
-                "Retry attempt number {Number}.", retryAttempt);
-        }
-
-        return retryAttempt;
     }
 
     private HttpRequestMessage GetMessage(

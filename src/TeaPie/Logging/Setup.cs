@@ -24,8 +24,19 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string requestsLogFile = "")
+        string requestsLogFile = "",
+        string? structuredRequestsDirectory = null)
     {
+        if (!string.IsNullOrEmpty(structuredRequestsDirectory))
+        {
+            services.AddSingleton<IStructuredRequestLogger>(
+                _ => new StructuredRequestLogger(structuredRequestsDirectory));
+        }
+        else
+        {
+            services.AddSingleton<IStructuredRequestLogger, NullStructuredRequestLogger>();
+        }
+
         if (minimumLevel == LogLevel.None)
         {
             Log.Logger = Serilog.Core.Logger.None;
