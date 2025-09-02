@@ -185,13 +185,11 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
     {
         var isDefault = finalRetryStrategy.Name?.Equals(string.Empty) == true;
 
-        _logger.LogDebug(LogCategory.RetryInformation,
-            "Using{Altered}{Type} retry strategy with name '{Name}' for next request.",
+        _logger.LogDebug("Using{Altered}{Type} retry strategy with name '{Name}' for next request.",
             altered ? " altered" : string.Empty,
             isDefault ? " default" : string.Empty,
             isDefault ? string.Empty : nameOfFinalStrategy);
-        _logger.LogDebug(LogCategory.RetryInformation,
-            "Default retry strategy: {Description}",
+        _logger.LogDebug("Default retry strategy: {Description}",
             GetRetryStrategyDescription(finalRetryStrategy));
     }
 

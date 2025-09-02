@@ -22,39 +22,34 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
         {
             var content = await request.Content.ReadAsStringAsync(cancellationToken);
 
-            _logger.LogTrace(LogCategory.RequestInformation,
-                "Following HTTP request's body ({ContentType}):{NewLine}{Body}",
+            _logger.LogTrace("Following HTTP request's body ({ContentType}):{NewLine}{Body}",
                 request.Content.Headers.ContentType?.MediaType,
                 Environment.NewLine,
                 content);
         }
         else
         {
-            _logger.LogTrace(LogCategory.RequestInformation,
-                "Following HTTP request doesn't have any body.");
+            _logger.LogTrace("Following HTTP request doesn't have any body.");
         }
     }
 
     private async Task LogResponse(HttpResponseMessage response, CancellationToken cancellationToken)
     {
-        _logger.LogTrace(LogCategory.RequestInformation,
-            "HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
+        _logger.LogTrace("HTTP Response {StatusCode} ({ReasonPhrase}) was received from '{Uri}'.",
             (int)response.StatusCode, response.ReasonPhrase, response.RequestMessage?.RequestUri);
 
         if (response.Content is not null)
         {
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
-            _logger.LogTrace(LogCategory.RequestInformation,
-                "Response's body ({ContentType}): {NewLine}{BodyContent}",
+            _logger.LogTrace("Response's body ({ContentType}): {NewLine}{BodyContent}",
                 response.Content.Headers.ContentType?.MediaType ?? "text",
                 Environment.NewLine,
                 content);
         }
         else
         {
-            _logger.LogTrace(LogCategory.RequestInformation,
-                "Response is without body.");
+            _logger.LogTrace("Response is without body.");
         }
     }
 }

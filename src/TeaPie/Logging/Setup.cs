@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
-using Serilog.Formatting.Compact;
 
 namespace TeaPie.Logging;
 
@@ -33,7 +32,6 @@ internal static class Setup
         else
         {
             var config = new LoggerConfiguration()
-                .Enrich.FromLogContext()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
