@@ -60,7 +60,7 @@ public sealed class ApplicationBuilder
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.None,
-        string structuredRequestsDirectory = "")
+        string? structuredRequestsDirectory = null)
     {
         _minimumLogLevel = minimumLevel;
         _pathToLogFile = pathToLogFile;

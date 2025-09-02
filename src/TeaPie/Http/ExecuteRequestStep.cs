@@ -40,34 +40,6 @@ internal class ExecuteRequestStep(
         await FinalizeStructuredLog(structuredLog, response, cancellationToken);
     }
 
-    private async Task<StructuredRequestLog> CreateStructuredLog(
-        RequestExecutionContext requestExecutionContext,
-        HttpRequestMessage request,
-        CancellationToken cancellationToken)
-    {
-        var structuredLog = new StructuredRequestLog
-        {
-            Request = new RequestInfo
-            {
-                Name = requestExecutionContext.Name,
-                Method = request.Method.ToString(),
-                Uri = request.RequestUri?.ToString() ?? string.Empty,
-                Headers = request.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
-                Body = request.Content != null ? await request.Content.ReadAsStringAsync(cancellationToken) : null,
-                ContentType = request.Content?.Headers.ContentType?.MediaType,
-                FilePath = requestExecutionContext.RequestFile.RelativePath
-            },
-            Authentication = CreateAuthInfo(),
-            Metadata = new Dictionary<string, object>
-            {
-                ["testCaseId"] = requestExecutionContext.TestCaseExecutionContext?.Id.ToString() ?? "none",
-                ["hasResiliencePipeline"] = requestExecutionContext.ResiliencePipeline != null
-            }
-        };
-
-        return structuredLog;
-    }
-
     private AuthInfo? CreateAuthInfo()
     {
         var currentProvider = _authProviderAccessor.CurrentProvider;
@@ -79,27 +51,6 @@ internal class ExecuteRequestStep(
             IsDefault = currentProvider == _authProviderAccessor.DefaultProvider,
             AuthenticatedAt = DateTime.UtcNow
         };
-    }
-
-    private async Task FinalizeStructuredLog(
-        StructuredRequestLog structuredLog,
-        HttpResponseMessage response,
-        CancellationToken cancellationToken)
-    {
-        structuredLog.EndTime = DateTime.UtcNow;
-        structuredLog.Response = new ResponseInfo
-        {
-            StatusCode = (int)response.StatusCode,
-            ReasonPhrase = response.ReasonPhrase,
-            Headers = response.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
-            Body = response.Content != null ? await response.Content.ReadAsStringAsync(cancellationToken) : null,
-            ContentType = response.Content?.Headers.ContentType?.MediaType
-        };
-
-        if (_structuredLogger != null)
-        {
-            await _structuredLogger.LogRequestAsync(structuredLog, cancellationToken);
-        }
     }
 
     private async Task<HttpResponseMessage> Execute(
@@ -263,5 +214,54 @@ internal class ExecuteRequestStep(
             requestExecutionContext.Request, out request, activityName, "request message");
         ExecutionContextValidator.ValidateParameter(
             requestExecutionContext.ResiliencePipeline, out resiliencePipeline, activityName, "resilience pipeline");
+    }
+
+    private async Task<StructuredRequestLog> CreateStructuredLog(
+    RequestExecutionContext requestExecutionContext,
+    HttpRequestMessage request,
+    CancellationToken cancellationToken)
+    {
+        var structuredLog = new StructuredRequestLog
+        {
+            Request = new RequestInfo
+            {
+                Name = requestExecutionContext.Name,
+                Method = request.Method.ToString(),
+                Uri = request.RequestUri?.ToString() ?? string.Empty,
+                Headers = request.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+                Body = request.Content != null ? await request.Content.ReadAsStringAsync(cancellationToken) : null,
+                ContentType = request.Content?.Headers.ContentType?.MediaType,
+                FilePath = requestExecutionContext.RequestFile.RelativePath
+            },
+            Authentication = CreateAuthInfo(),
+            Metadata = new Dictionary<string, object>
+            {
+                ["testCaseId"] = requestExecutionContext.TestCaseExecutionContext?.Id.ToString() ?? "none",
+                ["hasResiliencePipeline"] = requestExecutionContext.ResiliencePipeline != null
+            }
+        };
+
+        return structuredLog;
+    }
+
+    private async Task FinalizeStructuredLog(
+      StructuredRequestLog structuredLog,
+      HttpResponseMessage response,
+      CancellationToken cancellationToken)
+    {
+        structuredLog.EndTime = DateTime.UtcNow;
+        structuredLog.Response = new ResponseInfo
+        {
+            StatusCode = (int)response.StatusCode,
+            ReasonPhrase = response.ReasonPhrase,
+            Headers = response.Headers.ToDictionary(h => h.Key, h => string.Join(", ", h.Value)),
+            Body = response.Content != null ? await response.Content.ReadAsStringAsync(cancellationToken) : null,
+            ContentType = response.Content?.Headers.ContentType?.MediaType
+        };
+
+        if (_structuredLogger != null)
+        {
+            await _structuredLogger.LogRequestAsync(structuredLog, cancellationToken);
+        }
     }
 }
