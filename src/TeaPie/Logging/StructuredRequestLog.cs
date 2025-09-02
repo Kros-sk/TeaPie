@@ -15,8 +15,8 @@ internal class StructuredRequestLog
     public RetryInfo Retries { get; set; } = new();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public AuthInfo? Authentication { get; set; }
-    public List<string> Errors { get; set; } = new();
-    public Dictionary<string, object> Metadata { get; set; } = new();
+    public List<string> Errors { get; set; } = [];
+    public Dictionary<string, object> Metadata { get; set; } = [];
 }
 
 internal class RequestInfo
@@ -24,7 +24,7 @@ internal class RequestInfo
     public string Name { get; set; } = string.Empty;
     public string Method { get; set; } = string.Empty;
     public string Uri { get; set; } = string.Empty;
-    public Dictionary<string, string> Headers { get; set; } = new();
+    public Dictionary<string, string> Headers { get; set; } = [];
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Body { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -37,7 +37,7 @@ internal class ResponseInfo
     public int StatusCode { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ReasonPhrase { get; set; }
-    public Dictionary<string, string> Headers { get; set; } = new();
+    public Dictionary<string, string> Headers { get; set; } = [];
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Body { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -48,7 +48,7 @@ internal class ResponseInfo
 internal class RetryInfo
 {
     public int AttemptCount { get; set; } = 1;
-    public List<RetryAttempt> Attempts { get; set; } = new();
+    public List<RetryAttempt> Attempts { get; set; } = [];
 }
 
 internal class RetryAttempt
