@@ -22,7 +22,9 @@ internal class Function<TParameter1, TResult>(string name, Func<TParameter1, TRe
     }
 }
 
-internal class Function<TParameter1, TParameter2, TResult>(string name, Func<TParameter1, TParameter2, TResult> func) : Function(name)
+internal class Function<TParameter1, TParameter2, TResult>(
+    string name,
+    Func<TParameter1, TParameter2, TResult> func) : Function(name)
 {
     private readonly Func<TParameter1, TParameter2, TResult> _func = func;
     public override object? InvokeFunction(params object[]? args)
@@ -32,6 +34,8 @@ internal class Function<TParameter1, TParameter2, TResult>(string name, Func<TPa
             throw new ArgumentException($"Not enough arguments for function {Name}.");
         }
 
-        return _func((TParameter1)Convert.ChangeType(args[0], typeof(TParameter1)), (TParameter2)Convert.ChangeType(args[1], typeof(TParameter2)));
+        return _func(
+            (TParameter1)Convert.ChangeType(args[0], typeof(TParameter1)),
+            (TParameter2)Convert.ChangeType(args[1], typeof(TParameter2)));
     }
 }

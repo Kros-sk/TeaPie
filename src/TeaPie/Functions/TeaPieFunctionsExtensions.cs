@@ -17,7 +17,10 @@ public static class TeaPieFunctionsExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">The name under which the function will be registered.</param>
     /// <param name="func">Predicate of registered function.</param>
-    public static void RegisterFunction<TParameter1, TResult>(this TeaPie teaPie, string name, Func<TParameter1, TResult> func)
+    public static void RegisterFunction<TParameter1, TResult>(
+        this TeaPie teaPie,
+        string name,
+        Func<TParameter1, TResult> func)
        => teaPie._functions.Register(name, func);
 
     /// <summary>
@@ -26,7 +29,10 @@ public static class TeaPieFunctionsExtensions
     /// <param name="teaPie">The current context instance.</param>
     /// <param name="name">The name under which the function will be registered.</param>
     /// <param name="func">Predicate of registered function.</param>
-    public static void RegisterFunction<TParameter1, TParameter2, TResult>(this TeaPie teaPie, string name, Func<TParameter1, TParameter2, TResult> func)
+    public static void RegisterFunction<TParameter1, TParameter2, TResult>(
+        this TeaPie teaPie,
+        string name,
+        Func<TParameter1, TParameter2, TResult> func)
         => teaPie._functions.Register(name, func);
 
     /// <summary>
