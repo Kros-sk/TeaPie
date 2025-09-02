@@ -1,7 +1,7 @@
 # @name RentCarRequest
 POST {{ApiBaseUrl}}{{ApiCarRentalSection}}
 Content-Type: application/json
-// Usage of variables is also permitted in body definition
+// Variables and even functions can also be used in the body definition
 
 {
     "Id": 42,

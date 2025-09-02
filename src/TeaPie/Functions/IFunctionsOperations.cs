@@ -2,15 +2,15 @@
 
 internal interface IFunctionsOperations
 {
-    T? Execute<T>(string name, params object[] args);
+    TResult? Execute<TResult>(string name, params object[] args);
 
-    T? Execute<T>(string name);
+    TResult? Execute<TResult>(string name);
 
     bool Contains(string name, int argsCount);
 
-    void Register<T>(string name, Func<T> func);
+    void Register<TResult>(string name, Func<TResult> func);
 
-    void Register<T1, T>(string name, Func<T1, T> func);
+    void Register<TParameter1, TResult>(string name, Func<TParameter1, TResult> func);
 
-    void Register<T1, T2, T>(string name, Func<T1, T2, T> func);
+    void Register<TParameter1, TParameter2, TResult>(string name, Func<TParameter1, TParameter2, TResult> func);
 }

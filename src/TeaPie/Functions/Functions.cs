@@ -15,16 +15,16 @@ internal class Functions : IFunctions
     private IEnumerable<FunctionsCollection> GetAllFunctions()
         => [DefaultFunctions, CustomFunctions];
 
-    public T? Execute<T>(string name, params object[] args)
+    public TResult? Execute<TResult>(string name, params object[] args)
     {
         var collectionWithFunction = GetCollectionWithFunction(name, args.Length);
-        return collectionWithFunction is not null ? collectionWithFunction.Execute<T>(name, args) : default;
+        return collectionWithFunction is not null ? collectionWithFunction.Execute<TResult>(name, args) : default;
     }
 
-    public T? Execute<T>(string name)
+    public TResult? Execute<TResult>(string name)
     {
         var collectionWithFunction = GetCollectionWithFunction(name, 0);
-        return collectionWithFunction is not null ? collectionWithFunction.Execute<T>(name) : default;
+        return collectionWithFunction is not null ? collectionWithFunction.Execute<TResult>(name) : default;
     }
 
     private FunctionsCollection? GetCollectionWithFunction(string name, int argsCount)
@@ -32,7 +32,7 @@ internal class Functions : IFunctions
 
     public bool Contains(string name, int argsCount) => GetAllFunctions().Any(vc => vc.Contains(name, argsCount));
 
-    public void Register<T>(string name, Func<T> func)
+    public void Register<TResult>(string name, Func<TResult> func)
     {
         if (!DefaultFunctions.Contains(name, 0))
         {
@@ -40,7 +40,7 @@ internal class Functions : IFunctions
         }
     }
 
-    public void Register<T1, T>(string name, Func<T1, T> func)
+    public void Register<TParameter1, TResult>(string name, Func<TParameter1, TResult> func)
     {
         if (!DefaultFunctions.Contains(name, 1))
         {
@@ -48,7 +48,7 @@ internal class Functions : IFunctions
         }
     }
 
-    public void Register<T1, T2, T>(string name, Func<T1, T2, T> func)
+    public void Register<TParameter1, TParameter2, TResult>(string name, Func<TParameter1, TParameter2, TResult> func)
     {
         if (!DefaultFunctions.Contains(name, 2))
         {

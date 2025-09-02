@@ -6,25 +6,25 @@ internal abstract class Function(string name)
     public abstract object? InvokeFunction(params object[]? args);
 }
 
-internal class Function<T>(string name, Func<T> func) : Function(name)
+internal class Function<TResult>(string name, Func<TResult> func) : Function(name)
 {
-    private readonly Func<T> _func = func;
+    private readonly Func<TResult> _func = func;
     public override object? InvokeFunction(params object[]? args) => _func();
 }
 
-internal class Function<T1, T>(string name, Func<T1, T> func) : Function(name)
+internal class Function<TParameter1, TResult>(string name, Func<TParameter1, TResult> func) : Function(name)
 {
-    private readonly Func<T1, T> _func = func;
+    private readonly Func<TParameter1, TResult> _func = func;
     public override object? InvokeFunction(params object[]? args)
     {
         var arg = (args?.FirstOrDefault()) ?? throw new ArgumentException($"Not enough arguments for function {Name}.");
-        return _func.Invoke((T1)Convert.ChangeType(arg, typeof(T1)));
+        return _func.Invoke((TParameter1)Convert.ChangeType(arg, typeof(TParameter1)));
     }
 }
 
-internal class Function<T1, T2, T>(string name, Func<T1, T2, T> func) : Function(name)
+internal class Function<TParameter1, TParameter2, TResult>(string name, Func<TParameter1, TParameter2, TResult> func) : Function(name)
 {
-    private readonly Func<T1, T2, T> _func = func;
+    private readonly Func<TParameter1, TParameter2, TResult> _func = func;
     public override object? InvokeFunction(params object[]? args)
     {
         if (args is null || args.Length < 2)
@@ -32,6 +32,6 @@ internal class Function<T1, T2, T>(string name, Func<T1, T2, T> func) : Function
             throw new ArgumentException($"Not enough arguments for function {Name}.");
         }
 
-        return _func((T1)Convert.ChangeType(args[0], typeof(T1)), (T2)Convert.ChangeType(args[1], typeof(T2)));
+        return _func((TParameter1)Convert.ChangeType(args[0], typeof(TParameter1)), (TParameter2)Convert.ChangeType(args[1], typeof(TParameter2)));
     }
 }

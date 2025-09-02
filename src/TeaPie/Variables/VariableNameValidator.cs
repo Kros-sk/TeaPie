@@ -37,7 +37,7 @@ internal partial class VariableNameValidator
         {
             validationErrors
                 .Add($"The variable name '{name}' contains invalid characters " +
-                "(only characters a-z, A-Z, 0-9 and '-' is allowed).");
+                "(only characters a-z, A-Z, 0-9 and '-' are allowed).");
 
             return false;
         }

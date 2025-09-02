@@ -10,37 +10,37 @@ internal class FunctionsCollection : IEnumerable<Function>
 
     public int Count => _functions.Count;
 
-    public void Register<T>(string name, Func<T> func)
+    public void Register<TResult>(string name, Func<TResult> func)
     {
         FunctionNameValidator.Resolve(name);
         string key = GenerateFunctionNameKey(name, 0);
-        _functions[key] = new Function<T>(name, func);
+        _functions[key] = new Function<TResult>(name, func);
     }
 
-    public void Register<T, T1>(string name, Func<T, T1> func)
+    public void Register<TParameter1, TResult>(string name, Func<TParameter1, TResult> func)
     {
         FunctionNameValidator.Resolve(name);
         string key = GenerateFunctionNameKey(name, 1);
-        _functions[key] = new Function<T, T1>(name, func);
+        _functions[key] = new Function<TParameter1, TResult>(name, func);
     }
 
-    public void Register<T, T1, T2>(string name, Func<T, T1, T2> func)
+    public void Register<TParameter1, TParameter2, TResult>(string name, Func<TParameter1, TParameter2, TResult> func)
     {
         FunctionNameValidator.Resolve(name);
         string key = GenerateFunctionNameKey(name, 2);
-        _functions[key] = new Function<T, T1, T2>(name, func);
+        _functions[key] = new Function<TParameter1, TParameter2, TResult>(name, func);
     }
 
-    public T? Execute<T>(string name, params object[] args)
+    public TResult? Execute<TResult>(string name, params object[] args)
     {
         var function = _functions[GenerateFunctionNameKey(name, args.Length)];
-        return (T?)function.InvokeFunction(args);
+        return (TResult?)function.InvokeFunction(args);
     }
 
-    public T? Execute<T>(string name)
+    public TResult? Execute<TResult>(string name)
     {
         var function = _functions[GenerateFunctionNameKey(name, 0)];
-        return (T?)function.InvokeFunction(null);
+        return (TResult?)function.InvokeFunction(null);
     }
 
     public bool Contains(string name, int argsCount) => _functions.ContainsKey(GenerateFunctionNameKey(name, argsCount));

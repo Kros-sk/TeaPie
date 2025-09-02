@@ -22,21 +22,24 @@ TeaPie supports two levels of functions, determining visibility and resolution o
 ### Function Resolution Order
 
 Functions are resolved in this order:
+
 1. Default Functions
 2. Custom Functions
 
-The first match is executed.
+>The first match is executed.
 
 ---
 
 ## Using Functions in HTTP Files
 
 Syntax (no parentheses, no commas; max 2 arguments):
+
 - `{{$functionName}}`
 - `{{$functionName arg1}}`
 - `{{$functionName arg1 arg2}}`
 
 Notes:
+
 - Arguments are whitespace-separated tokens (maximum two per function).
 - Use quotes for values with spaces: `{{$now "yyyy-MM-dd HH:mm"}}`
 - Both single and double quotes are supported.
@@ -44,6 +47,7 @@ Notes:
 - Internally, arguments are tokenized using a command-line parser and converted to the target parameter types.
 
 Using together with Variables:
+
 - You can pass Variables as function arguments by embedding variable notation inside the function call.
 - Variable notation must follow variable rules (name pattern, `{{variableName}}`).
 - Examples:
@@ -69,11 +73,12 @@ The following functions are available by default:
 | `$randomInt` | `int $randomInt(int min, int max)` | Random integer in the range [min, max). | `{{$randomInt 1 100}}` |
 
 Notes:
+
 - `$now` uses `DateTime.Now` and the same formatting behavior as `DateTime.ToString(string?)`.
 
 Example:
 
-```
+``` http
 # Generate values with functions
 POST https://example.com/api/items
 Content-Type: application/json
@@ -85,17 +90,18 @@ Content-Type: application/json
   "ratio": {{$rand}}
 }
 ```
+
 ---
 
-## Working with Functions in C#
+## Working with Functions in C\#
 
 Access functions through the `TeaPie` instance (`tp`).
 
-### Registering via TeaPie
+### **2️⃣ Registering via TeaPie**
 
 TeaPie supports registering functions with 0–2 parameters (maximum two arguments).
 
-```
+``` cs
 // 0-arg
 tp.RegisterFunction("$buildNumber", () => Environment.GetEnvironmentVariable("BUILD_NUMBER") ?? "local");
 
@@ -106,23 +112,22 @@ tp.RegisterFunction("$upper", (string s) => s.ToUpperInvariant());
 tp.RegisterFunction("$add", (int a, int b) => a + b);
 ```
 
-Use them in `.http` files:
+### **1️⃣ Use them in `.http` files**
 
-```
+``` http
 {{$upper "hello"}}
 {{$add 40 2}}
 ```
 
-### Executing via TeaPie
+### **3️⃣ Executing via TeaPie**
 
-```
+```cs
 var id = tp.ExecFunction<Guid>("$guid");
-var when = tp.ExecFunction<string>("$now", "yyyy-MM-dd");
+var timeStamp = tp.ExecFunction<string>("$now", "yyyy-MM-dd");
 var sum = tp.ExecFunction<int>("$add", 2, 3);
 ```
 
-If a function is not found or execution fails, TeaPie throws an error during resolution.
-
+>If a function is not found or execution fails, TeaPie throws an error during resolution.
 
 ---
 
@@ -134,4 +139,4 @@ If a function is not found or execution fails, TeaPie throws an error during res
   - Uses the current culture during parsing
 - If conversion fails, execution throws an exception
 
-Tip: Prefer culture-invariant formats in `.http` files for dates and decimals when needed.
+>Tip: Prefer culture-invariant formats in `.http` files for dates and decimals when needed.
