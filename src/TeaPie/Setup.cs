@@ -17,7 +17,6 @@ internal static class Setup
     public static IServiceCollection AddTeaPie(
         this IServiceCollection services, bool isCollectionRun, Action loggingConfiguration)
     {
-        services.AddLogging(loggingConfiguration);
         services.AddStructureExploration(isCollectionRun);
         services.AddHttp();
         services.AddEnvironments();
@@ -27,6 +26,7 @@ internal static class Setup
         services.AddTesting();
         services.AddPipelines();
         services.AddReporting();
+        services.AddLogging(loggingConfiguration);
 
         return services;
     }

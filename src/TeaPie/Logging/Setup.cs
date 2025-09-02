@@ -23,7 +23,7 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string? structuredRequestsDirectory = null)
+        string structuredRequestsDirectory = "")
     {
         if (minimumLevel == LogLevel.None)
         {
