@@ -89,7 +89,7 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
-          "crudKey": "id",
+          "crudKey": "Id",
           "callbacks": []
         }
       ],
@@ -131,7 +131,7 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
-          "crudKey": "id",
+          "crudKey": "Id",
           "callbacks": []
         }
       ],

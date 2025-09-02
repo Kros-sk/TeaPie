@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Environments;
+using TeaPie.Functions;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Reporting;
@@ -17,6 +18,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IServiceProvider serviceProvider,
         IVariables variables,
+        IFunctions functions,
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
@@ -31,6 +33,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
             applicationContext,
             serviceProvider,
             variables,
+            functions,
             logger,
             tester,
             currentTestCaseExecutionContextAccessor,
@@ -48,6 +51,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         ApplicationContext applicationContext,
         IServiceProvider serviceProvider,
         IVariables variables,
+        IFunctions functions,
         ILogger logger,
         ITester tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
@@ -62,6 +66,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         _serviceProvider = serviceProvider;
 
         _variables = variables;
+        _functions = functions;
         Logger = logger;
         _tester = tester;
         _currentTestCaseExecutionContextAccessor = currentTestCaseExecutionContextAccessor;
@@ -84,6 +89,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
 
     #region Variables
     internal readonly IVariables _variables;
+
     public VariablesCollection GlobalVariables => _variables.GlobalVariables;
     public VariablesCollection EnvironmentVariables => _variables.EnvironmentVariables;
     public VariablesCollection CollectionVariables => _variables.CollectionVariables;
@@ -114,6 +120,12 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     /// <param name="tags">An optional list of tags associated with the variable.</param>
     public void SetVariable<T>(string name, T value, params string[] tags)
         => _variables.SetVariable(name, value, tags);
+    #endregion
+
+    #region Functions
+
+    internal readonly IFunctions _functions;
+
     #endregion
 
     #region Execution Context

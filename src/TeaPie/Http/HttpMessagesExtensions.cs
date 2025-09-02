@@ -1,10 +1,17 @@
-﻿using TeaPie.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using TeaPie.Json;
 using Serializer = System.Text.Json.JsonSerializer;
 
 namespace TeaPie.Http;
 
 public static class HttpMessagesExtensions
 {
+    private static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+    {
+        NumberHandling = JsonNumberHandling.AllowReadingFromString
+    };
+
     #region Synchronous methods
     /// <summary>
     /// Gets the body content as a <see cref="string"/> from the specified <paramref name="request"/>.
@@ -91,7 +98,7 @@ public static class HttpMessagesExtensions
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
     /// <typeparamref name="TResult"/>.</returns>
     public static async Task<TResult?> GetBodyAsync<TResult>(this HttpRequestMessage request)
-        => Serializer.Deserialize<TResult>(await GetBody(request.Content));
+        => Serializer.Deserialize<TResult>(await GetBody(request.Content), _jsonOptions);
 
     /// <summary>
     /// Asynchronously gets the body content as a <typeparamref name="TResult"/> from the specified <paramref name="response"/>.
@@ -102,7 +109,7 @@ public static class HttpMessagesExtensions
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The result is the body content as a
     /// <typeparamref name="TResult"/>.</returns>
     public static async Task<TResult?> GetBodyAsync<TResult>(this HttpResponseMessage response)
-        => Serializer.Deserialize<TResult>(await GetBody(response.Content));
+        => Serializer.Deserialize<TResult>(await GetBody(response.Content), _jsonOptions);
 
     /// <summary>
     /// Asynchronously gets the body content as a <see cref="CaseInsensitiveExpandoObject"/>

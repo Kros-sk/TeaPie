@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using TeaPie.Functions;
 using TeaPie.Http;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
@@ -210,11 +211,14 @@ public class HttpRequestParserShould
 
         var variables = new global::TeaPie.Variables.Variables();
         var variablesResolver = new VariablesResolver(variables, serviceProvider);
+        var functions = new global::TeaPie.Functions.Functions();
+        var functionsResolver = new FunctionsResolver(functions);
         var headersResolver = new HeadersHandler();
 
         var parser = new HttpRequestParser(
             headersProvider,
             variablesResolver,
+            functionsResolver,
             headersResolver,
             Substitute.For<IResiliencePipelineProvider>(),
             Substitute.For<IAuthProviderRegistry>(),
