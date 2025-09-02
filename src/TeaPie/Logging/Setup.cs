@@ -24,7 +24,6 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string requestsLogFile = "",
         string? structuredRequestsDirectory = null)
     {
         if (minimumLevel == LogLevel.None)
@@ -43,19 +42,6 @@ internal static class Setup
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
-            }
-
-            if (!requestsLogFile.Equals(string.Empty))
-            {
-                config.WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(evt =>
-                        (evt.Properties.TryGetValue("Category", out var categoryValue) &&
-                         (categoryValue.ToString().Trim('"') == nameof(LogCategory.RequestInformation) ||
-                          categoryValue.ToString().Trim('"') == nameof(LogCategory.RetryInformation))) ||
-                        (evt.Properties.TryGetValue("SourceContext", out var sourceContext) &&
-                          sourceContext.ToString().Contains("System.Net.Http.HttpClient.ExecuteRequestStep")))
-                    .WriteTo.File(new CompactJsonFormatter(), requestsLogFile,
-                                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
             }
 
             Log.Logger = config.CreateLogger();
