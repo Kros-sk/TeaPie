@@ -187,8 +187,7 @@ internal class ExecuteRequestStep(
             {
                 if (retryAttemptNumber > 0)
                 {
-                    logger.LogDebug(LogCategory.RetryInformation,
-                        "Retry attempt number {Number}.", retryAttemptNumber);
+                    logger.LogDebug("Retry attempt number {Number}.", retryAttemptNumber);
                 }
 
                 var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
