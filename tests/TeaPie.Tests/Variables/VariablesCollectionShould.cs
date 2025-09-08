@@ -11,6 +11,7 @@ public class VariablesCollectionShould
     [InlineData("<", "name with forbidden character '<'")]
     [InlineData(">", "name with forbidden character '>'")]
     [InlineData("<script>", "name with forbidden characters")]
+    [InlineData("$script", "name starts with forbidden character $")]
     public void ThrowProperExceptionWhenSettingVariableWithInvalidName(string? name, string reason)
     {
         VariablesCollection collection = [];

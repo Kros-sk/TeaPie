@@ -49,6 +49,7 @@ internal static class ScriptsConstants
         "TeaPie.Testing",
         "TeaPie.Testing.XunitAssertExtensions",
         "TeaPie.Variables",
+        "TeaPie.Functions",
         "Xunit.Assert"
     ];
 

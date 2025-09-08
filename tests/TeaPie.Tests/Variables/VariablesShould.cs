@@ -16,7 +16,7 @@ public class VariablesShould
     }
 
     [Fact]
-    private void PrioritizeLevelsCorrectlyWhenGettingVariableSetOnMultipleLevels()
+    public void PrioritizeLevelsCorrectlyWhenGettingVariableSetOnMultipleLevels()
     {
         var variables = new global::TeaPie.Variables.Variables();
 
@@ -56,7 +56,7 @@ public class VariablesShould
     }
 
     [Fact]
-    private static void OverwriteVariablesCorrectly()
+    public static void OverwriteVariablesCorrectly()
     {
         var variables = new global::TeaPie.Variables.Variables();
         variables.SetVariable("VariableWithOverwrittenValue", 1);

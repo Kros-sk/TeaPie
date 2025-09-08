@@ -25,6 +25,8 @@
   href: initialization-script.md
 - name: Variables
   href: variables.md
+- name: Functions
+  href: functions.md
 - name: Environments
   href: environments.md
 - name: Authentication

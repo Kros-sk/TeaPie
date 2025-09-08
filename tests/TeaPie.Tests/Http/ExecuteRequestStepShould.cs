@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Net;
+using TeaPie.Functions;
 using TeaPie.Http;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
@@ -144,7 +145,9 @@ public class ExecuteRequestStepShould
         var clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         var headersProvider = new HttpRequestHeadersProvider(clientFactory);
         var variables = new global::TeaPie.Variables.Variables();
+        var functions = new global::TeaPie.Functions.Functions();
         var variablesResolver = new VariablesResolver(variables, serviceProvider);
+        var functionsResolver = new FunctionsResolver(functions);
         var headersResolver = new HeadersHandler();
         var retryStrategyRegistry = new RetryStrategyRegistry();
         var resiliencePipelineProvider = new ResiliencePipelineProvider(
@@ -153,6 +156,7 @@ public class ExecuteRequestStepShould
         return new HttpRequestParser(
             headersProvider,
             variablesResolver,
+            functionsResolver,
             headersResolver,
             resiliencePipelineProvider,
             Substitute.For<IAuthProviderRegistry>(),

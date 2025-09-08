@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using TeaPie.Functions;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
@@ -22,6 +23,7 @@ internal class TeaPieBuilder
         _appContext = new ApplicationContextBuilder().Build();
 
         _serviceCollection.AddSingleton(Substitute.For<IVariables>());
+        _serviceCollection.AddSingleton(Substitute.For<IFunctions>());
         _serviceCollection.AddSingleton(Substitute.For<ILogger<TeaPie>>());
         _serviceCollection.AddSingleton(Substitute.For<ITester>());
         _serviceCollection.AddSingleton(Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
@@ -52,6 +54,7 @@ internal class TeaPieBuilder
         return TeaPie.Create(_appContext,
             provider,
             provider.GetRequiredService<IVariables>(),
+            provider.GetRequiredService<IFunctions>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
             provider.GetRequiredService<ITester>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
