@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Environments;
+using TeaPie.Functions;
 using TeaPie.Http;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
@@ -23,6 +24,7 @@ internal static class Setup
         services.AddTestCases();
         services.AddScripts();
         services.AddVariables();
+        services.AddFunctions();
         services.AddTesting();
         services.AddPipelines();
         services.AddReporting();

@@ -1,20 +1,25 @@
 # @name RentCarRequest
 POST {{ApiBaseUrl}}{{ApiCarRentalSection}}
 Content-Type: application/json
-// Usage of variables is also permitted in body definition
+// Variables and even functions can also be used in the body definition
 
 {
-    "Id": 1,
-    "CarId": "{{NewCarId}}",
-    "CustomerId": "{{NewCustomerId}}",
-    "RentalStart": "2023-08-01",
-    "RentalEnd": "2023-08-05",
+    "Id": 42,
+    "CarId": {{NewCarId}},
+    "CustomerId": {{NewCustomerId}},
+    "RentalStart": "{{$now "yyyy-MM-dd"}}",
+    "RentalEnd": "{{$carReturnDate {{RentalDays}}}}",
     "Price": 200.00,
     "Notes": "Rented for a weekend wedding.",
     "NumberOfDrivers": 1
 }
 
 ###
+## RETRY-UNTIL-STATUS: [200]
+# @name GetCarRentRequest
+GET {{ApiBaseUrl}}{{ApiCarRentalSection}}/{{RentCarRequest.request.body.$.Id}}
+###
+
 # Example of all available retry directives. Selected RETRY-STRATEGY must be registered first (via script, see 'demo/init.csx').
 # - RETRY-UNTIL-STATUS adds a condition specifying until which status codes retrying should continue.
 # - Other retry directives override specific properties of the selected retry strategy.
