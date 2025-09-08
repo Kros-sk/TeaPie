@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Formatting.Json;
 
 namespace TeaPie.Logging;
 
@@ -22,7 +23,8 @@ internal static class Setup
         this IServiceCollection services,
         LogLevel minimumLevel,
         string pathToLogFile = "",
-        LogLevel minimumLevelForLogFile = LogLevel.Debug)
+        LogLevel minimumLevelForLogFile = LogLevel.Debug,
+        string? structuredRequestsFile = null)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -31,6 +33,7 @@ internal static class Setup
         else
         {
             var config = new LoggerConfiguration()
+                .Enrich.FromLogContext()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
@@ -39,6 +42,23 @@ internal static class Setup
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
+            }
+
+            if (!string.IsNullOrEmpty(structuredRequestsFile))
+            {
+                if (File.Exists(structuredRequestsFile))
+                {
+                    File.Delete(structuredRequestsFile);
+                }
+
+                config.WriteTo.Logger(lc => lc
+                    .Filter.ByIncludingOnly(evt =>
+                        evt.Properties.ContainsKey("StructuredRequest"))
+                    .WriteTo.File(
+                        new JsonFormatter(),
+                        structuredRequestsFile,
+                        restrictedToMinimumLevel: LogEventLevel.Debug,
+                        shared: false));
             }
 
             Log.Logger = config.CreateLogger();
