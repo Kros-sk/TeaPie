@@ -2,7 +2,7 @@
 
 namespace TeaPie.Logging;
 
-internal class StructuredRequestLog
+internal class RequestLogFileEntry
 {
     public string RequestId { get; set; } = Guid.NewGuid().ToString();
     public DateTime StartTime { get; set; } = DateTime.UtcNow;

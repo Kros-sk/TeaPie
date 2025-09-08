@@ -11,14 +11,14 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
-        var structuredRequestsFile = settings.StructuredRequestsFile;
+        var pathToRequestsLogFile = settings.RequestsLogFile;
 
         var appBuilder = ApplicationBuilder.Create(path.IsCollectionPath());
 
         appBuilder
             .WithPath(path)
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
-            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, structuredRequestsFile)
+            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, pathToRequestsLogFile)
             .WithEnvironment(settings.Environment ?? string.Empty)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFilePath, string.Empty))
             .WithReportFile(PathResolver.Resolve(settings.ReportFilePath, string.Empty))

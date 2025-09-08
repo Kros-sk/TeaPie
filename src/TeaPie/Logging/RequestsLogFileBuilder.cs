@@ -5,15 +5,15 @@ using TeaPie.Http.Auth;
 
 namespace TeaPie.Logging;
 
-internal static class StructuredRequestBuilder
+internal static class RequestsLogFileBuilder
 {
-    public static async Task<StructuredRequestLog> CreateAsync(
+    public static async Task<RequestLogFileEntry> CreateAsync(
         RequestExecutionContext requestExecutionContext,
         HttpRequestMessage request,
         IAuthProviderAccessor authProviderAccessor,
         CancellationToken cancellationToken = default)
     {
-        return new StructuredRequestLog
+        return new RequestLogFileEntry
         {
             Request = await CreateRequestInfoAsync(requestExecutionContext, request, cancellationToken),
             Authentication = CreateAuthInfo(authProviderAccessor),
@@ -22,15 +22,15 @@ internal static class StructuredRequestBuilder
     }
 
     public static async Task LogCompletedRequestAsync(
-        StructuredRequestLog structuredLog,
+        RequestLogFileEntry requestLogFileEntry,
         HttpResponseMessage response,
         CancellationToken cancellationToken = default)
     {
-        structuredLog.EndTime = DateTime.UtcNow;
-        structuredLog.Response = await CreateResponseInfoAsync(response, cancellationToken);
+        requestLogFileEntry.EndTime = DateTime.UtcNow;
+        requestLogFileEntry.Response = await CreateResponseInfoAsync(response, cancellationToken);
 
         Log.ForContext("StructuredRequest", true)
-           .Information("Request completed {@StructuredRequestLog}", structuredLog);
+           .Information("Request completed {@RequestLogFileEntry}", requestLogFileEntry);
     }
 
     public static RetryAttempt CreateRetryAttempt(int attemptNumber, DateTime startTime, string reason)

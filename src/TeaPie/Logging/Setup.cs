@@ -24,7 +24,7 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string? structuredRequestsFile = null)
+        string? requestsLogFile = null)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -44,11 +44,11 @@ internal static class Setup
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
             }
 
-            if (!string.IsNullOrEmpty(structuredRequestsFile))
+            if (!string.IsNullOrEmpty(requestsLogFile))
             {
-                if (File.Exists(structuredRequestsFile))
+                if (File.Exists(requestsLogFile))
                 {
-                    File.Delete(structuredRequestsFile);
+                    File.Delete(requestsLogFile);
                 }
 
                 config.WriteTo.Logger(lc => lc
@@ -56,7 +56,7 @@ internal static class Setup
                         evt.Properties.ContainsKey("StructuredRequest"))
                     .WriteTo.File(
                         new JsonFormatter(),
-                        structuredRequestsFile,
+                        requestsLogFile,
                         restrictedToMinimumLevel: LogEventLevel.Debug,
                         shared: false));
             }
