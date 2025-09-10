@@ -9,11 +9,11 @@ internal static class Setup
     public static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         services.AddTransient<AuthHttpMessageHandler>();
-        services.AddTransient<RequestResponseLoggingHandler>();
+        services.AddTransient<RequestsLoggingHandler>();
 
         services.AddHttpClient<ExecuteRequestStep>()
             .AddHttpMessageHandler<AuthHttpMessageHandler>()
-            .AddHttpMessageHandler<RequestResponseLoggingHandler>()
+            .AddHttpMessageHandler<RequestsLoggingHandler>()
             .AddHttpMessageHandler<LoggingInterceptorHandler>();
 
         services.AddSingleton<IAuthProviderRegistry, AuthProviderRegistry>();

@@ -83,7 +83,7 @@ internal class ExecuteRequestStep(
             return await client.SendAsync(requestToSend, token);
         }, cancellationToken);
 
-        RequestResponseLoggingHandler.LogCompletedRequest(originalMessage, result);
+        RequestsLoggingHandler.LogCompletedRequest(originalMessage, result);
 
         return result;
     }

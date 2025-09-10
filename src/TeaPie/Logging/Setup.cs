@@ -13,7 +13,7 @@ internal static class Setup
         configure();
 
         services.AddTransient<LoggingInterceptorHandler>();
-        services.AddTransient<RequestResponseLoggingHandler>();
+        services.AddTransient<RequestsLoggingHandler>();
         services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
@@ -53,7 +53,8 @@ internal static class Setup
 
                 config.WriteTo.Logger(lc => lc
                     .Filter.ByIncludingOnly(logEvent =>
-                        logEvent.Properties.ContainsKey("StructuredRequest"))
+                        logEvent.Properties.TryGetValue("SourceContext", out var sourceContext) &&
+                        sourceContext.ToString().Contains("HttpRequests"))
                     .WriteTo.File(
                         new JsonFormatter(renderMessage: false),
                         pathToRequestsLogFile,

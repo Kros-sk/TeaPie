@@ -5,7 +5,7 @@ using Serilog;
 
 namespace TeaPie.Logging;
 
-internal class RequestResponseLoggingHandler(IAuthProviderAccessor authProviderAccessor) : DelegatingHandler
+internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor) : DelegatingHandler
 {
     private readonly IAuthProviderAccessor _authProviderAccessor = authProviderAccessor;
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
@@ -98,8 +98,8 @@ internal class RequestResponseLoggingHandler(IAuthProviderAccessor authProviderA
                 logEntry.Response = CreateResponseInfo(finalResponse);
             }
 
-            Log.ForContext("StructuredRequest", true)
-               .Information("Request completed {@RequestLogFileEntry}", logEntry);
+            Log.ForContext("SourceContext", "HttpRequests")
+               .Information("{@RequestLogFileEntry}", logEntry);
         }
     }
 
