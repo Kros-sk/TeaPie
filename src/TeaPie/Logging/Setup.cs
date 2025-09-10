@@ -13,6 +13,7 @@ internal static class Setup
         configure();
 
         services.AddTransient<LoggingInterceptorHandler>();
+        services.AddTransient<RequestResponseLoggingHandler>();
         services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
@@ -24,7 +25,7 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string? requestsLogFile = null)
+        string? pathToRequestsLogFile = null)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -33,7 +34,6 @@ internal static class Setup
         else
         {
             var config = new LoggerConfiguration()
-                .Enrich.FromLogContext()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
@@ -44,21 +44,20 @@ internal static class Setup
                 config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
             }
 
-            if (!string.IsNullOrEmpty(requestsLogFile))
+            if (!string.IsNullOrEmpty(pathToRequestsLogFile))
             {
-                if (File.Exists(requestsLogFile))
+                if (File.Exists(pathToRequestsLogFile))
                 {
-                    File.Delete(requestsLogFile);
+                    File.Delete(pathToRequestsLogFile);
                 }
 
                 config.WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(evt =>
-                        evt.Properties.ContainsKey("StructuredRequest"))
+                    .Filter.ByIncludingOnly(logEvent =>
+                        logEvent.Properties.ContainsKey("StructuredRequest"))
                     .WriteTo.File(
-                        new JsonFormatter(),
-                        requestsLogFile,
-                        restrictedToMinimumLevel: LogEventLevel.Debug,
-                        shared: false));
+                        new JsonFormatter(renderMessage: false),
+                        pathToRequestsLogFile,
+                        restrictedToMinimumLevel: LogEventLevel.Information));
             }
 
             Log.Logger = config.CreateLogger();
