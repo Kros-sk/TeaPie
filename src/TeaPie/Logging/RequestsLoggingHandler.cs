@@ -9,7 +9,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 {
     private readonly IAuthProviderAccessor _authProviderAccessor = authProviderAccessor;
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
-    private static readonly HttpRequestOptionsKey<RequestLogFileEntry> _logEntryKey = new("__TeaPie_LogEntry__");
+    public static readonly HttpRequestOptionsKey<RequestLogFileEntry> LogEntryKey = new("__TeaPie_LogEntry__");
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -41,7 +41,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 
     private RequestLogFileEntry GetOrCreateLogEntry(HttpRequestMessage request, RequestExecutionContext requestContext)
     {
-        if (request.Options.TryGetValue(_logEntryKey, out var existingEntry) && existingEntry != null)
+        if (request.Options.TryGetValue(LogEntryKey, out var existingEntry) && existingEntry != null)
         {
             return existingEntry;
         }
@@ -57,7 +57,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             Errors = []
         };
 
-        request.Options.Set(_logEntryKey, logEntry);
+        request.Options.Set(LogEntryKey, logEntry);
         return logEntry;
     }
 
@@ -91,7 +91,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 
     public static void LogCompletedRequest(HttpRequestMessage request, HttpResponseMessage? finalResponse)
     {
-        if (request.Options.TryGetValue(_logEntryKey, out var logEntry) && logEntry != null)
+        if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
         {
             if (finalResponse != null)
             {

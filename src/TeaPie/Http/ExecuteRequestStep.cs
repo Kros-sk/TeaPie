@@ -103,6 +103,8 @@ internal class ExecuteRequestStep(
         var messageUsed = false;
         var retryAttemptNumber = -1;
 
+        originalMessage.Options.Set(_contextKey, requestExecutionContext);
+
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
@@ -153,6 +155,10 @@ internal class ExecuteRequestStep(
         };
 
         _headersHandler.SetHeaders(originalMessage, request);
+        if (originalMessage.Options.TryGetValue(RequestsLoggingHandler.LogEntryKey, out var logEntry))
+        {
+            request.Options.Set(RequestsLoggingHandler.LogEntryKey, logEntry);
+        }
         return request;
     }
 
