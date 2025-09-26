@@ -93,7 +93,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
     {
         if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
         {
-            if (finalResponse != null)
+            if (finalResponse != null && logEntry.Response == null)
             {
                 logEntry.Response = CreateResponseInfo(finalResponse);
             }
@@ -111,27 +111,10 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             Method = request.Method.ToString(),
             Uri = request.RequestUri?.ToString() ?? string.Empty,
             Headers = ProcessHeaders(request.Headers),
-            Body = GetRequestBody(request),
+            Body = GetContentBody(request.Content),
             ContentType = request.Content?.Headers.ContentType?.MediaType,
             FilePath = requestContext.RequestFile.RelativePath
         };
-    }
-
-    private static string? GetRequestBody(HttpRequestMessage request)
-    {
-        if (request.Content == null)
-        {
-            return null;
-        }
-
-        try
-        {
-            return request.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-        }
-        catch
-        {
-            return "[Content reading failed]";
-        }
     }
 
     private static ResponseInfo CreateResponseInfo(HttpResponseMessage response)
@@ -141,22 +124,22 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             StatusCode = (int)response.StatusCode,
             ReasonPhrase = response.ReasonPhrase,
             Headers = ProcessHeaders(response.Headers),
-            Body = GetResponseBody(response),
+            Body = GetContentBody(response.Content),
             ContentType = response.Content?.Headers.ContentType?.MediaType,
             ReceivedAt = DateTime.UtcNow
         };
     }
 
-    private static string? GetResponseBody(HttpResponseMessage response)
+    private static string? GetContentBody(HttpContent? content)
     {
-        if (response.Content == null)
+        if (content == null)
         {
             return null;
         }
 
         try
         {
-            return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return content.ReadAsStringAsync().GetAwaiter().GetResult();
         }
         catch
         {
