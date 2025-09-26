@@ -1,13 +1,14 @@
 ﻿using System.Net.Http.Headers;
 using TeaPie.Http;
 using TeaPie.Http.Auth;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace TeaPie.Logging;
 
-internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor) : DelegatingHandler
+internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor, ILoggerFactory loggerFactory) : DelegatingHandler
 {
     private readonly IAuthProviderAccessor _authProviderAccessor = authProviderAccessor;
+    private readonly ILogger _logger = loggerFactory.CreateLogger("HttpRequests");
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
     public static readonly HttpRequestOptionsKey<RequestLogFileEntry> LogEntryKey = new("__TeaPie_LogEntry__");
 
@@ -89,7 +90,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         }
     }
 
-    public static void LogCompletedRequest(HttpRequestMessage request, HttpResponseMessage? finalResponse)
+    public void LogCompletedRequest(HttpRequestMessage request, HttpResponseMessage? finalResponse)
     {
         if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
         {
@@ -98,8 +99,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
                 logEntry.Response = CreateResponseInfo(finalResponse);
             }
 
-            Log.ForContext("SourceContext", "HttpRequests")
-               .Information("{@RequestLogFileEntry}", logEntry);
+            _logger.LogInformation("{@RequestLogFileEntry}", logEntry);
         }
     }
 
