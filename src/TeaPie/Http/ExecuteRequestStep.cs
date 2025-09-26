@@ -2,9 +2,10 @@
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
-using TeaPie.Logging;
+
 namespace TeaPie.Http;
 
 internal class ExecuteRequestStep(
@@ -22,32 +23,33 @@ internal class ExecuteRequestStep(
     private readonly IAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
     private readonly IPipeline _pipeline = pipeline;
     private readonly ITestScheduler _testScheduler = testScheduler;
-
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var requestExecutionContext, out var request, out var resiliencePipeline);
 
-        request.Options.Set(_contextKey, requestExecutionContext);
-
-        var response = await ExecuteHttpRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
+        var response = await Execute(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
 
         requestExecutionContext.Response = response;
         requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
+        RequestsLoggingHandler.LogCompletedRequest(request, response);
     }
 
-    private async Task<HttpResponseMessage> ExecuteHttpRequest(
+    private async Task<HttpResponseMessage> Execute(
         ApplicationContext context,
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
         CancellationToken cancellationToken = default)
     {
-        var response = await ExecuteRequest(requestExecutionContext, resiliencePipeline, request, cancellationToken);
+        var response = await ExecuteRequest(context, requestExecutionContext, resiliencePipeline, request, cancellationToken);
+
         InsertStepForScheduledTestsIfAny(context);
+
         return response;
     }
+
     private void InsertStepForScheduledTestsIfAny(ApplicationContext context)
     {
         if (_testScheduler.HasScheduledTest())
@@ -58,6 +60,7 @@ internal class ExecuteRequestStep(
     }
 
     private async Task<HttpResponseMessage> ExecuteRequest(
+        ApplicationContext context,
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
@@ -66,7 +69,8 @@ internal class ExecuteRequestStep(
         ResolveAuthProvider(requestExecutionContext);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequestWithRetries(requestExecutionContext, resiliencePipeline, request, client, cancellationToken);
+        var response = await ExecuteRequest(
+            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
 
         _authProviderAccessor.SetCurrentProviderToDefault();
         return response;
@@ -84,11 +88,12 @@ internal class ExecuteRequestStep(
         }
     }
 
-    private async Task<HttpResponseMessage> ExecuteRequestWithRetries(
+    private async Task<HttpResponseMessage> ExecuteRequest(
         RequestExecutionContext requestExecutionContext,
         ResiliencePipeline<HttpResponseMessage> resiliencePipeline,
         HttpRequestMessage request,
         HttpClient client,
+        ILogger logger,
         CancellationToken cancellationToken)
     {
         var originalMessage = request;
@@ -96,16 +101,26 @@ internal class ExecuteRequestStep(
             ? await originalMessage.Content.ReadAsStringAsync(cancellationToken)
             : string.Empty;
         var messageUsed = false;
+        var retryAttemptNumber = -1;
 
-        var result = await resiliencePipeline.ExecuteAsync(async token =>
+        return await resiliencePipeline.ExecuteAsync(async token =>
         {
-            var requestToSend = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-            return await client.SendAsync(requestToSend, token);
+            retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
+            var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+            request.Options.Set(_contextKey, requestExecutionContext);
+            return await client.SendAsync(request, token);
         }, cancellationToken);
+    }
 
-        RequestsLoggingHandler.LogCompletedRequest(originalMessage, result);
+    private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)
+    {
+        retryAttempt++;
+        if (retryAttempt > 0)
+        {
+            logger.LogDebug("Retry attempt number {Number}.", retryAttempt);
+        }
 
-        return result;
+        return retryAttempt;
     }
 
     private HttpRequestMessage GetMessage(
@@ -128,7 +143,9 @@ internal class ExecuteRequestStep(
         return request;
     }
 
-    private HttpRequestMessage CloneMessage(HttpRequestMessage originalMessage, string content)
+    private HttpRequestMessage CloneMessage(
+        HttpRequestMessage originalMessage,
+        string content)
     {
         var request = new HttpRequestMessage(originalMessage.Method, originalMessage.RequestUri)
         {
@@ -136,10 +153,6 @@ internal class ExecuteRequestStep(
         };
 
         _headersHandler.SetHeaders(originalMessage, request);
-        foreach (var option in originalMessage.Options)
-        {
-            request.Options.TryAdd(option.Key, option.Value);
-        }
         return request;
     }
 
