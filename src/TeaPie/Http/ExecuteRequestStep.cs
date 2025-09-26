@@ -48,6 +48,14 @@ internal class ExecuteRequestStep(
         InsertStepForScheduledTestsIfAny(context);
         return response;
     }
+    private void InsertStepForScheduledTestsIfAny(ApplicationContext context)
+    {
+        if (_testScheduler.HasScheduledTest())
+        {
+            _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
+            context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
+        }
+    }
 
     private async Task<HttpResponseMessage> ExecuteRequest(
         RequestExecutionContext requestExecutionContext,
@@ -62,6 +70,18 @@ internal class ExecuteRequestStep(
 
         _authProviderAccessor.SetCurrentProviderToDefault();
         return response;
+    }
+
+    private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)
+    {
+        if (requestExecutionContext.AuthProvider is null)
+        {
+            _authProviderAccessor.SetCurrentProviderToDefault();
+        }
+        else
+        {
+            _authProviderAccessor.CurrentProvider = requestExecutionContext.AuthProvider;
+        }
     }
 
     private async Task<HttpResponseMessage> ExecuteRequestWithRetries(
@@ -88,42 +108,6 @@ internal class ExecuteRequestStep(
         return result;
     }
 
-    private void InsertStepForScheduledTestsIfAny(ApplicationContext context)
-    {
-        if (_testScheduler.HasScheduledTest())
-        {
-            _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
-            context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
-        }
-    }
-
-    private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)
-    {
-        if (requestExecutionContext.AuthProvider is null)
-        {
-            _authProviderAccessor.SetCurrentProviderToDefault();
-        }
-        else
-        {
-            _authProviderAccessor.CurrentProvider = requestExecutionContext.AuthProvider;
-        }
-    }
-
-    private HttpRequestMessage CloneMessage(HttpRequestMessage originalMessage, string content)
-    {
-        var request = new HttpRequestMessage(originalMessage.Method, originalMessage.RequestUri)
-        {
-            Content = new StringContent(content)
-        };
-
-        _headersHandler.SetHeaders(originalMessage, request);
-        foreach (var option in originalMessage.Options)
-        {
-            request.Options.TryAdd(option.Key, option.Value);
-        }
-        return request;
-    }
-
     private HttpRequestMessage GetMessage(
         RequestExecutionContext requestExecutionContext,
         HttpRequestMessage originalMessage,
@@ -141,6 +125,21 @@ internal class ExecuteRequestStep(
             requestExecutionContext.Request = request;
         }
 
+        return request;
+    }
+
+    private HttpRequestMessage CloneMessage(HttpRequestMessage originalMessage, string content)
+    {
+        var request = new HttpRequestMessage(originalMessage.Method, originalMessage.RequestUri)
+        {
+            Content = new StringContent(content)
+        };
+
+        _headersHandler.SetHeaders(originalMessage, request);
+        foreach (var option in originalMessage.Options)
+        {
+            request.Options.TryAdd(option.Key, option.Value);
+        }
         return request;
     }
 
