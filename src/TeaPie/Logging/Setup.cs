@@ -36,29 +36,20 @@ internal static class Setup
             var config = new LoggerConfiguration()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
+                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel));
+
+            var hasRequestsLogFile = !string.IsNullOrEmpty(pathToRequestsLogFile);
+
+            AddConsoleSink(config, minimumLevel, hasRequestsLogFile);
 
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
-                config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
+                AddLogFileSink(config, pathToLogFile, minimumLevelForLogFile, hasRequestsLogFile);
             }
 
             if (!string.IsNullOrEmpty(pathToRequestsLogFile))
             {
-                if (File.Exists(pathToRequestsLogFile))
-                {
-                    File.Delete(pathToRequestsLogFile);
-                }
-
-                config.WriteTo.Logger(lc => lc
-                    .Filter.ByIncludingOnly(logEvent =>
-                        logEvent.Properties.TryGetValue("SourceContext", out var sourceContext) &&
-                        sourceContext.ToString().Contains("HttpRequests"))
-                    .WriteTo.File(
-                        new JsonFormatter(renderMessage: false),
-                        pathToRequestsLogFile,
-                        restrictedToMinimumLevel: LogEventLevel.Information));
+                AddRequestsFileSink(config, pathToRequestsLogFile, minimumLevelForLogFile);
             }
 
             Log.Logger = config.CreateLogger();
@@ -74,4 +65,51 @@ internal static class Setup
 
     private static LogEventLevel ApplyRestrictiveLogLevelRule(LogLevel minimumLevel)
         => minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug;
+
+    private static void AddConsoleSink(LoggerConfiguration config, LogLevel minimumLevel, bool excludeRequests)
+    {
+        if (excludeRequests)
+        {
+            config.WriteTo.Logger(lc => lc
+                .Filter.ByExcluding(IsHttpRequestLog)
+                .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
+        }
+        else
+        {
+            config.WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
+        }
+    }
+
+    private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile, bool excludeRequests)
+    {
+        if (excludeRequests)
+        {
+            config.WriteTo.Logger(lc => lc
+                .Filter.ByExcluding(IsHttpRequestLog)
+                .WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
+        }
+        else
+        {
+            config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
+        }
+    }
+
+    private static void AddRequestsFileSink(LoggerConfiguration config, string pathToRequestsLogFile, LogLevel minimumLevelForLogFile)
+    {
+        if (File.Exists(pathToRequestsLogFile))
+        {
+            File.Delete(pathToRequestsLogFile);
+        }
+
+        config.WriteTo.Logger(lc => lc
+            .Filter.ByIncludingOnly(IsHttpRequestLog)
+            .WriteTo.File(
+                new JsonFormatter(renderMessage: false),
+                pathToRequestsLogFile,
+                restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
+    }
+
+    private static bool IsHttpRequestLog(Serilog.Events.LogEvent logEvent)
+        => logEvent.Properties.TryGetValue("SourceContext", out var sourceContext) &&
+           sourceContext.ToString().Contains("HttpRequests");
 }
