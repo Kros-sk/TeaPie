@@ -37,6 +37,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         finally
         {
             RecordAttempt(logEntry, response, exception, attemptStartTime);
+            LogCompletedRequest(request, response);
         }
     }
 

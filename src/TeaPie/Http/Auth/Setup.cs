@@ -9,7 +9,6 @@ internal static class Setup
     public static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         services.AddTransient<AuthHttpMessageHandler>();
-        services.AddTransient<RequestsLoggingHandler>();
 
         services.AddHttpClient<ExecuteRequestStep>()
             .AddHttpMessageHandler<AuthHttpMessageHandler>()

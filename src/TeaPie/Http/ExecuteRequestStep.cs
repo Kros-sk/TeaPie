@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
@@ -34,8 +33,6 @@ internal class ExecuteRequestStep(
 
         requestExecutionContext.Response = response;
         requestExecutionContext.TestCaseExecutionContext?.RegisterResponse(response, requestExecutionContext.Name);
-        var loggingHandler = context.ServiceProvider.GetRequiredService<RequestsLoggingHandler>();
-        loggingHandler.LogCompletedRequest(request, response);
     }
 
     private async Task<HttpResponseMessage> Execute(
