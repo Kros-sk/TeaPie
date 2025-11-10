@@ -19,7 +19,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             return await base.SendAsync(request, cancellationToken);
         }
 
-        var logEntry = GetOrCreateLogEntry(request, requestContext);
+        var logEntry = await GetOrCreateLogEntryAsync(request, requestContext);
         var attemptStartTime = DateTime.UtcNow;
         HttpResponseMessage? response = null;
         Exception? exception = null;
@@ -36,12 +36,12 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         }
         finally
         {
-            RecordAttempt(logEntry, response, exception, attemptStartTime);
-            LogCompletedRequest(request, response);
+            await RecordAttemptAsync(logEntry, response, exception, attemptStartTime);
+            await LogCompletedRequestAsync(request, response);
         }
     }
 
-    private RequestLogFileEntry GetOrCreateLogEntry(HttpRequestMessage request, RequestExecutionContext requestContext)
+    private async Task<RequestLogFileEntry> GetOrCreateLogEntryAsync(HttpRequestMessage request, RequestExecutionContext requestContext)
     {
         if (request.Options.TryGetValue(LogEntryKey, out var existingEntry) && existingEntry != null)
         {
@@ -52,7 +52,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         {
             RequestId = Guid.NewGuid().ToString(),
             StartTime = DateTime.UtcNow,
-            Request = CreateRequestInfo(requestContext, request),
+            Request = await CreateRequestInfoAsync(requestContext, request),
             Authentication = CreateAuthInfo(),
             Metadata = CreateMetadata(requestContext),
             Retries = new RetryInfo { AttemptCount = 0, Attempts = [] },
@@ -63,7 +63,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         return logEntry;
     }
 
-    private static void RecordAttempt(RequestLogFileEntry logEntry, HttpResponseMessage? response, Exception? exception, DateTime attemptStartTime)
+    private static async Task RecordAttemptAsync(RequestLogFileEntry logEntry, HttpResponseMessage? response, Exception? exception, DateTime attemptStartTime)
     {
         var attemptNumber = logEntry.Retries.AttemptCount + 1;
         var attempt = new RetryAttempt
@@ -78,7 +78,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 
         if (response != null)
         {
-            attempt.Response = CreateResponseInfo(response);
+            attempt.Response = await CreateResponseInfoAsync(response);
         }
 
         logEntry.Retries.Attempts.Add(attempt);
@@ -91,20 +91,20 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         }
     }
 
-    public void LogCompletedRequest(HttpRequestMessage request, HttpResponseMessage? finalResponse)
+    public async Task LogCompletedRequestAsync(HttpRequestMessage request, HttpResponseMessage? finalResponse)
     {
         if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
         {
             if (finalResponse != null && logEntry.Response == null)
             {
-                logEntry.Response = CreateResponseInfo(finalResponse);
+                logEntry.Response = await CreateResponseInfoAsync(finalResponse);
             }
 
             _logger.LogInformation("{@RequestLogFileEntry}", logEntry);
         }
     }
 
-    private static RequestInfo CreateRequestInfo(RequestExecutionContext requestContext, HttpRequestMessage request)
+    private static async Task<RequestInfo> CreateRequestInfoAsync(RequestExecutionContext requestContext, HttpRequestMessage request)
     {
         return new RequestInfo
         {
@@ -112,26 +112,26 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             Method = request.Method.ToString(),
             Uri = request.RequestUri?.ToString() ?? string.Empty,
             Headers = ProcessHeaders(request.Headers),
-            Body = GetContentBody(request.Content),
+            Body = await GetContentBodyAsync(request.Content),
             ContentType = request.Content?.Headers.ContentType?.MediaType,
             FilePath = requestContext.RequestFile.RelativePath
         };
     }
 
-    private static ResponseInfo CreateResponseInfo(HttpResponseMessage response)
+    private static async Task<ResponseInfo> CreateResponseInfoAsync(HttpResponseMessage response)
     {
         return new ResponseInfo
         {
             StatusCode = (int)response.StatusCode,
             ReasonPhrase = response.ReasonPhrase,
             Headers = ProcessHeaders(response.Headers),
-            Body = GetContentBody(response.Content),
+            Body = await GetContentBodyAsync(response.Content),
             ContentType = response.Content?.Headers.ContentType?.MediaType,
             ReceivedAt = DateTime.UtcNow
         };
     }
 
-    private static string? GetContentBody(HttpContent? content)
+    private static async Task<string?> GetContentBodyAsync(HttpContent? content)
     {
         if (content == null)
         {
@@ -140,7 +140,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 
         try
         {
-            return content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return await content.ReadAsStringAsync();
         }
         catch
         {
