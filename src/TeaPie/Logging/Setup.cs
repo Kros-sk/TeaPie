@@ -38,13 +38,11 @@ internal static class Setup
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
                 .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel));
 
-            var hasRequestsLogFile = !string.IsNullOrEmpty(pathToRequestsLogFile);
-
             AddConsoleSink(config, minimumLevel);
 
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
-                AddLogFileSink(config, pathToLogFile, minimumLevelForLogFile, hasRequestsLogFile);
+                AddLogFileSink(config, pathToLogFile, minimumLevelForLogFile);
             }
 
             if (!string.IsNullOrEmpty(pathToRequestsLogFile))
@@ -73,18 +71,11 @@ internal static class Setup
                 .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
     }
 
-    private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile, bool excludeRequests)
+    private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile)
     {
-        if (excludeRequests)
-        {
-            config.WriteTo.Logger(lc => lc
+        config.WriteTo.Logger(lc => lc
                 .Filter.ByExcluding(IsHttpRequestLog)
                 .WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
-        }
-        else
-        {
-            config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
-        }
     }
 
     private static void AddRequestsFileSink(LoggerConfiguration config, string pathToRequestsLogFile, LogLevel minimumLevelForLogFile)
