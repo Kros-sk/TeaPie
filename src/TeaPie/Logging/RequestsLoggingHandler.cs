@@ -54,7 +54,6 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             StartTime = DateTime.UtcNow,
             Request = await CreateRequestInfoAsync(requestContext, request),
             Authentication = CreateAuthInfo(),
-            Metadata = CreateMetadata(requestContext),
             Retries = new RetryInfo { AttemptCount = 0, Attempts = [] },
             Errors = []
         };
@@ -156,15 +155,6 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             ProviderType = currentProvider.GetType().Name,
             IsDefault = currentProvider == _authProviderAccessor.DefaultProvider,
             AuthenticatedAt = DateTime.UtcNow
-        };
-    }
-
-    private static Dictionary<string, object> CreateMetadata(RequestExecutionContext requestContext)
-    {
-        return new Dictionary<string, object>
-        {
-            ["testCaseId"] = requestContext.TestCaseExecutionContext?.Id.ToString() ?? "none",
-            ["hasResiliencePipeline"] = requestContext.ResiliencePipeline != null
         };
     }
 

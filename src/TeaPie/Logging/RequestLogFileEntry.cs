@@ -16,7 +16,6 @@ internal class RequestLogFileEntry
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public AuthInfo? Authentication { get; set; }
     public List<string> Errors { get; set; } = [];
-    public Dictionary<string, object> Metadata { get; set; } = [];
 }
 
 internal class RequestInfo
