@@ -40,7 +40,7 @@ internal static class Setup
 
             var hasRequestsLogFile = !string.IsNullOrEmpty(pathToRequestsLogFile);
 
-            AddConsoleSink(config, minimumLevel, hasRequestsLogFile);
+            AddConsoleSink(config, minimumLevel);
 
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
@@ -66,18 +66,11 @@ internal static class Setup
     private static LogEventLevel ApplyRestrictiveLogLevelRule(LogLevel minimumLevel)
         => minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug;
 
-    private static void AddConsoleSink(LoggerConfiguration config, LogLevel minimumLevel, bool excludeRequests)
+    private static void AddConsoleSink(LoggerConfiguration config, LogLevel minimumLevel)
     {
-        if (excludeRequests)
-        {
-            config.WriteTo.Logger(lc => lc
+        config.WriteTo.Logger(lc => lc
                 .Filter.ByExcluding(IsHttpRequestLog)
                 .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
-        }
-        else
-        {
-            config.WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
-        }
     }
 
     private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile, bool excludeRequests)
