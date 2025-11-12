@@ -91,7 +91,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         }
     }
 
-    public async Task LogCompletedRequestAsync(HttpRequestMessage request, HttpResponseMessage? finalResponse)
+    private async Task LogCompletedRequestAsync(HttpRequestMessage request, HttpResponseMessage? finalResponse)
     {
         if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
         {

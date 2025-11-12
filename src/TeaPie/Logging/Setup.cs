@@ -109,7 +109,14 @@ internal static class Setup
                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
     }
 
-    private static bool IsHttpRequestLog(Serilog.Events.LogEvent logEvent)
-        => logEvent.Properties.TryGetValue("SourceContext", out var sourceContext) &&
-           sourceContext.ToString().Contains("HttpRequests");
+    private static bool IsHttpRequestLog(LogEvent logEvent)
+    {
+        if (logEvent.Properties.TryGetValue("SourceContext", out var sourceContext))
+        {
+            var context = sourceContext.ToString().Trim('"');
+            return context.Equals("HttpRequests");
+        }
+
+        return false;
+    }
 }
