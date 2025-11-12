@@ -141,9 +141,9 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         {
             return await content.ReadAsStringAsync();
         }
-        catch
+        catch(OperationCanceledException ex)
         {
-            return "[Content reading failed]";
+            return ($"Content reading failed: {ex.Message}");
         }
     }
 
