@@ -22,17 +22,17 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         try
         {
             var response = await base.SendAsync(request, cancellationToken);
-            await LogAttemptAsync(requestContext, request, response, null, attemptStartTime);
+            await LogRequestAsync(requestContext, request, response, null, attemptStartTime);
             return response;
         }
         catch (Exception ex)
         {
-            await LogAttemptAsync(requestContext, request, null, ex, attemptStartTime);
+            await LogRequestAsync(requestContext, request, null, ex, attemptStartTime);
             throw;
         }
     }
 
-    private async Task LogAttemptAsync(
+    private async Task LogRequestAsync(
         RequestExecutionContext requestContext,
         HttpRequestMessage request,
         HttpResponseMessage? response,
