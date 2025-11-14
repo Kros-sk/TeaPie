@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Filters;
 using Serilog.Formatting.Json;
 
 namespace TeaPie.Logging;
@@ -67,15 +68,15 @@ internal static class Setup
     private static void AddConsoleSink(LoggerConfiguration config, LogLevel minimumLevel)
     {
         config.WriteTo.Logger(lc => lc
-                .Filter.ByExcluding(IsHttpRequestLog)
-                .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
+            .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
+            .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
     }
 
     private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile)
     {
         config.WriteTo.Logger(lc => lc
-                .Filter.ByExcluding(IsHttpRequestLog)
-                .WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
+            .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
+            .WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
     }
 
     private static void AddRequestsFileSink(LoggerConfiguration config, string pathToRequestsLogFile, LogLevel minimumLevelForLogFile)
@@ -86,21 +87,10 @@ internal static class Setup
         }
 
         config.WriteTo.Logger(lc => lc
-            .Filter.ByIncludingOnly(IsHttpRequestLog)
+            .Filter.ByIncludingOnly(Matching.FromSource("HttpRequests"))
             .WriteTo.File(
                 new JsonFormatter(renderMessage: false),
                 pathToRequestsLogFile,
                 restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
-    }
-
-    private static bool IsHttpRequestLog(LogEvent logEvent)
-    {
-        if (logEvent.Properties.TryGetValue("SourceContext", out var sourceContext))
-        {
-            var context = sourceContext.ToString().Trim('"');
-            return context.Equals("HttpRequests");
-        }
-
-        return false;
     }
 }
