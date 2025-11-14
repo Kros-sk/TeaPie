@@ -2,7 +2,6 @@
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
-using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
 
@@ -154,10 +153,6 @@ internal class ExecuteRequestStep(
         };
 
         _headersHandler.SetHeaders(originalMessage, request);
-        if (originalMessage.Options.TryGetValue(RequestsLoggingHandler.LogEntryKey, out var logEntry))
-        {
-            request.Options.Set(RequestsLoggingHandler.LogEntryKey, logEntry);
-        }
         return request;
     }
 

@@ -10,7 +10,6 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
     private readonly IAuthProviderAccessor _authProviderAccessor = authProviderAccessor;
     private readonly ILogger _logger = loggerFactory.CreateLogger("HttpRequests");
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
-    public static readonly HttpRequestOptionsKey<RequestLogFileEntry> LogEntryKey = new("__TeaPie_LogEntry__");
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -19,88 +18,39 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
             return await base.SendAsync(request, cancellationToken);
         }
 
-        var logEntry = await GetOrCreateLogEntryAsync(request, requestContext);
         var attemptStartTime = DateTime.UtcNow;
-        HttpResponseMessage? response = null;
-        Exception? exception = null;
-
         try
         {
-            response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
+            await LogAttemptAsync(requestContext, request, response, null, attemptStartTime);
             return response;
         }
         catch (Exception ex)
         {
-            exception = ex;
+            await LogAttemptAsync(requestContext, request, null, ex, attemptStartTime);
             throw;
-        }
-        finally
-        {
-            await RecordAttemptAsync(logEntry, response, exception, attemptStartTime);
-            await LogCompletedRequestAsync(request, response);
         }
     }
 
-    private async Task<RequestLogFileEntry> GetOrCreateLogEntryAsync(HttpRequestMessage request, RequestExecutionContext requestContext)
+    private async Task LogAttemptAsync(
+        RequestExecutionContext requestContext,
+        HttpRequestMessage request,
+        HttpResponseMessage? response,
+        Exception? exception,
+        DateTime attemptStartTime)
     {
-        if (request.Options.TryGetValue(LogEntryKey, out var existingEntry) && existingEntry != null)
-        {
-            return existingEntry;
-        }
-
         var logEntry = new RequestLogFileEntry
         {
             RequestId = Guid.NewGuid().ToString(),
-            StartTime = DateTime.UtcNow,
+            StartTime = attemptStartTime,
+            EndTime = DateTime.UtcNow,
             Request = await CreateRequestInfoAsync(requestContext, request),
+            Response = response != null ? await CreateResponseInfoAsync(response) : null,
             Authentication = CreateAuthInfo(),
-            Retries = new RetryInfo { AttemptCount = 0, Attempts = [] },
-            Errors = []
+            Errors = exception != null ? [exception.Message] : []
         };
 
-        request.Options.Set(LogEntryKey, logEntry);
-        return logEntry;
-    }
-
-    private static async Task RecordAttemptAsync(RequestLogFileEntry logEntry, HttpResponseMessage? response, Exception? exception, DateTime attemptStartTime)
-    {
-        var attemptNumber = logEntry.Retries.AttemptCount + 1;
-        var attempt = new RetryAttempt
-        {
-            AttemptNumber = attemptNumber,
-            Timestamp = attemptStartTime,
-            Reason = attemptNumber == 1 ? "Initial attempt" : "Resilience policy triggered retry",
-            IsSuccessful = response?.IsSuccessStatusCode ?? false,
-            DurationMs = (DateTime.UtcNow - attemptStartTime).TotalMilliseconds,
-            Exception = exception
-        };
-
-        if (response != null)
-        {
-            attempt.Response = await CreateResponseInfoAsync(response);
-        }
-
-        logEntry.Retries.Attempts.Add(attempt);
-        logEntry.Retries.AttemptCount = attemptNumber;
-        logEntry.EndTime = DateTime.UtcNow;
-
-        if (exception != null)
-        {
-            logEntry.Errors.Add(exception.Message);
-        }
-    }
-
-    private async Task LogCompletedRequestAsync(HttpRequestMessage request, HttpResponseMessage? finalResponse)
-    {
-        if (request.Options.TryGetValue(LogEntryKey, out var logEntry) && logEntry != null)
-        {
-            if (finalResponse != null && logEntry.Response == null)
-            {
-                logEntry.Response = await CreateResponseInfoAsync(finalResponse);
-            }
-
-            _logger.LogInformation("{@RequestLogFileEntry}", logEntry);
-        }
+        _logger.LogInformation("{@RequestLogFileEntry}", logEntry);
     }
 
     private static async Task<RequestInfo> CreateRequestInfoAsync(RequestExecutionContext requestContext, HttpRequestMessage request)

@@ -12,7 +12,6 @@ internal class RequestLogFileEntry
     public RequestInfo Request { get; set; } = new();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseInfo? Response { get; set; }
-    public RetryInfo Retries { get; set; } = new();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public AuthInfo? Authentication { get; set; }
     public List<string> Errors { get; set; } = [];
@@ -42,26 +41,6 @@ internal class ResponseInfo
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ContentType { get; set; }
     public DateTime ReceivedAt { get; set; } = DateTime.UtcNow;
-}
-
-internal class RetryInfo
-{
-    public int AttemptCount { get; set; } = 1;
-    public List<RetryAttempt> Attempts { get; set; } = [];
-}
-
-internal class RetryAttempt
-{
-    public int AttemptNumber { get; set; }
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Reason { get; set; }
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public ResponseInfo? Response { get; set; }
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public Exception? Exception { get; set; }
-    public bool IsSuccessful { get; set; }
-    public double DurationMs { get; set; }
 }
 
 internal class AuthInfo
