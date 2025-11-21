@@ -13,21 +13,24 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        if (!request.Options.TryGetValue(_contextKey, out var requestContext) || requestContext is null)
-        {
-            return await base.SendAsync(request, cancellationToken);
-        }
+        request.Options.TryGetValue(_contextKey, out var requestContext);
 
         var attemptStartTime = DateTime.UtcNow;
         try
         {
             var response = await base.SendAsync(request, cancellationToken);
-            await LogRequestAsync(requestContext, request, response, null, attemptStartTime);
+            if (requestContext is not null)
+            {
+                await LogRequestAsync(requestContext, request, response, null, attemptStartTime);
+            }
             return response;
         }
         catch (Exception ex)
         {
-            await LogRequestAsync(requestContext, request, null, ex, attemptStartTime);
+            if (requestContext is not null)
+            {
+                await LogRequestAsync(requestContext, request, null, ex, attemptStartTime);
+            }
             throw;
         }
     }
@@ -41,7 +44,6 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
     {
         var logEntry = new RequestLogFileEntry
         {
-            RequestId = Guid.NewGuid().ToString(),
             StartTime = attemptStartTime,
             EndTime = DateTime.UtcNow,
             Request = await CreateRequestInfoAsync(requestContext, request),
@@ -91,7 +93,7 @@ internal class RequestsLoggingHandler(IAuthProviderAccessor authProviderAccessor
         {
             return await content.ReadAsStringAsync();
         }
-        catch(OperationCanceledException ex)
+        catch (OperationCanceledException ex)
         {
             return ($"Content reading failed: {ex.Message}");
         }

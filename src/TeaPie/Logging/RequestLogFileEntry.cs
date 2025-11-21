@@ -4,8 +4,8 @@ namespace TeaPie.Logging;
 
 internal class RequestLogFileEntry
 {
-    public string RequestId { get; set; } = Guid.NewGuid().ToString();
-    public DateTime StartTime { get; set; } = DateTime.UtcNow;
+    public string RequestId { get; init; } = Guid.NewGuid().ToString();
+    public DateTime StartTime { get; set; }
     public DateTime? EndTime { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public double? DurationMs => EndTime?.Subtract(StartTime).TotalMilliseconds;
