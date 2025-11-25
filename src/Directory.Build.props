@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Version>1.3.0</Version>
+        <Version>1.4.0</Version>
         <Authors>Matej Grochal</Authors>
         <Company>KROS a.s.</Company>
         <Copyright>Copyright © KROS a.s.</Copyright>
