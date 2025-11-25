@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
+using Serilog.Filters;
+using Serilog.Formatting.Json;
 
 namespace TeaPie.Logging;
 
@@ -12,6 +14,7 @@ internal static class Setup
         configure();
 
         services.AddTransient<LoggingInterceptorHandler>();
+        services.AddTransient<RequestsLoggingHandler>();
         services.AddSingleton<NuGet.Common.ILogger, NuGetLoggerAdapter>();
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
@@ -22,7 +25,8 @@ internal static class Setup
         this IServiceCollection services,
         LogLevel minimumLevel,
         string pathToLogFile = "",
-        LogLevel minimumLevelForLogFile = LogLevel.Debug)
+        LogLevel minimumLevelForLogFile = LogLevel.Debug,
+        string? pathToRequestsLogFile = null)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -33,12 +37,18 @@ internal static class Setup
             var config = new LoggerConfiguration()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel());
+                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel));
+
+            AddConsoleSink(config, minimumLevel);
 
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
-                config.WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel());
+                AddLogFileSink(config, pathToLogFile, minimumLevelForLogFile);
+            }
+
+            if (!string.IsNullOrEmpty(pathToRequestsLogFile))
+            {
+                AddRequestsFileSink(config, pathToRequestsLogFile, minimumLevelForLogFile);
             }
 
             Log.Logger = config.CreateLogger();
@@ -54,4 +64,33 @@ internal static class Setup
 
     private static LogEventLevel ApplyRestrictiveLogLevelRule(LogLevel minimumLevel)
         => minimumLevel >= LogLevel.Information ? LogEventLevel.Warning : LogEventLevel.Debug;
+
+    private static void AddConsoleSink(LoggerConfiguration config, LogLevel minimumLevel)
+    {
+        config.WriteTo.Logger(lc => lc
+            .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
+            .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
+    }
+
+    private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile)
+    {
+        config.WriteTo.Logger(lc => lc
+            .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
+            .WriteTo.File(pathToLogFile, restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
+    }
+
+    private static void AddRequestsFileSink(LoggerConfiguration config, string pathToRequestsLogFile, LogLevel minimumLevelForLogFile)
+    {
+        if (File.Exists(pathToRequestsLogFile))
+        {
+            File.Delete(pathToRequestsLogFile);
+        }
+
+        config.WriteTo.Logger(lc => lc
+            .Filter.ByIncludingOnly(Matching.FromSource("HttpRequests"))
+            .WriteTo.File(
+                new JsonFormatter(renderMessage: false),
+                pathToRequestsLogFile,
+                restrictedToMinimumLevel: minimumLevelForLogFile.ToSerilogLogLevel()));
+    }
 }

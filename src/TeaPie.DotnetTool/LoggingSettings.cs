@@ -15,6 +15,10 @@ internal class LoggingSettings : CommandSettings
         "Supported levels: Trace, Debug, Information, Warning, Error, Critical, None.")]
     public LogLevel LogFileLogLevel { get; init; } = LogLevel.Information;
 
+    [CommandOption("--requests-log-file")]
+    [Description("Path to the file where structured JSON data about HTTP requests will be saved.")]
+    public string? RequestsLogFile { get; init; }
+
     [CommandOption("-l|--log-level")]
     [Description("Log level for console output. " +
         "Supported levels: Trace, Debug, Information, Warning, Error, Critical, None.")]

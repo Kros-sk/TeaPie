@@ -12,6 +12,7 @@ internal static class Setup
 
         services.AddHttpClient<ExecuteRequestStep>()
             .AddHttpMessageHandler<AuthHttpMessageHandler>()
+            .AddHttpMessageHandler<RequestsLoggingHandler>()
             .AddHttpMessageHandler<LoggingInterceptorHandler>();
 
         services.AddSingleton<IAuthProviderRegistry, AuthProviderRegistry>();

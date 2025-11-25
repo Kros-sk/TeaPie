@@ -22,6 +22,7 @@ internal class ExecuteRequestStep(
     private readonly IAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
     private readonly IPipeline _pipeline = pipeline;
     private readonly ITestScheduler _testScheduler = testScheduler;
+    private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
@@ -100,10 +101,13 @@ internal class ExecuteRequestStep(
         var messageUsed = false;
         var retryAttemptNumber = -1;
 
+        originalMessage.Options.Set(_contextKey, requestExecutionContext);
+
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+            request.Options.Set(_contextKey, requestExecutionContext);
             return await client.SendAsync(request, token);
         }, cancellationToken);
     }
