@@ -134,7 +134,7 @@ teapie init [path-to-teapie-folder] [--no-logo]
 **Full Syntax:**
 
 ```sh
-teapie test [path] [--temp-path <path>] [-e|--env <envName>] [--env-file <file>] [-r|--report-file <file>] [-i|--init-script <script>] [--no-cache-vars] [--log-file <file>] [--log-file-log-level <level>] [-l|--log-level <level>] [-d|--debug] [-v|--verbose] [-q|--quiet] [--no-logo]
+teapie test [path] [--temp-path <path>] [-e|--env <envName>] [--env-file <file>] [-r|--report-file <file>] [-i|--init-script <script>] [--no-cache-vars] [--log-file <file>] [--log-file-log-level <level>] [--requests-log-file <file>] [-l|--log-level <level>]  [-d|--debug] [-v|--verbose] [-q|--quiet] [--no-logo]
 ```
 
 | **Argument** | **Meaning** | **Mandatory** |
@@ -151,6 +151,7 @@ teapie test [path] [--temp-path <path>] [-e|--env <envName>] [--env-file <file>]
 | `--no-cache-vars` | Disables loading and caching variables from/to file. | `false` |
 | `--log-file` | Specifies the path to the file where all logs will be saved. | `null` |
 | `--log-file-log-level` | Log level for the log file (only applicable if `--log-file` is set). Supported levels: `Trace`, `Debug`, `Information`, `Warning`, `Error`, `Critical`, `None`. | `Information` |
+| `--requests-log-file` | Specifies path to the file where structured JSON data about HTTP requests will be saved. | `null` |
 | `-l`, `--log-level` | Log level for console output. Supported levels: `Trace`, `Debug`, `Information`, `Warning`, `Error`, `Critical`, `None`. | `Information` |
 | `-d`, `--debug` | Displays debug information. | `false` |
 | `-v`, `--verbose` | Displays all available information, including debug details. | `false` |

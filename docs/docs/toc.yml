@@ -37,6 +37,8 @@
   href: reporting.md
 - name: Logging
   href: logging.md
+  name: HTTP Requests Logging
+  href: requests-logging.md
 - name: JSON Handling
   href: json.md
 - name: Debugging
