@@ -11,7 +11,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         var pathToLogFile = settings.LogFile ?? string.Empty;
         var logLevel = Helper.ResolveLogLevel(settings);
         var path = PathResolver.Resolve(settings.Path, Directory.GetCurrentDirectory());
-        var pathToRequestsLogFile = settings.RequestsLogFile;
+        var pathToRequestsLogFile = settings.RequestsLogFile ?? string.Empty;
 
         var appBuilder = ApplicationBuilder.Create(path.IsCollectionPath());
 
