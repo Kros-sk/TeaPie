@@ -96,10 +96,11 @@ public class RequestsLoggingHandlerShould
     private static bool ValidateLogEntry(object? state, bool shouldFail)
     {
         var entry = ExtractEntry(state);
+
         return entry != null
             && !string.IsNullOrEmpty(entry.RequestId)
             && entry.StartTime != default
-            && entry.EndTime != null
+            && entry.EndTime != default
             && entry.DurationMs >= 0
             && entry.Request.Method == "GET"
             && entry.Request.Uri == "https://example.com/"
