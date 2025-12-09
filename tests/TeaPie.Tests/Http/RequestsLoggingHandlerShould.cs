@@ -36,8 +36,7 @@ public class RequestsLoggingHandlerShould
         logger.Received(1).Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
-            Arg.Is<object>(state =>
-                state.ToString()!.Equals(typeof(RequestLogFileEntry).FullName)),
+            Arg.Is<object>(state => ValidateLogEntry(state, shouldFail)),
             null,
             Arg.Any<Func<object, Exception?, string>>());
     }
@@ -47,7 +46,6 @@ public class RequestsLoggingHandlerShould
     {
         var (handler, logger, _) = CreateHandler();
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com");
-
         var invoker = new HttpMessageInvoker(handler);
         await invoker.SendAsync(request, CancellationToken.None);
 
@@ -62,20 +60,66 @@ public class RequestsLoggingHandlerShould
     [Fact]
     public async Task LogMultipleConsecutiveRequests()
     {
-        var (handler, logger, _) = CreateHandler();
+        var (handler, logger, innerHandler) = CreateHandler();
         var invoker = new HttpMessageInvoker(handler);
+        await invoker.SendAsync(CreateRequest(), CancellationToken.None);
 
-        await invoker.SendAsync(CreateRequest(), CancellationToken.None);
-        await invoker.SendAsync(CreateRequest(), CancellationToken.None);
+        innerHandler.Exception = new HttpRequestException("Network error");
+        await ThrowsAsync<HttpRequestException>(
+            async () => await invoker.SendAsync(CreateRequest(), CancellationToken.None));
+
+        innerHandler.Exception = null;
         await invoker.SendAsync(CreateRequest(), CancellationToken.None);
 
         logger.Received(3).Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
-            Arg.Is<object>(state =>
-                state.ToString()!.Equals(typeof(RequestLogFileEntry).FullName)),
+            Arg.Any<object>(),
             null,
             Arg.Any<Func<object, Exception?, string>>());
+
+        logger.Received(2).Log(
+            LogLevel.Information,
+            Arg.Any<EventId>(),
+            Arg.Is<object>(state => ValidateLogEntry(state, false)),
+            null,
+            Arg.Any<Func<object, Exception?, string>>());
+
+        logger.Received(1).Log(
+            LogLevel.Information,
+            Arg.Any<EventId>(),
+            Arg.Is<object>(state => ValidateLogEntry(state, true)),
+            null,
+            Arg.Any<Func<object, Exception?, string>>());
+    }
+
+    private static bool ValidateLogEntry(object? state, bool shouldFail)
+    {
+        var entry = ExtractEntry(state);
+        return entry != null
+            && !string.IsNullOrEmpty(entry.RequestId)
+            && entry.StartTime != default
+            && entry.EndTime != null
+            && entry.DurationMs >= 0
+            && entry.Request.Method == "GET"
+            && entry.Request.Uri == "https://example.com/"
+            && entry.Request.FilePath == "test.http"
+            && (shouldFail ? entry.Errors.Count > 0 : entry.Errors.Count == 0);
+    }
+
+    private static RequestLogFileEntry? ExtractEntry(object? state)
+    {
+        if (state is RequestLogFileEntry entry)
+        {
+            return entry;
+        }
+
+        if (state is IEnumerable<KeyValuePair<string, object?>> pairs)
+        {
+            return pairs.Select(kvp => kvp.Value).OfType<RequestLogFileEntry>().FirstOrDefault();
+        }
+
+        return null;
     }
 
     private static (RequestsLoggingHandler handler, ILogger logger, TestHttpMessageHandler innerHandler) CreateHandler()
@@ -96,7 +140,6 @@ public class RequestsLoggingHandlerShould
     {
         var file = new InternalFile("test.http", "test.http", new Folder("", "", "", null));
         var context = new RequestExecutionContext(file);
-
         var request = new HttpRequestMessage(HttpMethod.Get, "https://example.com");
         request.Options.Set(_contextKey, context);
 
