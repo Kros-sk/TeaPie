@@ -11,6 +11,7 @@ public class TestSchedulerShould
         var scheduler = new TestScheduler();
         var test = new Test(
             string.Empty,
+            false,
             async () => await Task.CompletedTask,
             new TestResult.NotRun() { TestName = string.Empty },
             null);

@@ -125,7 +125,7 @@ public class TeaPieTestingExtensionsShould
             }
         );
 
-    private static Tester PrepareTester()
+    private static Registrator PrepareTester()
     {
         var accessor = new CurrentTestCaseExecutionContextAccessor()
         {
@@ -134,12 +134,9 @@ public class TeaPieTestingExtensionsShould
                     InternalFile.Create("path", new Folder(string.Empty, string.Empty, string.Empty, null))))
         };
 
-        return new(
-            accessor,
-            Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<ILogger<Tester>>());
+        return new(accessor);
     }
 
-    private static TeaPie PrepareTeaPieInstance(ITester tester)
+    private static TeaPie PrepareTeaPieInstance(IRegistrator tester)
         => new TeaPieBuilder().WithService(tester).Build();
 }

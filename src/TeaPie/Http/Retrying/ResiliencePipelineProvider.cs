@@ -3,6 +3,7 @@ using Polly;
 using Polly.Retry;
 using System.Net;
 using System.Text;
+using TeaPie.Testing;
 using ResiliencePipeline = Polly.ResiliencePipeline<System.Net.Http.HttpResponseMessage>;
 using RetryStrategy = Polly.Retry.RetryStrategyOptions<System.Net.Http.HttpResponseMessage>;
 
@@ -11,14 +12,21 @@ namespace TeaPie.Http.Retrying;
 internal interface IResiliencePipelineProvider
 {
     ResiliencePipeline GetResiliencePipeline(
-        string nameOfBaseStrategy, RetryStrategy? explicitlyOverridenStrategy, IReadOnlyList<HttpStatusCode> statusCodes);
+        string nameOfBaseStrategy,
+        RetryStrategy? explicitlyOverridenStrategy,
+        IReadOnlyList<HttpStatusCode> statusCodes,
+        string? retryUntilTestPassTestName = null);
 }
 
-internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogger<ResiliencePipelineProvider> logger)
+internal class ResiliencePipelineProvider(
+    IRetryStrategyRegistry registry,
+    ILogger<ResiliencePipelineProvider> logger,
+    ITester testExecutor)
     : IResiliencePipelineProvider
 {
     private readonly IRetryStrategyRegistry _retryStrategyRegistry = registry;
     private readonly ILogger<ResiliencePipelineProvider> _logger = logger;
+    private readonly ITester _testExecutor = testExecutor;
 
     public static readonly ResiliencePipeline DefaultResiliencePipeline =
         ResiliencePipeline.Empty;
@@ -27,7 +35,10 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
         new() { { string.Empty, DefaultResiliencePipeline } };
 
     public ResiliencePipeline<HttpResponseMessage> GetResiliencePipeline(
-        string nameOfBaseRetryStrategy, RetryStrategy? overridRetryStrategy, IReadOnlyList<HttpStatusCode> statusCodes)
+        string nameOfBaseRetryStrategy,
+        RetryStrategy? overridRetryStrategy,
+        IReadOnlyList<HttpStatusCode> statusCodes,
+        string? retryUntilTestPassTestName = null)
     {
         var isBaseRetryStrategyAltered = false;
         CheckAndResolveBaseRetryStrategy(nameOfBaseRetryStrategy, out var finalRetryStrategy, out var nameOfFinalStrategy);
@@ -35,6 +46,8 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
             overridRetryStrategy, ref finalRetryStrategy, ref nameOfFinalStrategy, ref isBaseRetryStrategyAltered);
         ApplyRetryUntilStatusCodesConditionIfAny(
             statusCodes, ref finalRetryStrategy, ref nameOfFinalStrategy, ref isBaseRetryStrategyAltered);
+        ApplyRetryUntilTestPassConditionIfAny(
+           retryUntilTestPassTestName, ref finalRetryStrategy, ref nameOfFinalStrategy, ref isBaseRetryStrategyAltered);
 
         LogUsageOfRetryStrategy(nameOfFinalStrategy, finalRetryStrategy, isBaseRetryStrategyAltered);
 
@@ -50,7 +63,25 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
         if (statusCodes.Any())
         {
             nameOfFinalStrategy = GetRetryUntilStatusCodesStrategyName(statusCodes, nameOfFinalStrategy);
-            finalRetryStrategy = GetRetryStrategy(statusCodes, finalRetryStrategy);
+            finalRetryStrategy = GetRetryStrategyWithCondition(
+                response => !statusCodes.Contains(response.StatusCode),
+                finalRetryStrategy);
+            altered = true;
+        }
+    }
+
+    private void ApplyRetryUntilTestPassConditionIfAny(
+    string? testName,
+    ref RetryStrategy finalRetryStrategy,
+    ref string nameOfFinalStrategy,
+    ref bool altered)
+    {
+        if (!string.IsNullOrEmpty(testName))
+        {
+            nameOfFinalStrategy = $"{nameOfFinalStrategy}+{RetryingDirectives.RetryUntilTestPassDirectiveFullName}:{testName}";
+            finalRetryStrategy = GetRetryStrategyWithCondition(
+                response => !_testExecutor.ExecuteTestSync(testName, response),
+                finalRetryStrategy);
             altered = true;
         }
     }
@@ -120,12 +151,14 @@ internal class ResiliencePipelineProvider(IRetryStrategyRegistry registry, ILogg
             .AddRetry(retryStrategy)
             .Build();
 
-    private static RetryStrategy GetRetryStrategy(IReadOnlyList<HttpStatusCode> statusCodes, RetryStrategy baseRetryStrategy)
+    private static RetryStrategy GetRetryStrategyWithCondition(
+    Func<HttpResponseMessage, bool> shouldRetryPredicate,
+    RetryStrategy baseRetryStrategy)
     {
         var retryStrategyWithCondition = new RetryStrategy()
         {
             ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
-                .HandleResult(response => !statusCodes.Contains(response.StatusCode))
+                .HandleResult(shouldRetryPredicate)
         };
 
         return MergeRetryStrategies(baseRetryStrategy, retryStrategyWithCondition);

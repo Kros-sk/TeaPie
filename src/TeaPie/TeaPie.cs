@@ -20,7 +20,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         IVariables variables,
         IFunctions functions,
         ILogger logger,
-        ITester tester,
+        IRegistrator tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
@@ -53,7 +53,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
         IVariables variables,
         IFunctions functions,
         ILogger logger,
-        ITester tester,
+        IRegistrator tester,
         ICurrentTestCaseExecutionContextAccessor currentTestCaseExecutionContextAccessor,
         ITestResultsSummaryReporter reporter,
         IRetryStrategyRegistry retryStrategiesRegistry,
@@ -158,7 +158,7 @@ public sealed class TeaPie : IVariablesExposer, IExecutionContextExposer
     #endregion
 
     #region Testing
-    internal readonly ITester _tester;
+    internal readonly IRegistrator _tester;
     internal readonly ITestFactory _testFactory;
     #endregion
 

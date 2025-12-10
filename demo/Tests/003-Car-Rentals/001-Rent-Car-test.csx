@@ -36,6 +36,4 @@ await tp.Test($"Rented car should be '{car}'.", async () =>
     Equal(car.Year, retrievedCar.Year);
 });
 
-ClearVariables();
-
 tp.Logger.LogInformation("End of demo collection testing.");

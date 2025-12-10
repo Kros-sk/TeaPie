@@ -165,7 +165,7 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<IVariables>(),
             provider.GetRequiredService<IFunctions>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
-            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<IRegistrator>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ITestResultsSummaryReporter>(),
             provider.GetRequiredService<IRetryStrategyRegistry>(),

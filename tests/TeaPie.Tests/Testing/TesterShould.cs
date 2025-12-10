@@ -14,7 +14,7 @@ public class TesterShould
     private readonly string _mockPath;
     private readonly TestCaseExecutionContext _mockTestCaseExecutionContext;
     private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor;
-    private readonly Tester _tester;
+    private readonly Registrator _tester;
 
     public TesterShould()
     {
@@ -27,10 +27,7 @@ public class TesterShould
             Context = _mockTestCaseExecutionContext
         };
 
-        _tester = new Tester(
-            _currentTestCaseExecutionContextAccessor,
-            Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<ILogger<Tester>>());
+        _tester = new Registrator(_currentTestCaseExecutionContextAccessor);
     }
 
     [Fact]
@@ -102,7 +99,7 @@ public class TesterShould
         }
 
         var test = new Test(
-            testName, () => Task.FromResult(testFunction), new TestResult.Passed(10) { TestName = testName }, null);
+            testName, false, () => Task.FromResult(testFunction), new TestResult.Passed(10) { TestName = testName }, null);
 
         _tester.Test(testName, testFunction);
 
@@ -121,7 +118,7 @@ public class TesterShould
             await Task.CompletedTask;
         }
 
-        var test = new Test(testName, testFunction, new TestResult.Passed(10) { TestName = testName }, null);
+        var test = new Test(testName, false, testFunction, new TestResult.Passed(10) { TestName = testName }, null);
 
         await _tester.Test(testName, testFunction);
 
