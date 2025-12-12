@@ -14,29 +14,43 @@ public class RequestsLoggingHandlerShould
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
 
     [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task LogRequestLogEntry(bool shouldFail)
+    [InlineData(HttpStatusCode.OK)]
+    [InlineData(HttpStatusCode.Created)]
+    [InlineData(HttpStatusCode.NotFound)]
+    [InlineData(HttpStatusCode.BadRequest)]
+    [InlineData(HttpStatusCode.InternalServerError)]
+    public async Task LogRequestWithStatusCode(HttpStatusCode statusCode)
+    {
+        var (handler, logger, innerHandler) = CreateHandler();
+        innerHandler.Response = new HttpResponseMessage(statusCode);
+        var request = CreateRequest();
+        var invoker = new HttpMessageInvoker(handler);
+
+        await invoker.SendAsync(request, CancellationToken.None);
+
+        logger.Received(1).Log(
+            LogLevel.Information,
+            Arg.Any<EventId>(),
+            Arg.Is<object>(state => ValidateLogEntry(state, statusCode)),
+            null,
+            Arg.Any<Func<object, Exception?, string>>());
+    }
+
+    [Fact]
+    public async Task LogRequestWhenException()
     {
         var (handler, logger, innerHandler) = CreateHandler();
         var request = CreateRequest();
         var invoker = new HttpMessageInvoker(handler);
 
-        if (shouldFail)
-        {
-            innerHandler.Exception = new HttpRequestException("Network error");
-            await ThrowsAsync<HttpRequestException>(
-                async () => await invoker.SendAsync(request, CancellationToken.None));
-        }
-        else
-        {
-            await invoker.SendAsync(request, CancellationToken.None);
-        }
+        innerHandler.Exception = new HttpRequestException("Network error");
+        await ThrowsAsync<HttpRequestException>(
+            async () => await invoker.SendAsync(request, CancellationToken.None));
 
         logger.Received(1).Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
-            Arg.Is<object>(state => ValidateLogEntry(state, shouldFail)),
+            Arg.Is<object>(state => ValidateLogEntry(state, null)),
             null,
             Arg.Any<Func<object, Exception?, string>>());
     }
@@ -81,31 +95,40 @@ public class RequestsLoggingHandlerShould
         logger.Received(2).Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
-            Arg.Is<object>(state => ValidateLogEntry(state, false)),
+            Arg.Is<object>(state => ValidateLogEntry(state, HttpStatusCode.OK)),
             null,
             Arg.Any<Func<object, Exception?, string>>());
 
         logger.Received(1).Log(
             LogLevel.Information,
             Arg.Any<EventId>(),
-            Arg.Is<object>(state => ValidateLogEntry(state, true)),
+            Arg.Is<object>(state => ValidateLogEntry(state, null)),
             null,
             Arg.Any<Func<object, Exception?, string>>());
     }
 
-    private static bool ValidateLogEntry(object? state, bool shouldFail)
+    private static bool ValidateLogEntry(object? state, HttpStatusCode? expectedStatusCode)
     {
         var entry = ExtractEntry(state);
 
-        return entry != null
-            && !string.IsNullOrEmpty(entry.RequestId)
-            && entry.StartTime != default
-            && entry.EndTime != default
-            && entry.DurationMs >= 0
-            && entry.Request.Method == "GET"
-            && entry.Request.Uri == "https://example.com/"
-            && entry.Request.FilePath == "test.http"
-            && (shouldFail ? entry.Errors.Count > 0 : entry.Errors.Count == 0);
+        if (expectedStatusCode == null)
+        {
+            return entry?.Response == null && entry?.Errors.Count > 0;
+        }
+        else
+        {
+            return entry != null
+                && !string.IsNullOrEmpty(entry.RequestId)
+                && entry.StartTime != default
+                && entry.EndTime != default
+                && entry.DurationMs >= 0
+                && entry.Request.Method == "GET"
+                && entry.Request.Uri == "https://example.com/"
+                && entry.Request.FilePath == "test.http"
+                && entry.Response != null
+                && entry.Response.StatusCode == (int)expectedStatusCode
+                && entry.Errors.Count == 0;
+        }
     }
 
     private static RequestLogFileEntry? ExtractEntry(object? state)
