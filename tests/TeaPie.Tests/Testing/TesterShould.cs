@@ -1,7 +1,4 @@
 ﻿using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
-using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;

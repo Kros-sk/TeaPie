@@ -4,6 +4,7 @@ using Polly;
 using Polly.Retry;
 using System.Net;
 using TeaPie.Http.Retrying;
+using TeaPie.Testing;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Retrying;
@@ -17,7 +18,9 @@ public class ResiliencePipelineProviderShould
     {
         _retryStrategyRegistry = new RetryStrategyRegistry();
         _resiliencePipelineProvider = new ResiliencePipelineProvider(
-            _retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            Substitute.For<ITester>());
     }
 
     [Fact]

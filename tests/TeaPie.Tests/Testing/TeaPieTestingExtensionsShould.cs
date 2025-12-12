@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using NSubstitute;
-using TeaPie.Http;
+﻿using TeaPie.Http;
 using TeaPie.Http.Parsing;
-using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
 using TeaPie.Testing;
