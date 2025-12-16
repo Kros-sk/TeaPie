@@ -3,10 +3,10 @@ using TeaPie.Pipelines;
 
 namespace TeaPie.Testing;
 
-internal class ExecuteScheduledTestsStep(ITestScheduler scheduler, ITester tester) : IPipelineStep
+internal class ExecuteScheduledTestsStep(ITestScheduler scheduler, IRegistrator tester) : IPipelineStep
 {
     private readonly ITestScheduler _scheduler = scheduler;
-    private readonly ITester _tester = tester;
+    private readonly IRegistrator _tester = tester;
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {

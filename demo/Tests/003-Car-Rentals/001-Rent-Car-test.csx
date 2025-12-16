@@ -1,6 +1,4 @@
-﻿// Referencing multiple scripts is also allowed.
-#load "$teapie/ClearVariables.csx"
-#load "$teapie/Definitions/Car.csx"
+﻿#load "$teapie/Definitions/Car.csx"
 #load "$teapie/Definitions/CarRent.csx"
 
 // Sometimes, when writing tests, it may be useful to skip certain tests
@@ -35,7 +33,5 @@ await tp.Test($"Rented car should be '{car}'.", async () =>
     Equal(car.Model, retrievedCar.Model);
     Equal(car.Year, retrievedCar.Year);
 });
-
-ClearVariables();
 
 tp.Logger.LogInformation("End of demo collection testing.");

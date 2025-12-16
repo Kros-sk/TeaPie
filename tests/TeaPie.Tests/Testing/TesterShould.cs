@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using System.Net;
 using TeaPie.Reporting;
 using TeaPie.StructureExploration;
 using TeaPie.TestCases;
@@ -14,27 +15,29 @@ public class TesterShould
     private readonly string _mockPath;
     private readonly TestCaseExecutionContext _mockTestCaseExecutionContext;
     private readonly ICurrentTestCaseExecutionContextAccessor _currentTestCaseExecutionContextAccessor;
+    private readonly ITestResultsSummaryReporter _mockReporter;
+    private readonly ILogger<Tester> _mockLogger;
     private readonly Tester _tester;
+    private readonly TestCase _testCase;
 
     public TesterShould()
     {
         _mockPath = "pathToTestCase.http";
-        _mockTestCaseExecutionContext = new TestCaseExecutionContext(
-            new TestCase(new InternalFile(_mockPath, _mockPath, null!)));
+        _testCase = new TestCase(new InternalFile(_mockPath, _mockPath, null!));
+        _mockTestCaseExecutionContext = new TestCaseExecutionContext(_testCase);
 
         _currentTestCaseExecutionContextAccessor = new CurrentTestCaseExecutionContextAccessor()
         {
             Context = _mockTestCaseExecutionContext
         };
 
-        _tester = new Tester(
-            _currentTestCaseExecutionContextAccessor,
-            Substitute.For<ITestResultsSummaryReporter>(),
-            Substitute.For<ILogger<Tester>>());
+        _mockReporter = Substitute.For<ITestResultsSummaryReporter>();
+        _mockLogger = Substitute.For<ILogger<Tester>>();
+        _tester = new Tester(_currentTestCaseExecutionContextAccessor, _mockReporter, _mockLogger);
     }
 
     [Fact]
-    public void ActuallyExecuteTestFunction()
+    public async Task ActuallyExecuteTestFunction()
     {
         var wasExecuted = false;
 
@@ -43,7 +46,14 @@ public class TesterShould
             wasExecuted = true;
         }
 
-        _tester.Test(string.Empty, testFunction);
+        var test = CreateTest(
+            string.Empty,
+            false,
+            () => { testFunction(); return Task.CompletedTask; });
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
+
         True(wasExecuted);
     }
 
@@ -58,12 +68,16 @@ public class TesterShould
             await Task.CompletedTask;
         }
 
-        await _tester.Test(string.Empty, testFunction);
+        var test = CreateTest(string.Empty, false, testFunction);
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
+
         True(wasExecuted);
     }
 
     [Fact]
-    public void SkipTestIfRequested()
+    public async Task SkipTestIfRequested()
     {
         var wasExecuted = false;
 
@@ -72,7 +86,14 @@ public class TesterShould
             wasExecuted = true;
         }
 
-        _tester.Test(string.Empty, testFunction, true);
+        var test = CreateTest(
+            string.Empty,
+            true,
+            () => { testFunction(); return Task.CompletedTask; });
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
+
         False(wasExecuted);
     }
 
@@ -87,50 +108,16 @@ public class TesterShould
             await Task.CompletedTask;
         }
 
-        await _tester.Test(string.Empty, testFunction, true);
+        var test = CreateTest(string.Empty, true, testFunction);
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
+
         False(wasExecuted);
     }
 
     [Fact]
-    public void RegisterTestToCurrentExecutionContext()
-    {
-        const string testName = "SyncTest";
-
-        static void testFunction()
-        {
-            True(true);
-        }
-
-        var test = new Test(
-            testName, () => Task.FromResult(testFunction), new TestResult.Passed(10) { TestName = testName }, null);
-
-        _tester.Test(testName, testFunction);
-
-        // If test was already registered, attempt to register it again should fail.
-        Throws<ArgumentException>(() => _mockTestCaseExecutionContext.RegisterTest(test));
-    }
-
-    [Fact]
-    public async Task RegisterAsyncTestToCurrentExecutionContext()
-    {
-        const string testName = "AsyncTest";
-
-        static async Task testFunction()
-        {
-            True(true);
-            await Task.CompletedTask;
-        }
-
-        var test = new Test(testName, testFunction, new TestResult.Passed(10) { TestName = testName }, null);
-
-        await _tester.Test(testName, testFunction);
-
-        // If test was already registered, attempt to register it again should fail.
-        Throws<ArgumentException>(() => _mockTestCaseExecutionContext.RegisterTest(test));
-    }
-
-    [Fact]
-    public void CatchExceptionFromTest()
+    public async Task CatchExceptionFromTest()
     {
         const string testName = "SyncTestWithException";
 
@@ -139,7 +126,13 @@ public class TesterShould
             throw new InvalidOperationException("Test failed");
         }
 
-        _tester.Test(testName, testFunction);
+        var test = CreateTest(
+            testName,
+            false,
+            () => { testFunction(); return Task.CompletedTask; });
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
     }
 
     [Fact]
@@ -153,11 +146,14 @@ public class TesterShould
             throw new InvalidOperationException("Test failed");
         }
 
-        await _tester.Test(testName, testFunction);
+        var test = CreateTest(testName, false, testFunction);
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
     }
 
     [Fact]
-    public void UseDifferentAssertionLanguageWithSameResults()
+    public async Task UseDifferentAssertionLanguageWithSameResults()
     {
         const string testName = "SyncTestWithMultipleAssertions";
 
@@ -172,6 +168,66 @@ public class TesterShould
             Equal("test", "test");
         }
 
-        _tester.Test(testName, testFunction);
+        var test = CreateTest(
+            testName,
+            false,
+            () => { testFunction(); return Task.CompletedTask; });
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        await _tester.ExecuteOrSkipTest(test, _testCase);
+    }
+
+    [Fact]
+    public void ExecuteTestSyncReturnsTrueWhenPasses()
+    {
+        var testName = "SyncPassingTest";
+        var test = CreateTest(testName, false, () => Task.CompletedTask);
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        var response = new HttpResponseMessage(HttpStatusCode.OK);
+
+        var result = _tester.ExecuteTestSync(testName, response);
+
+        True(result);
+    }
+
+    [Fact]
+    public void ExecuteTestSyncReturnsFalseWhenFails()
+    {
+        var testName = "SyncFailingTest";
+        var test = CreateTest(
+            testName,
+            false,
+            () => throw new InvalidOperationException("Sync test failed"));
+
+        _mockTestCaseExecutionContext.RegisterTest(test);
+        var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
+        var result = _tester.ExecuteTestSync(testName, response);
+
+        False(result);
+    }
+
+    [Fact]
+    public void ExecuteTestSyncThrowsWhenTestNotFound()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.OK);
+
+        var exception = Throws<InvalidOperationException>(() =>
+            _tester.ExecuteTestSync("NonExistentTest", response));
+
+        Equal("Test \"NonExistentTest\" doesn't exists.", exception.Message);
+    }
+
+    private Test CreateTest(
+        string name,
+        bool skipTest,
+        Func<Task> function,
+        TestResult? result = null,
+        TestCase? testCase = null)
+    {
+        result ??= new TestResult.NotRun { TestName = name, TestCasePath = _mockPath };
+        testCase ??= _testCase;
+        return new Test(name, skipTest, function, result, testCase);
     }
 }

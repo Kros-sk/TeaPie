@@ -26,11 +26,12 @@ Within `.http` files, you can apply a retry strategy using **retry directives**.
 ```http
 # @name GetCarRequest
 # Applying a named retry strategy and overriding specific properties.
-## RETRY-STRATEGY: Default retry   # Uses already registered "Default retry" strategy
-## RETRY-MAX-ATTEMPTS: 5           # Overrides max retry attempts
-## RETRY-BACKOFF-TYPE: Linear      # Changes backoff strategy for this request
-## RETRY-MAX-DELAY: 00:00:03       # Limits the maximum delay between retries
-## RETRY-UNTIL-STATUS: [200, 201]  # Adds condition - retry until one of given status codes is received
+## RETRY-STRATEGY: Default retry      # Uses already registered "Default retry" strategy
+## RETRY-MAX-ATTEMPTS: 5              # Overrides max retry attempts
+## RETRY-BACKOFF-TYPE: Linear         # Changes backoff strategy for this request
+## RETRY-MAX-DELAY: 00:00:03          # Limits the maximum delay between retries
+## RETRY-UNTIL-STATUS: [200, 201]     # Adds condition - retry until one of given status codes is received
+## RETRY-UNTIL-TEST-PASS: Test name   # Retries until specified test (Test name) passes
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{RentCarRequest.request.body.$.CarId}}
 ```
 

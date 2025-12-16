@@ -4,6 +4,7 @@ using Polly;
 using Polly.Retry;
 using System.Net;
 using TeaPie.Http.Retrying;
+using TeaPie.Testing;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.Http.Retrying;
@@ -17,7 +18,9 @@ public class ResiliencePipelineProviderShould
     {
         _retryStrategyRegistry = new RetryStrategyRegistry();
         _resiliencePipelineProvider = new ResiliencePipelineProvider(
-            _retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            Substitute.For<ITester>());
     }
 
     [Fact]
@@ -218,6 +221,210 @@ public class ResiliencePipelineProviderShould
 
         Equal(expectedStatusCode, response.StatusCode);
         Equal(expectedNumberOfExecutions, executionCount);
+    }
+
+    [Fact]
+    public async Task RetryUntilTestPasses()
+    {
+        var testName = "MyTest";
+        var mockTester = Substitute.For<ITester>();
+
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(false, false, true);
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+        _retryStrategyRegistry.Register(baseRetryStrategyName, baseRetryStrategy);
+
+        var pipeline = provider.GetResiliencePipeline(baseRetryStrategyName, null, [], testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(3, attempts);
+        mockTester.Received(3).ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>());
+    }
+
+    [Fact]
+    public async Task StopRetryingWhenTestPassesImmediately()
+    {
+        var testName = "PassingTest";
+        var mockTester = Substitute.For<ITester>();
+
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(true);
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var pipeline = provider.GetResiliencePipeline(string.Empty, null, [], testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(1, attempts);
+        mockTester.Received(1).ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>());
+    }
+
+    [Fact]
+    public async Task RetryMaxAttemptsWhenTestNeverPasses()
+    {
+        var testName = "AlwaysFailingTest";
+        var mockTester = Substitute.For<ITester>();
+
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(false);
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+        _retryStrategyRegistry.Register(baseRetryStrategyName, baseRetryStrategy);
+
+        var pipeline = provider.GetResiliencePipeline(baseRetryStrategyName, null, [], testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(RetryingConstants.DefaultRetryCount + 1, attempts);
+        mockTester.Received(RetryingConstants.DefaultRetryCount + 1).ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>());
+    }
+
+    [Fact]
+    public async Task CombineRetryUntilStatusAndRetryUntilTestPass()
+    {
+        var testName = "CombinedTest";
+        var mockTester = Substitute.For<ITester>();
+
+        var callCount = 0;
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(_ => {
+                callCount++;
+                return callCount >= 4;
+            });
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+        _retryStrategyRegistry.Register(baseRetryStrategyName, baseRetryStrategy);
+
+        var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.Created };
+        var pipeline = provider.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes, testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return attempts <= 2
+                ? new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                : new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(4, attempts);
+    }
+
+    [Fact]
+    public async Task RetryWhenStatusMatchesButTestFails()
+    {
+        var testName = "TestFailureTriggersRetry";
+        var mockTester = Substitute.For<ITester>();
+
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(false, false, true);
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+        _retryStrategyRegistry.Register(baseRetryStrategyName, baseRetryStrategy);
+
+        var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
+        var pipeline = provider.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes, testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(3, attempts);
+        mockTester.Received(3).ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>());
+    }
+
+    [Fact]
+    public async Task RetryWhenTestPassesButStatusDoesNotMatch()
+    {
+        var testName = "StatusMismatchTriggersRetry";
+        var mockTester = Substitute.For<ITester>();
+
+        mockTester.ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>())
+            .Returns(true);
+
+        var provider = new ResiliencePipelineProvider(
+            _retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            mockTester);
+
+        var baseRetryStrategyName = string.Empty;
+        var baseRetryStrategy = GetBaseRetryStrategy(ref baseRetryStrategyName);
+        _retryStrategyRegistry.Register(baseRetryStrategyName, baseRetryStrategy);
+
+        var statusCodes = new List<HttpStatusCode> { HttpStatusCode.OK };
+        var pipeline = provider.GetResiliencePipeline(baseRetryStrategyName, null, statusCodes, testName);
+
+        var attempts = 0;
+        var response = await pipeline.ExecuteAsync(async _ =>
+        {
+            attempts++;
+            await Task.CompletedTask;
+            return attempts <= 2
+                ? new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                : new HttpResponseMessage(HttpStatusCode.OK);
+        });
+
+        Equal(HttpStatusCode.OK, response.StatusCode);
+        Equal(3, attempts);
+        mockTester.Received(3).ExecuteTestSync(testName, Arg.Any<HttpResponseMessage>());
     }
 
     private static RetryStrategyOptions<HttpResponseMessage> GetBaseRetryStrategy(ref string baseStrategyName)

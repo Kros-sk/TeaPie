@@ -151,7 +151,9 @@ public class ExecuteRequestStepShould
         var headersResolver = new HeadersHandler();
         var retryStrategyRegistry = new RetryStrategyRegistry();
         var resiliencePipelineProvider = new ResiliencePipelineProvider(
-            retryStrategyRegistry, Substitute.For<ILogger<ResiliencePipelineProvider>>());
+            retryStrategyRegistry,
+            Substitute.For<ILogger<ResiliencePipelineProvider>>(),
+            Substitute.For<ITester>());
 
         return new HttpRequestParser(
             headersProvider,

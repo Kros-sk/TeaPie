@@ -7,146 +7,157 @@ using TeaPie.TestCases;
 
 namespace TeaPie.Testing;
 
+internal interface ITester
+{
+    Task<Test> ExecuteOrSkipTest(Test test, TestCase? testCase);
+    bool ExecuteTestSync(string testName, HttpResponseMessage response);
+}
+
 internal partial class Tester(
     ICurrentTestCaseExecutionContextAccessor accessor,
     ITestResultsSummaryReporter resultsSummaryReporter,
     ILogger<Tester> logger) : ITester
 {
-    private readonly ILogger<Tester> _logger = logger;
-    private readonly ICurrentTestCaseExecutionContextAccessor _testCaseExecutionContextAccessor = accessor;
-    private readonly ITestResultsSummaryReporter _resultsSummaryReporter = resultsSummaryReporter;
     private readonly Stopwatch _stopWatch = new();
 
-    private bool _hasExecutedAnyTest;
-
-    #region Determined tests
-    public void Test(string testName, Action testFunction, bool skipTest = false)
-        => TestBase(testName, () => { testFunction(); return Task.CompletedTask; }, skipTest)
-            .ConfigureAwait(false).GetAwaiter().GetResult();
-
-    public async Task Test(string testName, Func<Task> testFunction, bool skipTest = false)
-        => await TestBase(testName, testFunction, skipTest);
-
-    private async Task TestBase(string testName, Func<Task> testFunction, bool skipTest = false)
+    public async Task<Test> ExecuteOrSkipTest(Test test, TestCase? testCase)
     {
-        var testCaseExecutionContext = _testCaseExecutionContextAccessor.Context
-            ?? throw new InvalidOperationException("Unable to test if no test-case execution context is provided.");
+        _stopWatch.Restart();
 
-        StartRunIfFirstTest();
-        var testCase = _testCaseExecutionContextAccessor.Context.TestCase;
-
-        var test = new Test(
-            testName,
-            testFunction,
-            new TestResult.NotRun() { TestName = testName, TestCasePath = testCase.RequestsFile.RelativePath },
-            testCase);
-
-        test = await ExecuteOrSkipTest(testName, skipTest, testCaseExecutionContext, test);
-
-        testCaseExecutionContext.RegisterTest(test);
-    }
-
-    private void StartRunIfFirstTest()
-    {
-        if (!_hasExecutedAnyTest)
+        if (test.SkipTest)
         {
-            _resultsSummaryReporter.Initialize();
-            _hasExecutedAnyTest = true;
-        }
-    }
-
-    private async Task<Test> ExecuteOrSkipTest(
-        string testName, bool skipTest, TestCaseExecutionContext testCaseExecutionContext, Test test)
-    {
-        if (skipTest)
-        {
-            LogTestSkip(testName, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
-            _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, test.Result);
-        }
-        else
-        {
-            test = await ExecuteTest(test, testCaseExecutionContext.TestCase);
+            LogTestSkip(logger, test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
+            resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, test.Result);
+            return test;
         }
 
-        return test;
-    }
-
-    private async Task<Test> ExecuteTest(Test test, TestCase? testCase)
-    {
-        _stopWatch.Reset();
+        if (test.Result is not TestResult.NotRun)
+        {
+            LogTestAlreadyExecuted(logger, test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
+            resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, test.Result);
+            return test;
+        }
 
         try
         {
-            return await ExecuteTest(test, test.Function, testCase);
+            return await ExecuteTestInternal(test, test.Function, testCase);
         }
         catch (Exception ex)
         {
-            return TestFailure(test, ex, testCase);
+            return HandleTestFailure(test, ex, testCase);
         }
     }
 
-    private Test TestFailure(Test test, Exception ex, TestCase? testCase)
+    public bool ExecuteTestSync(string testName, HttpResponseMessage response)
+    {
+        var testCaseExecutionContext = accessor.Context!;
+        var test = testCaseExecutionContext.GetTest(testName)
+            ?? throw new InvalidOperationException($"Test \"{testName}\" doesn't exists.");
+
+        var previousResponse = testCaseExecutionContext.Response;
+        testCaseExecutionContext.RegisterResponse(response);
+        _stopWatch.Restart();
+
+        try
+        {
+            test.Function().GetAwaiter().GetResult();
+            _stopWatch.Stop();
+
+            var result = CreatePassedResult(test, testCase: testCaseExecutionContext.TestCase);
+            testCaseExecutionContext.UpdateTest(test with { Result = result });
+
+            LogTestPassedDuringRetry(logger, testName, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _stopWatch.Stop();
+
+            var result = CreateFailedResult(test, ex, testCase: testCaseExecutionContext.TestCase);
+            testCaseExecutionContext.UpdateTest(test with { Result = result });
+
+            LogTestFailedDuringRetry(logger, testName, ex.Message);
+            return false;
+        }
+        finally
+        {
+            if (previousResponse != null)
+            {
+                testCaseExecutionContext.RegisterResponse(previousResponse);
+            }
+        }
+    }
+
+    private Test HandleTestFailure(Test test, Exception ex, TestCase? testCase)
     {
         _stopWatch.Stop();
 
-        var result = new TestResult.Failed(_stopWatch.ElapsedMilliseconds, ex.Message, ex)
-        {
-            TestName = test.Name,
-            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
-        };
-        test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
+        var result = CreateFailedResult(test, ex, testCase);
+        var updatedTest = test with { Result = result };
 
+        resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
         LogTestFailure(test.Name, ex.Message, _stopWatch.ElapsedMilliseconds);
-        return test;
+
+        return updatedTest;
     }
 
     private void LogTestFailure(string name, string message, long elapsedMilliseconds)
     {
-        LogTestFailureLine(name, elapsedMilliseconds.ToHumanReadableTime());
-        LogTestFailureReason(message);
+        LogTestFailureLine(logger, name, elapsedMilliseconds.ToHumanReadableTime());
+        LogTestFailureReason(logger, message);
     }
 
-    private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCase? testCase)
+    private async Task<Test> ExecuteTestInternal(Test test, Func<Task> testFunction, TestCase? testCase)
     {
-        LogTestStart(test.Name, testCase?.RequestsFile.RelativePath);
-
         _stopWatch.Start();
-
         await testFunction();
-
         _stopWatch.Stop();
 
-        var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds)
+        var result = CreatePassedResult(test, testCase);
+        var updatedTest = test with { Result = result };
+
+        resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
+        LogTestSuccess(logger, test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
+
+        return updatedTest;
+    }
+
+    private TestResult.Passed CreatePassedResult(Test test, TestCase? testCase) =>
+        new(_stopWatch.ElapsedMilliseconds)
         {
             TestName = test.Name,
             TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
         };
-        test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
 
-        LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
-        return test;
-    }
-
-    #endregion
+    private TestResult.Failed CreateFailedResult(Test test, Exception ex, TestCase? testCase) =>
+        new(_stopWatch.ElapsedMilliseconds, ex.Message, ex)
+        {
+            TestName = test.Name,
+            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+        };
 
     #region Logging
 
-    [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]
-    partial void LogTestSkip(string Name, string Path);
-
-    [LoggerMessage(Message = "Running test: '{Name}' ({Path})", Level = LogLevel.Information)]
-    partial void LogTestStart(string Name, string? Path);
-
     [LoggerMessage(Message = "Test Passed: '{Name}' in {Duration}", Level = LogLevel.Information)]
-    partial void LogTestSuccess(string Name, string Duration);
+    private static partial void LogTestSuccess(ILogger logger, string Name, string Duration);
 
     [LoggerMessage(Message = "Test '{Name}' failed: after {Duration}", Level = LogLevel.Error)]
-    partial void LogTestFailureLine(string Name, string Duration);
+    private static partial void LogTestFailureLine(ILogger logger, string Name, string Duration);
 
     [LoggerMessage(Message = "Reason: {Reason}", Level = LogLevel.Error)]
-    partial void LogTestFailureReason(string Reason);
+    private static partial void LogTestFailureReason(ILogger logger, string Reason);
+
+    [LoggerMessage(Message = "Test passed during retry evaluation: '{TestName}' in {Duration}", Level = LogLevel.Information)]
+    private static partial void LogTestPassedDuringRetry(ILogger logger, string TestName, string Duration);
+
+    [LoggerMessage(Message = "Test '{TestName}' failed during retry evaluation: {Message}", Level = LogLevel.Error)]
+    private static partial void LogTestFailedDuringRetry(ILogger logger, string TestName, string Message);
+
+    [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]
+    private static partial void LogTestSkip(ILogger logger, string Name, string Path);
+
+    [LoggerMessage(Message = "Test '{Name}' ({Path}) was already executed during retry evaluation", Level = LogLevel.Information)]
+    private static partial void LogTestAlreadyExecuted(ILogger logger, string Name, string Path);
 
     #endregion
 }

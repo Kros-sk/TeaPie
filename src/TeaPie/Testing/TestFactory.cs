@@ -42,6 +42,7 @@ internal class TestFactory : ITestFactory
     {
         var test = new Test(
             $"[{_factoryCount}] {testName}",
+            false,
             testFunction,
             new TestResult.NotRun()
             {
