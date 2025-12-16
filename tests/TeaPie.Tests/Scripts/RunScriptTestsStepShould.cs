@@ -85,7 +85,6 @@ public class RunScriptTestsStepShould
     [Fact]
     public async Task HandleEmptyTestCollection()
     {
-        // No tests registered
         await _step.Execute(_appContext);
 
         await _mockTester.DidNotReceive().ExecuteOrSkipTest(Arg.Any<Test>(), Arg.Any<TestCase>());

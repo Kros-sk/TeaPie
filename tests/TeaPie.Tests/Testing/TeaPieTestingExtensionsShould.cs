@@ -21,7 +21,6 @@ public class TeaPieTestingExtensionsShould
 
         teaPie.Test("testName", () => executed = true);
 
-        // Test is registered but not executed yet (that's Tester's job)
         False(executed);
     }
 
@@ -50,7 +49,6 @@ public class TeaPieTestingExtensionsShould
             await Task.CompletedTask;
         });
 
-        // Test is registered but not executed yet (that's Tester's job)
         False(executed);
     }
 
