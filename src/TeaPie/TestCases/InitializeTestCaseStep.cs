@@ -94,7 +94,10 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         newSteps.AddRange(steps);
     }
 
-    private static void AddStepsForExecuteScript(ApplicationContext context, TestCaseExecutionContext caseExecutionContext, List<IPipelineStep> newSteps)
+    private static void AddStepsForExecuteScript(
+        ApplicationContext context,
+        TestCaseExecutionContext caseExecutionContext,
+        List<IPipelineStep> newSteps)
     {
         var steps =
             ScriptStepsFactory.CreateStepsForScriptExecution(context.ServiceProvider, caseExecutionContext);

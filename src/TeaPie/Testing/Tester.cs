@@ -52,7 +52,7 @@ internal partial class Tester(
     {
         var testCaseExecutionContext = accessor.Context!;
         var test = testCaseExecutionContext.GetTest(testName)
-            ?? throw new InvalidOperationException("Test doesn't exists.");
+            ?? throw new InvalidOperationException($"Test \"{testName}\" doesn't exists.");
 
         var previousResponse = testCaseExecutionContext.Response;
         testCaseExecutionContext.RegisterResponse(response);
@@ -147,10 +147,10 @@ internal partial class Tester(
     [LoggerMessage(Message = "Reason: {Reason}", Level = LogLevel.Error)]
     private static partial void LogTestFailureReason(ILogger logger, string Reason);
 
-    [LoggerMessage(Message = "Test passed during retry evaluation: '{TestName}' in {Duration}", Level = LogLevel.Debug)]
+    [LoggerMessage(Message = "Test passed during retry evaluation: '{TestName}' in {Duration}", Level = LogLevel.Information)]
     private static partial void LogTestPassedDuringRetry(ILogger logger, string TestName, string Duration);
 
-    [LoggerMessage(Message = "Test '{TestName}' failed during retry evaluation: {Message}", Level = LogLevel.Debug)]
+    [LoggerMessage(Message = "Test '{TestName}' failed during retry evaluation: {Message}", Level = LogLevel.Error)]
     private static partial void LogTestFailedDuringRetry(ILogger logger, string TestName, string Message);
 
     [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]

@@ -13,53 +13,55 @@ namespace TeaPie.Tests.Testing;
 public class TeaPieTestingExtensionsShould
 {
     [Fact]
-    public void ExecuteTestCorrectly()
+    public void RegisterTestCorrectly()
     {
-        var tester = PrepareTester();
-        var teaPie = PrepareTeaPieInstance(tester);
+        var registrator = PrepareRegistrator();
+        var teaPie = PrepareTeaPieInstance(registrator);
         var executed = false;
 
-        teaPie.Test("", () => executed = true);
+        teaPie.Test("testName", () => executed = true);
 
-        True(executed);
+        // Test is registered but not executed yet (that's Tester's job)
+        False(executed);
     }
 
     [Fact]
     public void SkipTestCorrectly()
     {
-        var tester = PrepareTester();
-        var teaPie = PrepareTeaPieInstance(tester);
+        var registrator = PrepareRegistrator();
+        var teaPie = PrepareTeaPieInstance(registrator);
         var executed = false;
 
-        teaPie.Test("", () => executed = true, true);
+        teaPie.Test("testName", () => executed = true, true);
 
         False(executed);
     }
 
     [Fact]
-    public async Task ExecuteAsyncTestCorrectly()
+    public async Task RegisterAsyncTestCorrectly()
     {
-        var tester = PrepareTester();
-        var teaPie = PrepareTeaPieInstance(tester);
+        var registrator = PrepareRegistrator();
+        var teaPie = PrepareTeaPieInstance(registrator);
         var executed = false;
 
-        await teaPie.Test("", async () =>
+        await teaPie.Test("testName", async () =>
         {
             executed = true;
             await Task.CompletedTask;
         });
 
-        True(executed);
+        // Test is registered but not executed yet (that's Tester's job)
+        False(executed);
     }
 
     [Fact]
     public async Task SkipAsyncTestCorrectly()
     {
-        var tester = PrepareTester();
-        var teaPie = PrepareTeaPieInstance(tester);
+        var registrator = PrepareRegistrator();
+        var teaPie = PrepareTeaPieInstance(registrator);
         var executed = false;
 
-        await teaPie.Test("", async () =>
+        await teaPie.Test("testName", async () =>
         {
             executed = true;
             await Task.CompletedTask;
@@ -122,7 +124,7 @@ public class TeaPieTestingExtensionsShould
             }
         );
 
-    private static Registrator PrepareTester()
+    private static Registrator PrepareRegistrator()
     {
         var accessor = new CurrentTestCaseExecutionContextAccessor()
         {
@@ -134,6 +136,6 @@ public class TeaPieTestingExtensionsShould
         return new(accessor);
     }
 
-    private static TeaPie PrepareTeaPieInstance(IRegistrator tester)
-        => new TeaPieBuilder().WithService(tester).Build();
+    private static TeaPie PrepareTeaPieInstance(IRegistrator registrator)
+        => new TeaPieBuilder().WithService(registrator).Build();
 }

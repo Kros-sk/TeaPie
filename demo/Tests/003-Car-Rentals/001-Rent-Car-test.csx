@@ -1,6 +1,4 @@
-﻿// Referencing multiple scripts is also allowed.
-#load "$teapie/ClearVariables.csx"
-#load "$teapie/Definitions/Car.csx"
+﻿#load "$teapie/Definitions/Car.csx"
 #load "$teapie/Definitions/CarRent.csx"
 
 // Sometimes, when writing tests, it may be useful to skip certain tests

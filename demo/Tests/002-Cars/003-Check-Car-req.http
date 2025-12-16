@@ -26,4 +26,4 @@ GET {{ApiBaseUrl}}{{ApiCarsSection}}/999
 ## RETRY-UNTIL-TEST-PASS: Newly created car should have correct brand
 
 # @name VerifyCarCreationRequest
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/7
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/1
