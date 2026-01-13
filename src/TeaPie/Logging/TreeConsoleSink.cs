@@ -8,18 +8,13 @@ using System.Text;
 
 namespace TeaPie.Logging;
 
-public class TreeConsoleSink : ILogEventSink
+public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {
     private const string VerticalBar = "│  ";
     private const string StartCorner = "┌──";
     private const string EndCorner = "└──";
 
-    private readonly ITextFormatter _formatter;
-
-    public TreeConsoleSink(ITextFormatter formatter)
-    {
-        _formatter = formatter;
-    }
+    private readonly ITextFormatter _formatter = formatter;
 
     public void Emit(LogEvent logEvent)
     {

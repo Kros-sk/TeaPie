@@ -29,6 +29,7 @@ internal static class Setup
         string? pathToRequestsLogFile = null,
         bool useTreeLogging = false)
     {
+        TreeLoggingExtensions.SetTreeLoggingEnabled(useTreeLogging);
         if (minimumLevel == LogLevel.None)
         {
             Log.Logger = Serilog.Core.Logger.None;

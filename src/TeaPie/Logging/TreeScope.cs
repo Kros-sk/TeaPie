@@ -9,17 +9,22 @@ public sealed class TreeScope : IDisposable
     private readonly ILogger _logger;
     private readonly string _name;
     private readonly IDisposable? _logContextScope;
+    private readonly bool _treeLoggingEnabled;
     private bool _disposed;
 
-    public TreeScope(ILogger logger, string name)
+    public TreeScope(ILogger logger, string name, bool treeLoggingEnabled = true)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _name = name ?? throw new ArgumentNullException(nameof(name));
+        _treeLoggingEnabled = treeLoggingEnabled;
 
         _currentDepth.Value++;
         _logContextScope = LogContext.PushProperty(ScopeDepthEnricher.ScopeDepthPropertyName, _currentDepth.Value);
 
-        _logger.LogInformation("┌──", _name);
+        if (_treeLoggingEnabled)
+        {
+            _logger.LogInformation("┌──", _name);
+        }
     }
 
     public void Dispose()
@@ -29,7 +34,10 @@ public sealed class TreeScope : IDisposable
             return;
         }
 
-        _logger.LogInformation("└──");
+        if (_treeLoggingEnabled)
+        {
+            _logger.LogInformation("└──");
+        }
         _logContextScope?.Dispose();
         _currentDepth.Value--;
         _disposed = true;
