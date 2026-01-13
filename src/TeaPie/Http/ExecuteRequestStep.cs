@@ -2,6 +2,7 @@
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
 
@@ -106,9 +107,21 @@ internal class ExecuteRequestStep(
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
-            var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-            request.Options.Set(_contextKey, requestExecutionContext);
-            return await client.SendAsync(request, token);
+            if (retryAttemptNumber > 0)
+            {
+                using (logger.BeginTreeScope($"Retry Attempt {retryAttemptNumber}"))
+                {
+                    var retryRequest = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+                    retryRequest.Options.Set(_contextKey, requestExecutionContext);
+                    return await client.SendAsync(retryRequest, token);
+                }
+            }
+            else
+            {
+                var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+                request.Options.Set(_contextKey, requestExecutionContext);
+                return await client.SendAsync(request, token);
+            }
         }, cancellationToken);
     }
 

@@ -26,7 +26,8 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string? pathToRequestsLogFile = null)
+        string? pathToRequestsLogFile = null,
+        bool useTreeLogging = false)
     {
         if (minimumLevel == LogLevel.None)
         {
@@ -37,9 +38,17 @@ internal static class Setup
             var config = new LoggerConfiguration()
                 .MinimumLevel.Is(GetMaximumFromMinimalLevels(minimumLevel, minimumLevelForLogFile))
                 .MinimumLevel.Override("System.Net.Http", ApplyRestrictiveLogLevelRule(minimumLevel))
-                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel));
+                .MinimumLevel.Override("TeaPie.Logging.NuGetLoggerAdapter", ApplyRestrictiveLogLevelRule(minimumLevel))
+                .Enrich.FromLogContext();
 
-            AddConsoleSink(config, minimumLevel);
+            if (useTreeLogging)
+            {
+                AddTreeConsoleSink(config, minimumLevel);
+            }
+            else
+            {
+                AddConsoleSink(config, minimumLevel);
+            }
 
             if (!pathToLogFile.Equals(string.Empty) && minimumLevelForLogFile < LogLevel.None)
             {
@@ -70,6 +79,15 @@ internal static class Setup
         config.WriteTo.Logger(lc => lc
             .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
             .WriteTo.Console(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
+    }
+
+    private static void AddTreeConsoleSink(LoggerConfiguration config, LogLevel minimumLevel)
+    {
+        config
+            .Enrich.With<ScopeDepthEnricher>()
+            .WriteTo.Logger(lc => lc
+                .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
+                .WriteTo.TreeConsole(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
     }
 
     private static void AddLogFileSink(LoggerConfiguration config, string pathToLogFile, LogLevel minimumLevelForLogFile)

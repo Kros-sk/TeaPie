@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+
 namespace TeaPie.Logging;
 
 internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logger) : DelegatingHandler
@@ -7,13 +8,16 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        await LogRequestBody(request, cancellationToken);
+        using (_logger.BeginTreeScope($"HTTP {request.Method} {request.RequestUri}"))
+        {
+            await LogRequestBody(request, cancellationToken);
 
-        var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
 
-        await LogResponse(response, cancellationToken);
+            await LogResponse(response, cancellationToken);
 
-        return response;
+            return response;
+        }
     }
 
     private async Task LogRequestBody(HttpRequestMessage request, CancellationToken cancellationToken)

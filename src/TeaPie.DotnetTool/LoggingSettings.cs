@@ -38,4 +38,9 @@ internal class LoggingSettings : CommandSettings
     [DefaultValue(false)]
     [Description("Runs command silently, without displaying any output. Default: false.")]
     public bool IsQuiet { get; init; }
+
+    [CommandOption("--tree-logging")]
+    [DefaultValue(false)]
+    [Description("Uses tree-structured console output for logs. Default: false.")]
+    public bool UseTreeLogging { get; init; }
 }

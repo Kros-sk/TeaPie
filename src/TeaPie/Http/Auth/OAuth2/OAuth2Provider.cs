@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
 using TeaPie.Variables;
+using TeaPie.Logging;
 
 namespace TeaPie.Http.Auth.OAuth2;
 
@@ -63,13 +64,16 @@ internal class OAuth2Provider(
     {
         ResolveParameters(out var requestContent, out var requestUri);
 
-        LogSendingRequest();
+        using (_logger.BeginTreeScope("OAuth2 Token Request"))
+        {
+            LogSendingRequest();
 
-        var result = await SendRequest(requestContent, requestUri);
+            var result = await SendRequest(requestContent, requestUri);
 
-        CacheToken(result);
+            CacheToken(result);
 
-        return result.AccessToken!;
+            return result.AccessToken!;
+        }
     }
 
     private void LogSendingRequest()

@@ -109,24 +109,27 @@ internal partial class Tester(
 
     private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCase? testCase)
     {
-        LogTestStart(test.Name, testCase?.RequestsFile.RelativePath);
-
-        _stopWatch.Start();
-
-        await testFunction();
-
-        _stopWatch.Stop();
-
-        var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds)
+        using (_logger.BeginTreeScope("Test Execution"))
         {
-            TestName = test.Name,
-            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
-        };
-        test = test with { Result = result };
-        _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
+            LogTestStart(test.Name, testCase?.RequestsFile.RelativePath);
 
-        LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
-        return test;
+            _stopWatch.Start();
+
+            await testFunction();
+
+            _stopWatch.Stop();
+
+            var result = new TestResult.Passed(_stopWatch.ElapsedMilliseconds)
+            {
+                TestName = test.Name,
+                TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+            };
+            test = test with { Result = result };
+            _resultsSummaryReporter.RegisterTestResult(testCase?.Name ?? string.Empty, result);
+
+            LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
+            return test;
+        }
     }
 
     #endregion
