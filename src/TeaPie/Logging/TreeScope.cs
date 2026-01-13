@@ -7,15 +7,13 @@ public sealed class TreeScope : IDisposable
 {
     private static readonly AsyncLocal<int> _currentDepth = new();
     private readonly ILogger _logger;
-    private readonly string _name;
     private readonly IDisposable? _logContextScope;
     private readonly bool _treeLoggingEnabled;
     private bool _disposed;
 
-    public TreeScope(ILogger logger, string name, bool treeLoggingEnabled = true)
+    public TreeScope(ILogger logger, bool treeLoggingEnabled = true)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _name = name ?? throw new ArgumentNullException(nameof(name));
         _treeLoggingEnabled = treeLoggingEnabled;
 
         _currentDepth.Value++;
@@ -23,7 +21,7 @@ public sealed class TreeScope : IDisposable
 
         if (_treeLoggingEnabled)
         {
-            _logger.LogInformation("┌──", _name);
+            _logger.LogInformation("┌──");
         }
     }
 
@@ -44,18 +42,4 @@ public sealed class TreeScope : IDisposable
     }
 
     internal static int CurrentDepth => _currentDepth.Value;
-}
-
-internal class ScopeState
-{
-    public int Depth { get; }
-    public string Name { get; }
-
-    public ScopeState(int depth, string name)
-    {
-        Depth = depth;
-        Name = name;
-    }
-
-    public override string ToString() => Name;
 }

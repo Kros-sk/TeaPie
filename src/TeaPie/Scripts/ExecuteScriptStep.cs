@@ -23,7 +23,7 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
         Script<object> script,
         CancellationToken cancellationToken)
     {
-        using (context.Logger.BeginTreeScope($"Script: {scriptExecutionContext.Script.File.GetDisplayPath()}"))
+        using (context.Logger.BeginTreeScope())
         {
             LogStartOfExecution(context, scriptExecutionContext);
             await ExecuteAndLog(context, scriptExecutionContext, script, cancellationToken);

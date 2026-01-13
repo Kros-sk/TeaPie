@@ -160,9 +160,9 @@ public sealed class ApplicationBuilder
         => _services.AddTeaPie(
             _isCollectionRun,
             () => _services.ConfigureLogging(
-                _minimumLogLevel, 
-                _pathToLogFile, 
-                _minimumLevelForLogFile, 
+                _minimumLogLevel,
+                _pathToLogFile,
+                _minimumLevelForLogFile,
                 _pathToRequestsLogFile,
                 _useTreeLogging));
 

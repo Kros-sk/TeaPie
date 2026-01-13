@@ -14,7 +14,6 @@ internal class ExecuteScheduledTestsStep(ITestScheduler scheduler, ITester teste
         {
             var test = _scheduler.Dequeue();
             await _tester.Test(test.Name, test.Function);
-
             context.Logger.LogDebug("Scheduled test with name '{TestName}' was executed.", test.Name);
         }
     }

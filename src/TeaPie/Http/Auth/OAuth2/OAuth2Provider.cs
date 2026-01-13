@@ -64,7 +64,7 @@ internal class OAuth2Provider(
     {
         ResolveParameters(out var requestContent, out var requestUri);
 
-        using (_logger.BeginTreeScope("OAuth2 Token Request"))
+        using (_logger.BeginTreeScope())
         {
             LogSendingRequest();
 

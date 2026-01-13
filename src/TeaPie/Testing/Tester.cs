@@ -58,17 +58,20 @@ internal partial class Tester(
     private async Task<Test> ExecuteOrSkipTest(
         string testName, bool skipTest, TestCaseExecutionContext testCaseExecutionContext, Test test)
     {
-        if (skipTest)
+        using (_logger.BeginTreeScope())
         {
-            LogTestSkip(testName, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
-            _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, test.Result);
-        }
-        else
-        {
-            test = await ExecuteTest(test, testCaseExecutionContext.TestCase);
-        }
+            if (skipTest)
+            {
+                LogTestSkip(testName, testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
+                _resultsSummaryReporter.RegisterTestResult(testCaseExecutionContext.TestCase.Name, test.Result);
+            }
+            else
+            {
+                test = await ExecuteTest(test, testCaseExecutionContext.TestCase);
+            }
 
-        return test;
+            return test;
+        }
     }
 
     private async Task<Test> ExecuteTest(Test test, TestCase? testCase)
@@ -109,8 +112,6 @@ internal partial class Tester(
 
     private async Task<Test> ExecuteTest(Test test, Func<Task> testFunction, TestCase? testCase)
     {
-        using (_logger.BeginTreeScope("Test Execution"))
-        {
             LogTestStart(test.Name, testCase?.RequestsFile.RelativePath);
 
             _stopWatch.Start();
@@ -129,7 +130,6 @@ internal partial class Tester(
 
             LogTestSuccess(test.Name, _stopWatch.ElapsedMilliseconds.ToHumanReadableTime());
             return test;
-        }
     }
 
     #endregion

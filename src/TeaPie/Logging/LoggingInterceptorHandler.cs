@@ -8,7 +8,7 @@ internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logg
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        using (_logger.BeginTreeScope($"HTTP {request.Method} {request.RequestUri}"))
+        using (_logger.BeginTreeScope())
         {
             await LogRequestBody(request, cancellationToken);
 

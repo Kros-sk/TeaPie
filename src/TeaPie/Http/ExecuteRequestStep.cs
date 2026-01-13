@@ -54,7 +54,11 @@ internal class ExecuteRequestStep(
         if (_testScheduler.HasScheduledTest())
         {
             _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
-            context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
+
+            using (context.Logger.BeginTreeScope())
+            {
+                context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
+            }
         }
     }
 
@@ -109,7 +113,7 @@ internal class ExecuteRequestStep(
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             if (retryAttemptNumber > 0)
             {
-                using (logger.BeginTreeScope($"Retry Attempt {retryAttemptNumber}"))
+                using (logger.BeginTreeScope())
                 {
                     var retryRequest = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
                     retryRequest.Options.Set(_contextKey, requestExecutionContext);

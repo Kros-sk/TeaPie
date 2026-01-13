@@ -34,12 +34,9 @@ public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     private static int GetScopeDepth(LogEvent logEvent)
     {
-        if (logEvent.Properties.TryGetValue(ScopeDepthEnricher.ScopeDepthPropertyName, out var depthValue))
+        if (logEvent.Properties.TryGetValue(ScopeDepthEnricher.ScopeDepthPropertyName, out var depthValue) && depthValue is ScalarValue { Value: int depth })
         {
-            if (depthValue is ScalarValue { Value: int depth })
-            {
-                return depth;
-            }
+            return depth;
         }
 
         return 0;
