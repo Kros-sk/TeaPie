@@ -85,7 +85,6 @@ internal static class Setup
     private static void AddTreeConsoleSink(LoggerConfiguration config, LogLevel minimumLevel)
     {
         config
-            .Enrich.With<ScopeDepthEnricher>()
             .WriteTo.Logger(lc => lc
                 .Filter.ByExcluding(Matching.FromSource("HttpRequests"))
                 .WriteTo.TreeConsole(restrictedToMinimumLevel: minimumLevel.ToSerilogLogLevel()));
