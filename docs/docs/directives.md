@@ -100,7 +100,7 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 |----------------------|----------------|
 | **Syntax** | `## RETRY-UNTIL-TEST-PASS: <test-name>` |
 | **Example Usage** | `## RETRY-UNTIL-TEST-PASS: Identifier should be a positive integer` |
-| **Purpose** | Retries the request until the defined test pass. |
+| **Purpose** | Retries the request until the defined test passes. |
 | **Parameters** | `test-name` – The name of test defined in post-response .csx script. (tp.Test(`test-name`, () => )) |
 
 ### Testing Directives
