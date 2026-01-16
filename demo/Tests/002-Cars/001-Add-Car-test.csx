@@ -25,7 +25,9 @@ await tp.Test("Identifiers of added and retrieved cars should match.", async () 
     dynamic requestJson = await tp.Requests["AddCarRequest"].GetBodyAsExpandoAsync();
     dynamic responseJson = await tp.Responses["GetNewCarRequest"].GetBodyAsExpandoAsync();
 
-    Equal(requestJson.Id, responseJson.Id);
+    var idFromDirective = tp.GetVariable<float>("IdFromDirective");
+
+    Equal(requestJson.Id, responseJson.Id, idFromDirective);
 
     // Each variable can have none or multiple tags ('cars', 'ids' in this case).
     tp.SetVariable("NewCarId", requestJson.Id, "cars", "ids");

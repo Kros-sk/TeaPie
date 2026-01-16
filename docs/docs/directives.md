@@ -94,6 +94,15 @@ If no retry strategy is explicitly selected, the **default strategy from `Polly.
 | **Purpose** | Sets the maximum allowed delay between retries. |
 | **Parameters** | `hh:mm:ss.fff` – The maximum delay time before retrying a failed request. |
 
+#### `## RETRY-UNTIL-TEST-PASS` Directive
+
+|   |   |
+|----------------------|----------------|
+| **Syntax** | `## RETRY-UNTIL-TEST-PASS: <test-name>` |
+| **Example Usage** | `## RETRY-UNTIL-TEST-PASS: Identifier should be a positive integer` |
+| **Purpose** | Retries the request until the defined test pass. |
+| **Parameters** | `test-name` – The name of test defined in post-response .csx script. (tp.Test(`test-name`, () => )) |
+
 ### Testing Directives
 
 #### `## TEST-EXPECT-STATUS` Directive
