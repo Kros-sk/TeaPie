@@ -1,5 +1,11 @@
-﻿using NSubstitute;
+﻿using FluentAssertions;
+using NSubstitute;
 using TeaPie.Pipelines;
+using TeaPie.Reporting;
+using TeaPie.Scripts;
+using TeaPie.StructureExploration;
+using TeaPie.TestCases;
+using TeaPie.Testing;
 using TeaPie.Tests.Pipelines;
 
 namespace TeaPie.Tests;
@@ -94,6 +100,55 @@ public class ApplicationPipelineShould
         var context = CreateApplicationContext(string.Empty);
 
         await pipeline.Run(context);
+    }
+
+    [Fact]
+    public async Task ExecuteScheduledTestsBeforeRegisteredTests()
+    {
+        var pipeline = new ApplicationPipeline();
+        var executionOrder = new List<string>();
+
+        var testCase = new TestCase(new InternalFile("test.http", "test.http", null!));
+        var testCaseContext = new TestCaseExecutionContext(testCase);
+
+        var accessor = Substitute.For<ITestCaseExecutionContextAccessor>();
+        accessor.Context.Returns(testCaseContext);
+
+        var reporter = Substitute.For<ITestResultsSummaryReporter>();
+
+        var tester = Substitute.For<ITester>();
+        tester.ExecuteOrSkipTest(Arg.Any<Test>(), Arg.Any<TestCase?>())
+            .Returns(callInfo =>
+            {
+                var test = callInfo.Arg<Test>();
+                executionOrder.Add(test.Name);
+                return Task.FromResult(test);
+            });
+
+        var scheduler = new TestScheduler();
+        var scheduledTest = CreateTest("scheduled-test", testCase);
+        scheduler.Schedule(scheduledTest);
+
+        var registeredTest = CreateTest("registered-test", testCase);
+        testCaseContext.RegisterTest(registeredTest);
+
+        var executeScheduledTestsStep = new ExecuteScheduledTestsStep(scheduler, tester);
+        var runScriptTestsStep = new RunScriptTestsStep(accessor, reporter, tester);
+
+        pipeline.AddSteps(executeScheduledTestsStep);
+        pipeline.AddSteps(runScriptTestsStep);
+
+        await pipeline.Run(CreateApplicationContext(string.Empty));
+
+        executionOrder.Should().HaveCount(2);
+        executionOrder[0].Should().Be("scheduled-test");
+        executionOrder[1].Should().Be("registered-test");
+    }
+
+    private static Test CreateTest(string name, TestCase testCase)
+    {
+        var result = new TestResult.NotRun { TestName = name, TestCasePath = "test.http" };
+        return new Test(name, false, () => Task.CompletedTask, result, testCase);
     }
 
     private static ApplicationContext CreateApplicationContext(string path)
