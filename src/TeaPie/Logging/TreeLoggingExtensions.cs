@@ -10,14 +10,14 @@ public static class TreeLoggingExtensions
         _treeLoggingEnabled = enabled;
     }
 
-    public static IDisposable BeginTreeScope(this ILogger logger, bool? treeLoggingEnabled = null)
+    public static IDisposable BeginTreeScope(this ILogger logger)
     {
-        var enabled = treeLoggingEnabled ?? _treeLoggingEnabled;
-        if (!enabled)
+        _ = logger;
+        if (!_treeLoggingEnabled)
         {
             return EmptyDisposable.Instance;
         }
-        return new TreeScope(logger, enabled);
+        return new TreeScope();
     }
     private sealed class EmptyDisposable : IDisposable
     {

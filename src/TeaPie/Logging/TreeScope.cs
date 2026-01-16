@@ -1,24 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Serilog.Events;
 
 namespace TeaPie.Logging;
 
 public sealed class TreeScope : IDisposable
 {
-    private readonly ILogger _logger;
-    private readonly bool _treeLoggingEnabled;
-    private readonly TreeScopeStateStore.ScopeState? _state;
+    private readonly TreeScopeStateStore.ScopeState _state;
     private bool _disposed;
 
-    public TreeScope(ILogger logger, bool treeLoggingEnabled = true)
+    public TreeScope()
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _treeLoggingEnabled = treeLoggingEnabled;
-
-        if (_treeLoggingEnabled)
-        {
-            _state = new TreeScopeStateStore.ScopeState();
-            TreeScopeStateStore.Push(_state);
-        }
+        _state = new TreeScopeStateStore.ScopeState();
+        TreeScopeStateStore.Push(_state);
     }
 
     public void Dispose()
@@ -28,14 +20,11 @@ public sealed class TreeScope : IDisposable
             return;
         }
 
-        if (_treeLoggingEnabled && _state != null)
-        {
-            TreeScopeStateStore.Pop(_state);
+        TreeScopeStateStore.Pop(_state);
 
-            if (_state.Printed)
-            {
-                TreeConsoleWriter.WriteClosing(_state.Depth);
-            }
+        if (_state.Printed)
+        {
+            TreeConsoleWriter.WriteClosing(_state.Depth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(LogEventLevel.Information));
         }
 
         _disposed = true;

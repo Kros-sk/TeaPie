@@ -15,16 +15,12 @@ internal static class TreeConsoleWriter
         Console.Out.WriteLine(header + " " + prefix + StartCorner);
     }
 
-    internal static void WriteOpening(int depth) => WriteOpening(depth, DateTimeOffset.Now, LevelToShort(LogEventLevel.Information));
-
     internal static void WriteClosing(int depth, DateTimeOffset timestamp, string levelShort)
     {
         var prefix = BuildPrefix(depth - 1);
         var header = BuildHeader(timestamp, levelShort);
         Console.Out.WriteLine(header + " " + prefix + EndCorner);
     }
-
-    internal static void WriteClosing(int depth) => WriteClosing(depth, DateTimeOffset.Now, LevelToShort(LogEventLevel.Information));
 
     private static string BuildPrefix(int repeat)
     {
