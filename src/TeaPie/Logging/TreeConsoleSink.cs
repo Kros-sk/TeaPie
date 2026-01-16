@@ -16,14 +16,74 @@ public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     private readonly ITextFormatter _formatter = formatter;
 
+    private readonly object _pendingLock = new();
+    private readonly SortedDictionary<int, LogEvent> _pendingStarts = new();
+
     public void Emit(LogEvent logEvent)
     {
         var depth = GetScopeDepth(logEvent);
-        var prefix = BuildPrefix(depth, logEvent);
+        var message = logEvent.RenderMessage();
 
-        if (!string.IsNullOrEmpty(prefix))
+        if (message.StartsWith(StartCorner, StringComparison.Ordinal))
         {
-            var modifiedEvent = AddPrefixToMessage(logEvent, prefix);
+            lock (_pendingLock)
+            {
+                _pendingStarts[depth] = logEvent;
+            }
+            return;
+        }
+
+        if (message.StartsWith(EndCorner, StringComparison.Ordinal))
+        {
+            lock (_pendingLock)
+            {
+                if (_pendingStarts.Remove(depth))
+                {
+                    return;
+                }
+            }
+
+        }
+
+        if (!message.StartsWith(StartCorner, StringComparison.Ordinal) && !message.StartsWith(EndCorner, StringComparison.Ordinal))
+        {
+            List<LogEvent>? toFlush = null;
+            lock (_pendingLock)
+            {
+                if (_pendingStarts.Count > 0)
+                {
+                    toFlush = _pendingStarts.Keys.Where(d => d <= depth).OrderBy(d => d).Select(d => _pendingStarts[d]).ToList();
+                    foreach (var d in toFlush.Select(e => GetScopeDepth(e!)))
+                    {
+                        _pendingStarts.Remove(d);
+                    }
+                }
+            }
+
+            if (toFlush != null)
+            {
+                foreach (var pending in toFlush)
+                {
+                    var pendingDepth = GetScopeDepth(pending);
+                    var prefix = BuildPrefix(pendingDepth, pending);
+                    if (!string.IsNullOrEmpty(prefix))
+                    {
+                        var modifiedPending = AddPrefixToMessage(pending, prefix);
+                        _formatter.Format(modifiedPending, Console.Out);
+                    }
+                    else
+                    {
+                        _formatter.Format(pending, Console.Out);
+                    }
+                }
+            }
+        }
+
+        var finalPrefix = BuildPrefix(depth, logEvent);
+
+        if (!string.IsNullOrEmpty(finalPrefix))
+        {
+            var modifiedEvent = AddPrefixToMessage(logEvent, finalPrefix);
             _formatter.Format(modifiedEvent, Console.Out);
         }
         else

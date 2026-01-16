@@ -21,7 +21,7 @@ public sealed class TreeScope : IDisposable
 
         if (_treeLoggingEnabled)
         {
-            _logger.LogInformation("┌──");
+            _logger.LogError("┌──");
         }
     }
 
@@ -34,7 +34,7 @@ public sealed class TreeScope : IDisposable
 
         if (_treeLoggingEnabled)
         {
-            _logger.LogInformation("└──");
+            _logger.LogError("└──");
         }
         _logContextScope?.Dispose();
         _currentDepth.Value--;
