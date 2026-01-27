@@ -15,6 +15,11 @@ internal class TestResultsSummaryReporter(ITestResultsSummaryAccessor accessor) 
 
     public void Initialize()
     {
+        if (_started)
+        {
+            return;
+        }
+
         _summary = GetSummary();
         _summary.Start();
         _started = true;
