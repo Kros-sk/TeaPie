@@ -132,7 +132,7 @@ public class ApplicationPipelineShould
         var registeredTest = CreateTest("registered-test", testCase);
         testCaseContext.RegisterTest(registeredTest);
 
-        var executeScheduledTestsStep = new ExecuteScheduledTestsStep(scheduler, tester);
+        var executeScheduledTestsStep = new ExecuteScheduledTestsStep(scheduler, tester, reporter);
         var runScriptTestsStep = new RunScriptTestsStep(accessor, reporter, tester);
 
         pipeline.AddSteps(executeScheduledTestsStep);

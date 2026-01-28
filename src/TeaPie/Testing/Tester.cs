@@ -156,7 +156,7 @@ internal partial class Tester(
     [LoggerMessage(Message = "Skipping test: '{Name}' ({Path})", Level = LogLevel.Information)]
     private static partial void LogTestSkip(ILogger logger, string Name, string Path);
 
-    [LoggerMessage(Message = "Test '{Name}' ({Path}) was already executed during retry evaluation", Level = LogLevel.Information)]
+    [LoggerMessage(Message = "Test '{Name}' ({Path}) was already executed during retry evaluation", Level = LogLevel.Debug)]
     private static partial void LogTestAlreadyExecuted(ILogger logger, string Name, string Path);
 
     #endregion

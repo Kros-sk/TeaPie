@@ -10,6 +10,8 @@ A test is considered **failed** if an exception is thrown within the test body, 
 
 > 💁‍♂️ However, the **natively supported assertion library** is `Xunit.Assert`, which is statically imported in all script files. This means you don't need the `Assert.` prefix to access its methods.
 
+> ⚠️ `.csx` scripts **must not contain code that accesses or processes HTTP responses outside of `tp.Test` methods**. Since the script is executed before all HTTP requests, any response‑dependent logic placed outside `tp.Test` methods **may cause errors**.
+
 ### Example Test
 
 ```csharp
