@@ -1,0 +1,4 @@
+### Delete Resource
+# @name DeleteResourceRequest
+## TEST-EXPECT-STATUS: [200, 204]
+DELETE {{ApiBaseUrl}}/{{ResourcePath}}/{{ResourceId}}
