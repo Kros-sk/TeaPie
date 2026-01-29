@@ -13,7 +13,21 @@ Test case creation, renumbering, and organization for TeaPie framework. Helps ma
 
 ### Using Generate Command
 
-**Basic test case:**
+**Full Syntax:**
+
+```bash
+teapie generate <test-case-name> [path] [-i|--init|--pre-request] [-t|--test|--post-response]
+```
+
+**Arguments:**
+- `<test-case-name>` - Name of test case (required). Can include numeric prefix: `001-Create-Car`
+- `[path]` - Target directory path (optional). If omitted, creates in current directory. If path doesn't exist, it will be created automatically.
+
+**Options:**
+- `-i`, `--init`, `--pre-request` - Generate pre-request script (`<name>-init.csx`)
+- `-t`, `--test`, `--post-response` - Generate post-response script (`<name>-test.csx`)
+
+**Basic test case (in current directory):**
 
 ```bash
 teapie generate MyTestCase
@@ -37,10 +51,35 @@ teapie generate MyTestCase -t
 teapie generate MyTestCase -i -t
 ```
 
-**In specific directory:**
+**In specific directory (existing or new):**
 
 ```bash
+# Existing directory
 teapie generate MyTestCase ./Tests/002-Cars
+
+# New directory (will be created automatically)
+teapie generate 001-Create-Car ./Tests/004-Cars-Basic
+
+# With prefix in name and scripts
+teapie generate 001-Create-Car ./Tests/004-Cars-Basic -i -t
+```
+
+**Creating multiple test cases in a new collection:**
+
+```bash
+# 1. Create collection directory first (or let generate create it)
+mkdir -p ./Tests/004-Cars-Basic
+
+# 2. Generate test cases with proper prefixes
+cd ./Tests/004-Cars-Basic
+teapie generate 001-Create-Car -i -t
+teapie generate 002-Get-Car -t
+teapie generate 003-Delete-Car -t
+
+# Or generate from parent directory
+teapie generate 001-Create-Car ./Tests/004-Cars-Basic -i -t
+teapie generate 002-Get-Car ./Tests/004-Cars-Basic -t
+teapie generate 003-Delete-Car ./Tests/004-Cars-Basic -t
 ```
 
 ### Generated Files
@@ -198,6 +237,11 @@ await tp.Test("Response should contain car ID.", async () =>
 
 1. **Descriptive names:** Use clear names like `001-Add-Customer-req.http` not `001-Test1-req.http`
 2. **Consistent structure:** Follow the same pattern across all test cases
+
+### Code Style
+
+1. **Avoid unnecessary comments:** Do not include verbose explanatory comments in test files. Demo collections contain educational comments (e.g., `// Use 'load' directive...`, `// Name the request...`), but production test code should be clean and self-documenting.
+2. **Keep code readable:** Use descriptive variable names and clear test descriptions instead of comments.
 
 ### Workflow Order
 
