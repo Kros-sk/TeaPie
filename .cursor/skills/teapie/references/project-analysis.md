@@ -1,9 +1,6 @@
----
-name: teapie-project-analyzer
-description: Analyze TeaPie project structure and discover custom extensions. Use when: (1) Finding and understanding .teapie folder structure, (2) Discovering custom functions, directives, and auth providers registered in init.csx, (3) Listing available environments from env.json, (4) Finding shared scripts in Definitions folder, (5) Understanding project-specific TeaPie configurations, or (6) When users need to understand what custom extensions are available in a TeaPie project.
----
+# Project Analysis Reference
 
-# TeaPie Project Analyzer
+Complete guide for analyzing TeaPie project structure and discovering custom extensions.
 
 ## Overview
 
@@ -18,8 +15,6 @@ The `.teapie` folder is typically located at the repository root. TeaPie searche
 1. Check current directory for `.teapie`
 2. Walk up parent directories
 3. Stop at repository root (where `.git` folder exists)
-
-**Use script:** `scripts/analyze-teapie-project.py` to automatically discover and analyze.
 
 ## Analyzing init.csx
 
@@ -150,22 +145,19 @@ The `Definitions/` folder contains shared scripts and class definitions.
 
 ### Step 1: Locate .teapie Folder
 
-```bash
-python scripts/analyze-teapie-project.py --project-root .
-```
+Manually check repository root or walk up from collection path.
 
 ### Step 2: Analyze Components
 
-The script analyzes:
+Analyze the following components:
 
 1. **init.csx** - Custom registrations
 2. **env.json** - Environments and variables
 3. **Definitions/** - Shared scripts
-4. **Structure** - Folder organization
 
 ### Step 3: Generate Report
 
-Output includes:
+Output should include:
 
 - Custom functions with signatures
 - Custom test directives with parameters
@@ -212,7 +204,3 @@ tp.SetVariable("NewCar", car.ToJsonString());
 2. **Use consistent naming:** Follow naming conventions for custom functions/directives
 3. **Organize Definitions:** Group related scripts in `Definitions/` subfolders
 4. **Version control:** Commit `.teapie` folder (exclude `cache/`, `reports/`, `runs/`)
-
-## Resources
-
-- Script: `analyze-teapie-project.py` - Automated project analysis tool

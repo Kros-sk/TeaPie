@@ -17,11 +17,12 @@ TeaPie doesn't have built-in OpenAPI integration. This guide shows how to manual
    - `swagger.json` or `swagger.yaml` in project root
    - `docs/` or `documentation/` directories
    - `api/` or `src/api/` directories
+   - `openapi` directories
    - `.well-known/` directory
    - Build output directories (`dist/`, `build/`, `out/`)
 
 2. **Search strategies:**
-   - Search for files matching patterns: `*openapi*.json`, `*swagger*.json`, `*api*.json`
+   - Search for files matching patterns: `*openapi*.json`, `*swagger*.json`, `*api*.json`, `{projectname}.json`
    - Check project documentation (README.md, CONTRIBUTING.md)
    - Look for API documentation endpoints (e.g., `/swagger`, `/api-docs`, `/openapi.json`)
    - Check build configuration files for OpenAPI generation settings
@@ -69,7 +70,8 @@ Extract key information:
 - Path parameters: `{id}` in `/cars/{id}`
 - Query parameters: `?filter=active`
 - Request body schema
-- Response schemas (200, 201, 400, etc.)
+- Response status code (200, 201, 400, etc.)
+- Response schemas
 
 **Example OpenAPI:**
 ```json
@@ -124,6 +126,7 @@ Extract key information:
 ```http
 ### Add New Car
 # @name AddCarRequest
+## TEST-EXPECT-STATUS: [201]
 POST {{ApiBaseUrl}}{{ApiCarsSection}}
 Content-Type: application/json
 
@@ -161,41 +164,41 @@ tp.SetVariable("NewCar", car.ToJsonString(), "cars");
 
 **File:** `<prefix>-Add-Car-test.csx`
 
-Validate response according to OpenAPI schema:
+Use `JsonContains` for validation and store entire response objects:
 
 ```csharp
-tp.Test("Status code should be 201 (Created).", () =>
+await tp.Test("Response should contain request data.", async () =>
 {
-    var statusCode = tp.Responses["AddCarRequest"].StatusCode();
-    Equal(201, statusCode);
+    string requestBody = await tp.Request.Content.ReadAsStringAsync();
+    string responseBody = await tp.Response.Content.ReadAsStringAsync();
+    
+    JsonContains(responseBody, requestBody, "id", "createdAt");
 });
 
-await tp.Test("Response should contain car ID.", async () =>
+await tp.Test("Store created car.", async () =>
 {
-    dynamic responseJson = await tp.Responses["AddCarRequest"].GetBodyAsExpandoAsync();
+    string responseBody = await tp.Response.Content.ReadAsStringAsync();
+    dynamic response = await tp.Response.GetBodyAsExpandoAsync();
     
-    // Assert required properties exist
-    NotNull(responseJson.Id);
-    NotNull(responseJson.Brand);
-    NotNull(responseJson.Model);
-    
-    // Assert types match schema
-    True(responseJson.Id is long || responseJson.Id is int);
-    True(responseJson.Brand is string);
-    True(responseJson.Model is string);
-    
-    // Store ID for subsequent requests
-    tp.SetVariable("NewCarId", responseJson.Id, "cars", "ids");
-});
-
-await tp.Test("Response Brand should match request Brand.", async () =>
-{
-    dynamic requestJson = await tp.Requests["AddCarRequest"].GetBodyAsExpandoAsync();
-    dynamic responseJson = await tp.Responses["AddCarRequest"].GetBodyAsExpandoAsync();
-    
-    Equal(requestJson.Brand, responseJson.Brand);
+    True(response.Id > 0);
+    tp.SetVariable("CarId", response.Id);
+    tp.SetVariable("CreatedCar", responseBody);
 });
 ```
+
+For GET requests, compare with stored object using `JsonContains`:
+```csharp
+await tp.Test("Retrieved car should match created car.", async () =>
+{
+    string responseBody = await tp.Response.Content.ReadAsStringAsync();
+    string createdCar = tp.GetVariable<string>("CreatedCar");
+    
+    JsonContains(responseBody, createdCar, "createdAt");
+    tp.RemoveVariable("CreatedCar");
+});
+```
+
+**Note:** `JsonContains()` requires property names to match exactly. If your API uses camelCase for responses (common with ASP.NET Core) but your requests use PascalCase, `JsonContains` may fail. In such cases, use `CaseInsensitiveExpandoObject` for case-insensitive comparison or JsonElement for precise property-by-property comparison. See [JsonContains Limitations](test-design.md#jsoncontains-limitations) for details.
 
 ## Patterns by HTTP Method
 
@@ -230,16 +233,12 @@ await tp.Test("Response Brand should match request Brand.", async () =>
 ```http
 ### Get Car
 # @name GetCarRequest
+## TEST-EXPECT-STATUS: [200]
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{CarId}}
 ```
 
 **Test script:**
 ```csharp
-tp.Test("Status code should be 200 (OK).", () =>
-{
-    Equal(200, tp.Responses["GetCarRequest"].StatusCode());
-});
-
 await tp.Test("Response should contain car details.", async () =>
 {
     dynamic responseJson = await tp.Responses["GetCarRequest"].GetBodyAsExpandoAsync();
@@ -286,6 +285,7 @@ await tp.Test("Response should contain car details.", async () =>
 ```http
 ### Edit Car
 # @name EditCarRequest
+## TEST-EXPECT-STATUS: [200]
 PUT {{ApiBaseUrl}}{{ApiCarsSection}}/{{CarId}}
 Content-Type: application/json
 
@@ -297,16 +297,11 @@ Content-Type: application/json
 
 **Test script:**
 ```csharp
-tp.Test("Status code should be 200 (OK).", () =>
-{
-    Equal(200, tp.Responses["EditCarRequest"].StatusCode());
-});
-
 await tp.Test("Updated car should reflect changes.", async () =>
 {
     dynamic requestJson = await tp.Requests["EditCarRequest"].GetBodyAsExpandoAsync();
     dynamic responseJson = await tp.Responses["EditCarRequest"].GetBodyAsExpandoAsync();
-    
+
     Equal(requestJson.Brand, responseJson.Brand);
     Equal(requestJson.Model, responseJson.Model);
 });
@@ -342,20 +337,8 @@ await tp.Test("Updated car should reflect changes.", async () =>
 ```http
 ### Delete Car
 # @name DeleteCarRequest
+## TEST-EXPECT-STATUS: [204]
 DELETE {{ApiBaseUrl}}{{ApiCarsSection}}/{{CarId}}
-```
-
-**Test script:**
-```csharp
-tp.Test("Status code should be 204 (No Content).", () =>
-{
-    Equal(204, tp.Responses["DeleteCarRequest"].StatusCode());
-});
-
-tp.Test("Response should not have body.", () =>
-{
-    False(tp.Responses["DeleteCarRequest"].HasBody());
-});
 ```
 
 ## Handling Path Parameters
@@ -536,91 +519,54 @@ GET {{ApiBaseUrl}}{{ApiCarsSection}}?filter={{FilterValue}}&limit={{Limit}}
 }
 ```
 
-## Validating Responses
+## Edge Case Testing from OpenAPI
 
-### Status Code Validation
+Extract validation rules and status codes from OpenAPI to create edge case test scenarios.
 
-```csharp
-tp.Test("Status code should match OpenAPI spec.", () =>
+### Extracting Validation Information
+
+Identify validation rules in OpenAPI schema:
+- `required` - Required fields
+- `minLength` / `maxLength` - String length constraints
+- `minimum` / `maximum` - Numeric range constraints
+- `pattern` - Regex validation
+- `enum` - Allowed values
+- `format` - Special formats (email, uri, date-time, etc.)
+- `minItems` / `maxItems` - Array size constraints
+
+### Extracting Status Codes
+
+Review `responses` section for error codes: `400` (Bad Request), `404` (Not Found), `409` (Conflict), `422` (Unprocessable Entity), etc.
+
+### Creating Edge Case Test Scenarios
+
+Based on validations, create tests for:
+
+1. **Missing required fields** - Omit each required field
+2. **Invalid values** - Values outside min/max, wrong format, invalid enum
+3. **Boundary testing** - Edge values (min-1, max+1, empty string)
+4. **Type mismatches** - Wrong data types (string instead of number, etc.)
+
+**Example:**
+```http
+### Create Product - Missing Required Field
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/products
+Content-Type: application/json
+
 {
-    var statusCode = tp.Responses["RequestName"].StatusCode();
-    // Check against expected status codes from OpenAPI
-    True(statusCode == 200 || statusCode == 201);
-});
-```
-
-### Response Schema Validation
-
-```csharp
-await tp.Test("Response should match OpenAPI schema.", async () =>
-{
-    dynamic responseJson = await tp.Responses["RequestName"].GetBodyAsExpandoAsync();
-    
-    // Check required properties
-    NotNull(responseJson.Id);
-    NotNull(responseJson.Name);
-    
-    // Check types
-    True(responseJson.Id is long || responseJson.Id is int);
-    True(responseJson.Name is string);
-    
-    // Check constraints (if applicable)
-    if (responseJson.Id is long id)
-    {
-        True(id > 0);
-    }
-});
-```
-
-### Response Header Validation
-
-```csharp
-tp.Test("Response should have Content-Type header.", () =>
-{
-    var headers = tp.Responses["RequestName"].Headers();
-    True(headers.ContainsKey("Content-Type"));
-    Equal("application/json", headers["Content-Type"].First());
-});
-```
-
-## Error Response Testing
-
-**OpenAPI:**
-```json
-{
-  "responses": {
-    "400": {
-      "description": "Bad request",
-      "content": {
-        "application/json": {
-          "schema": {
-            "type": "object",
-            "properties": {
-              "Error": {"type": "string"},
-              "Code": {"type": "string"}
-            }
-          }
-        }
-      }
-    }
-  }
+    "Price": 10.99
 }
 ```
 
-**Test script:**
-```csharp
-tp.Test("Status code should be 400 (Bad Request).", () =>
-{
-    Equal(400, tp.Responses["RequestName"].StatusCode());
-});
+### Testing 400 Responses
 
-await tp.Test("Error response should contain error details.", async () =>
-{
-    dynamic errorJson = await tp.Responses["RequestName"].GetBodyAsExpandoAsync();
-    NotNull(errorJson.Error);
-    NotNull(errorJson.Code);
-});
-```
+When testing 400 responses:
+- **Group multiple edge cases** into fewer requests instead of creating separate test files for each scenario
+- If OpenAPI shows a standard error response structure, verify response body properties in `-test.csx` file
+- Use `## TEST-EXPECT-STATUS: [400]` directive and add assertions to verify error response contains expected properties from OpenAPI
+
+See [Test Design Best Practices](test-design.md#edge-cases-and-error-handling) for details.
 
 ## Best Practices
 

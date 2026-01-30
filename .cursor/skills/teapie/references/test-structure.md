@@ -43,7 +43,7 @@ Tests/
 ├── 001-Customers/              # Collection (numbered)
 │   ├── 001-Add-Customer-req.http
 │   └── 001-Add-Customer-test.csx
-├── 002-Cars/                   # Nested collection
+├── 002-Cars/                   # Another collection
 │   ├── 001-Add-Car-init.csx
 │   ├── 001-Add-Car-req.http
 │   ├── 001-Add-Car-test.csx
@@ -58,17 +58,29 @@ Tests/
     └── 001-Rent-Car-test.csx
 ```
 
+### Scenario Organization with Nested Directories
+
+Nested directories can organize different test scenarios within a collection:
+
+```text
+007-Search/
+├── 001-Seed/
+│   └── 001-seed-data-req.http
+├── 002-Internal-Purchaser-index/
+│   ├── 001-by-registration-id-req.http
+│   └── 002-by-name-req.http
+└── 003-Internal-partner-index/
+    └── 001-by-name-req.http
+```
+
+Gap scripts (`insert-gap.py`, `renumber-tests.py`) support both test case files and numbered directories.
+
 ### Collection-Level Files
 
 Collections can contain optional files:
 
 - **`env.json`** - Environment definitions file (auto-detected)
 - **`init.csx`** - Collection initialization script (auto-detected)
-- **`collection-name-config.json`** - Collection configuration
-- **`collection-name-doc.md`** - Collection documentation
-- **`collection-vars.json`** - Collection variables
-- **`collection-name-init.csx`** - Collection-specific initialization
-- **`collection-name-test.csx`** - Collection-level test script
 
 ### Execution Order
 

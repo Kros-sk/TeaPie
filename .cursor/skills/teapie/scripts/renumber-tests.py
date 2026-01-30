@@ -3,7 +3,7 @@
 Renumber TeaPie test cases in a directory.
 
 Maintains proper zero-padding and renames all related files (-req.http, -init.csx, -test.csx)
-as a group to preserve test case integrity.
+and numbered directories as a group to preserve test case integrity.
 
 Usage:
     python renumber-tests.py --directory <path> [--start <number>] [--insert <number> <name>]
@@ -51,6 +51,53 @@ def extract_test_case_info(filename: str) -> Optional[Tuple[int, str, str]]:
     return None
 
 
+def extract_directory_info(dirname: str) -> Optional[Tuple[int, str]]:
+    """
+    Extract prefix number and base name from numbered directory name.
+    
+    Args:
+        dirname: Directory name (e.g., "001-Seed")
+        
+    Returns:
+        Tuple of (prefix_number, base_name) or None if not a numbered directory
+    """
+    pattern = r'^(\d+)-(.+)$'
+    match = re.match(pattern, dirname)
+    
+    if match:
+        prefix_num = int(match.group(1))
+        base_name = match.group(2)
+        return (prefix_num, base_name)
+    return None
+
+
+def find_numbered_directories(directory: Path) -> Dict[int, Dict[str, Path]]:
+    """
+    Find all numbered directories in the given directory.
+    
+    Args:
+        directory: Directory to search
+        
+    Returns:
+        Dictionary mapping prefix number to dict with base_name and path
+    """
+    numbered_dirs: Dict[int, Dict[str, Path]] = {}
+    
+    for item_path in directory.iterdir():
+        if not item_path.is_dir():
+            continue
+            
+        info = extract_directory_info(item_path.name)
+        if info:
+            prefix_num, base_name = info
+            numbered_dirs[prefix_num] = {
+                'base_name': base_name,
+                'path': item_path
+            }
+    
+    return numbered_dirs
+
+
 def find_test_cases(directory: Path) -> Dict[int, Dict[str, Path]]:
     """
     Find all test cases in directory and group by prefix number.
@@ -94,10 +141,10 @@ def renumber_test_cases(
     insert_name: Optional[str] = None
 ) -> None:
     """
-    Renumber test cases in directory.
+    Renumber test cases and directories in directory.
     
     Args:
-        directory: Directory containing test cases
+        directory: Directory containing test cases and/or numbered directories
         start_number: Starting number for renumbering (default: 1)
         insert_at: If specified, insert a gap at this position
         insert_name: Name for inserted test case (required if insert_at is set)
@@ -111,13 +158,15 @@ def renumber_test_cases(
         sys.exit(1)
     
     test_cases = find_test_cases(directory)
+    numbered_dirs = find_numbered_directories(directory)
     
-    if not test_cases:
-        print(f"ℹ️  No test cases found in {directory}")
+    if not test_cases and not numbered_dirs:
+        print(f"ℹ️  No test cases or numbered directories found in {directory}")
         return
     
     # Sort by prefix number
-    sorted_numbers = sorted(test_cases.keys())
+    sorted_file_numbers = sorted(test_cases.keys())
+    sorted_dir_numbers = sorted(numbered_dirs.keys())
     
     # If inserting, validate
     if insert_at is not None:
@@ -125,15 +174,15 @@ def renumber_test_cases(
             print("❌ Error: --insert requires a test name")
             sys.exit(1)
         
-        if insert_at in test_cases:
-            print(f"⚠️  Warning: Test case {format_number(insert_at)} already exists. "
-                  f"Existing files will be renumbered.")
+        if insert_at in test_cases or insert_at in numbered_dirs:
+            print(f"⚠️  Warning: Item {format_number(insert_at)} already exists. "
+                  f"Existing items will be renumbered.")
     
-    # Build rename plan
-    rename_plan: List[Tuple[Path, Path]] = []
+    # Build rename plans for files
+    file_rename_plan: List[Tuple[Path, Path]] = []
     current_number = start_number
     
-    for old_prefix in sorted_numbers:
+    for old_prefix in sorted_file_numbers:
         test_case = test_cases[old_prefix]
         base_name = test_case['base_name']
         files = test_case['files']
@@ -152,18 +201,60 @@ def renumber_test_cases(
             new_path = directory / new_name
             
             if file_path != new_path:
-                rename_plan.append((file_path, new_path))
+                file_rename_plan.append((file_path, new_path))
         
         current_number += 1
     
-    # Execute renames (in reverse order to avoid conflicts)
-    if rename_plan:
-        print(f"📝 Renumbering {len(rename_plan)} file(s)...")
+    # Build rename plans for directories
+    dir_rename_plan: List[Tuple[Path, Path]] = []
+    current_number = start_number
+    
+    for old_prefix in sorted_dir_numbers:
+        dir_info = numbered_dirs[old_prefix]
+        base_name = dir_info['base_name']
+        dir_path = dir_info['path']
+        
+        # Skip if this is the insertion point
+        if insert_at is not None and current_number == insert_at:
+            current_number += 1
+        
+        # Determine new prefix
+        new_prefix = format_number(current_number)
+        new_name = f"{new_prefix}-{base_name}"
+        new_path = directory / new_name
+        
+        if dir_path != new_path:
+            dir_rename_plan.append((dir_path, new_path))
+        
+        current_number += 1
+    
+    # Execute directory renames first (in reverse order to avoid conflicts)
+    if dir_rename_plan:
+        print(f"📁 Renumbering {len(dir_rename_plan)} director(y/ies)...")
         
         # Sort by old path in reverse to rename higher numbers first
-        rename_plan.sort(key=lambda x: x[0].name, reverse=True)
+        dir_rename_plan.sort(key=lambda x: x[0].name, reverse=True)
         
-        for old_path, new_path in rename_plan:
+        for old_path, new_path in dir_rename_plan:
+            if new_path.exists():
+                print(f"⚠️  Warning: Target directory already exists: {new_path.name}")
+                continue
+            
+            try:
+                old_path.rename(new_path)
+                print(f"  ✓ {old_path.name}/ → {new_path.name}/")
+            except Exception as e:
+                print(f"❌ Error renaming {old_path.name}: {e}")
+                sys.exit(1)
+    
+    # Execute file renames (in reverse order to avoid conflicts)
+    if file_rename_plan:
+        print(f"📝 Renumbering {len(file_rename_plan)} file(s)...")
+        
+        # Sort by old path in reverse to rename higher numbers first
+        file_rename_plan.sort(key=lambda x: x[0].name, reverse=True)
+        
+        for old_path, new_path in file_rename_plan:
             if new_path.exists():
                 print(f"⚠️  Warning: Target file already exists: {new_path.name}")
                 continue
@@ -174,18 +265,19 @@ def renumber_test_cases(
             except Exception as e:
                 print(f"❌ Error renaming {old_path.name}: {e}")
                 sys.exit(1)
-        
-        print(f"✅ Successfully renumbered test cases")
+    
+    if file_rename_plan or dir_rename_plan:
+        print(f"✅ Successfully renumbered items")
         
         if insert_at is not None:
-            print(f"\n💡 Next step: Create test case '{insert_name}' with prefix {format_number(insert_at)}")
+            print(f"\n💡 Next step: Create item '{insert_name}' with prefix {format_number(insert_at)}")
     else:
-        print("ℹ️  No files need renumbering")
+        print("ℹ️  No items need renumbering")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Renumber TeaPie test cases in a directory',
+        description='Renumber TeaPie test cases and directories',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -204,7 +296,7 @@ Examples:
         '--directory',
         type=str,
         required=True,
-        help='Directory containing test cases to renumber'
+        help='Directory containing test cases and/or numbered directories to renumber'
     )
     
     parser.add_argument(
