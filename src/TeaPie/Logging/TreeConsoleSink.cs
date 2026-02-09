@@ -16,7 +16,7 @@ public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     public void Emit(LogEvent logEvent)
     {
-        var stack = TreeScopeStateStore.GetMutableStack();
+        var stack = TreeScopeStateStore.GetStack();
         if (stack != null && stack.Count > 0)
         {
             foreach (var s in stack)
@@ -24,7 +24,7 @@ public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
                 if (!s.Printed)
                 {
                     TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
-                    s.Printed = true;
+                    TreeScopeStateStore.MarkPrinted(s);
                 }
             }
         }

@@ -1,4 +1,4 @@
-namespace TeaPie.Logging;
+﻿namespace TeaPie.Logging;
 
 internal static class TreeScopeStateStore
 {
@@ -10,7 +10,12 @@ internal static class TreeScopeStateStore
 
     private static readonly AsyncLocal<List<ScopeState>?> _current = new();
 
-    internal static List<ScopeState>? GetMutableStack() => _current.Value;
+    internal static IReadOnlyList<ScopeState>? GetStack() => _current.Value;
+
+    internal static void MarkPrinted(ScopeState state)
+    {
+        state.Printed = true;
+    }
 
     internal static void Push(ScopeState state)
     {
