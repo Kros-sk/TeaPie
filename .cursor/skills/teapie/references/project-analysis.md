@@ -121,7 +121,7 @@ The `env.json` file defines environment variables.
 
 - **Environments:** `$shared`, `local`, `production`
 - **Variables per environment:** List all variables defined
-- **Variable values:** Show values (mask secrets if tagged)
+- **Variable values:** Show values
 
 ## Analyzing Definitions Folder
 

@@ -264,15 +264,6 @@ See [Test Design Best Practices](test-design.md) for recommended usage patterns.
 
 **JsonContains Case-Sensitivity:** `JsonContains()` compares JSON strings directly, so property names must match exactly. When request uses PascalCase (`Name`, `Description`) and response uses camelCase (`name`, `description`) - common with ASP.NET Core default serialization - use `CaseInsensitiveExpandoObject` or JsonElement for comparison instead. See [JsonContains Limitations](test-design.md#jsoncontains-limitations) for details and alternatives.
 
-### Request Variables in .http Files
-
-Access JSON properties from previous requests using JSONPath syntax:
-
-```http
-### Get Car
-GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.response.body.$.Id}}
-```
-
 ## Code Style
 
 **Do not add comments to test scripts.** Test names should be descriptive and self-documenting. Keep code clean without explanatory comments.

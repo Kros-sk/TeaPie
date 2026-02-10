@@ -14,6 +14,10 @@ Complete reference for all TeaPie directives.
 
 - `path-to-script` - Absolute or relative path (relative to parent directory of the script)
 
+**Path wildcards:**
+
+- `$teapie` - Resolves to the project's `.teapie` folder
+
 **Example:**
 
 ```csharp

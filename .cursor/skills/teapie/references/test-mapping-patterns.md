@@ -323,7 +323,7 @@ Content-Type: application/json
 
 Variables are resolved in this order:
 1. Global (`$shared` environment)
-2. Environment (collection-specific)
+2. Environment (environment-specific)
 3. Collection (during collection run)
 4. Test Case (deleted after test case ends)
 
