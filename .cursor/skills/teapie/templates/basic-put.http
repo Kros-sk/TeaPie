@@ -1,0 +1,10 @@
+### Update Resource
+# @name UpdateResourceRequest
+## TEST-EXPECT-STATUS: [200]
+PUT {{ApiBaseUrl}}/{{ResourcePath}}/{{ResourceId}}
+Content-Type: application/json
+
+{
+    "Property1": "updated-value1",
+    "Property2": "updated-value2"
+}

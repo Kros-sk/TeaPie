@@ -1,0 +1,10 @@
+### Request with Retry Strategy
+# @name RetryRequest
+## RETRY-STRATEGY: Default retry
+## RETRY-UNTIL-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/{{ResourcePath}}
+Content-Type: application/json
+
+{
+    "Property1": "value1"
+}
