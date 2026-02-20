@@ -20,7 +20,7 @@ internal sealed class TreeScope : IDisposable
             return;
         }
 
-        TreeScopeStateStore.Pop(_state);
+        TreeScopeStateStore.Pop();
 
         if (_state.Printed)
         {

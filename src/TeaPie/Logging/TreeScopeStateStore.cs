@@ -1,4 +1,6 @@
-﻿namespace TeaPie.Logging;
+﻿using System.Collections.Immutable;
+
+namespace TeaPie.Logging;
 
 internal static class TreeScopeStateStore
 {
@@ -8,48 +10,36 @@ internal static class TreeScopeStateStore
         public bool Printed { get; set; }
     }
 
-    private static readonly AsyncLocal<List<ScopeState>?> _current = new();
+    private static readonly AsyncLocal<ImmutableStack<ScopeState>> _current = new();
 
-    internal static IReadOnlyList<ScopeState>? GetStack() => _current.Value;
-
-    internal static void MarkPrinted(ScopeState state)
+    internal static IReadOnlyList<ScopeState>? GetStack()
     {
-        state.Printed = true;
+        var stack = _current.Value;
+        if (stack?.IsEmpty != false)
+        {
+            return null;
+        }
+
+        return stack.Reverse().ToList();
     }
+
+    internal static void MarkPrinted(ScopeState state) => state.Printed = true;
 
     internal static void Push(ScopeState state)
     {
-        var list = _current.Value;
-        if (list == null)
-        {
-            list = [];
-            _current.Value = list;
-        }
-
-        list.Add(state);
-        state.Depth = list.Count;
+        var stack = _current.Value ?? ImmutableStack<ScopeState>.Empty;
+        state.Depth = stack.Count() + 1;
+        _current.Value = stack.Push(state);
     }
 
-    internal static void Pop(ScopeState state)
+    internal static void Pop()
     {
-        var list = _current.Value;
-        if (list == null || list.Count == 0)
+        var stack = _current.Value;
+        if (stack?.IsEmpty != false)
         {
             return;
         }
 
-        if (list[^1] == state)
-        {
-            list.RemoveAt(list.Count - 1);
-        }
-        else
-        {
-            list.Remove(state);
-        }
-
-        if (list.Count == 0)
-        {
-            _current.Value = null;
-        }
+        _current.Value = stack.Pop();
     }
 }
