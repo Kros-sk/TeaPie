@@ -8,7 +8,7 @@ using System.Text;
 
 namespace TeaPie.Logging;
 
-public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
+internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {
     private const string VerticalBar = "│  ";
 
@@ -62,7 +62,7 @@ public class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
     }
 }
 
-public static class TreeConsoleSinkExtensions
+internal static class TreeConsoleSinkExtensions
 {
     public static LoggerConfiguration TreeConsole(
         this LoggerSinkConfiguration sinkConfiguration,

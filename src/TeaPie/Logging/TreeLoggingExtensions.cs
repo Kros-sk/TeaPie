@@ -2,7 +2,7 @@
 
 namespace TeaPie.Logging;
 
-public static class TreeLoggingExtensions
+internal static class TreeLoggingExtensions
 {
     private static bool _treeLoggingEnabled = false;
     public static void SetTreeLoggingEnabled(bool enabled)

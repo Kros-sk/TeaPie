@@ -2,7 +2,7 @@
 
 namespace TeaPie.Logging;
 
-public sealed class TreeScope : IDisposable
+internal sealed class TreeScope : IDisposable
 {
     private readonly TreeScopeStateStore.ScopeState _state;
     private bool _disposed;
