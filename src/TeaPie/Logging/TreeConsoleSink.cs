@@ -14,18 +14,19 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
     public void Emit(LogEvent logEvent)
     {
         var scopes = TreeScopeStateStore.GetActiveScopes();
-        PrintUnopenedScopes(scopes, logEvent);
-        var prefix = BuildIndentPrefix(scopes);
+        var printedCount = PrintUnopenedScopes(scopes, logEvent);
+        var prefix = BuildIndentPrefix(printedCount);
         WriteLogEvent(logEvent, prefix);
     }
 
-    private static void PrintUnopenedScopes(IReadOnlyList<TreeScopeStateStore.ScopeState>? scopes, LogEvent logEvent)
+    private static int PrintUnopenedScopes(IReadOnlyList<TreeScopeStateStore.ScopeState>? scopes, LogEvent logEvent)
     {
         if (scopes == null || scopes.Count == 0)
         {
-            return;
+            return 0;
         }
 
+        var printedCount = 0;
         foreach (var s in scopes)
         {
             if (!s.Printed)
@@ -33,12 +34,15 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
                 TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
                 TreeScopeStateStore.MarkPrinted(s, logEvent.Level);
             }
+
+            printedCount++;
         }
+
+        return printedCount;
     }
 
-    private static string BuildIndentPrefix(IReadOnlyList<TreeScopeStateStore.ScopeState>? scopes)
+    private static string BuildIndentPrefix(int printedCount)
     {
-        var printedCount = scopes?.Count(s => s.Printed) ?? 0;
         return TreeConsoleWriter.BuildPrefix(printedCount);
     }
 
