@@ -78,7 +78,7 @@ internal static class TreeConsoleSinkExtensions
     internal static LoggerConfiguration TreeConsole(
         this LoggerSinkConfiguration sinkConfiguration,
         LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose,
-        string outputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+        string outputTemplate = TreeConsoleWriter.DefaultOutputTemplate)
     {
         var formatter = new MessageTemplateTextFormatter(outputTemplate);
         return sinkConfiguration.Sink(new TreeConsoleSink(formatter), restrictedToMinimumLevel);

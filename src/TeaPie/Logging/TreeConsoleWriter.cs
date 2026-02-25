@@ -7,6 +7,8 @@ internal static class TreeConsoleWriter
     internal const string VerticalBar = "│  ";
     private const string StartCorner = "┌──";
     private const string EndCorner = "└──";
+    internal const string TimestampFormat = "HH:mm:ss";
+    internal const string DefaultOutputTemplate = $"[{{Timestamp:{TimestampFormat}}} {{Level:u3}}] {{Message:lj}}{{NewLine}}{{Exception}}";
 
     internal static void WriteOpening(int depth, DateTimeOffset timestamp, string levelShort)
         => WriteLine(StartCorner, depth, timestamp, levelShort);
@@ -32,9 +34,7 @@ internal static class TreeConsoleWriter
     }
 
     private static string BuildHeader(DateTimeOffset timestamp, string levelShort)
-    {
-        return $"[{timestamp:HH:mm:ss} {levelShort}]";
-    }
+        => $"[{timestamp.ToString(TimestampFormat)} {levelShort}]";
 
     internal static string LevelToShort(LogEventLevel level) => level switch
     {
