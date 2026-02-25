@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Serilog.Events;
 
 namespace TeaPie.Logging;
 
@@ -7,7 +8,8 @@ internal static class TreeScopeStateStore
     internal sealed class ScopeState
     {
         public int Depth { get; set; }
-        public bool Printed { get; set; }
+        public LogEventLevel? PrintedLevel { get; set; }
+        public bool Printed => PrintedLevel.HasValue;
     }
 
     private static readonly AsyncLocal<ImmutableStack<ScopeState>> _current = new();
@@ -23,7 +25,7 @@ internal static class TreeScopeStateStore
         return stack.Reverse().ToList();
     }
 
-    internal static void MarkPrinted(ScopeState state) => state.Printed = true;
+    internal static void MarkPrinted(ScopeState state, LogEventLevel level) => state.PrintedLevel = level;
 
     internal static void Push(ScopeState state)
     {

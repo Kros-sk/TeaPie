@@ -31,7 +31,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
             if (!s.Printed)
             {
                 TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
-                TreeScopeStateStore.MarkPrinted(s);
+                TreeScopeStateStore.MarkPrinted(s, logEvent.Level);
             }
         }
     }

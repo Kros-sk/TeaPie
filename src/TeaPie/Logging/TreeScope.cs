@@ -1,6 +1,4 @@
-﻿using Serilog.Events;
-
-namespace TeaPie.Logging;
+﻿namespace TeaPie.Logging;
 
 internal sealed class TreeScope : IDisposable
 {
@@ -24,7 +22,7 @@ internal sealed class TreeScope : IDisposable
 
         if (_state.Printed)
         {
-            TreeConsoleWriter.WriteClosing(_state.Depth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(LogEventLevel.Information));
+            TreeConsoleWriter.WriteClosing(_state.Depth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(_state.PrintedLevel!.Value));
         }
 
         _disposed = true;
