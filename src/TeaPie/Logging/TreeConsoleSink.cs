@@ -4,42 +4,49 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
-using System.Text;
 
 namespace TeaPie.Logging;
 
 internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {
-    private const string VerticalBar = "│  ";
-
     private readonly ITextFormatter _formatter = formatter;
 
     public void Emit(LogEvent logEvent)
     {
-        var stack = TreeScopeStateStore.GetStack();
-        if (stack != null && stack.Count > 0)
+        var scopes = TreeScopeStateStore.GetActiveScopes();
+        PrintUnopenedScopes(scopes, logEvent);
+        var prefix = BuildIndentPrefix(scopes);
+        WriteLogEvent(logEvent, prefix);
+    }
+
+    private static void PrintUnopenedScopes(IReadOnlyList<TreeScopeStateStore.ScopeState>? scopes, LogEvent logEvent)
+    {
+        if (scopes == null || scopes.Count == 0)
         {
-            foreach (var s in stack)
+            return;
+        }
+
+        foreach (var s in scopes)
+        {
+            if (!s.Printed)
             {
-                if (!s.Printed)
-                {
-                    TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
-                    TreeScopeStateStore.MarkPrinted(s);
-                }
+                TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
+                TreeScopeStateStore.MarkPrinted(s);
             }
         }
+    }
 
-        var printedCount = stack?.Count(s => s.Printed) ?? 0;
-        var prefixBuilder = new StringBuilder();
-        for (var i = 0; i < printedCount; i++)
-        {
-            prefixBuilder.Append(VerticalBar);
-        }
-        var finalPrefix = prefixBuilder.ToString();
+    private static string BuildIndentPrefix(IReadOnlyList<TreeScopeStateStore.ScopeState>? scopes)
+    {
+        var printedCount = scopes?.Count(s => s.Printed) ?? 0;
+        return TreeConsoleWriter.BuildPrefix(printedCount);
+    }
 
-        if (!string.IsNullOrEmpty(finalPrefix))
+    private void WriteLogEvent(LogEvent logEvent, string prefix)
+    {
+        if (!string.IsNullOrEmpty(prefix))
         {
-            var modifiedEvent = AddPrefixToMessage(logEvent, finalPrefix);
+            var modifiedEvent = AddPrefixToMessage(logEvent, prefix);
             _formatter.Format(modifiedEvent, Console.Out);
         }
         else

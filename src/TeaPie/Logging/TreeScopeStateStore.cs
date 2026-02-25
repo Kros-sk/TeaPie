@@ -12,7 +12,7 @@ internal static class TreeScopeStateStore
 
     private static readonly AsyncLocal<ImmutableStack<ScopeState>> _current = new();
 
-    internal static IReadOnlyList<ScopeState>? GetStack()
+    internal static IReadOnlyList<ScopeState>? GetActiveScopes()
     {
         var stack = _current.Value;
         if (stack?.IsEmpty != false)

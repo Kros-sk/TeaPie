@@ -4,7 +4,7 @@ namespace TeaPie.Logging;
 
 internal static class TreeConsoleWriter
 {
-    private const string VerticalBar = "│  ";
+    internal const string VerticalBar = "│  ";
     private const string StartCorner = "┌──";
     private const string EndCorner = "└──";
 
@@ -22,7 +22,7 @@ internal static class TreeConsoleWriter
         Console.Out.WriteLine(header + " " + prefix + EndCorner);
     }
 
-    private static string BuildPrefix(int repeat)
+    internal static string BuildPrefix(int repeat)
     {
         if (repeat <= 0)
         {
