@@ -9,17 +9,16 @@ internal static class TreeConsoleWriter
     private const string EndCorner = "└──";
 
     internal static void WriteOpening(int depth, DateTimeOffset timestamp, string levelShort)
-    {
-        var prefix = BuildPrefix(depth - 1);
-        var header = BuildHeader(timestamp, levelShort);
-        Console.Out.WriteLine(header + " " + prefix + StartCorner);
-    }
+        => WriteLine(StartCorner, depth, timestamp, levelShort);
 
     internal static void WriteClosing(int depth, DateTimeOffset timestamp, string levelShort)
+        => WriteLine(EndCorner, depth, timestamp, levelShort);
+
+    private static void WriteLine(string corner, int depth, DateTimeOffset timestamp, string levelShort)
     {
         var prefix = BuildPrefix(depth - 1);
         var header = BuildHeader(timestamp, levelShort);
-        Console.Out.WriteLine(header + " " + prefix + EndCorner);
+        Console.Out.WriteLine(header + " " + prefix + corner);
     }
 
     internal static string BuildPrefix(int repeat)
