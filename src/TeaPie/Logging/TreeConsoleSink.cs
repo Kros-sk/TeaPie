@@ -16,7 +16,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
     {
         var scopes = TreeScopeStateStore.GetActiveScopes();
         var printedCount = PrintUnopenedScopes(scopes, logEvent);
-        var prefix = BuildIndentPrefix(printedCount);
+        var prefix = TreeConsoleWriter.BuildPrefix(printedCount);
         WriteLogEvent(logEvent, prefix);
     }
 
@@ -40,11 +40,6 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
         }
 
         return printedCount;
-    }
-
-    private static string BuildIndentPrefix(int printedCount)
-    {
-        return TreeConsoleWriter.BuildPrefix(printedCount);
     }
 
     private void WriteLogEvent(LogEvent logEvent, string prefix)
