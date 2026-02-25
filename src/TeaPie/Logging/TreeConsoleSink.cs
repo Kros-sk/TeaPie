@@ -9,6 +9,7 @@ namespace TeaPie.Logging;
 
 internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {
+    private static readonly Serilog.Parsing.MessageTemplateParser _parser = new();
     private readonly ITextFormatter _formatter = formatter;
 
     public void Emit(LogEvent logEvent)
@@ -61,8 +62,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     private static LogEvent AddPrefixToMessage(LogEvent original, string prefix)
     {
-        var newMessageTemplate = new Serilog.Parsing.MessageTemplateParser()
-            .Parse(prefix + original.MessageTemplate.Text);
+        var newMessageTemplate = _parser.Parse(prefix + original.MessageTemplate.Text);
 
         return new LogEvent(
             original.Timestamp,
@@ -75,7 +75,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
 internal static class TreeConsoleSinkExtensions
 {
-    public static LoggerConfiguration TreeConsole(
+    internal static LoggerConfiguration TreeConsole(
         this LoggerSinkConfiguration sinkConfiguration,
         LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose,
         string outputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")

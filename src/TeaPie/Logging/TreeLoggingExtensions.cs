@@ -4,13 +4,13 @@ namespace TeaPie.Logging;
 
 internal static class TreeLoggingExtensions
 {
-    private static bool _treeLoggingEnabled = false;
-    public static void SetTreeLoggingEnabled(bool enabled)
+    private static bool _treeLoggingEnabled;
+    internal static void SetTreeLoggingEnabled(bool enabled)
     {
         _treeLoggingEnabled = enabled;
     }
 
-    public static IDisposable BeginTreeScope(this ILogger logger)
+    internal static IDisposable BeginTreeScope(this ILogger logger)
     {
         _ = logger;
         if (!_treeLoggingEnabled)
