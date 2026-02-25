@@ -63,13 +63,18 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
     private static LogEvent AddPrefixToMessage(LogEvent original, string prefix)
     {
         var newMessageTemplate = _parser.Parse(prefix + original.MessageTemplate.Text);
+        var properties = original.Properties
+            .Select(kvp => new LogEventProperty(kvp.Key, kvp.Value))
+            .ToList();
 
         return new LogEvent(
             original.Timestamp,
             original.Level,
             original.Exception,
             newMessageTemplate,
-            original.Properties.Select(kvp => new LogEventProperty(kvp.Key, kvp.Value)));
+            properties,
+            original.TraceId.GetValueOrDefault(),
+            original.SpanId.GetValueOrDefault());
     }
 }
 

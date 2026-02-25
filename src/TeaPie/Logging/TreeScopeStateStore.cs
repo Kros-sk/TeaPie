@@ -7,16 +7,16 @@ internal static class TreeScopeStateStore
 {
     internal sealed class ScopeState
     {
-        public int Depth { get; set; }
-        public LogEventLevel? PrintedLevel { get; set; }
-        public bool Printed => PrintedLevel.HasValue;
+        internal int Depth { get; set; }
+        internal LogEventLevel? PrintedLevel { get; set; }
+        internal bool Printed => PrintedLevel.HasValue;
     }
 
-    private static readonly AsyncLocal<ImmutableStack<ScopeState>> _current = new();
+    private static readonly AsyncLocal<(ImmutableStack<ScopeState> Stack, int Depth)> _current = new();
 
     internal static IReadOnlyList<ScopeState>? GetActiveScopes()
     {
-        var stack = _current.Value;
+        var (stack, _) = _current.Value;
         if (stack?.IsEmpty != false)
         {
             return null;
@@ -29,19 +29,20 @@ internal static class TreeScopeStateStore
 
     internal static void Push(ScopeState state)
     {
-        var stack = _current.Value ?? ImmutableStack<ScopeState>.Empty;
-        state.Depth = stack.Count() + 1;
-        _current.Value = stack.Push(state);
+        var (stack, depth) = _current.Value;
+        stack ??= [];
+        state.Depth = depth + 1;
+        _current.Value = (stack.Push(state), depth + 1);
     }
 
     internal static void Pop()
     {
-        var stack = _current.Value;
+        var (stack, depth) = _current.Value;
         if (stack?.IsEmpty != false)
         {
             return;
         }
 
-        _current.Value = stack.Pop();
+        _current.Value = (stack.Pop(), depth - 1);
     }
 }
