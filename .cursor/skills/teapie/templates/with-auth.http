@@ -1,0 +1,5 @@
+### Authenticated Request
+# @name AuthenticatedRequest
+## AUTH-PROVIDER: OAuth2
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/{{ResourcePath}}

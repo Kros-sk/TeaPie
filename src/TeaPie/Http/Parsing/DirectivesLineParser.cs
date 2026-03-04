@@ -10,6 +10,7 @@ internal class DirectivesLineParser : ILineParser
         new TestDirectivesLineParser(),
         new RetryStrategyDirectiveLineParser(),
         new RetryUntilStatusCodesLineParser(),
+        new RetryUntilTestPassDirectiveLineParser(),
         new RetryExplicitPropertiesDirectiveLineParser()
     ];
 

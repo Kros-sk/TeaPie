@@ -11,6 +11,7 @@ Content-Type: application/json
 // Separate multiple requests in a single .http file with a line containing '3 hashtags' separator:
 
 # @name GetNewCarRequest
+## TEST-JSON-HAS-ID-PROPERTY: IdFromDirective
 // Access the body and headers of a named request/response using this syntax.
 // For JSON bodies, use JPath to retrieve properties. For XML, use XPath.
 GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.request.body.$.Id}}

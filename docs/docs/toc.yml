@@ -37,8 +37,12 @@
   href: reporting.md
 - name: Logging
   href: logging.md
+  name: HTTP Requests Logging
+  href: requests-logging.md
 - name: JSON Handling
   href: json.md
+- name: AI Agent Skills
+  href: ai-agent-skills.md
 - name: Debugging
 - name: Common Mistakes
   href: common-mistakes.md

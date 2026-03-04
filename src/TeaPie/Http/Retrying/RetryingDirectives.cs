@@ -50,4 +50,13 @@ internal static class RetryingDirectives
             .WithPrefix(RetryDirectivePrefix)
             .AddTimeOnlyParameter(RetryMaxDelayDirectiveParameterName)
             .Build();
+
+    public const string RetryUntilTestPassDirectiveName = "UNTIL-TEST-PASS";
+    public const string RetryUntilTestPassDirectiveFullName = RetryDirectivePrefix + RetryUntilTestPassDirectiveName;
+    public const string RetryUntilTestPassDirectiveParameterName = "TestName";
+    public static readonly string RetryUntilTestPassDirectivePattern =
+        HttpDirectivePatternBuilder.Create(RetryUntilTestPassDirectiveName)
+            .WithPrefix(RetryDirectivePrefix)
+            .AddStringParameter(RetryUntilTestPassDirectiveParameterName)
+            .Build();
 }

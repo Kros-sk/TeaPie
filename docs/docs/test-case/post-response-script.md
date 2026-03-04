@@ -2,9 +2,10 @@
 
 |   |   |
 |----------------------|----------------|
-| **Definition**       | `.csx` script to be executed after all HTTP requests within test case. |
+| **Definition**       | `.csx` script containing defined test scenarios. |
 | **Naming Convention** | `<test-case-name>-test.csx` |
 | **Purpose**         | Testing given response(s) and tear-down of data. |
+| **Restrictions**    | `.csx` scripts must not contain code that accesses or processes HTTP responses outside of `tp.Test` methods. |
 | **Example Usage**         | [Simple Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/001-Customers/001-Add-Customer-test.csx), [Manipulation with Body](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-test.csx), [Another Example](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/002-Edit-Car-test.csx), [Advanced Script](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/003-Car-Rentals/001-Rent-Car-test.csx) |
 
 ## Features

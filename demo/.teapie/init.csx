@@ -125,6 +125,27 @@ tp.RegisterTestDirective(
     }
 );
 
+tp.RegisterTestDirective(
+    "JSON-HAS-ID-PROPERTY",
+    TestDirectivePatternBuilder
+        .Create("JSON-HAS-ID-PROPERTY")
+        .AddStringParameter("VariableName")
+        .Build(),
+    (_) => $"Response should be valid JSON with ID property.",
+    async (response, parameters) =>
+    {
+        try
+        {
+            dynamic body = await tp.Response.GetBodyAsExpandoAsync();
+            tp.SetVariable(parameters["VariableName"], body.Id);
+        }
+        catch (Exception ex)
+        {
+            Fail($"Response should be valid JSON with ID property. {ex.Message}");
+        }
+    }
+);
+
 // CUSTOM CLASS DEFINITIONS
 
 // Custom authentication provider definition

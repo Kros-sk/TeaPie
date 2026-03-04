@@ -1,0 +1,4 @@
+### Get Resource
+# @name GetResourceRequest
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/{{ResourcePath}}

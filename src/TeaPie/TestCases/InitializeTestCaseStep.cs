@@ -37,8 +37,9 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext, List<IPipelineStep> newSteps)
     {
         AddStepsForPreRequestScripts(context, testCaseExecutionContext, newSteps);
+        AddStepsForRegisterTestScripts(context, testCaseExecutionContext, newSteps);
         AddStepsForRequests(context, testCaseExecutionContext, newSteps);
-        AddStepsForPostResponseScripts(context, testCaseExecutionContext, newSteps);
+        AddStepsForExecuteTestsScripts(context, testCaseExecutionContext, newSteps);
     }
 
     private static void AddStepsForPreRequestScripts(
@@ -51,7 +52,7 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
             testCaseExecutionContext.RegisterPreRequestScript,
             newSteps);
 
-    private static void AddStepsForPostResponseScripts(
+    private static void AddStepsForRegisterTestScripts(
         ApplicationContext context,
         TestCaseExecutionContext testCaseExecutionContext,
         List<IPipelineStep> newSteps)
@@ -59,6 +60,15 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
             context,
             testCaseExecutionContext.TestCase.PostResponseScripts,
             testCaseExecutionContext.RegisterPostResponseScript,
+            newSteps);
+
+    private static void AddStepsForExecuteTestsScripts(
+        ApplicationContext context,
+        TestCaseExecutionContext testCaseExecutionContext,
+        List<IPipelineStep> newSteps)
+        => AddStepsForExecuteScript(
+            context,
+            testCaseExecutionContext,
             newSteps);
 
     private static void AddStepsForScripts(
@@ -77,8 +87,20 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
     private static void AddStepsForScript(ApplicationContext context, Script script, List<IPipelineStep> newSteps)
     {
         var scriptExecutionContext = new ScriptExecutionContext(script);
+
         var steps =
             ScriptStepsFactory.CreateStepsForScriptPreProcessAndExecution(context.ServiceProvider, scriptExecutionContext);
+
+        newSteps.AddRange(steps);
+    }
+
+    private static void AddStepsForExecuteScript(
+        ApplicationContext context,
+        TestCaseExecutionContext caseExecutionContext,
+        List<IPipelineStep> newSteps)
+    {
+        var steps =
+            ScriptStepsFactory.CreateStepsForScriptExecution(context.ServiceProvider, caseExecutionContext);
 
         newSteps.AddRange(steps);
     }

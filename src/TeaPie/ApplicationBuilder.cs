@@ -31,7 +31,7 @@ public sealed class ApplicationBuilder
     private LogLevel _minimumLogLevel = LogLevel.None;
     private string _pathToLogFile = string.Empty;
     private LogLevel _minimumLevelForLogFile = LogLevel.None;
-    private string? _pathToRequestsLogFile;
+    private string _pathToRequestsLogFile = string.Empty;
 
     private bool _variablesCaching = true;
     private bool _useTreeLogging = false;
@@ -62,7 +62,7 @@ public sealed class ApplicationBuilder
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.None,
-        string? pathToRequestsLogFile = null,
+        string pathToRequestsLogFile = "",
         bool useTreeLogging = false)
     {
         _minimumLogLevel = minimumLevel;
@@ -173,7 +173,7 @@ public sealed class ApplicationBuilder
             provider.GetRequiredService<IVariables>(),
             provider.GetRequiredService<IFunctions>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
-            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<IRegistrator>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ITestResultsSummaryReporter>(),
             provider.GetRequiredService<IRetryStrategyRegistry>(),

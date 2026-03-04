@@ -1,6 +1,6 @@
 # TeaPie - API Testing Framework
 
-[![NuGet](https://img.shields.io/nuget/v/TeaPie)](https://www.nuget.org/packages/TeaPie/)
+[![NuGet](https://img.shields.io/nuget/v/TeaPie)](https://www.nuget.org/packages/TeaPie.Tool/)
 [![License](https://img.shields.io/github/license/Kros-sk/TeaPie)](LICENSE)
 [![Build](https://github.com/Kros-sk/TeaPie/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Kros-sk/TeaPie/actions)
 

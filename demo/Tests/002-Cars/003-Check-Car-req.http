@@ -1,0 +1,29 @@
+### Scenario 1: Check Car Availability (passes after 3 attempts)
+## RETRY-STRATEGY: Custom retry
+## RETRY-MAX-ATTEMPTS: 5
+## RETRY-UNTIL-TEST-PASS: Car should be available
+
+# @name CheckCarAvailabilityRequest
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/1
+
+###
+
+### Scenario 2: Check Unavailable Car (never passes - exceeds max attempts)
+## RETRY-STRATEGY: Custom retry
+## RETRY-MAX-ATTEMPTS: 3
+## RETRY-UNTIL-TEST-PASS: Car with special features should exist
+
+# @name CheckUnavailableCarRequest
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/999
+
+###
+
+### Scenario 3: Verify Car Creation (combined RETRY-UNTIL-STATUS + RETRY-UNTIL-TEST-PASS)
+## RETRY-STRATEGY: Custom retry
+## RETRY-MAX-ATTEMPTS: 4
+## RETRY-MAX-DELAY: 00:00:02
+## RETRY-UNTIL-STATUS: [200, 201]
+## RETRY-UNTIL-TEST-PASS: Newly created car should have correct brand
+
+# @name VerifyCarCreationRequest
+GET {{ApiBaseUrl}}{{ApiCarsSection}}/1

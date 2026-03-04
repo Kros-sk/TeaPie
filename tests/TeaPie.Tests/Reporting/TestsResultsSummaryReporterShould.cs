@@ -9,7 +9,7 @@ namespace TeaPie.Tests.Reporting;
 public partial class TestResultsSummaryReporterShould
 {
     [Fact]
-    public void NotTriggerReportMethodOnUnregisteredReporter()
+    public async Task NotTriggerReportMethodOnUnregisteredReporter()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
         var compositeReporter = new TestResultsSummaryReporter(accessor);
@@ -21,14 +21,14 @@ public partial class TestResultsSummaryReporterShould
 
         compositeReporter.UnregisterReporter(reporter2);
 
-        compositeReporter.Report();
+        await compositeReporter.Report();
 
-        reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
+        await reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
         False(reporter2.Reported);
     }
 
     [Fact]
-    public void TriggerReportMethodOnAllRegisteredReporters()
+    public async Task TriggerReportMethodOnAllRegisteredReporters()
     {
         var accessor = new TestResultsSummaryAccessor() { Summary = new() };
         var compositeReporter = new TestResultsSummaryReporter(accessor);
@@ -38,9 +38,9 @@ public partial class TestResultsSummaryReporterShould
         compositeReporter.RegisterReporter(reporter1);
         compositeReporter.RegisterReporter(reporter2);
 
-        compositeReporter.Report();
+        await compositeReporter.Report();
 
-        reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
+        await reporter1.Received(1).Report(Arg.Any<TestResultsSummary>());
         True(reporter2.Reported);
     }
 
@@ -59,6 +59,23 @@ public partial class TestResultsSummaryReporterShould
         reporter.RegisterTestResult("test-case", failedTestResult);
 
         CheckSummary(skippedTestResult, failedTestResult, accessor.Summary);
+    }
+
+    [Fact]
+    public void ThrowWhenStartIsCalledTwiceOnSummary()
+    {
+        var summary = new CollectionTestResultsSummary();
+        var accessor = new TestResultsSummaryAccessor() { Summary = summary };
+        var reporter = new TestResultsSummaryReporter(accessor);
+
+        reporter.Initialize();
+        var originalTimestamp = summary.Timestamp;
+
+        Thread.Sleep(15);
+
+        reporter.Initialize();
+
+        Equal(originalTimestamp, summary.Timestamp);
     }
 
     private static void CheckSummary(

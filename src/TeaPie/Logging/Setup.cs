@@ -26,7 +26,7 @@ internal static class Setup
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.Debug,
-        string? pathToRequestsLogFile = null,
+        string pathToRequestsLogFile = "",
         bool useTreeLogging = false)
     {
         TreeLoggingExtensions.SetTreeLoggingEnabled(useTreeLogging);
@@ -56,7 +56,7 @@ internal static class Setup
                 AddLogFileSink(config, pathToLogFile, minimumLevelForLogFile);
             }
 
-            if (!string.IsNullOrEmpty(pathToRequestsLogFile))
+            if (!pathToRequestsLogFile.Equals(string.Empty))
             {
                 AddRequestsFileSink(config, pathToRequestsLogFile, minimumLevelForLogFile);
             }

@@ -6,9 +6,9 @@ internal class RequestLogFileEntry
 {
     public string RequestId { get; init; } = Guid.NewGuid().ToString();
     public DateTime StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+    public DateTime EndTime { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public double? DurationMs => EndTime?.Subtract(StartTime).TotalMilliseconds;
+    public double DurationMs => EndTime.Subtract(StartTime).TotalMilliseconds;
     public RequestInfo Request { get; set; } = new();
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ResponseInfo? Response { get; set; }

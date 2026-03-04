@@ -42,6 +42,19 @@ public class DirectivesLineParserShould
     }
 
     [Fact]
+    public void ParseRetryUntilTestPassDirective()
+    {
+        const string testName = "testName";
+        const string line = $"## RETRY-UNTIL-TEST-PASS: {testName}";
+        var context = new HttpParsingContext(_headers);
+
+        True(_parser.CanParse(line, context));
+        _parser.Parse(line, context);
+
+        Equal(testName, context.RetryUntilTestPassTestName);
+    }
+
+    [Fact]
     public void ParseRetryExplicitPropertiesDirective()
     {
         const string line = "## RETRY-MAX-ATTEMPTS: 3";

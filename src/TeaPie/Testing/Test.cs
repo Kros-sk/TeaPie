@@ -2,4 +2,4 @@
 
 namespace TeaPie.Testing;
 
-internal record Test(string Name, Func<Task> Function, TestResult Result, TestCase? TestCase);
+internal record Test(string Name, bool SkipTest, Func<Task> Function, TestResult Result, TestCase? TestCase);

@@ -25,7 +25,7 @@ internal class TeaPieBuilder
         _serviceCollection.AddSingleton(Substitute.For<IVariables>());
         _serviceCollection.AddSingleton(Substitute.For<IFunctions>());
         _serviceCollection.AddSingleton(Substitute.For<ILogger<TeaPie>>());
-        _serviceCollection.AddSingleton(Substitute.For<ITester>());
+        _serviceCollection.AddSingleton(Substitute.For<IRegistrator>());
         _serviceCollection.AddSingleton(Substitute.For<ICurrentTestCaseExecutionContextAccessor>());
         _serviceCollection.AddSingleton(Substitute.For<IPipeline>());
         _serviceCollection.AddSingleton(Substitute.For<ITestResultsSummaryReporter>());
@@ -56,7 +56,7 @@ internal class TeaPieBuilder
             provider.GetRequiredService<IVariables>(),
             provider.GetRequiredService<IFunctions>(),
             provider.GetRequiredService<ILogger<TeaPie>>(),
-            provider.GetRequiredService<ITester>(),
+            provider.GetRequiredService<IRegistrator>(),
             provider.GetRequiredService<ICurrentTestCaseExecutionContextAccessor>(),
             provider.GetRequiredService<ITestResultsSummaryReporter>(),
             provider.GetRequiredService<IRetryStrategyRegistry>(),

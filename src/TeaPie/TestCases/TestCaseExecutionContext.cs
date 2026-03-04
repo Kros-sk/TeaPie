@@ -24,10 +24,19 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
     public HttpRequestMessage? Request { get; private set; }
     public HttpResponseMessage? Response { get; private set; }
 
-    private readonly Dictionary<string, Test> _tests = [];
+    private Dictionary<string, Test> _tests = [];
 
     public void RegisterTest(Test test)
         => _tests.Add(test.Name, test);
+
+    public void UpdateTest(Test updatedTest)
+        => _tests[updatedTest.Name] = updatedTest;
+
+    public List<Test> GetTests()
+        => [.. _tests.Select(x => x.Value)];
+
+    public Test? GetTest(string name)
+        => GetTests().FirstOrDefault(x => x.Name == name);
 
     public void RegisterRequest(HttpRequestMessage request, string name = "")
     {

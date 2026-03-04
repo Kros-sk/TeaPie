@@ -131,7 +131,8 @@ internal class HttpRequestParser(
             _resiliencePipelineProvider.GetResiliencePipeline(
                 parsingContext.RetryStrategyName,
                 parsingContext.ExplicitRetryStrategy,
-                parsingContext.RetryUntilStatusCodes);
+                parsingContext.RetryUntilStatusCodes,
+                parsingContext.RetryUntilTestPassTestName);
 
     private static void CreateMessageContent(HttpParsingContext context, HttpRequestMessage requestMessage)
     {
