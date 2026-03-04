@@ -111,21 +111,18 @@ internal class ExecuteRequestStep(
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
+            var requestToSend = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+            requestToSend.Options.Set(_contextKey, requestExecutionContext);
+
             if (retryAttemptNumber > 0)
             {
                 using (logger.BeginTreeScope())
                 {
-                    var retryRequest = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-                    retryRequest.Options.Set(_contextKey, requestExecutionContext);
-                    return await client.SendAsync(retryRequest, token);
+                    return await client.SendAsync(requestToSend, token);
                 }
             }
-            else
-            {
-                var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-                request.Options.Set(_contextKey, requestExecutionContext);
-                return await client.SendAsync(request, token);
-            }
+
+            return await client.SendAsync(requestToSend, token);
         }, cancellationToken);
     }
 
