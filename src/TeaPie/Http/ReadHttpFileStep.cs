@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
@@ -15,6 +15,11 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var testCaseExecutionContext, out var testCase);
+
+        if (testCaseExecutionContext.RequestsFileContent is not null)
+        {
+            return;
+        }
 
         await ReadHttpFile(context, testCaseExecutionContext, testCase, cancellationToken);
     }

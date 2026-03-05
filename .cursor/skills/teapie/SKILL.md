@@ -1,23 +1,29 @@
 ---
 name: teapie
-description: Comprehensive TeaPie framework expertise for API integration testing. Use when: (1) Working with TeaPie projects, API testing, .http files, C# test scripts (.csx), test collections, directives, variables, functions, authentication, retrying, (2) Creating and scaffolding test cases using `teapie generate`, renumbering tests, initializing TeaPie projects, (3) Running tests with `teapie test`, finding tests for API endpoints, debugging test failures, generating reports, (4) Analyzing .teapie folder structure, discovering custom functions/directives/auth providers registered in init.csx, understanding project-specific configurations, or (5) When users need guidance on TeaPie CLI commands, test structure, framework capabilities, or test organization.
+description: Comprehensive TeaPie framework expertise for API integration testing. Use when: (1) Working with TeaPie projects, API testing, .http files, .tp files, C# test scripts (.csx), test collections, directives, variables, functions, authentication, retrying, (2) Creating and scaffolding test cases using `teapie generate`, renumbering tests, initializing TeaPie projects, (3) Running tests with `teapie test`, finding tests for API endpoints, debugging test failures, generating reports, (4) Analyzing .teapie folder structure, discovering custom functions/directives/auth providers registered in init.csx, understanding project-specific configurations, or (5) When users need guidance on TeaPie CLI commands, test structure, framework capabilities, or test organization.
 ---
 
 # TeaPie Framework
 
 ## Overview
 
-TeaPie (TEsting API Extension) is a lightweight CLI tool for API testing that combines `.http` files with C# scripts for comprehensive integration testing. This skill provides expert knowledge on all TeaPie capabilities, syntax, and best practices.
+TeaPie (TEsting API Extension) is a lightweight CLI tool for API testing that combines `.http` or `.tp` files with C# scripts for comprehensive integration testing. This skill provides expert knowledge on all TeaPie capabilities, syntax, and best practices.
 
 ## Quick Reference
 
 ### Test Case Structure
 
-Each test case consists of:
+TeaPie supports two equivalent formats. Choose based on script complexity and structure preferences; both can coexist in the same collection.
+
+**Multi-file format:**
 
 - **`<name>-req.http`** (required) - HTTP request file (one or more requests)
 - **`<name>-init.csx`** (optional) - Pre-request script for setup
 - **`<name>-test.csx`** (optional) - Post-response script for validation
+
+**Single-file format (`.tp`):**
+
+- **`<name>.tp`** - All sections in one file using markers: `### TESTCASE`, `### INIT`, `### HTTP`, `### TEST`, `### END`
 
 ### Naming Convention
 
@@ -55,7 +61,7 @@ teapie test [path]                 # Run tests (default command)
 teapie generate <name> [-i] [-t]   # Scaffold new test case
 teapie init                        # Initialize .teapie folder
 teapie explore [path]              # Explore collection structure
-teapie compile|comp|c <path>       # Attempt to compile the C# script at the specified path to check for compile-time errors
+teapie compile|comp|c <path>       # Compile C# script (.csx) or test case (.tp) at the specified path to check for compile-time errors
 ```
 
 ### Directives

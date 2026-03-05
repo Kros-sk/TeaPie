@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using Timer = TeaPie.Logging.Timer;
@@ -12,6 +12,11 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         ValidateContext(out var scriptExecutionContext);
+
+        if (scriptExecutionContext.RawContent is not null)
+        {
+            return;
+        }
 
         await ReadScriptFile(context, scriptExecutionContext, cancellationToken);
     }

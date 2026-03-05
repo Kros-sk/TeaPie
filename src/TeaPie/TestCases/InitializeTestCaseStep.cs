@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using Script = TeaPie.StructureExploration.Script;
@@ -15,12 +15,47 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         ValidateContext(out var testCaseExecutionContext);
 
         context.CurrentTestCase = testCaseExecutionContext;
+
+        if (testCaseExecutionContext.TestCase.IsFromTpFile)
+        {
+            PrepareTpTestCase(testCaseExecutionContext);
+        }
+
         AddSteps(context, testCaseExecutionContext);
 
         LogTestCase(context, testCaseExecutionContext);
 
         await Task.CompletedTask;
     }
+
+    private static void PrepareTpTestCase(TestCaseExecutionContext ctx)
+    {
+        var testCase = ctx.TestCase;
+        var def = testCase.TpDefinition!;
+
+        ctx.RequestsFileContent = def.HttpContent;
+
+        var tpFilePath = testCase.RequestsFile.Path;
+        var tpDir = Path.GetDirectoryName(tpFilePath) ?? string.Empty;
+        var sanitizedName = SanitizeForFileName(testCase.Name);
+
+        if (!string.IsNullOrWhiteSpace(def.InitContent))
+        {
+            var virtualInitPath = Path.Combine(tpDir, $"{sanitizedName}{Constants.PreRequestSuffix}{Constants.ScriptFileExtension}");
+            var initFile = new StructureExploration.File(virtualInitPath, virtualInitPath);
+            testCase.PreRequestScripts = [new Script(initFile, def.InitContent)];
+        }
+
+        if (!string.IsNullOrWhiteSpace(def.TestContent))
+        {
+            var virtualTestPath = Path.Combine(tpDir, $"{sanitizedName}{Constants.PostResponseSuffix}{Constants.ScriptFileExtension}");
+            var testFile = new StructureExploration.File(virtualTestPath, virtualTestPath);
+            testCase.PostResponseScripts = [new Script(testFile, def.TestContent)];
+        }
+    }
+
+    private static string SanitizeForFileName(string name)
+        => string.Join("_", name.Split(Path.GetInvalidFileNameChars()));
 
     private void AddSteps(ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext)
     {
@@ -86,7 +121,10 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
 
     private static void AddStepsForScript(ApplicationContext context, Script script, List<IPipelineStep> newSteps)
     {
-        var scriptExecutionContext = new ScriptExecutionContext(script);
+        var scriptExecutionContext = new ScriptExecutionContext(script)
+        {
+            RawContent = script.Content
+        };
 
         var steps =
             ScriptStepsFactory.CreateStepsForScriptPreProcessAndExecution(context.ServiceProvider, scriptExecutionContext);

@@ -1,0 +1,6 @@
+### TESTCASE Http Only Tp Test Case
+
+### HTTP
+GET {{ApiBaseUrl}}/status
+
+### END
