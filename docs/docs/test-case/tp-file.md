@@ -89,7 +89,7 @@ await tp.Test("Newly added car should be returned with an assigned Id.", async (
 GET {{ApiBaseUrl}}{{ApiCarsSection}}
 
 ### TEST
-tp.Test("Response should contain array of cars.", async () =>
+await tp.Test("Response should contain array of cars.", async () =>
 {
     var body = await tp.Response.Content.ReadAsStringAsync();
     NotNull(body);
