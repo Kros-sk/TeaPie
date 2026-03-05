@@ -22,9 +22,9 @@ Actual:   200
    at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
    at Xunit.Assert.Equal[T](T expected, T actual) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 89
    at Submission#0.&lt;&lt;Initialize&gt;&gt;b__0_0()
-   at TeaPie.Testing.Registrator.&lt;&gt;c__DisplayClass2_0.&lt;Test&gt;b__0() in {UserProfile}Developer/GitHub/kros-sk/TeaPie/src/TeaPie/Testing/Registrator.cs:line 16
-   at TeaPie.Testing.Tester.ExecuteTestInternal(Test test, Func`1 testFunction, TestCase testCase) in {UserProfile}Developer/GitHub/kros-sk/TeaPie/src/TeaPie/Testing/Tester.cs:line 113
-   at TeaPie.Testing.Tester.ExecuteOrSkipTest(Test test, TestCase testCase) in {UserProfile}Developer/GitHub/kros-sk/TeaPie/src/TeaPie/Testing/Tester.cs:line 43</failure>
+   at TeaPie.Testing.Registrator.&lt;&gt;c__DisplayClass2_0.&lt;Test&gt;b__0() in {SourcePath}:line 16
+   at TeaPie.Testing.Tester.ExecuteTestInternal(Test test, Func`1 testFunction, TestCase testCase) in {SourcePath}:line 113
+   at TeaPie.Testing.Tester.ExecuteOrSkipTest(Test test, TestCase testCase) in {SourcePath}:line 43</failure>
     </testcase>
     <testcase name="Engine type and people capacity should match after edit." time="0.000" classname="002-Edit-Car" />
   </testsuite>
@@ -38,7 +38,7 @@ Actual:   404
    at Xunit.Assert.Equal[T](T expected, T actual) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 89
    at Submission#0.&lt;&lt;&lt;Initialize&gt;&gt;b__0_1&gt;d.MoveNext()
 --- End of stack trace from previous location ---
-   at TeaPie.Testing.Tester.ExecuteTestSync(String testName, HttpResponseMessage response) in {UserProfile}Developer/GitHub/kros-sk/TeaPie/src/TeaPie/Testing/Tester.cs:line 63</failure>
+   at TeaPie.Testing.Tester.ExecuteTestSync(String testName, HttpResponseMessage response) in {SourcePath}:line 63</failure>
     </testcase>
     <testcase name="Newly created car should have correct brand" time="0.000" classname="003-Check-Car" />
   </testsuite>

@@ -78,7 +78,8 @@ public sealed class DemoProjectShould : IAsyncLifetime
                 .AddScrubber(ScrubDemoPath)
                 .AddScrubber(ScrubCarYearInTestName)
                 .AddScrubber(ScrubCarBrandInTestName)
-                .AddScrubber(ScrubDirectiveIndices);
+                .AddScrubber(ScrubDirectiveIndices)
+                .AddScrubber(ScrubStackTracePaths);
         }
         finally
         {
@@ -154,6 +155,17 @@ public sealed class DemoProjectShould : IAsyncLifetime
             builder.ToString(),
             @"\[[1-9]\d{0,1}\]",
             "[#]");
+        builder.Clear().Append(result);
+    }
+
+    private static void ScrubStackTracePaths(StringBuilder builder)
+    {
+        // Match path to TeaPie source files (Registrator.cs, Tester.cs) in any format:
+        // {UserProfile}..., {SolutionDirectory}..., or raw filesystem path
+        var result = Regex.Replace(
+            builder.ToString(),
+            @" in [^:]+src/TeaPie/Testing/(?:Registrator|Tester)\.cs",
+            " in {SourcePath}");
         builder.Clear().Append(result);
     }
 
