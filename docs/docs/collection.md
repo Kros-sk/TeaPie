@@ -2,15 +2,17 @@
 
 |   |   |
 |----------------------|----------------|
-| **Definition**       | A directory in file system which contains at least on test case. Collection should encapsulate contextually similar test cases under one roof. Each collection can have inner collection. |
+| **Definition**       | A directory in file system which contains at least one test case. Collection should encapsulate contextually similar test cases under one roof. Each collection can have inner collection. |
 | **Purpose**         | Groups test cases that are somewhat related. |
 | **Example Usage**   | [Demo Collection](https://github.com/Kros-sk/TeaPie/tree/master/demo) |
 
 ## Structure
 
-Collection is represented by directory, which **contains at least one [test case](test-case/test-case.md)**
+Collection is represented by directory, which **contains at least one [test case](test-case/test-case.md)**.
 
-We **strongly recommend** indexing test cases with a zero-padded number prefix (e.g., `001-Add-Car-req.http`). This approach ensures consistent ordering across environments, as some systems may incorrectly sort `10` before `2`.
+Collections can contain both multi-file test cases (`.http` with optional `.csx` scripts) and single-file test cases (`.tp`). Use the format that best fits each scenario.
+
+We **strongly recommend** indexing test cases with a zero-padded number prefix (e.g., `001-Add-Car-req.http`, `004-Car-Operations.tp`). This approach ensures consistent ordering across environments, as some systems may incorrectly sort `10` before `2`.
 
 When running a collection, you can also reference optional files:
 

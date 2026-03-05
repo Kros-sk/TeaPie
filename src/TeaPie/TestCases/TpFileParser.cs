@@ -1,0 +1,160 @@
+namespace TeaPie.TestCases;
+
+internal class TpFileParser
+{
+    private static readonly string[] LineSeparators = ["\r\n", "\n"];
+
+    /// <summary>
+    /// Parses the content of a <c>.tp</c> file into a list of test case definitions.
+    /// </summary>
+    /// <param name="content">Full text content of the <c>.tp</c> file.</param>
+    /// <param name="fallbackName">
+    /// Name used when the file contains no explicit <c>### TESTCASE</c> marker
+    /// (i.e. single implicit test case).
+    /// </param>
+    public List<TpTestCaseDefinition> Parse(string content, string fallbackName)
+    {
+        ArgumentNullException.ThrowIfNull(content);
+        ArgumentException.ThrowIfNullOrWhiteSpace(fallbackName);
+
+        var lines = content.Split(LineSeparators, StringSplitOptions.None);
+
+        return HasTestCaseMarker(lines)
+            ? ParseExplicitTestCases(lines)
+            : [ParseImplicitTestCase(lines, fallbackName)];
+    }
+
+    private static bool HasTestCaseMarker(string[] lines)
+        => lines.Any(IsTestCaseMarker);
+
+    private static List<TpTestCaseDefinition> ParseExplicitTestCases(string[] lines)
+    {
+        var definitions = new List<TpTestCaseDefinition>();
+        int i = 0;
+
+        while (i < lines.Length)
+        {
+            if (IsTestCaseMarker(lines[i]))
+            {
+                var name = ExtractName(lines[i], Constants.TpTestCaseMarker);
+                i++;
+                var (def, nextIndex) = ParseTestCaseBlock(lines, i, name);
+                definitions.Add(def);
+                i = nextIndex;
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        return definitions;
+    }
+
+    private static TpTestCaseDefinition ParseImplicitTestCase(string[] lines, string fallbackName)
+    {
+        var (def, _) = ParseTestCaseBlock(lines, 0, fallbackName);
+        return def;
+    }
+
+    private static (TpTestCaseDefinition Definition, int NextIndex) ParseTestCaseBlock(
+        string[] lines, int startIndex, string name)
+    {
+        string? initContent = null;
+        string? httpContent = null;
+        string? testContent = null;
+
+        var i = startIndex;
+        while (i < lines.Length)
+        {
+            var line = lines[i];
+
+            if (IsMarker(line, Constants.TpEndMarker))
+            {
+                i++;
+                break;
+            }
+
+            if (IsTestCaseMarker(line))
+            {
+                break;
+            }
+
+            if (IsMarker(line, Constants.TpInitMarker))
+            {
+                i++;
+                (initContent, i) = ExtractSectionContent(lines, i);
+            }
+            else if (IsMarker(line, Constants.TpHttpMarker))
+            {
+                i++;
+                (httpContent, i) = ExtractSectionContent(lines, i);
+            }
+            else if (IsMarker(line, Constants.TpTestMarker))
+            {
+                i++;
+                (testContent, i) = ExtractSectionContent(lines, i);
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        if (httpContent is null)
+        {
+            throw new InvalidOperationException(
+                $"Test case '{name}' in .tp file is missing the required '{Constants.TpHttpMarker}' section.");
+        }
+
+        return (new TpTestCaseDefinition(name, initContent, httpContent, testContent), i);
+    }
+
+    private static (string Content, int NextIndex) ExtractSectionContent(string[] lines, int startIndex)
+    {
+        var sectionLines = new List<string>();
+        var i = startIndex;
+
+        while (i < lines.Length)
+        {
+            var line = lines[i];
+
+            if (IsAnyMarker(line))
+            {
+                break;
+            }
+
+            sectionLines.Add(line);
+            i++;
+        }
+
+        return (string.Join("\n", sectionLines).Trim(), i);
+    }
+
+    private static bool IsMarker(string line, string marker)
+        => line.TrimStart().Equals(marker, StringComparison.OrdinalIgnoreCase);
+
+    private static bool IsAnyMarker(string line)
+        => IsTestCaseMarker(line)
+            || IsMarker(line, Constants.TpInitMarker)
+            || IsMarker(line, Constants.TpHttpMarker)
+            || IsMarker(line, Constants.TpTestMarker)
+            || IsMarker(line, Constants.TpEndMarker);
+
+    private static bool IsTestCaseMarker(string line)
+        => line.TrimStart().StartsWith(Constants.TpTestCaseMarker + " ", StringComparison.OrdinalIgnoreCase)
+            || line.TrimStart().Equals(Constants.TpTestCaseMarker, StringComparison.OrdinalIgnoreCase);
+
+    private static string ExtractName(string line, string marker)
+    {
+        var name = line.Substring(marker.Length).Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new InvalidOperationException(
+                $"A '{Constants.TpTestCaseMarker}' marker is missing its name. " +
+                $"Expected format: '{Constants.TpTestCaseMarker} <Name>'");
+        }
+
+        return name;
+    }
+}

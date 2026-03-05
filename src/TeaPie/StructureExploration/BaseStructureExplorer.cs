@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
@@ -82,6 +83,37 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         if (!collectionStructure.TryAddTestCase(testCase))
         {
             throw new InvalidOperationException($"Unable to register same test case twice. {testCase.RequestsFile.Path}");
+        }
+    }
+
+    protected static void ExploreTpFile(
+        string tpFilePath,
+        CollectionStructure collectionStructure,
+        Folder currentFolder)
+    {
+        var content = System.IO.File.ReadAllText(tpFilePath);
+        var fallbackName = Path.GetFileNameWithoutExtension(tpFilePath);
+
+        var parser = new TpFileParser();
+        var definitions = parser.Parse(content, fallbackName);
+
+        var relativePath = GetRelativePath(currentFolder, Path.GetFileName(tpFilePath));
+
+        foreach (var definition in definitions)
+        {
+            var requestFileObj = new InternalFile(tpFilePath, relativePath, currentFolder);
+            var testCase = new TestCase(requestFileObj)
+            {
+                Name = definition.Name,
+                IsFromTpFile = true,
+                TpDefinition = definition
+            };
+
+            if (!collectionStructure.TryAddTestCase(testCase))
+            {
+                throw new InvalidOperationException(
+                    $"Test case '{definition.Name}' from .tp file '{tpFilePath}' was already registered.");
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
@@ -147,9 +147,78 @@ public class CollectionStructureExplorerShould
 
             path = testCase.RequestsFile.RelativePath.TrimRootPath(StructureExplorationIndex.CollectionFolderRelativePath);
 
-            Equal(StructureExplorationIndex.TestCasesScriptsMap[path].hasPreRequest, hasPreRequest);
-            Equal(StructureExplorationIndex.TestCasesScriptsMap[path].hasPostResponse, hasPostResponse);
+            var expected = StructureExplorationIndex.GetExpectedScripts(path);
+            Equal(expected.hasPreRequest, hasPreRequest);
+            Equal(expected.hasPostResponse, hasPostResponse);
         }
+    }
+
+    [Fact]
+    public void DiscoverTpFilesAsTestCases()
+    {
+        var builder = new ApplicationContextBuilder();
+        var tempDirectoryPath = Path.Combine(
+            Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
+
+        var testCases = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases.ToList();
+
+        var tpTestCases = testCases.Where(tc => tc.IsFromTpFile).ToList();
+
+        True(tpTestCases.Count > 0);
+        True(tpTestCases.All(tc => tc.TpDefinition is not null));
+        True(tpTestCases.All(tc => tc.RequestsFile.Path.EndsWith(Constants.TestCaseFileExtension)));
+    }
+
+    [Fact]
+    public void CreateMultipleTestCasesFromSingleTpFile()
+    {
+        var builder = new ApplicationContextBuilder();
+        var tempDirectoryPath = Path.Combine(
+            Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
+
+        var testCases = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases.ToList();
+
+        var multiTpPath = Path.Combine(tempDirectoryPath, "MultiTpTest" + Constants.TestCaseFileExtension);
+        var multiTpTestCases = testCases.Where(tc => tc.RequestsFile.Path == multiTpPath).ToList();
+
+        Equal(2, multiTpTestCases.Count);
+        Equal("Multi Tp First Test Case", multiTpTestCases[0].Name);
+        Equal("Multi Tp Second Test Case", multiTpTestCases[1].Name);
+    }
+
+    [Fact]
+    public void PopulateTpDefinitionWithCorrectContent()
+    {
+        var builder = new ApplicationContextBuilder();
+        var tempDirectoryPath = Path.Combine(
+            Environment.CurrentDirectory, StructureExplorationIndex.CollectionFolderRelativePath);
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tempDirectoryPath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
+
+        var testCases = structureExplorer.Explore(builder.WithPath(tempDirectoryPath).Build()).TestCases.ToList();
+
+        var singleTpTestCase = testCases.First(tc => tc.Name == "Single Tp Test Case");
+        NotNull(singleTpTestCase.TpDefinition);
+        NotNull(singleTpTestCase.TpDefinition.InitContent);
+        NotNull(singleTpTestCase.TpDefinition.HttpContent);
+        NotNull(singleTpTestCase.TpDefinition.TestContent);
+        Contains("GET", singleTpTestCase.TpDefinition.HttpContent);
+
+        var httpOnlyTpTestCase = testCases.First(tc => tc.Name == "Http Only Tp Test Case");
+        NotNull(httpOnlyTpTestCase.TpDefinition);
+        Null(httpOnlyTpTestCase.TpDefinition.InitContent);
+        NotNull(httpOnlyTpTestCase.TpDefinition.HttpContent);
+        Null(httpOnlyTpTestCase.TpDefinition.TestContent);
     }
 
     private static CollectionStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)

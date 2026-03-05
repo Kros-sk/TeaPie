@@ -432,6 +432,10 @@ dotnet_diagnostic.IDE0130.severity = warning
 
 ## Analyzers by file
 
+[tests/TeaPie.Tests/Integration/DemoProjectShould.cs]
+# IDE0005: Testcontainers Containers namespace is required for IContainer; analyzer incorrectly flags it
+dotnet_diagnostic.IDE0005.severity = none
+
 [*{Query,Command,Should,Test,Tests}.cs]
 
 # CA1034: Do not nest type. Alternatively, change its accessibility so that it is not externally visible.
