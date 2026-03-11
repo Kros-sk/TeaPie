@@ -22,7 +22,11 @@ internal sealed class PreProcessScriptStep(
     {
         ValidateContext(out var scriptExecutionContext);
 
-        var referencedScriptsPaths = await ProcessScript(context, scriptExecutionContext);
+        List<ScriptReference> referencedScriptsPaths;
+        using (context.Logger.BeginTreeScope())
+        {
+            referencedScriptsPaths = await ProcessScript(context, scriptExecutionContext);
+        }
 
         HandleReferencedScripts(context, referencedScriptsPaths);
     }

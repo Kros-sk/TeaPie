@@ -17,7 +17,10 @@ internal sealed class CompileScriptStep(
     {
         ValidateContext(out var scriptExecutionContext, out var content);
 
-        CompileScript(context, scriptExecutionContext, content);
+        using (context.Logger.BeginTreeScope())
+        {
+            CompileScript(context, scriptExecutionContext, content);
+        }
 
         await Task.CompletedTask;
     }

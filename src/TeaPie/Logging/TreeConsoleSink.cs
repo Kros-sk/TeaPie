@@ -9,14 +9,14 @@ namespace TeaPie.Logging;
 
 internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {
-    private static readonly Serilog.Parsing.MessageTemplateParser _parser = new();
     private readonly ITextFormatter _formatter = formatter;
 
     public void Emit(LogEvent logEvent)
     {
         var scopes = TreeScope.GetActiveScopes();
         var printedCount = PrintUnopenedScopes(scopes, logEvent);
-        var prefix = TreeConsoleWriter.BuildPrefix(printedCount);
+        var totalDepth = printedCount + TreeScope.OuterDepth;
+        var prefix = TreeConsoleWriter.BuildPrefix(totalDepth);
         WriteLogEvent(logEvent, prefix);
     }
 
@@ -32,7 +32,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
         {
             if (!s.Printed)
             {
-                TreeConsoleWriter.WriteOpening(s.Depth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
+                TreeConsoleWriter.WriteOpening(s.Depth + TreeScope.OuterDepth, logEvent.Timestamp, TreeConsoleWriter.LevelToShort(logEvent.Level));
                 TreeScope.MarkPrinted(s, logEvent.Level);
             }
 
@@ -44,32 +44,15 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     private void WriteLogEvent(LogEvent logEvent, string prefix)
     {
-        if (!string.IsNullOrEmpty(prefix))
-        {
-            var modifiedEvent = AddPrefixToMessage(logEvent, prefix);
-            _formatter.Format(modifiedEvent, Console.Out);
-        }
-        else
+        if (string.IsNullOrEmpty(prefix))
         {
             _formatter.Format(logEvent, Console.Out);
+            return;
         }
-    }
 
-    private static LogEvent AddPrefixToMessage(LogEvent original, string prefix)
-    {
-        var newMessageTemplate = _parser.Parse(prefix + original.MessageTemplate.Text);
-        var properties = original.Properties
-            .Select(kvp => new LogEventProperty(kvp.Key, kvp.Value))
-            .ToList();
-
-        return new LogEvent(
-            original.Timestamp,
-            original.Level,
-            original.Exception,
-            newMessageTemplate,
-            properties,
-            original.TraceId.GetValueOrDefault(),
-            original.SpanId.GetValueOrDefault());
+        using var sw = new StringWriter();
+        _formatter.Format(logEvent, sw);
+        TreeConsoleWriter.WriteWithPrefix(sw.ToString(), prefix);
     }
 }
 

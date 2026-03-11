@@ -6,6 +6,11 @@ namespace TeaPie.Logging;
 internal sealed class TreeScope : IDisposable
 {
     private static readonly AsyncLocal<ImmutableStack<TreeScope>> _current = new();
+    private static int _outerDepth;
+
+    internal static int OuterDepth => _outerDepth;
+    internal static void IncrementOuterDepth() => Interlocked.Increment(ref _outerDepth);
+    internal static void DecrementOuterDepth() => Interlocked.Decrement(ref _outerDepth);
 
     internal int Depth { get; }
     internal LogEventLevel? PrintedLevel { get; set; }
@@ -33,7 +38,7 @@ internal sealed class TreeScope : IDisposable
 
         if (Printed)
         {
-            TreeConsoleWriter.WriteClosing(Depth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(PrintedLevel!.Value));
+            TreeConsoleWriter.WriteClosing(Depth + OuterDepth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(PrintedLevel!.Value));
         }
 
         _disposed = true;
