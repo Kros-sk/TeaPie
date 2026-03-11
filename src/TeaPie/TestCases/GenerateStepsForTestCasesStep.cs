@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 
@@ -11,9 +12,34 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
     {
         List<IPipelineStep> newSteps = [];
-        foreach (var testCase in context.TestCases)
+
+        var collectionGroups = context.TestCases
+            .GroupBy(tc => tc.ParentFolder.Path)
+            .ToList();
+
+        foreach (var collectionGroup in collectionGroups)
         {
-            AddStepsForTestCase(context, testCase, newSteps);
+            IDisposable? collectionScope = null;
+            var collectionName = collectionGroup.First().ParentFolder.Name;
+
+            newSteps.Add(new InlineStep((ctx, _) =>
+            {
+                collectionScope = ctx.Logger.BeginOuterTreeScope();
+                ctx.Logger.LogInformation("Test Collection '{CollectionName}'", collectionName);
+                return Task.CompletedTask;
+            }));
+
+            foreach (var testCase in collectionGroup)
+            {
+                AddStepsForTestCase(context, testCase, newSteps);
+            }
+
+            newSteps.Add(new InlineStep((ctx, _) =>
+            {
+                collectionScope?.Dispose();
+                collectionScope = null;
+                return Task.CompletedTask;
+            }));
         }
 
         _pipeline.InsertSteps(this, [.. newSteps]);
