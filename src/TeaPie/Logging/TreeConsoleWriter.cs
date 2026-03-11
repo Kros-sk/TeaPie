@@ -11,12 +11,12 @@ internal static class TreeConsoleWriter
     internal const string DefaultOutputTemplate = $"[{{Timestamp:{TimestampFormat}}} {{Level:u3}}] {{Message:lj}}{{NewLine}}{{Exception}}";
 
     internal static void WriteOpening(int depth, DateTimeOffset timestamp, string levelShort)
-        => WriteLine(StartCorner, depth, timestamp, levelShort);
+        => WriteScopeBracket(StartCorner, depth, timestamp, levelShort);
 
     internal static void WriteClosing(int depth, DateTimeOffset timestamp, string levelShort)
-        => WriteLine(EndCorner, depth, timestamp, levelShort);
+        => WriteScopeBracket(EndCorner, depth, timestamp, levelShort);
 
-    private static void WriteLine(string corner, int depth, DateTimeOffset timestamp, string levelShort)
+    private static void WriteScopeBracket(string corner, int depth, DateTimeOffset timestamp, string levelShort)
     {
         var prefix = BuildPrefix(depth - 1);
         var header = BuildHeader(timestamp, levelShort);
@@ -24,66 +24,30 @@ internal static class TreeConsoleWriter
     }
 
     internal static string BuildPrefix(int repeat)
-    {
-        if (repeat <= 0)
-        {
-            return string.Empty;
-        }
-
-        return string.Concat(Enumerable.Repeat(VerticalBar, repeat));
-    }
+        => repeat <= 0 ? string.Empty : string.Concat(Enumerable.Repeat(VerticalBar, repeat));
 
     private static string BuildHeader(DateTimeOffset timestamp, string levelShort)
         => $"[{timestamp.ToString(TimestampFormat)} {levelShort}]";
 
-    internal static void WriteWithPrefix(string rendered, string prefix)
+    internal static void WriteLogMessage(string rendered, string prefix)
     {
-        var lines = rendered.Split('\n');
-        var headerPadding = string.Empty;
-        for (var i = 0; i < lines.Length; i++)
+        var lines = rendered.TrimEnd('\r', '\n').Split('\n');
+        var firstLine = lines[0].TrimEnd('\r');
+        var headerEnd = firstLine.IndexOf("] ");
+        var headerWidth = headerEnd >= 0 ? headerEnd + 2 : 0;
+        var wrapIndent = new string(' ', headerWidth) + prefix;
+
+        WriteWrappedLine(firstLine[..headerWidth] + prefix + firstLine[headerWidth..], wrapIndent);
+
+        foreach (var rawLine in lines.Skip(1))
         {
-            var line = lines[i].TrimEnd('\r');
-
-            if (i == lines.Length - 1 && string.IsNullOrEmpty(line))
-            {
-                break;
-            }
-
-            if (i == 0)
-            {
-                var headerEnd = line.IndexOf("] ");
-                if (headerEnd >= 0)
-                {
-                    var headerWidth = headerEnd + 2;
-                    headerPadding = new string(' ', headerWidth);
-                    var fullLine = line[..headerWidth] + prefix + line[headerWidth..];
-                    WriteWrapped(fullLine, headerPadding + prefix);
-                }
-                else
-                {
-                    WriteWrapped(prefix + line, headerPadding + prefix);
-                }
-            }
-            else if (!string.IsNullOrWhiteSpace(line))
-            {
-                WriteWrapped(headerPadding + prefix + line, headerPadding + prefix);
-            }
-            else
-            {
-                Console.Out.WriteLine(line);
-            }
+            WriteWrappedLine(wrapIndent + rawLine.TrimEnd('\r'), wrapIndent);
         }
     }
 
-    private static void WriteWrapped(string line, string headerPadding)
+    private static void WriteWrappedLine(string line, string wrapIndent)
     {
-        int width;
-        try
-        {
-            width = Console.WindowWidth;
-        }
-        catch (IOException) { width = 0; }
-        catch (PlatformNotSupportedException) { width = 0; }
+        var width = GetConsoleWidth();
 
         if (width <= 0 || line.Length <= width)
         {
@@ -96,13 +60,20 @@ internal static class TreeConsoleWriter
         var remaining = line[width..];
         while (remaining.Length > 0)
         {
-            var available = Math.Max(1, width - headerPadding.Length);
+            var available = Math.Max(1, width - wrapIndent.Length);
             var chunk = remaining.Length <= available ? remaining : remaining[..available];
-            Console.Out.Write(headerPadding + chunk);
+            Console.Out.Write(wrapIndent + chunk);
             remaining = remaining[chunk.Length..];
         }
 
         Console.Out.WriteLine();
+    }
+
+    private static int GetConsoleWidth()
+    {
+        try { return Console.WindowWidth; }
+        catch (IOException) { return 0; }
+        catch (PlatformNotSupportedException) { return 0; }
     }
 
     internal static string LevelToShort(LogEventLevel level) => level switch

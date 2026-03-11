@@ -52,7 +52,7 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
         using var sw = new StringWriter();
         _formatter.Format(logEvent, sw);
-        TreeConsoleWriter.WriteWithPrefix(sw.ToString(), prefix);
+        TreeConsoleWriter.WriteLogMessage(sw.ToString(), prefix);
     }
 }
 
