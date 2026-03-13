@@ -44,12 +44,6 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 
     private void WriteLogEvent(LogEvent logEvent, string prefix)
     {
-        if (string.IsNullOrEmpty(prefix))
-        {
-            _formatter.Format(logEvent, Console.Out);
-            return;
-        }
-
         using var sw = new StringWriter();
         _formatter.Format(logEvent, sw);
         TreeConsoleWriter.WriteLogMessage(sw.ToString(), prefix);
