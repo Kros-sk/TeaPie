@@ -4,7 +4,6 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using TeaPie.Http.Headers;
 using TeaPie.Variables;
-using TeaPie.Logging;
 using TeaPie.Logging.Tree;
 
 namespace TeaPie.Http.Auth.OAuth2;

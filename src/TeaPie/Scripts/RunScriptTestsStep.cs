@@ -1,5 +1,4 @@
-﻿using TeaPie.Logging;
-using TeaPie.Logging.Tree;
+﻿using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.TestCases;
