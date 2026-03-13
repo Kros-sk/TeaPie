@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using TeaPie.Environments;
+﻿using TeaPie.Environments;
 using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
@@ -20,7 +19,6 @@ internal static class ApplicationStepsFactory
             new InlineStep((context, _) =>
             {
                 initScope = context.Logger.BeginOuterTreeScope();
-                context.Logger.LogInformation("Initialization");
                 return Task.CompletedTask;
             }),
             provider.GetStep<ResolvePathsStep>(),

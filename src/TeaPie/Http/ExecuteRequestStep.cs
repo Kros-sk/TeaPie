@@ -55,10 +55,7 @@ internal class ExecuteRequestStep(
         {
             _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
 
-            using (context.Logger.BeginTreeScope())
-            {
-                context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
-            }
+            context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
         }
     }
 
@@ -72,11 +69,14 @@ internal class ExecuteRequestStep(
         ResolveAuthProvider(requestExecutionContext);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequest(
-            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
+        using (context.Logger.BeginTreeScope())
+        {
+            var response = await ExecuteRequest(
+                requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
 
-        _authProviderAccessor.SetCurrentProviderToDefault();
-        return response;
+            _authProviderAccessor.SetCurrentProviderToDefault();
+            return response;
+        }
     }
 
     private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)

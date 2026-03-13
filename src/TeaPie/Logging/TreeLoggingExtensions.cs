@@ -32,7 +32,7 @@ internal static class TreeLoggingExtensions
 
         TreeScope.IncrementOuterDepth();
         TreeConsoleWriter.WriteOpening(TreeScope.OuterDepth, DateTimeOffset.Now,
-            TreeConsoleWriter.LevelToShort(level));
+            TreeConsoleFormatter.LevelToShort(level));
         return new OuterScopeDisposable(level);
     }
 
@@ -50,7 +50,7 @@ internal static class TreeLoggingExtensions
             _disposed = true;
             var depth = TreeScope.OuterDepth;
             TreeScope.DecrementOuterDepth();
-            TreeConsoleWriter.WriteClosing(depth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(level));
+            TreeConsoleWriter.WriteClosing(depth, DateTimeOffset.Now, TreeConsoleFormatter.LevelToShort(level));
         }
     }
 

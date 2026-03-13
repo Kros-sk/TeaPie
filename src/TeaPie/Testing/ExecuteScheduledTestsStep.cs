@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using TeaPie.Logging;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 
@@ -17,12 +17,13 @@ internal class ExecuteScheduledTestsStep(
     {
         _resultsSummaryReporter.Initialize();
 
-        while (_scheduler.HasScheduledTest())
+        using (context.Logger.BeginTreeScope())
         {
-            var test = _scheduler.Dequeue();
-            await _tester.ExecuteOrSkipTest(test, test.TestCase);
-
-            context.Logger.LogDebug("Scheduled test with name '{TestName}' was executed.", test.Name);
+            while (_scheduler.HasScheduledTest())
+            {
+                var test = _scheduler.Dequeue();
+                await _tester.ExecuteOrSkipTest(test, test.TestCase);
+            }
         }
     }
 }

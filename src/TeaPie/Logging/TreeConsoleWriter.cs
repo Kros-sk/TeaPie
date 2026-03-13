@@ -1,5 +1,3 @@
-using Serilog.Events;
-
 namespace TeaPie.Logging;
 
 internal static class TreeConsoleWriter
@@ -9,23 +7,14 @@ internal static class TreeConsoleWriter
     private const string EndCorner = "└──";
     internal const string TimestampFormat = "HH:mm:ss";
     internal const string DefaultOutputTemplate = $"[{{Timestamp:{TimestampFormat}}} {{Level:u3}}] {{Message:lj}}{{NewLine}}{{Exception}}";
-
-    private const int ExpectedLevelLength = 3;
-    private const int ExpectedTimestampLength = 8;
-    private const int MinHeaderLengthForLevel = ExpectedLevelLength + 1;
-    private const int BracketStartIndex = 0;
-    private const int TimestampStartIndex = BracketStartIndex + 1;
-    private const int LevelStartIndex = TimestampStartIndex + ExpectedTimestampLength + 1;
-    private const int BracketEndIndex = LevelStartIndex + ExpectedLevelLength;
-    private const int ExpectedMinHeaderLength = BracketEndIndex + 1;
-    private static readonly ConsoleColor[] _treeColors = [
-        ConsoleColor.Gray,
-        ConsoleColor.DarkGray,
-        ConsoleColor.Cyan,
-        ConsoleColor.DarkCyan,
-        ConsoleColor.DarkGray,
-        ConsoleColor.DarkGray
-    ];
+    internal const int ExpectedLevelLength = 3;
+    internal const int ExpectedTimestampLength = 8;
+    internal const int MinHeaderLengthForLevel = ExpectedLevelLength + 1;
+    internal const int BracketStartIndex = 0;
+    internal const int TimestampStartIndex = BracketStartIndex + 1;
+    internal const int LevelStartIndex = TimestampStartIndex + ExpectedTimestampLength + 1;
+    internal const int BracketEndIndex = LevelStartIndex + ExpectedLevelLength;
+    internal const int ExpectedMinHeaderLength = BracketEndIndex + 1;
 
     internal static void WriteOpening(int depth, DateTimeOffset timestamp, string levelShort)
         => WriteScopeBracket(StartCorner, depth, timestamp, levelShort);
@@ -36,10 +25,11 @@ internal static class TreeConsoleWriter
     private static void WriteScopeBracket(string corner, int depth, DateTimeOffset timestamp, string levelShort)
     {
         var prefix = BuildPrefix(depth - 1);
-        var header = BuildHeader(timestamp, levelShort) + " ";
+        var headerTemplate = BuildHeader(timestamp, levelShort) + " ";
+        var emptyHeader = new string(' ', headerTemplate.Length);
 
-        WriteIndent(header, prefix, levelShort);
-        WriteColorText(corner, GetTreeColor(depth - 1));
+        WriteIndent(emptyHeader, prefix, null);
+        TreeConsoleFormatter.WriteColorText(corner, TreeConsoleFormatter.GetTreeColor(depth - 1));
         Console.Out.WriteLine();
     }
 
@@ -61,9 +51,18 @@ internal static class TreeConsoleWriter
             ? firstLine.Substring(headerEnd - ExpectedLevelLength, ExpectedLevelLength)
             : "UNK";
 
-        WriteWrappedLine(header, prefix, firstLine[headerWidth..], levelShort);
-
         var emptyHeader = new string(' ', headerWidth);
+        var message = TreeConsoleFormatter.PrependSymbol(firstLine[headerWidth..]);
+
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            WriteWrappedLine(emptyHeader, prefix, message, null);
+        }
+        else
+        {
+            WriteWrappedLine(header, prefix, message, levelShort);
+        }
+
         for (var i = 1; i < lines.Length; i++)
         {
             WriteWrappedLine(emptyHeader, prefix, lines[i].TrimEnd('\r'), levelShort);
@@ -80,7 +79,7 @@ internal static class TreeConsoleWriter
         if (width <= 0 || (indentLength + message.Length) <= width)
         {
             WriteIndent(printHeader, prefix, printLevel);
-            Console.Out.WriteLine(message);
+            TreeConsoleFormatter.WriteMessageWithSymbolColor(message);
             return;
         }
 
@@ -93,7 +92,8 @@ internal static class TreeConsoleWriter
             WriteIndent(printHeader, prefix, printLevel);
 
             var currentChunkSize = Math.Min(remaining.Length, chunkLength);
-            Console.Out.WriteLine(remaining[..currentChunkSize]);
+            var chunk = remaining[..currentChunkSize];
+            TreeConsoleFormatter.WriteMessageWithSymbolColor(chunk);
             remaining = remaining[currentChunkSize..];
 
             printHeader = emptyHeader;
@@ -103,57 +103,14 @@ internal static class TreeConsoleWriter
 
     private static void WriteIndent(string header, string prefix, string? levelShort)
     {
-        WriteColorizedHeader(header, levelShort);
+        TreeConsoleFormatter.WriteColorizedHeader(header, levelShort);
 
         var depth = string.IsNullOrEmpty(prefix) ? 0 : prefix.Length / VerticalBar.Length;
         for (var i = 0; i < depth; i++)
         {
-            WriteColorText(VerticalBar, GetTreeColor(i));
+            TreeConsoleFormatter.WriteColorText(VerticalBar, TreeConsoleFormatter.GetTreeColor(i));
         }
     }
-
-    private static void WriteColorizedHeader(string header, string? levelShort)
-    {
-        if (string.IsNullOrWhiteSpace(header))
-        {
-            Console.Out.Write(header);
-            return;
-        }
-
-        if (header.Length >= ExpectedMinHeaderLength && header[BracketStartIndex] == '[')
-        {
-            WriteColorText("[", ConsoleColor.DarkGray);
-            WriteColorText(header.Substring(TimestampStartIndex, ExpectedTimestampLength), ConsoleColor.Gray);
-            Console.Out.Write(" ");
-            WriteColorText(header.Substring(LevelStartIndex, ExpectedLevelLength), GetLevelColor(levelShort ?? "UNK"));
-            WriteColorText(header.Substring(BracketEndIndex), ConsoleColor.DarkGray);
-        }
-        else
-        {
-            Console.Out.Write(header);
-        }
-    }
-
-    private static void WriteColorText(string text, ConsoleColor color)
-    {
-        Console.ForegroundColor = color;
-        Console.Out.Write(text);
-        Console.ResetColor();
-    }
-
-    private static ConsoleColor GetTreeColor(int index)
-        => _treeColors[Math.Max(0, index) % _treeColors.Length];
-
-    private static ConsoleColor GetLevelColor(string levelShort) => levelShort switch
-    {
-        "FTL" => ConsoleColor.Magenta,
-        "ERR" => ConsoleColor.Red,
-        "WRN" => ConsoleColor.Yellow,
-        "INF" => ConsoleColor.Green,
-        "DBG" => ConsoleColor.Cyan,
-        "VRB" => ConsoleColor.DarkGray,
-        _ => ConsoleColor.White
-    };
 
     private static int GetConsoleWidth()
     {
@@ -161,15 +118,4 @@ internal static class TreeConsoleWriter
         catch (IOException) { return 0; }
         catch (PlatformNotSupportedException) { return 0; }
     }
-
-    internal static string LevelToShort(LogEventLevel level) => level switch
-    {
-        LogEventLevel.Verbose => "VRB",
-        LogEventLevel.Debug => "DBG",
-        LogEventLevel.Information => "INF",
-        LogEventLevel.Warning => "WRN",
-        LogEventLevel.Error => "ERR",
-        LogEventLevel.Fatal => "FTL",
-        _ => "UNK",
-    };
 }

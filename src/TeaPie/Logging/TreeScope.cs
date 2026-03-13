@@ -38,7 +38,7 @@ internal sealed class TreeScope : IDisposable
 
         if (Printed)
         {
-            TreeConsoleWriter.WriteClosing(Depth + OuterDepth, DateTimeOffset.Now, TreeConsoleWriter.LevelToShort(PrintedLevel!.Value));
+            TreeConsoleWriter.WriteClosing(Depth + OuterDepth, DateTimeOffset.Now, TreeConsoleFormatter.LevelToShort(PrintedLevel!.Value));
         }
 
         _disposed = true;

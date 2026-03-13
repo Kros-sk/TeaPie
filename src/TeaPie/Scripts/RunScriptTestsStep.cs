@@ -1,4 +1,5 @@
-﻿using TeaPie.Pipelines;
+﻿using TeaPie.Logging;
+using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.TestCases;
 using TeaPie.Testing;
@@ -19,9 +20,14 @@ internal class RunScriptTestsStep(
         _resultsSummaryReporter.Initialize();
 
         var testCaseExecutionContext = _accessor.Context!;
-        foreach (var test in testCaseExecutionContext.GetTests())
+        var tests = testCaseExecutionContext.GetTests().ToList();
+
+        using (context.Logger.BeginTreeScope())
         {
-            await _testExecutor.ExecuteOrSkipTest(test, testCaseExecutionContext.TestCase);
+            foreach (var test in tests)
+            {
+                await _testExecutor.ExecuteOrSkipTest(test, testCaseExecutionContext.TestCase);
+            }
         }
     }
 }
