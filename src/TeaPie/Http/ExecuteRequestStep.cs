@@ -2,6 +2,7 @@
 using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
 
@@ -53,6 +54,7 @@ internal class ExecuteRequestStep(
         if (_testScheduler.HasScheduledTest())
         {
             _pipeline.InsertSteps(this, context.ServiceProvider.GetStep<ExecuteScheduledTestsStep>());
+
             context.Logger.LogDebug("Tests from test directives were scheduled for execution.");
         }
     }
@@ -67,11 +69,14 @@ internal class ExecuteRequestStep(
         ResolveAuthProvider(requestExecutionContext);
 
         var client = _clientFactory.CreateClient(nameof(ExecuteRequestStep));
-        var response = await ExecuteRequest(
-            requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
+        using (context.Logger.BeginTreeScope())
+        {
+            var response = await ExecuteRequest(
+                requestExecutionContext, resiliencePipeline, request, client, context.Logger, cancellationToken);
 
-        _authProviderAccessor.SetCurrentProviderToDefault();
-        return response;
+            _authProviderAccessor.SetCurrentProviderToDefault();
+            return response;
+        }
     }
 
     private void ResolveAuthProvider(RequestExecutionContext requestExecutionContext)
@@ -106,9 +111,18 @@ internal class ExecuteRequestStep(
         return await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
-            var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
-            request.Options.Set(_contextKey, requestExecutionContext);
-            return await client.SendAsync(request, token);
+            var requestToSend = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
+            requestToSend.Options.Set(_contextKey, requestExecutionContext);
+
+            if (retryAttemptNumber > 0)
+            {
+                using (logger.BeginTreeScope())
+                {
+                    return await client.SendAsync(requestToSend, token);
+                }
+            }
+
+            return await client.SendAsync(requestToSend, token);
         }, cancellationToken);
     }
 

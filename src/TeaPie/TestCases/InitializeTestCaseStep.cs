@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.Scripts;
 using Script = TeaPie.StructureExploration.Script;
@@ -121,9 +122,12 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
                 $"{testCaseExecutionContext.Id}/{context.TestCases.Count}");
 
     private static void LogTestCase(ApplicationContext context, TestCaseExecutionContext testCaseExecutionContext)
-        => context.Logger.LogInformation("Test case '{Name}' is going to be executed. ({Progress})",
+    {
+        testCaseExecutionContext.TreeScope = context.Logger.BeginOuterTreeScope();
+        context.Logger.LogInformation("Test case '{Name}' is going to be executed. ({Progress})",
             testCaseExecutionContext.TestCase.Name,
             $"{testCaseExecutionContext.Id}/{context.TestCases.Count}");
+    }
 
     private void ValidateContext(out TestCaseExecutionContext testCaseExecutionContext)
         => ExecutionContextValidator.Validate(

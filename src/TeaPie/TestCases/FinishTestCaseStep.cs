@@ -17,7 +17,11 @@ internal class FinishTestCaseStep : IPipelineStep
     }
 
     private static void LogEndOfTestCase(ApplicationContext context)
-        => context.Logger.LogInformation("Execution of test case '{Name}' has finished. ({Progress})",
+    {
+        context.Logger.LogInformation("Execution of test case '{Name}' has finished. ({Progress})",
             context.CurrentTestCase!.TestCase.Name,
             $"{context.CurrentTestCase.Id}/{context.TestCases.Count}");
+        context.CurrentTestCase.TreeScope?.Dispose();
+        context.CurrentTestCase.TreeScope = null;
+    }
 }
