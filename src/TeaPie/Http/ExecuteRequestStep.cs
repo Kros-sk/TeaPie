@@ -3,6 +3,7 @@ using Polly;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.Testing;
 

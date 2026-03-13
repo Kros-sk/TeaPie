@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Http.Parsing;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using Timer = TeaPie.Logging.Timer;
 

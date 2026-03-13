@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Serilog.Events;
 
-namespace TeaPie.Logging;
+namespace TeaPie.Logging.Tree;
 
 internal sealed class TreeScope : IDisposable
 {

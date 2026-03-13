@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using Timer = TeaPie.Logging.Timer;
 

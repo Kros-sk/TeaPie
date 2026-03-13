@@ -5,7 +5,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
 
-namespace TeaPie.Logging;
+namespace TeaPie.Logging.Tree;
 
 internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
 {

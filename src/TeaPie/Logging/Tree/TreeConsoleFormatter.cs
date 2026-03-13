@@ -1,6 +1,6 @@
 using Serilog.Events;
 
-namespace TeaPie.Logging;
+namespace TeaPie.Logging.Tree;
 
 internal static class TreeConsoleFormatter
 {

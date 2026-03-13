@@ -4,6 +4,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
 using Serilog.Formatting.Json;
+using TeaPie.Logging.Tree;
 
 namespace TeaPie.Logging;
 
