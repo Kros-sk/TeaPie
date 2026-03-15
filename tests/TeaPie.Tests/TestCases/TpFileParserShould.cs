@@ -7,7 +7,7 @@ public class TpFileParserShould
 {
     private readonly TpFileParser _parser = new();
 
-    private List<TpTestCaseDefinition> Parse(string content, string fallbackName = "fallback")
+    private IReadOnlyList<TpTestCaseDefinition> Parse(string content, string fallbackName = "fallback")
     {
         var context = new TpParsingContext { Content = content, FallbackName = fallbackName };
         _parser.Parse(context);

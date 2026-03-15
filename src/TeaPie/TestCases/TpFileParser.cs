@@ -21,18 +21,18 @@ internal class TpFileParser
 
         if (HasTestCaseMarker(lines))
         {
-            ParseExplicitTestCases(lines, context.Definitions);
+            ParseExplicitTestCases(lines, context);
         }
         else
         {
-            context.Definitions.Add(ParseImplicitTestCase(lines, context.FallbackName));
+            context.AddDefinition(ParseImplicitTestCase(lines, context.FallbackName));
         }
     }
 
     private static bool HasTestCaseMarker(string[] lines)
         => lines.Any(IsTestCaseMarker);
 
-    private static void ParseExplicitTestCases(string[] lines, List<TpTestCaseDefinition> definitions)
+    private static void ParseExplicitTestCases(string[] lines, TpParsingContext context)
     {
         int i = 0;
 
@@ -43,7 +43,7 @@ internal class TpFileParser
                 var name = ExtractName(lines[i], TpConstants.TestCaseMarker);
                 i++;
                 var (def, nextIndex) = ParseTestCaseBlock(lines, i, name);
-                definitions.Add(def);
+                context.AddDefinition(def);
                 i = nextIndex;
             }
             else
