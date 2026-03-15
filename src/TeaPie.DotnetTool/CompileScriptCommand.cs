@@ -47,10 +47,14 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
         var content = File.ReadAllText(path);
         var parser = new TpFileParser();
 
-        List<TpTestCaseDefinition> definitions;
+        var parsingContext = new TpParsingContext
+        {
+            Content = content,
+            FallbackName = Path.GetFileNameWithoutExtension(path)
+        };
         try
         {
-            definitions = parser.Parse(content, Path.GetFileNameWithoutExtension(path));
+            parser.Parse(parsingContext);
         }
         catch (Exception ex)
         {
@@ -60,7 +64,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
         var overallSuccess = true;
 
-        foreach (var def in definitions)
+        foreach (var def in parsingContext.Definitions)
         {
             AnsiConsole.MarkupLine($"\n[bold]Test case:[/] [white]'{def.Name.EscapeMarkup()}'[/]");
 
@@ -76,7 +80,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
             if (string.IsNullOrWhiteSpace(def.InitContent) && string.IsNullOrWhiteSpace(def.TestContent))
             {
-                AnsiConsole.MarkupLine("[grey]  No script sections to compile (HTTP only).[/]");
+                AnsiConsole.MarkupLine("[grey] No script sections to compile (HTTP only).[/]");
             }
         }
 

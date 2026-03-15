@@ -1,10 +1,11 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILogger<TestCaseStructureExplorer> logger)
-    : BaseStructureExplorer(pathProvider, logger)
+internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILogger<TestCaseStructureExplorer> logger, TpFileParser tpFileParser)
+    : BaseStructureExplorer(pathProvider, logger, tpFileParser)
 {
     protected override CollectionStructure ExploreStructure(ApplicationContext applicationContext)
     {

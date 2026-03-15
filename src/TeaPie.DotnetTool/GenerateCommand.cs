@@ -2,6 +2,7 @@
 using Spectre.Console.Cli;
 using System.ComponentModel;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.DotnetTool;
 
@@ -11,7 +12,14 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     {
         var path = ResolvePathAndCreateDirectoryIfNeeded(settings);
 
-        GenerateFiles(settings, path);
+        if (settings.SingleFile)
+        {
+            GenerateSingleFile(settings, path);
+        }
+        else
+        {
+            GenerateFiles(settings, path);
+        }
 
         ReportSuccessfullCreation(settings, path);
 
@@ -38,6 +46,31 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
         GeneratePreRequestFile(path, settings);
         GenerateRequestFile(path, settings.Name);
         GeneratePostResponseFile(path, settings);
+    }
+
+    private static void GenerateSingleFile(Settings settings, string path)
+    {
+        var filePath = Path.Combine(path, settings.Name + Constants.TestCaseFileExtension);
+        var sections = new System.Text.StringBuilder();
+
+        if (settings.HasPreRequestScript)
+        {
+            sections.AppendLine($"{TpConstants.InitMarker}");
+            sections.AppendLine();
+        }
+
+        sections.AppendLine($"{TpConstants.HttpMarker}");
+        sections.AppendLine();
+
+        if (settings.HasPostResponseScript)
+        {
+            sections.AppendLine($"{TpConstants.TestMarker}");
+            sections.AppendLine();
+        }
+
+        sections.Append(TpConstants.EndMarker);
+
+        System.IO.File.WriteAllText(filePath, sections.ToString());
     }
 
     private static string GenerateRequestFile(string path, string name)
@@ -87,7 +120,13 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     private static string GetDescription(Settings settings)
     {
         var description = string.Empty;
-        if (settings.HasPreRequestScript || settings.HasPreRequestScript)
+        if (settings.SingleFile)
+        {
+            var hasPreReq = "INIT: " + (settings.HasPreRequestScript ? "YES" : "NO");
+            var hasPostRes = "TEST: " + (settings.HasPostResponseScript ? "YES" : "NO");
+            description = $"[grey] (.tp | {hasPreReq} | {hasPostRes})[/]";
+        }
+        else if (settings.HasPreRequestScript || settings.HasPostResponseScript)
         {
             var hasPreReq = "Pre-Request: " + (settings.HasPreRequestScript ? "YES" : "NO");
             var hasPostRes = "Post-Response: " + (settings.HasPostResponseScript ? "YES" : "NO");
@@ -108,12 +147,17 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
 
         [CommandOption("-i|--init|--pre-req")]
         [DefaultValue(false)]
-        [Description("Indicates whether to generate pre-request script (with '-init' suffix).")]
+        [Description("Indicates whether to generate pre-request script (with '-init' suffix) for multi-file format, or the ### INIT section for single-file format.")]
         public bool HasPreRequestScript { get; init; }
 
         [CommandOption("-t|--test|--post-res")]
         [DefaultValue(false)]
-        [Description("Indicates whether to generate post-response script (with '-test' suffix).")]
+        [Description("Indicates whether to generate post-response script (with '-test' suffix) for multi-file format, or the ### TEST section for single-file format.")]
         public bool HasPostResponseScript { get; init; }
+
+        [CommandOption("-s|--single-file")]
+        [DefaultValue(false)]
+        [Description("Generates a single-file test case (.tp) instead of the default multi-file format.")]
+        public bool SingleFile { get; init; }
     }
 }

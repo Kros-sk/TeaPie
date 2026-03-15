@@ -1,3 +1,22 @@
+// ============================================================================
+// Single-File Test Format (.tp) Example
+// ============================================================================
+// A .tp file can contain one or more test cases in a single file.
+// Each test case is introduced by:
+//
+//   ### TESTCASE <Name>   – starts a named test case (required when multiple)
+//   ### INIT              – optional C# pre-request script (setup / data prep)
+//   ### HTTP              – required HTTP request(s), same as in .http files
+//   ### TEST              – optional C# post-response script (assertions)
+//   ### END               – ends the current test case block
+//
+// Sections INIT and TEST support the full TeaPie script API (tp.*, xUnit assertions, etc.).
+// The HTTP section supports all .http file features: directives, named requests, variables, etc.
+// Multiple HTTP requests within one ### HTTP section are separated with ### (standard .http separator).
+//
+// Both .tp and the traditional multi-file format (.http + .csx) can coexist in the same collection.
+// ============================================================================
+
 ### TESTCASE Add Another Car
 
 ### INIT

@@ -32,7 +32,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to the collection or test case which will be tested. Defaults to the current directory.")]
+        [Description("Path to the collection or test case (.http or .tp) which will be tested. Defaults to the current directory.")]
         public string? Path { get; init; }
 
         [CommandOption("--temp-path")]

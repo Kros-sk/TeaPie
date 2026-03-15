@@ -7,6 +7,13 @@ public class TpFileParserShould
 {
     private readonly TpFileParser _parser = new();
 
+    private IReadOnlyList<TpTestCaseDefinition> Parse(string content, string fallbackName = "fallback")
+    {
+        var context = new TpParsingContext { Content = content, FallbackName = fallbackName };
+        _parser.Parse(context);
+        return context.Definitions;
+    }
+
     [Fact]
     public void ParseSingleTestCaseWithAllSections()
     {
@@ -28,7 +35,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         var def = result[0];
@@ -53,7 +60,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         var def = result[0];
@@ -89,7 +96,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Equal(2, result.Count);
 
@@ -115,7 +122,7 @@ public class TpFileParserShould
             tp.Test("ok", () => Equal(200, tp.Response.StatusCode()));
             """;
 
-        var result = _parser.Parse(content, "My Implicit Test");
+        var result = Parse(content, "My Implicit Test");
 
         Single(result);
         var def = result[0];
@@ -139,9 +146,9 @@ public class TpFileParserShould
             ### END
             """;
 
-        var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
+        var ex = Throws<InvalidOperationException>(() => Parse(content));
         Contains("Bad Test", ex.Message);
-        Contains(Constants.TpHttpMarker, ex.Message);
+        Contains(TpConstants.HttpMarker, ex.Message);
     }
 
     [Fact]
@@ -156,8 +163,8 @@ public class TpFileParserShould
             ### END
             """;
 
-        var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
-        Contains(Constants.TpTestCaseMarker, ex.Message);
+        var ex = Throws<InvalidOperationException>(() => Parse(content));
+        Contains(TpConstants.TestCaseMarker, ex.Message);
     }
 
     [Fact]
@@ -176,7 +183,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         var def = result[0];
@@ -204,7 +211,7 @@ public class TpFileParserShould
             "",
             "### END");
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         Contains(httpBody, result[0].HttpContent);
@@ -226,7 +233,7 @@ public class TpFileParserShould
             ### end
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         Equal("Case Insensitive", result[0].Name);
@@ -268,7 +275,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Equal(3, result.Count);
 
@@ -306,7 +313,7 @@ public class TpFileParserShould
             ### END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var result = Parse(content);
 
         Single(result);
         Contains("FirstRequest", result[0].HttpContent);
@@ -314,3 +321,4 @@ public class TpFileParserShould
         Contains("###", result[0].HttpContent);
     }
 }
+

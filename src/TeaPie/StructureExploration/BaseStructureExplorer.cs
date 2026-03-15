@@ -5,7 +5,7 @@ using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger) : IStructureExplorer
+internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger, TpFileParser tpFileParser) : IStructureExplorer
 {
     public const string RemoteFolderName = "~Remote";
     protected string _remoteFolderPath = string.Empty;
@@ -14,6 +14,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
     protected string? _environmentFileName;
     protected string? _initializationScriptName;
     protected IPathProvider _pathProvider = pathProvider;
+    private readonly TpFileParser _tpFileParser = tpFileParser;
 
     public IReadOnlyCollectionStructure Explore(ApplicationContext applicationContext)
     {
@@ -86,7 +87,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         }
     }
 
-    protected static void ExploreTpFile(
+    protected void ExploreTpFile(
         string tpFilePath,
         CollectionStructure collectionStructure,
         Folder currentFolder)
@@ -94,12 +95,12 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         var content = System.IO.File.ReadAllText(tpFilePath);
         var fallbackName = Path.GetFileNameWithoutExtension(tpFilePath);
 
-        var parser = new TpFileParser();
-        var definitions = parser.Parse(content, fallbackName);
+        var parsingContext = new TpParsingContext { Content = content, FallbackName = fallbackName };
+        _tpFileParser.Parse(parsingContext);
 
         var relativePath = GetRelativePath(currentFolder, Path.GetFileName(tpFilePath));
 
-        foreach (var definition in definitions)
+        foreach (var definition in parsingContext.Definitions)
         {
             var requestFileObj = new InternalFile(tpFilePath, relativePath, currentFolder);
             var testCase = new TestCase(requestFileObj)
