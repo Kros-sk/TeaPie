@@ -10,12 +10,6 @@ internal static class Constants
     public const string RequestSuffix = "-req";
     public const string PostResponseSuffix = "-test";
 
-    public const string TpTestCaseMarker = "### TESTCASE";
-    public const string TpInitMarker = "### INIT";
-    public const string TpHttpMarker = "### HTTP";
-    public const string TpTestMarker = "### TEST";
-    public const string TpEndMarker = "### END";
-
     public const string DefaultEnvironmentFileName = "env";
     public const string EnvironmentFileExtension = ".json";
     public const string DefaultEnvironmentName = "$shared";

@@ -7,7 +7,7 @@ description: Comprehensive TeaPie framework expertise for API integration testin
 
 ## Overview
 
-TeaPie (TEsting API Extension) is a lightweight CLI tool for API testing that combines `.http` or `.tp` files with C# scripts for comprehensive integration testing. This skill provides expert knowledge on all TeaPie capabilities, syntax, and best practices.
+TeaPie (TEsting API Extension) is a lightweight CLI tool for API testing that combines `.http` files with C# scripts or uses `.tp` files that cover both types of files within one for comprehensive integration testing. This skill provides expert knowledge on all TeaPie capabilities, syntax, and best practices.
 
 ## Quick Reference
 

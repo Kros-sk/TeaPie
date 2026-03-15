@@ -28,7 +28,7 @@ internal class ExploreCommand : ApplicationCommandBase<ExploreCommand.Settings>
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to collection or test case which will be explored. Defaults to the current directory.")]
+        [Description("Path to collection or test case (.http or .tp) which will be explored. Defaults to the current directory.")]
         public string? Path { get; init; }
 
         [CommandOption("--env-file|--environment-file")]
