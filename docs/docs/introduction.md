@@ -8,6 +8,8 @@ To get started, visit **[Getting Started](getting-started.md)**.
 
 ✅ **Universal HTTP Request Definition** – Define API tests using `.http` files.
 
+✅ **Flexible Test Structure** – Choose multi-file or single-file (`.tp`) format depending on script complexity and structure preferences.
+
 ✅ **Pre-Request & Post-Response Scripts** – Extend test cases with C# scripts for data setup and validation.
 
 ✅ **Custom Authentication Providers** – Supports OAuth2 and user-defined authentication mechanisms.

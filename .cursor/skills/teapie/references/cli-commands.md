@@ -16,7 +16,7 @@ teapie test [path] [--temp-path <path>] [-e|--env <envName>] [--env-file <file>]
 
 **Arguments:**
 
-- `path` - Path to the collection or test case. Defaults to current directory.
+- `path` - Path to the collection, test case (`.http`), or single-file test case (`.tp`). Defaults to current directory.
 
 **Options:**
 
@@ -112,7 +112,7 @@ teapie explore [path] [--env-file <file>] [-i|--init-script <script>] [logging o
 
 **Arguments:**
 
-- `path` - Path to collection or test case. Defaults to current directory.
+- `path` - Path to collection, request file (`.http`), or single-file test case (`.tp`). Defaults to current directory.
 
 **Options:**
 
@@ -125,7 +125,7 @@ teapie explore [path] [--env-file <file>] [-i|--init-script <script>] [logging o
 
 **Command name:** `compile`, `comp`, or `c`
 
-**Purpose:** Compile a script at the specified path. Check for compile-time exceptions.
+**Purpose:** Compile a script or test case at the specified path. Check for compile-time exceptions.
 
 **Full Syntax:**
 
@@ -135,7 +135,7 @@ teapie compile <path> [logging options...] [--no-logo]
 
 **Arguments:**
 
-- `path` - Path to script to compile (required).
+- `path` - Path to script (`.csx`) or test case file (`.tp`) to compile. For `.tp` files, INIT and TEST sections are compiled. Required.
 
 **Options:**
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TeaPie.TestCases;
 
@@ -8,6 +8,7 @@ internal static class Setup
     {
         services.AddScoped<ITestCaseExecutionContextAccessor, TestCaseExecutionContextAccessor>();
         services.AddSingleton<ICurrentTestCaseExecutionContextAccessor, CurrentTestCaseExecutionContextAccessor>();
+        services.AddSingleton<TpFileParser>();
         return services;
     }
 }
