@@ -25,7 +25,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["booleanProperty"]);
 
-        Assert.Equal(resolved, true);
+        Assert.Equal(true, resolved);
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["integerProperty"]);
 
-        Assert.Equal(resolved, 42);
+        Assert.Equal(42, resolved);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["longProperty"]);
 
-        Assert.Equal(resolved, 9223372036854775807L);
+        Assert.Equal(9223372036854775807L, resolved);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["decimalProperty"]);
 
-        Assert.Equal(resolved, 12345.6789m);
+        Assert.Equal(12345.6789m, resolved);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["stringProperty"]);
 
-        Assert.Equal(resolved, "Hello, World!");
+        Assert.Equal("Hello, World!", resolved);
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["guidProperty"]);
 
-        Assert.Equal(resolved, Guid.Parse("d2713b57-3494-4d0a-8e3b-2e587f3e8b3e"));
+        Assert.Equal(Guid.Parse("d2713b57-3494-4d0a-8e3b-2e587f3e8b3e"), resolved);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["dateTimeOffsetProperty"]);
 
-        Assert.Equal(resolved, DateTimeOffset.Parse("2025-01-27T12:34:56+01:00"));
+        Assert.Equal(DateTimeOffset.Parse("2025-01-27T12:34:56+01:00"), resolved);
     }
 
     [Fact]
@@ -88,6 +88,6 @@ public class JsonElementTypeConverterShould
         var deserialized = JsonSerializer.Deserialize<Dictionary<string, object>>(Json);
         var resolved = JsonElementTypeConverter.Convert(deserialized!["arrayProperty"]);
 
-        Assert.Equal(resolved, new List<object> { 1, 2, 3, 4, 5 });
+        Assert.Equal(new List<object> { 1, 2, 3, 4, 5 }, resolved);
     }
 }
