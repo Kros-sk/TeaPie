@@ -28,14 +28,14 @@ public class JsonExtensionsShould
     {
         dynamic json = JsonString.ToExpando();
 
-        Assert.Equal(json.stringKey, "stringValue");
-        Assert.Equal(json.numberKey, 123);
+        Assert.Equal("stringValue", json.stringKey);
+        Assert.Equal(123, json.numberKey);
         Assert.True(json.BooleanKey);
-        Assert.Equal(json.arrayKey.Count, 3);
+        Assert.Equal(3, json.arrayKey.Count);
 
         Assert.NotNull(json.ObjectKey);
-        Assert.Equal(json.objectKey.NestedStringKey, "nestedValue");
-        Assert.Equal(json.objectKey.nestedNumberKey, 456);
+        Assert.Equal("nestedValue", json.objectKey.NestedStringKey);
+        Assert.Equal(456, json.objectKey.nestedNumberKey);
     }
 
     [Fact]
