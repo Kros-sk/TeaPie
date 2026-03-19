@@ -20,11 +20,10 @@ internal class RunScriptTestsStep(
         _resultsSummaryReporter.Initialize();
 
         var testCaseExecutionContext = _accessor.Context!;
-        var tests = testCaseExecutionContext.GetTests().ToList();
 
         using (context.Logger.BeginTreeScope())
         {
-            foreach (var test in tests)
+            foreach (var test in testCaseExecutionContext.GetTests())
             {
                 await _testExecutor.ExecuteOrSkipTest(test, testCaseExecutionContext.TestCase);
             }

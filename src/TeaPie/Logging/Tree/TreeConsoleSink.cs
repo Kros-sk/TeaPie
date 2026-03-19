@@ -20,13 +20,8 @@ internal class TreeConsoleSink(ITextFormatter formatter) : ILogEventSink
         WriteLogEvent(logEvent, prefix);
     }
 
-    private static int PrintUnopenedScopes(IReadOnlyList<TreeScope>? scopes, LogEvent logEvent)
+    private static int PrintUnopenedScopes(IEnumerable<TreeScope> scopes, LogEvent logEvent)
     {
-        if (scopes == null || scopes.Count == 0)
-        {
-            return 0;
-        }
-
         var printedCount = 0;
         foreach (var s in scopes)
         {

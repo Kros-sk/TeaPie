@@ -13,11 +13,7 @@ internal class GenerateStepsForTestCasesStep(IPipeline pipeline) : IPipelineStep
     {
         List<IPipelineStep> newSteps = [];
 
-        var collectionGroups = context.TestCases
-            .GroupBy(tc => tc.ParentFolder.Path)
-            .ToList();
-
-        foreach (var collectionGroup in collectionGroups)
+        foreach (var collectionGroup in context.TestCases.GroupBy(tc => tc.ParentFolder.Path))
         {
             IDisposable? collectionScope = null;
             var collectionName = collectionGroup.First().ParentFolder.Name;

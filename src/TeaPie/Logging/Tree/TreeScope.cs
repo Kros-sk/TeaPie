@@ -44,15 +44,10 @@ internal sealed class TreeScope : IDisposable
         _disposed = true;
     }
 
-    internal static IReadOnlyList<TreeScope>? GetActiveScopes()
+    internal static IEnumerable<TreeScope> GetActiveScopes()
     {
         var stack = _current.Value;
-        if (stack?.IsEmpty != false)
-        {
-            return null;
-        }
-
-        return stack.Reverse().ToList();
+        return stack?.Reverse() ?? Enumerable.Empty<TreeScope>();
     }
 
     internal static void MarkPrinted(TreeScope scope, LogEventLevel level) => scope.PrintedLevel = level;
