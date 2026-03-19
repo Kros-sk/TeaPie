@@ -9,6 +9,8 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
     private static int _testCaseIndexer = 1;
     public int Id { get; } = _testCaseIndexer++;
 
+    public IDisposable? TreeScope { get; set; }
+
     public TestCase TestCase { get; } = testCase;
     public string? RequestsFileContent;
 

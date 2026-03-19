@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
@@ -22,7 +23,11 @@ internal sealed class PreProcessScriptStep(
     {
         ValidateContext(out var scriptExecutionContext);
 
-        var referencedScriptsPaths = await ProcessScript(context, scriptExecutionContext);
+        List<ScriptReference> referencedScriptsPaths;
+        using (context.Logger.BeginTreeScope())
+        {
+            referencedScriptsPaths = await ProcessScript(context, scriptExecutionContext);
+        }
 
         HandleReferencedScripts(context, referencedScriptsPaths);
     }

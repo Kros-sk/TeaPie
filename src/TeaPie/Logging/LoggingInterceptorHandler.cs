@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+
 namespace TeaPie.Logging;
 
 internal class LoggingInterceptorHandler(ILogger<LoggingInterceptorHandler> logger) : DelegatingHandler
