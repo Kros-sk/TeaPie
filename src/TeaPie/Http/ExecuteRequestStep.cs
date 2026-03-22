@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Polly;
+using System.Diagnostics;
 using TeaPie.Http.Auth;
 using TeaPie.Http.Headers;
 using TeaPie.Pipelines;
+using TeaPie.Telemetry;
 using TeaPie.Testing;
 
 namespace TeaPie.Http;
@@ -13,7 +15,8 @@ internal class ExecuteRequestStep(
     IHeadersHandler headersHandler,
     IAuthProviderAccessor defaultAuthProviderAccessor,
     ITestScheduler testScheduler,
-    IPipeline pipeline)
+    IPipeline pipeline,
+    ITelemetryCollector telemetryCollector)
     : IPipelineStep
 {
     private readonly IHttpClientFactory _clientFactory = clientFactory;
@@ -22,6 +25,7 @@ internal class ExecuteRequestStep(
     private readonly IAuthProviderAccessor _authProviderAccessor = defaultAuthProviderAccessor;
     private readonly IPipeline _pipeline = pipeline;
     private readonly ITestScheduler _testScheduler = testScheduler;
+    private readonly ITelemetryCollector _telemetryCollector = telemetryCollector;
     private static readonly HttpRequestOptionsKey<RequestExecutionContext> _contextKey = new("__TeaPie_Context__");
 
     public async Task Execute(ApplicationContext context, CancellationToken cancellationToken = default)
@@ -103,13 +107,47 @@ internal class ExecuteRequestStep(
 
         originalMessage.Options.Set(_contextKey, requestExecutionContext);
 
-        return await resiliencePipeline.ExecuteAsync(async token =>
+        var stopwatch = Stopwatch.StartNew();
+
+        var response = await resiliencePipeline.ExecuteAsync(async token =>
         {
             retryAttemptNumber = UpdateRetryAttemptNumber(logger, retryAttemptNumber);
             var request = GetMessage(requestExecutionContext, originalMessage, content, ref messageUsed);
             request.Options.Set(_contextKey, requestExecutionContext);
             return await client.SendAsync(request, token);
         }, cancellationToken);
+
+        stopwatch.Stop();
+
+        RecordTelemetry(requestExecutionContext, originalMessage, response, stopwatch.ElapsedMilliseconds, retryAttemptNumber);
+
+        return response;
+    }
+
+    private void RecordTelemetry(
+        RequestExecutionContext requestExecutionContext,
+        HttpRequestMessage request,
+        HttpResponseMessage response,
+        long durationMs,
+        int retryAttemptNumber)
+    {
+        if (!_telemetryCollector.IsEnabled)
+        {
+            return;
+        }
+
+        var telemetry = new HttpRequestTelemetry
+        {
+            Method = request.Method.Method,
+            Url = request.RequestUri?.ToString() ?? string.Empty,
+            StatusCode = (int)response.StatusCode,
+            DurationMs = durationMs,
+            RetryAttempts = retryAttemptNumber > 0 ? retryAttemptNumber : 0,
+            RetrySucceeded = retryAttemptNumber > 0 && response.IsSuccessStatusCode,
+            RequestName = requestExecutionContext.Name
+        };
+
+        _telemetryCollector.RecordRequest(telemetry);
     }
 
     private static int UpdateRetryAttemptNumber(ILogger logger, int retryAttempt)
