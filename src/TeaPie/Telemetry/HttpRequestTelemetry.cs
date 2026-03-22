@@ -48,5 +48,5 @@ public class HttpRequestTelemetry
     /// <summary>
     /// Timestamp when the request was executed.
     /// </summary>
-    public DateTime Timestamp { get; set; } = DateTime.Now;
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }

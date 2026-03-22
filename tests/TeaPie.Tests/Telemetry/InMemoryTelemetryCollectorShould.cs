@@ -1,13 +1,18 @@
-﻿using TeaPie.Telemetry;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
+using TeaPie.Telemetry;
 
 namespace TeaPie.Tests.Telemetry;
 
 public class InMemoryTelemetryCollectorShould
 {
+    private static InMemoryTelemetryCollector CreateCollector()
+        => new(Substitute.For<ILogger<InMemoryTelemetryCollector>>());
+
     [Fact]
     public void NotBeEnabledByDefault()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
 
         Assert.False(collector.IsEnabled);
     }
@@ -15,7 +20,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void BeEnabledAfterCallingEnable()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
 
         collector.Enable();
 
@@ -25,7 +30,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void UseDefaultOptionsWhenEnabledWithoutParameters()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
 
         collector.Enable();
 
@@ -36,7 +41,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void UseProvidedOptionsWhenEnabledWithOptions()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
         var options = new TelemetryOptions { EnableConsoleOutput = false };
 
         collector.Enable(options);
@@ -48,7 +53,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void NotRecordRequestsWhenDisabled()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
 
         collector.RecordRequest(new HttpRequestTelemetry
         {
@@ -64,7 +69,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void RecordRequestsWhenEnabled()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
         collector.Enable();
 
         collector.RecordRequest(new HttpRequestTelemetry
@@ -81,7 +86,7 @@ public class InMemoryTelemetryCollectorShould
     [Fact]
     public void ReturnSameTelemetryDataInstanceAcrossMultipleCalls()
     {
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
         collector.Enable();
 
         var data1 = collector.GetTelemetryData();
@@ -91,10 +96,10 @@ public class InMemoryTelemetryCollectorShould
     }
 
     [Fact]
-    public async Task InvokeCustomProviderOnRequestRecorded()
+    public void InvokeCustomProviderOnRequestRecorded()
     {
         var provider = new TestTelemetryProvider();
-        var collector = new InMemoryTelemetryCollector();
+        var collector = CreateCollector();
         collector.Enable(new TelemetryOptions { CustomProvider = provider });
 
         var telemetry = new HttpRequestTelemetry
@@ -109,13 +114,30 @@ public class InMemoryTelemetryCollectorShould
 
         Assert.Single(provider.RecordedRequests);
         Assert.Same(telemetry, provider.RecordedRequests[0]);
-        await Task.CompletedTask;
+    }
+
+    [Fact]
+    public void NotThrowWhenCustomProviderFails()
+    {
+        var provider = new FailingTelemetryProvider();
+        var collector = CreateCollector();
+        collector.Enable(new TelemetryOptions { CustomProvider = provider });
+
+        var exception = Record.Exception(() => collector.RecordRequest(new HttpRequestTelemetry
+        {
+            Method = "GET",
+            Url = "https://api.example.com",
+            StatusCode = 200,
+            DurationMs = 100
+        }));
+
+        Assert.Null(exception);
+        Assert.Equal(1, collector.GetTelemetryData().TotalRequests);
     }
 
     private class TestTelemetryProvider : ITelemetryProvider
     {
         public List<HttpRequestTelemetry> RecordedRequests { get; } = [];
-        public TelemetryData? CompletedData { get; private set; }
 
         public Task OnRequestRecordedAsync(HttpRequestTelemetry telemetry)
         {
@@ -123,10 +145,14 @@ public class InMemoryTelemetryCollectorShould
             return Task.CompletedTask;
         }
 
-        public Task OnCollectionCompleteAsync(TelemetryData data)
-        {
-            CompletedData = data;
-            return Task.CompletedTask;
-        }
+        public Task OnCollectionCompleteAsync(TelemetryData data) => Task.CompletedTask;
+    }
+
+    private class FailingTelemetryProvider : ITelemetryProvider
+    {
+        public Task OnRequestRecordedAsync(HttpRequestTelemetry telemetry)
+            => throw new InvalidOperationException("Provider failure");
+
+        public Task OnCollectionCompleteAsync(TelemetryData data) => Task.CompletedTask;
     }
 }
