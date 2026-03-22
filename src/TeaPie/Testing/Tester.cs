@@ -126,14 +126,18 @@ internal partial class Tester(
         new(_stopWatch.ElapsedMilliseconds)
         {
             TestName = test.Name,
-            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty,
+            SourceType = test.Result.SourceType,
+            RequestName = test.Result.RequestName
         };
 
     private TestResult.Failed CreateFailedResult(Test test, Exception ex, TestCase? testCase) =>
         new(_stopWatch.ElapsedMilliseconds, ex.Message, ex)
         {
             TestName = test.Name,
-            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+            TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty,
+            SourceType = test.Result.SourceType,
+            RequestName = test.Result.RequestName
         };
 
     #region Logging

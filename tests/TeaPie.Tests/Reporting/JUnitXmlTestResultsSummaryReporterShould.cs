@@ -124,6 +124,57 @@ public class JUnitXmlTestResultsSummaryReporterShould
         Contains(".", suite.Attribute("time")?.Value);
     }
 
+    [Fact]
+    public void WriteSourceAttributeForInlineTests()
+    {
+        var summary = CreateMockTestSummaryWithSourceInfo();
+
+        var reporter = new JUnitXmlTestResultsSummaryReporter(TestFilePath);
+        reporter.Report(summary);
+
+        var doc = XDocument.Load(TestFilePath);
+        var inlineTest = doc.Descendants("testcase")
+                            .FirstOrDefault(tc => tc.Attribute("name")?.Value == "InlineTest");
+
+        NotNull(inlineTest);
+        Equal("inline", inlineTest.Attribute("source")?.Value);
+        Equal("EditCarRequest", inlineTest.Attribute("request")?.Value);
+    }
+
+    [Fact]
+    public void WriteSourceAttributeForCsxTests()
+    {
+        var summary = CreateMockTestSummaryWithSourceInfo();
+
+        var reporter = new JUnitXmlTestResultsSummaryReporter(TestFilePath);
+        reporter.Report(summary);
+
+        var doc = XDocument.Load(TestFilePath);
+        var csxTest = doc.Descendants("testcase")
+                         .FirstOrDefault(tc => tc.Attribute("name")?.Value == "CsxTest");
+
+        NotNull(csxTest);
+        Equal("csx", csxTest.Attribute("source")?.Value);
+        Null(csxTest.Attribute("request"));
+    }
+
+    [Fact]
+    public void OmitSourceAndRequestAttributesWhenNotSet()
+    {
+        var summary = CreateMockTestSummary();
+
+        var reporter = new JUnitXmlTestResultsSummaryReporter(TestFilePath);
+        reporter.Report(summary);
+
+        var doc = XDocument.Load(TestFilePath);
+        var testCase = doc.Descendants("testcase")
+                          .FirstOrDefault(tc => tc.Attribute("name")?.Value == "Test1");
+
+        NotNull(testCase);
+        Null(testCase.Attribute("source"));
+        Null(testCase.Attribute("request"));
+    }
+
     private static CollectionTestResultsSummary CreateMockTestSummary()
     {
         var summary = new CollectionTestResultsSummary();
@@ -139,6 +190,26 @@ public class JUnitXmlTestResultsSummaryReporterShould
                 TestName = "Test2"
             });
         summary.AddSkippedTest("SampleTestCase", new TestResult.NotRun() { TestName = "Test3" });
+
+        summary.Start();
+
+        return summary;
+    }
+
+    private static CollectionTestResultsSummary CreateMockTestSummaryWithSourceInfo()
+    {
+        var summary = new CollectionTestResultsSummary();
+        summary.AddPassedTest("SampleTestCase", new TestResult.Passed(150)
+        {
+            TestName = "InlineTest",
+            SourceType = "inline",
+            RequestName = "EditCarRequest"
+        });
+        summary.AddPassedTest("SampleTestCase", new TestResult.Passed(200)
+        {
+            TestName = "CsxTest",
+            SourceType = "csx"
+        });
 
         summary.Start();
 

@@ -58,13 +58,25 @@ internal class JUnitXmlWriter : IDisposable
         bool skipped,
         string? failureMessage = null,
         string failureType = "AssertionError",
-        string? stackTrace = null)
+        string? stackTrace = null,
+        string? sourceType = null,
+        string? requestName = null)
     {
         EnsureTestSuiteWritten();
 
         _writer.WriteStartElement("testcase");
         WriteNameAndTimeAttributes(testName, timeMs);
         _writer.WriteAttributeString("classname", className);
+
+        if (!string.IsNullOrEmpty(sourceType))
+        {
+            _writer.WriteAttributeString("source", sourceType);
+        }
+
+        if (!string.IsNullOrEmpty(requestName))
+        {
+            _writer.WriteAttributeString("request", requestName);
+        }
 
         if (skipped)
         {
