@@ -3,6 +3,7 @@ using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Telemetry;
 using TeaPie.TestCases;
 using TeaPie.Variables;
 
@@ -18,6 +19,7 @@ internal static class ApplicationStepsFactory
             provider.GetStep<InitializeApplicationStep>(),
             provider.GetStep<GenerateStepsForTestCasesStep>(),
             provider.GetStep<ReportTestResultsSummaryStep>(),
+            provider.GetStep<ReportTelemetrySummaryStep>(),
             provider.GetStep<SaveVariablesStep>()
         ];
 
