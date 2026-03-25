@@ -1,27 +1,27 @@
-### TESTCASE Multi Tp First Test Case
+--- TESTCASE Multi Tp First Test Case
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [200]
 GET {{ApiBaseUrl}}/first
 
-### TEST
+--- TEST
 tp.Test("First test OK", () => NotNull(tp.Response));
 
-### END
+--- END
 
-### TESTCASE Multi Tp Second Test Case
+--- TESTCASE Multi Tp Second Test Case
 
-### INIT
+--- INIT
 tp.SetVariable("MultiTpVar", 42);
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [201]
 POST {{ApiBaseUrl}}/second
 Content-Type: application/json
 
 {"value": 42}
 
-### TEST
+--- TEST
 tp.Test("Second test OK", () => NotNull(tp.Response.Content));
 
-### END
+--- END

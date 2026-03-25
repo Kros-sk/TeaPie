@@ -1,13 +1,24 @@
-### TESTCASE Add Another Car
+// This file uses the single-file (.tp) format. A .tp file can contain one or more test cases,
+// each defined by section markers: --- TESTCASE, --- INIT, --- HTTP, --- TEST, and --- END.
+//
+// --- TESTCASE <Name>  Starts a named test case (required when multiple test cases are in one file).
+// --- INIT             Pre-request C# script (optional). Same role as <name>-init.csx.
+// --- HTTP             HTTP request definition (required). Same format as .http files.
+// --- TEST             Post-response validation script (optional). Same role as <name>-test.csx.
+// --- END              Ends the current test case block.
+//
+// Both .tp and multi-file formats can co-exist in the same collection.
 
-### INIT
+--- TESTCASE Add Another Car
+
+--- INIT
 // Load the shared car generator definition.
 #load "$teapie/Definitions/GenerateNewCar.csx"
 
 var car = GenerateCar();
 tp.SetVariable("AnotherCar", car.ToJsonString(), "cars");
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [201]
 ## TEST-HAS-BODY
 // Add a new car using data prepared in the INIT section.
@@ -17,7 +28,7 @@ Content-Type: application/json
 
 {{AnotherCar}}
 
-### TEST
+--- TEST
 await tp.Test("Newly added car should be returned with an assigned Id.", async () =>
 {
     dynamic responseJson = await tp.Responses["AddAnotherCarRequest"].GetBodyAsExpandoAsync();
@@ -28,22 +39,22 @@ await tp.Test("Newly added car should be returned with an assigned Id.", async (
     tp.SetVariable("AnotherCarId", (long)responseJson.Id, "cars");
 });
 
-### END
+--- END
 
-### TESTCASE Get All Cars
+--- TESTCASE Get All Cars
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [200]
 ## TEST-HAS-BODY
 // Retrieve the full list of cars.
 # @name GetAllCarsRequest
 GET {{ApiBaseUrl}}{{ApiCarsSection}}
 
-### TEST
+--- TEST
 tp.Test("Response body should not be empty.", () =>
 {
     NotNull(tp.Response);
     NotNull(tp.Response.Content);
 });
 
-### END
+--- END

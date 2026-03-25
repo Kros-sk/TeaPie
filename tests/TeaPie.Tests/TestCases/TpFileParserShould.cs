@@ -11,21 +11,21 @@ public class TpFileParserShould
     public void ParseSingleTestCaseWithAllSections()
     {
         var content = """
-            ### TESTCASE Add Customer
+            --- TESTCASE Add Customer
 
-            ### INIT
+            --- INIT
             tp.SetVariable("X", 1);
 
-            ### HTTP
+            --- HTTP
             POST {{ApiBaseUrl}}/customers
             Content-Type: application/json
 
             {"Id": 1}
 
-            ### TEST
+            --- TEST
             tp.Test("Response has body", () => NotNull(tp.Response.Content));
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -45,12 +45,12 @@ public class TpFileParserShould
     public void ParseSingleTestCaseWithHttpOnly()
     {
         var content = """
-            ### TESTCASE Health Check
+            --- TESTCASE Health Check
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/health
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -68,25 +68,25 @@ public class TpFileParserShould
     public void ParseMultipleTestCasesFromOneFile()
     {
         var content = """
-            ### TESTCASE First Test
+            --- TESTCASE First Test
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/first
 
-            ### END
+            --- END
 
-            ### TESTCASE Second Test
+            --- TESTCASE Second Test
 
-            ### HTTP
+            --- HTTP
             POST {{ApiBaseUrl}}/second
             Content-Type: application/json
 
             {}
 
-            ### TEST
+            --- TEST
             tp.Test("check", () => NotNull(tp.Response.Content));
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -108,10 +108,10 @@ public class TpFileParserShould
     public void ParseImplicitSingleTestCaseWithoutTestCaseMarker()
     {
         var content = """
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/health
 
-            ### TEST
+            --- TEST
             tp.Test("ok", () => Equal(200, tp.Response.StatusCode()));
             """;
 
@@ -131,49 +131,74 @@ public class TpFileParserShould
     public void ThrowWhenHttpSectionIsMissing()
     {
         var content = """
-            ### TESTCASE Bad Test
+            --- TESTCASE Bad Test
 
-            ### INIT
+            --- INIT
             tp.SetVariable("x", 1);
 
-            ### END
+            --- END
             """;
 
         var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
         Contains("Bad Test", ex.Message);
-        Contains(Constants.TpHttpMarker, ex.Message);
+        Contains(TpConstants.HttpMarker, ex.Message);
     }
 
     [Fact]
-    public void ThrowWhenTestCaseMarkerHasNoName()
+    public void UseFallbackNameWhenSingleTestCaseMarkerHasNoName()
     {
         var content = """
-            ### TESTCASE
+            --- TESTCASE
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/health
 
-            ### END
+            --- END
+            """;
+
+        var result = _parser.Parse(content, "My Fallback Name");
+
+        Single(result);
+        Equal("My Fallback Name", result[0].Name);
+    }
+
+    [Fact]
+    public void ThrowWhenMultipleTestCasesHaveNamelessMarker()
+    {
+        var content = """
+            --- TESTCASE
+
+            --- HTTP
+            GET {{ApiBaseUrl}}/first
+
+            --- END
+
+            --- TESTCASE Second Test
+
+            --- HTTP
+            GET {{ApiBaseUrl}}/second
+
+            --- END
             """;
 
         var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
-        Contains(Constants.TpTestCaseMarker, ex.Message);
+        Contains(TpConstants.TestCaseMarker, ex.Message);
     }
 
     [Fact]
     public void HandleEmptyInitAndTestSections()
     {
         var content = """
-            ### TESTCASE Empty Scripts
+            --- TESTCASE Empty Scripts
 
-            ### INIT
+            --- INIT
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/health
 
-            ### TEST
+            --- TEST
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -194,15 +219,15 @@ public class TpFileParserShould
     {
         var httpBody = "{\"Id\": 1, \"Name\": \"Alice\"}";
         var content = string.Join("\n",
-            "### TESTCASE Format Test",
+            "--- TESTCASE Format Test",
             "",
-            "### HTTP",
+            "--- HTTP",
             "POST {{ApiBaseUrl}}/customers",
             "Content-Type: application/json",
             "",
             httpBody,
             "",
-            "### END");
+            "--- END");
 
         var result = _parser.Parse(content, "fallback");
 
@@ -215,15 +240,15 @@ public class TpFileParserShould
     public void ParseCaseInsensitiveSectionMarkers()
     {
         var content = """
-            ### testcase Case Insensitive
+            --- testcase Case Insensitive
 
-            ### http
+            --- http
             GET {{ApiBaseUrl}}/health
 
-            ### test
+            --- test
             tp.Test("ok", () => Equal(200, tp.Response.StatusCode()));
 
-            ### end
+            --- end
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -237,35 +262,35 @@ public class TpFileParserShould
     public void ParseThreeTestCasesWithVariousConfigurations()
     {
         var content = """
-            ### TESTCASE Init Only Test
+            --- TESTCASE Init Only Test
 
-            ### INIT
+            --- INIT
             tp.SetVariable("Counter", 0);
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/counter
 
-            ### END
+            --- END
 
-            ### TESTCASE Full Test
+            --- TESTCASE Full Test
 
-            ### INIT
+            --- INIT
             var x = 1;
 
-            ### HTTP
+            --- HTTP
             POST {{ApiBaseUrl}}/items
 
-            ### TEST
+            --- TEST
             tp.Test("check", () => NotNull(tp.Response.Content));
 
-            ### END
+            --- END
 
-            ### TESTCASE Simple Get
+            --- TESTCASE Simple Get
 
-            ### HTTP
+            --- HTTP
             GET {{ApiBaseUrl}}/items
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");
@@ -289,9 +314,9 @@ public class TpFileParserShould
     public void ParseMultipleRequestsInHttpSection()
     {
         var content = """
-            ### TESTCASE Multi Request
+            --- TESTCASE Multi Request
 
-            ### HTTP
+            --- HTTP
             # @name FirstRequest
             POST {{ApiBaseUrl}}/items
             Content-Type: application/json
@@ -303,7 +328,7 @@ public class TpFileParserShould
             # @name SecondRequest
             GET {{ApiBaseUrl}}/items/{{FirstRequest.response.body.$.Id}}
 
-            ### END
+            --- END
             """;
 
         var result = _parser.Parse(content, "fallback");

@@ -16,6 +16,7 @@ internal sealed class ReadHttpFileStep(ITestCaseExecutionContextAccessor testCas
     {
         ValidateContext(out var testCaseExecutionContext, out var testCase);
 
+        // Content is pre-populated for .tp test cases; skip file I/O.
         if (testCaseExecutionContext.RequestsFileContent is not null)
         {
             return;

@@ -13,6 +13,7 @@ internal sealed class ReadScriptFileStep(IScriptExecutionContextAccessor scriptE
     {
         ValidateContext(out var scriptExecutionContext);
 
+        // Content is pre-populated for .tp test cases; skip file I/O.
         if (scriptExecutionContext.RawContent is not null)
         {
             return;

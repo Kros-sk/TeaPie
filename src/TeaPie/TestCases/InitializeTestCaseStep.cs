@@ -39,18 +39,20 @@ internal class InitializeTestCaseStep(ITestCaseExecutionContextAccessor accessor
         var tpDir = Path.GetDirectoryName(tpFilePath) ?? string.Empty;
         var sanitizedName = SanitizeForFileName(testCase.Name);
 
-        if (!string.IsNullOrWhiteSpace(def.InitContent))
-        {
-            var virtualInitPath = Path.Combine(tpDir, $"{sanitizedName}{Constants.PreRequestSuffix}{Constants.ScriptFileExtension}");
-            var initFile = new StructureExploration.File(virtualInitPath, virtualInitPath);
-            testCase.PreRequestScripts = [new Script(initFile, def.InitContent)];
-        }
+        SetVirtualScript(def.InitContent, tpDir, sanitizedName, Constants.PreRequestSuffix,
+            scripts => testCase.PreRequestScripts = scripts);
+        SetVirtualScript(def.TestContent, tpDir, sanitizedName, Constants.PostResponseSuffix,
+            scripts => testCase.PostResponseScripts = scripts);
+    }
 
-        if (!string.IsNullOrWhiteSpace(def.TestContent))
+    private static void SetVirtualScript(
+        string? content, string tpDir, string sanitizedName, string suffix, Action<Script[]> assign)
+    {
+        if (!string.IsNullOrWhiteSpace(content))
         {
-            var virtualTestPath = Path.Combine(tpDir, $"{sanitizedName}{Constants.PostResponseSuffix}{Constants.ScriptFileExtension}");
-            var testFile = new StructureExploration.File(virtualTestPath, virtualTestPath);
-            testCase.PostResponseScripts = [new Script(testFile, def.TestContent)];
+            var virtualPath = Path.Combine(tpDir, $"{sanitizedName}{suffix}{Constants.ScriptFileExtension}");
+            var file = new StructureExploration.File(virtualPath, virtualPath);
+            assign([new Script(file, content)]);
         }
     }
 

@@ -1,14 +1,14 @@
-### TESTCASE Single Tp Test Case
+--- TESTCASE Single Tp Test Case
 
-### INIT
+--- INIT
 tp.SetVariable("SingleTpVar", "hello");
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [200]
 # @name SingleTpRequest
 GET {{ApiBaseUrl}}/health
 
-### TEST
+--- TEST
 tp.Test("Response should have body", () => NotNull(tp.Response.Content));
 
-### END
+--- END

@@ -19,7 +19,7 @@ TeaPie supports two equivalent formats. Choose based on script complexity and st
 
 ### Single-File Format (`.tp`)
 
-- **`<name>.tp`** - All sections in one file using markers: `### TESTCASE`, `### INIT`, `### HTTP`, `### TEST`, `### END`
+- **`<name>.tp`** - All sections in one file using markers: `--- TESTCASE`, `--- INIT`, `--- HTTP`, `--- TEST`, `--- END`
 - Optional alternative to multi-file format; supports single or multiple test cases per file
 
 ### File Naming Convention
@@ -99,9 +99,9 @@ Test cases are executed in alphabetical order (ensured by numeric prefixes):
 1. Structure exploration - Scans for test cases (`-req.http` files and `.tp` files) and related files
 2. Initialization script execution (if present)
 3. For each test case (in alphabetical order):
-   - Pre-request script execution (`-init.csx` or `### INIT` section in `.tp`)
-   - HTTP request(s) execution (`-req.http` or `### HTTP` section in `.tp`)
-   - Post-response script execution (`-test.csx` or `### TEST` section in `.tp`)
+   - Pre-request script execution (`-init.csx` or `--- INIT` section in `.tp`)
+   - HTTP request(s) execution (`-req.http` or `--- HTTP` section in `.tp`)
+   - Post-response script execution (`-test.csx` or `--- TEST` section in `.tp`)
 
 ## .teapie Folder Structure
 

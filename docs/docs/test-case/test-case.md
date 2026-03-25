@@ -31,7 +31,7 @@ When running a test case, you can also reference:
 
 TeaPie supports two equivalent ways to define test cases. Use whichever fits your project better.
 
-The [**Single-File Format (`.tp`)**](tp-file.md) combines HTTP requests and C# scripts in one file using section markers. It is an optional alternative to the multi-file format. Both are fully supported; choose based on script complexity and how you prefer to structure tests.
+The [**Single-File Format (`.tp`)**](tp-file.md) combines HTTP requests and C# scripts in one file using section markers. It is an optional alternative to the multi-file format. Both formats are fully supported and can co-exist in the same project; choose based on test case complexity and how you prefer to structure tests.
 
 ## Running a Test Case
 
@@ -84,7 +84,13 @@ This command generates the multi-file format in the specified path (or the curre
 
 To **disable pre-request or post-response script generation**, set the `-i` and `-t` options to `false`.
 
-For the single-file format (`.tp`), create the file manually. See [Single-File Format (`.tp`)](tp-file.md) for details.
+To generate a **single-file test case (`.tp`)** instead, use the `--single-file` (or `-s`) flag:
+
+```sh
+teapie generate <test-case-name> [path] -s [-i] [-t]
+```
+
+This creates a `<test-case-name>.tp` file with `--- HTTP` section (and `--- INIT`/`--- TEST` if `-i`/`-t` are set). See [Single-File Format (`.tp`)](tp-file.md) for details.
 
 ## Exploring Test Case Structure
 

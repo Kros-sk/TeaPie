@@ -76,7 +76,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
             if (string.IsNullOrWhiteSpace(def.InitContent) && string.IsNullOrWhiteSpace(def.TestContent))
             {
-                AnsiConsole.MarkupLine("[grey]  No script sections to compile (HTTP only).[/]");
+                AnsiConsole.MarkupLine("[grey] No script sections to compile (HTTP only).[/]");
             }
         }
 

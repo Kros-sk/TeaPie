@@ -1,12 +1,12 @@
-### TESTCASE Health Check
+--- TESTCASE Health Check
 
-### HTTP
+--- HTTP
 ## TEST-EXPECT-STATUS: [200]
 ## TEST-HAS-BODY
 # This test case uses the .tp format - a single file combining HTTP request and test script.
 GET {{ApiBaseUrl}}/health
 
-### TEST
+--- TEST
 tp.Test("Health response should contain status field.", async () =>
 {
     dynamic responseJson = await tp.Response.GetBodyAsExpandoAsync();
@@ -14,4 +14,4 @@ tp.Test("Health response should contain status field.", async () =>
     NotNull(responseJson.status);
 });
 
-### END
+--- END
