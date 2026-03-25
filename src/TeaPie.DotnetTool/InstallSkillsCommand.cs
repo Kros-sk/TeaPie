@@ -23,7 +23,8 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
 
         try
         {
-            var downloadedCount = await DownloadDirectoryAsync(httpClient, SkillsSourcePath, targetPath, settings.Force);
+            var downloadedCount = await DownloadDirectoryAsync(
+                httpClient, SkillsSourcePath, SkillsSourcePath, targetPath, settings.Force);
 
             AnsiConsole.MarkupLine(
                 $"[green]Successfully installed {downloadedCount} skill file(s) into '{targetPath.EscapeMarkup()}'.[/]");
@@ -58,6 +59,7 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
     private static async Task<int> DownloadDirectoryAsync(
         HttpClient httpClient,
         string sourcePath,
+        string sourceRootPath,
         string targetPath,
         bool force)
     {
@@ -71,7 +73,7 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
         {
             if (item.Type == "file")
             {
-                var downloaded = await DownloadFileAsync(httpClient, item, targetPath, sourcePath, force);
+                var downloaded = await DownloadFileAsync(httpClient, item, targetPath, sourceRootPath, force);
                 if (downloaded)
                 {
                     downloadedCount++;
@@ -79,7 +81,7 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
             }
             else if (item.Type == "dir")
             {
-                downloadedCount += await DownloadDirectoryAsync(httpClient, item.Path, targetPath, force);
+                downloadedCount += await DownloadDirectoryAsync(httpClient, item.Path, sourceRootPath, targetPath, force);
             }
         }
 
@@ -90,10 +92,10 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
         HttpClient httpClient,
         GitHubContentItem item,
         string targetBasePath,
-        string sourceBasePath,
+        string sourceRootPath,
         bool force)
     {
-        var relativePath = item.Path[sourceBasePath.Length..].TrimStart('/');
+        var relativePath = item.Path[sourceRootPath.Length..].TrimStart('/');
         var targetFilePath = Path.Combine(targetBasePath, relativePath);
 
         if (File.Exists(targetFilePath) && !force)
@@ -137,15 +139,15 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
     private sealed class GitHubContentItem
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
 
         [JsonPropertyName("path")]
-        public string Path { get; set; } = string.Empty;
+        public string Path { get; init; } = string.Empty;
 
         [JsonPropertyName("type")]
-        public string Type { get; set; } = string.Empty;
+        public string Type { get; init; } = string.Empty;
 
         [JsonPropertyName("download_url")]
-        public string? DownloadUrl { get; set; }
+        public string? DownloadUrl { get; init; }
     }
 }
