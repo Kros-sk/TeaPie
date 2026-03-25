@@ -28,6 +28,7 @@ internal static class ApplicationProvider
         AddExploreCommand(config);
         AddScriptCompilationCommand(config);
         AddClearCacheCommand(config);
+        AddInstallSkillsCommand(config);
     }
 
     private static void AddExploreCommand(IConfigurator config)
@@ -75,6 +76,14 @@ internal static class ApplicationProvider
 
     private static void AddClearCacheCommand(IConfigurator config)
         => config.AddBranch<CacheSettings>("cache", cache => cache.AddCommand<ClearCacheCommand>("clear"));
+
+    private static void AddInstallSkillsCommand(IConfigurator config)
+        => config.AddCommand<InstallSkillsCommand>("install-skills")
+            .WithAlias("skills")
+            .WithDescription("Downloads the default set of TeaPie skills into the project.")
+            .WithExample("install-skills")
+            .WithExample("install-skills", "--path", "\".github/skills/teapie\"")
+            .WithExample("install-skills", "--force");
 
     private static void ConfigureDebugIfNeeded(IConfigurator config)
     {
