@@ -8,7 +8,7 @@ namespace TeaPie.DotnetTool;
 
 internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.Settings>
 {
-    private const string DefaultTargetPath = ".cursor/skills/teapie";
+    private const string DefaultTargetPath = ".claude/skills/teapie";
     private const string SkillsSourcePath = ".cursor/skills/teapie";
     private const string GitHubApiBaseUrl = "https://api.github.com/repos/Kros-sk/TeaPie/contents/";
     private const string UserAgentValue = "TeaPie-CLI";
@@ -127,7 +127,7 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
     {
         [CommandOption("-p|--path")]
         [Description("Target directory where skills will be installed. " +
-            "Defaults to '.cursor/skills/teapie' relative to the current directory.")]
+            "Defaults to '.claude/skills/teapie' relative to the current directory.")]
         public string? Path { get; init; }
 
         [CommandOption("-f|--force")]
