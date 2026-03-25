@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -153,5 +154,5 @@ public class TestCaseStructureExplorerShould
     }
 
     private static TestCaseStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)
-        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
+        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>(), new TpFileParser());
 }

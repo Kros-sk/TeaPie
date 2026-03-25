@@ -1,10 +1,12 @@
 using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal partial class CollectionStructureExplorer(IPathProvider pathProvider, ILogger<CollectionStructureExplorer> logger)
-    : BaseStructureExplorer(pathProvider, logger)
+internal partial class CollectionStructureExplorer(
+    IPathProvider pathProvider, ILogger<CollectionStructureExplorer> logger, TpFileParser tpFileParser)
+    : BaseStructureExplorer(pathProvider, logger, tpFileParser)
 {
     protected override CollectionStructure ExploreStructure(ApplicationContext applicationContext)
     {
@@ -60,7 +62,7 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
         ExploreTestCases(collectionStructure, currentFolder, files);
     }
 
-    private static void ExploreTestCases(
+    private void ExploreTestCases(
         CollectionStructure collectionStructure,
         Folder currentFolder,
         IList<string> files)

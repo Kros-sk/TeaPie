@@ -5,12 +5,13 @@ using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger) : IStructureExplorer
+internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger, TpFileParser tpFileParser) : IStructureExplorer
 {
     public const string RemoteFolderName = "~Remote";
     protected string _remoteFolderPath = string.Empty;
 
     protected readonly ILogger _logger = logger;
+    protected readonly TpFileParser _tpFileParser = tpFileParser;
     protected string? _environmentFileName;
     protected string? _initializationScriptName;
     protected IPathProvider _pathProvider = pathProvider;
@@ -86,7 +87,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         }
     }
 
-    protected static void ExploreTpFile(
+    protected void ExploreTpFile(
         string tpFilePath,
         CollectionStructure collectionStructure,
         Folder currentFolder)
@@ -94,8 +95,7 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         var content = System.IO.File.ReadAllText(tpFilePath);
         var fallbackName = Path.GetFileNameWithoutExtension(tpFilePath);
 
-        var parser = new TpFileParser();
-        var definitions = parser.Parse(content, fallbackName);
+        var definitions = _tpFileParser.Parse(content, fallbackName);
 
         var relativePath = GetRelativePath(currentFolder, Path.GetFileName(tpFilePath));
 
