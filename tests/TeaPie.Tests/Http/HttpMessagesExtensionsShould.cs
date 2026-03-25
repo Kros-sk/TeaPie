@@ -311,13 +311,13 @@ public class HttpMessagesExtensionsShould
     {
         NotNull(result);
         NotNull(data);
-        Equal(result.Id, data.Id);
-        Equal(result.Name, data.Name);
-        Equal(result.IsRegistered, data.IsRegistered);
-        Equal(result.Averages.Length, data.Averages.Length);
+        Equal(data.Id, result.Id);
+        Equal(data.Name, result.Name);
+        Equal(data.IsRegistered, result.IsRegistered);
+        Equal(data.Averages.Length, result.Averages.Length);
         for (var i = 0; i < result.Averages.Length; i++)
         {
-            Equal(result.Averages[i], data.Averages[i]);
+            Equal(data.Averages[i], result.Averages[i]);
         }
     }
 
@@ -325,10 +325,10 @@ public class HttpMessagesExtensionsShould
     {
         NotNull(real);
         NotNull(expected);
-        Equal(real.Id, expected.Id);
-        Equal(real.Name, expected.Name);
-        Equal(real.IsRegistered, expected.IsRegistered);
-        Equal(real.Averages.Count, expected.Averages.Length);
+        Equal(expected.Id, real.Id);
+        Equal(expected.Name, real.Name);
+        Equal(expected.IsRegistered, real.IsRegistered);
+        Equal(expected.Averages.Length, real.Averages.Count);
         foreach (var (Expected, Real) in expected.Averages.Zip(((List<object>)real.Averages).Select(x => ((JValue)x).Value)))
         {
             Equal(Expected, Real);
