@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace TeaPie.TestCases;
 
 internal class TpFileParser
@@ -139,8 +141,13 @@ internal class TpFileParser
         return (string.Join("\n", sectionLines).Trim(), i);
     }
 
+    private static readonly Regex MarkerNormalizer = new(@"^---\s*", RegexOptions.Compiled);
+
+    private static string NormalizeLine(string line)
+        => MarkerNormalizer.Replace(line.TrimStart(), "--- ", 1);
+
     private static bool IsMarker(string line, string marker)
-        => line.TrimStart().Equals(marker, StringComparison.OrdinalIgnoreCase);
+        => NormalizeLine(line).Equals(marker, StringComparison.OrdinalIgnoreCase);
 
     private static bool IsAnyMarker(string line)
         => IsTestCaseMarker(line)
@@ -150,13 +157,16 @@ internal class TpFileParser
             || IsMarker(line, TpConstants.EndMarker);
 
     private static bool IsTestCaseMarker(string line)
-        => line.TrimStart().StartsWith(TpConstants.TestCaseMarker + " ", StringComparison.OrdinalIgnoreCase)
-            || line.TrimStart().Equals(TpConstants.TestCaseMarker, StringComparison.OrdinalIgnoreCase);
+    {
+        var normalized = NormalizeLine(line);
+        return normalized.StartsWith(TpConstants.TestCaseMarker + " ", StringComparison.OrdinalIgnoreCase)
+            || normalized.Equals(TpConstants.TestCaseMarker, StringComparison.OrdinalIgnoreCase);
+    }
 
     private static string ExtractNameOrDefault(string line, string marker, string fallbackName)
     {
-        var trimmed = line.TrimStart();
-        var name = trimmed.Length > marker.Length ? trimmed[marker.Length..].Trim() : string.Empty;
+        var normalized = NormalizeLine(line);
+        var name = normalized.Length > marker.Length ? normalized[marker.Length..].Trim() : string.Empty;
         return string.IsNullOrWhiteSpace(name) ? fallbackName : name;
     }
 }

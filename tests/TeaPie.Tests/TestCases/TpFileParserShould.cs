@@ -311,6 +311,60 @@ public class TpFileParserShould
     }
 
     [Fact]
+    public void ParseMarkersWithNoSpaceAfterDashes()
+    {
+        var content = string.Join("\n",
+            "---TESTCASE No Space Test",
+            "",
+            "---INIT",
+            "tp.SetVariable(\"X\", 1);",
+            "",
+            "---HTTP",
+            "GET {{ApiBaseUrl}}/health",
+            "",
+            "---TEST",
+            "tp.Test(\"ok\", () => NotNull(tp.Response));",
+            "",
+            "---END");
+
+        var result = _parser.Parse(content, "fallback");
+
+        Single(result);
+        Equal("No Space Test", result[0].Name);
+        NotNull(result[0].InitContent);
+        Contains("tp.SetVariable", result[0].InitContent);
+        Contains("GET {{ApiBaseUrl}}/health", result[0].HttpContent);
+        NotNull(result[0].TestContent);
+        Contains("tp.Test", result[0].TestContent);
+    }
+
+    [Fact]
+    public void ParseMarkersWithExtraSpacesAfterDashes()
+    {
+        var content = string.Join("\n",
+            "---  TESTCASE Extra Spaces",
+            "",
+            "---  INIT",
+            "tp.SetVariable(\"X\", 1);",
+            "",
+            "---   HTTP",
+            "GET {{ApiBaseUrl}}/health",
+            "",
+            "---  TEST",
+            "tp.Test(\"ok\", () => NotNull(tp.Response));",
+            "",
+            "---  END");
+
+        var result = _parser.Parse(content, "fallback");
+
+        Single(result);
+        Equal("Extra Spaces", result[0].Name);
+        NotNull(result[0].InitContent);
+        Contains("GET {{ApiBaseUrl}}/health", result[0].HttpContent);
+        NotNull(result[0].TestContent);
+    }
+
+    [Fact]
     public void ParseMultipleRequestsInHttpSection()
     {
         var content = """
