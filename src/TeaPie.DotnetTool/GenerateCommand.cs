@@ -127,7 +127,7 @@ internal class GenerateCommand : Command<GenerateCommand.Settings>
     private static string GetDescription(Settings settings)
     {
         var description = string.Empty;
-        if (settings.HasPreRequestScript || settings.HasPreRequestScript)
+        if (settings.HasPreRequestScript || settings.HasPostResponseScript)
         {
             var hasPreReq = "Pre-Request: " + (settings.HasPreRequestScript ? "YES" : "NO");
             var hasPostRes = "Post-Response: " + (settings.HasPostResponseScript ? "YES" : "NO");

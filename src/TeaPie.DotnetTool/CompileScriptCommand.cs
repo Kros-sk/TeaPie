@@ -32,7 +32,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
         if (!path.IsTpFile())
         {
-            var result = await BuildApplication(settings).Run(new CancellationToken());
+            var result = await BuildApplication(settings).Run(CancellationToken.None);
             InterpretResult(result);
             return result;
         }
@@ -95,10 +95,10 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
             .WithTemporaryPath(string.Empty)
             .WithScriptCompilationPipeline(tpPath)
             .WithScriptContent(scriptContent)
-            .WithLogging(logLevel)
+            .WithLogging(logLevel, settings.LogFile ?? string.Empty, settings.LogFileLogLevel)
             .Build();
 
-        var result = await app.Run(new CancellationToken());
+        var result = await app.Run(CancellationToken.None);
 
         if (result == 0)
         {
