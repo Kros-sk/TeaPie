@@ -46,11 +46,11 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
         var content = File.ReadAllText(path);
         var parser = new TpFileParser();
+        var parsingContext = new TpParsingContext(content, Path.GetFileNameWithoutExtension(path));
 
-        List<TpTestCaseDefinition> definitions;
         try
         {
-            definitions = parser.Parse(content, Path.GetFileNameWithoutExtension(path));
+            parser.Parse(parsingContext);
         }
         catch (Exception ex)
         {
@@ -60,7 +60,7 @@ internal class CompileScriptCommand : ApplicationCommandBase<CompileScriptComman
 
         var overallSuccess = true;
 
-        foreach (var def in definitions)
+        foreach (var def in parsingContext.Definitions)
         {
             AnsiConsole.MarkupLine($"\n[bold]Test case:[/] [white]'{def.Name.EscapeMarkup()}'[/]");
 

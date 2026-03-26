@@ -28,7 +28,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         var def = result[0];
@@ -53,7 +55,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         var def = result[0];
@@ -89,7 +93,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Equal(2, result.Count);
 
@@ -115,7 +121,9 @@ public class TpFileParserShould
             tp.Test("ok", () => Equal(200, tp.Response.StatusCode()));
             """;
 
-        var result = _parser.Parse(content, "My Implicit Test");
+        var context = new TpParsingContext(content, "My Implicit Test");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         var def = result[0];
@@ -139,7 +147,7 @@ public class TpFileParserShould
             --- END
             """;
 
-        var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
+        var ex = Throws<InvalidOperationException>(() => _parser.Parse(new TpParsingContext(content, "fallback")));
         Contains("Bad Test", ex.Message);
         Contains(TpConstants.HttpMarker, ex.Message);
     }
@@ -156,7 +164,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "My Fallback Name");
+        var context = new TpParsingContext(content, "My Fallback Name");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Equal("My Fallback Name", result[0].Name);
@@ -181,7 +191,7 @@ public class TpFileParserShould
             --- END
             """;
 
-        var ex = Throws<InvalidOperationException>(() => _parser.Parse(content, "fallback"));
+        var ex = Throws<InvalidOperationException>(() => _parser.Parse(new TpParsingContext(content, "fallback")));
         Contains(TpConstants.TestCaseMarker, ex.Message);
     }
 
@@ -201,7 +211,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         var def = result[0];
@@ -229,7 +241,9 @@ public class TpFileParserShould
             "",
             "--- END");
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Contains(httpBody, result[0].HttpContent);
@@ -251,7 +265,9 @@ public class TpFileParserShould
             --- end
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Equal("Case Insensitive", result[0].Name);
@@ -293,7 +309,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Equal(3, result.Count);
 
@@ -327,7 +345,9 @@ public class TpFileParserShould
             "",
             "---END");
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Equal("No Space Test", result[0].Name);
@@ -355,7 +375,9 @@ public class TpFileParserShould
             "",
             "---  END");
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Equal("Extra Spaces", result[0].Name);
@@ -385,7 +407,9 @@ public class TpFileParserShould
             --- END
             """;
 
-        var result = _parser.Parse(content, "fallback");
+        var context = new TpParsingContext(content, "fallback");
+        _parser.Parse(context);
+        var result = context.Definitions;
 
         Single(result);
         Contains("FirstRequest", result[0].HttpContent);

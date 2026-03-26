@@ -95,11 +95,12 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         var content = System.IO.File.ReadAllText(tpFilePath);
         var fallbackName = Path.GetFileNameWithoutExtension(tpFilePath);
 
-        var definitions = _tpFileParser.Parse(content, fallbackName);
+        var parsingContext = new TpParsingContext(content, fallbackName);
+        _tpFileParser.Parse(parsingContext);
 
         var relativePath = GetRelativePath(currentFolder, Path.GetFileName(tpFilePath));
 
-        foreach (var definition in definitions)
+        foreach (var definition in parsingContext.Definitions)
         {
             var requestFileObj = new InternalFile(tpFilePath, relativePath, currentFolder);
             var testCase = new TestCase(requestFileObj)

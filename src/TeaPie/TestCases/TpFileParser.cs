@@ -7,23 +7,23 @@ internal class TpFileParser
     private static readonly string[] LineSeparators = [Constants.WindowsEndOfLine, Constants.UnixEndOfLine];
 
     /// <summary>
-    /// Parses the content of a <c>.tp</c> file into a list of test case definitions.
+    /// Parses the content of a <c>.tp</c> file and stores the resulting
+    /// test case definitions in <see cref="TpParsingContext.Definitions"/>.
     /// </summary>
-    /// <param name="content">Full text content of the <c>.tp</c> file.</param>
-    /// <param name="fallbackName">
-    /// Name used when the file contains no explicit <c>--- TESTCASE</c> marker
-    /// (i.e. single implicit test case).
+    /// <param name="context">
+    /// Parsing context that carries the input content and receives the parsed definitions.
     /// </param>
-    public List<TpTestCaseDefinition> Parse(string content, string fallbackName)
+    public void Parse(TpParsingContext context)
     {
-        ArgumentNullException.ThrowIfNull(content);
-        ArgumentException.ThrowIfNullOrWhiteSpace(fallbackName);
+        ArgumentNullException.ThrowIfNull(context);
 
-        var lines = content.Split(LineSeparators, StringSplitOptions.None);
+        var lines = context.Content.Split(LineSeparators, StringSplitOptions.None);
 
-        return HasTestCaseMarker(lines)
-            ? ParseExplicitTestCases(lines, fallbackName)
-            : [ParseImplicitTestCase(lines, fallbackName)];
+        var definitions = HasTestCaseMarker(lines)
+            ? ParseExplicitTestCases(lines, context.FallbackName)
+            : [ParseImplicitTestCase(lines, context.FallbackName)];
+
+        context.Definitions.AddRange(definitions);
     }
 
     private static bool HasTestCaseMarker(string[] lines)
