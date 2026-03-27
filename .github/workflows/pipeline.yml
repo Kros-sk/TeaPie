@@ -91,4 +91,4 @@ jobs:
         run: dotnet pack --configuration Release --no-build
 
       - name: Find and Publish NuGet Package
-        run: dotnet nuget push $(find . -type f -name "*.nupkg") --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push $(find ./src -type f -name "*.nupkg") --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
