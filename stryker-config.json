@@ -5,9 +5,9 @@
     "solution": "./TeaPie.sln",
     "reporters": ["html", "progress", "cleartext"],
     "thresholds": {
-      "high": 60,
-      "low": 40,
-      "break": 35
+      "high": 80,
+      "low": 50,
+      "break": 37
     }
   }
 }

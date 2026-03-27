@@ -27,9 +27,9 @@ Stryker is configured via [`stryker-config.json`](../stryker-config.json) in the
 | `project` | `TeaPie.csproj` | Source project under test |
 | `test-projects` | `TeaPie.Tests.csproj` | Test project |
 | `reporters` | html, progress, cleartext | Output formats |
-| `thresholds.high` | 60 | Score above this is green |
-| `thresholds.low` | 40 | Score below this is red |
-| `thresholds.break` | 35 | Score below this fails the build |
+| `thresholds.high` | 80 | Score above this is green |
+| `thresholds.low` | 50 | Score below this is red |
+| `thresholds.break` | 37 | Score below this fails the build |
 
 ## CI Integration
 
@@ -48,14 +48,23 @@ The initial baseline mutation score is **37.83%**, established with Stryker.NET 
 | Compile Error | 145 |
 | Ignored | 677 |
 
-The relatively low score is expected for an initial baseline. Many surviving mutants are in code paths not yet covered by tests (No Coverage) or in areas like console rendering and pipeline orchestration that are harder to unit test. The score will improve as tests are strengthened over time.
+A score of ~38% is **low**. In industry practice, mutation scores typically fall into these ranges:
+
+| Range | Assessment |
+|-------|------------|
+| **80%+** | Good — strong test suite that catches most regressions |
+| **60–79%** | Acceptable — reasonable safety net, room to improve |
+| **40–59%** | Below average — significant gaps in test assertions |
+| **Below 40%** | Low — most mutations survive undetected |
+
+The main contributors to the low score are the high **No Coverage** count (596 mutants in untested code) and the large number of **Survived** mutants (707) in areas like console rendering, pipeline orchestration, and file I/O that lack assertions. Improving coverage of core logic and adding targeted assertions will have the biggest impact.
 
 ## Thresholds
 
-The thresholds are calibrated against the baseline score of 37.83%:
+The thresholds are set to prevent regression and drive improvement:
 
-- **`break` (35%)** — Just below the baseline. If the mutation score drops below this, Stryker exits with a non-zero code and the CI workflow fails. This prevents significant regression.
-- **`low` (40%)** — Slightly above the baseline. Scores below this are reported as red/warning, signaling a near-term improvement target.
-- **`high` (60%)** — Longer-term goal for a healthy mutation score. Scores above this are reported as green.
+- **`break` (37%)** — At the baseline. The score is already low, so any regression fails the CI build immediately. This ensures the mutation score can only go up.
+- **`low` (50%)** — Mid-term improvement target. Reaching this means the test suite catches at least half of all mutations, a meaningful milestone.
+- **`high` (80%)** — Long-term goal aligned with industry standards for a good mutation score. Scores above this are reported as green.
 
 These thresholds should be raised as the test suite improves and the mutation score increases.
