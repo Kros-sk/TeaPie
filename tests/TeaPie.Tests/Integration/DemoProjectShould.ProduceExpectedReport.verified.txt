@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites name="Tests" tests="27" skipped="1" failures="2" time="0.000" timestamp="DateTime_1">
+  <testsuite name="001-Add-Customer" tests="1" skipped="0" failures="0" time="0.000">
+    <testcase name="Customer should be created successfully." time="0.000" classname="001-Add-Customer" />
+  </testsuite>
+  <testsuite name="001-Add-Car" tests="4" skipped="0" failures="0" time="0.000">
+    <testcase name="[#] Response should be valid JSON with ID property." time="0.000" classname="001-Add-Car" />
+    <testcase name="Status code of car addition should be 201 (Created)." time="0.000" classname="001-Add-Car" />
+    <testcase name="Newly added car should have 'BRAND' brand." time="0.000" classname="001-Add-Car" />
+    <testcase name="Identifiers of added and retrieved cars should match." time="0.000" classname="001-Add-Car" />
+  </testsuite>
+  <testsuite name="002-Edit-Car" tests="7" skipped="0" failures="1" time="0.000">
+    <testcase name="[#] Status code should match one of these: [200, 201]" time="0.000" classname="002-Edit-Car" />
+    <testcase name="[#] Response should have body." time="0.000" classname="002-Edit-Car" />
+    <testcase name="[#] Response should have body." time="0.000" classname="002-Edit-Car" />
+    <testcase name="[#] Response should have header with name 'Content-Type'." time="0.000" classname="002-Edit-Car" />
+    <testcase name="[#] Response status code should be successful." time="0.000" classname="002-Edit-Car" />
+    <testcase name="Status code of car retrieval should be 201 (Created)" time="0.000" classname="002-Edit-Car">
+      <failure message="Assert.Equal() Failure: Values differ&#xA;Expected: 201&#xA;Actual:   200" type="AssertionError">Assert.Equal() Failure: Values differ
+Expected: 201
+Actual:   200
+   at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
+   at Xunit.Assert.Equal[T](T expected, T actual) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 89
+   at Submission#0.&lt;&lt;Initialize&gt;&gt;b__0_0()
+   at TeaPie.Testing.Registrator.&lt;&gt;c__DisplayClass2_0.&lt;Test&gt;b__0() in {SourcePath}:line 16
+   at TeaPie.Testing.Tester.ExecuteTestInternal(Test test, Func`1 testFunction, TestCase testCase) in {SourcePath}:line 113
+   at TeaPie.Testing.Tester.ExecuteOrSkipTest(Test test, TestCase testCase) in {SourcePath}:line 43</failure>
+    </testcase>
+    <testcase name="Engine type and people capacity should match after edit." time="0.000" classname="002-Edit-Car" />
+  </testsuite>
+  <testsuite name="003-Check-Car" tests="3" skipped="0" failures="1" time="0.000">
+    <testcase name="Car should be available" time="0.000" classname="003-Check-Car" />
+    <testcase name="Car with special features should exist" time="0.000" classname="003-Check-Car">
+      <failure message="Assert.Equal() Failure: Values differ&#xA;Expected: 200&#xA;Actual:   404" type="AssertionError">Assert.Equal() Failure: Values differ
+Expected: 200
+Actual:   404
+   at Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 154
+   at Xunit.Assert.Equal[T](T expected, T actual) in /_/src/xunit.assert/Asserts/EqualityAsserts.cs:line 89
+   at Submission#0.&lt;&lt;&lt;Initialize&gt;&gt;b__0_1&gt;d.MoveNext()
+--- End of stack trace from previous location ---
+   at TeaPie.Testing.Tester.ExecuteTestSync(String testName, HttpResponseMessage response) in {SourcePath}:line 63</failure>
+    </testcase>
+    <testcase name="Newly created car should have correct brand" time="0.000" classname="003-Check-Car" />
+  </testsuite>
+  <testsuite name="Add Another Car" tests="3" skipped="0" failures="0" time="0.000">
+    <testcase name="[#] Status code should match one of these: [201]" time="0.000" classname="Add Another Car" />
+    <testcase name="[#] Response should have body." time="0.000" classname="Add Another Car" />
+    <testcase name="Newly added car should be returned with an assigned Id." time="0.000" classname="Add Another Car" />
+  </testsuite>
+  <testsuite name="Get All Cars" tests="3" skipped="0" failures="0" time="0.000">
+    <testcase name="[#] Status code should match one of these: [200]" time="0.000" classname="Get All Cars" />
+    <testcase name="[#] Response should have body." time="0.000" classname="Get All Cars" />
+    <testcase name="Response body should not be empty." time="0.000" classname="Get All Cars" />
+  </testsuite>
+  <testsuite name="001-Rent-Car" tests="3" skipped="1" failures="0" time="0.000">
+    <testcase name="Car should be rented successfully." time="0.000" classname="001-Rent-Car">
+      <skipped />
+    </testcase>
+    <testcase name="Check correct car rent interval." time="0.000" classname="001-Rent-Car" />
+    <testcase name="Rented car should be 'CAR_MODEL, 0000'." time="0.000" classname="001-Rent-Car" />
+  </testsuite>
+  <testsuite name="Health Check" tests="3" skipped="0" failures="0" time="0.000">
+    <testcase name="[#] Status code should match one of these: [200]" time="0.000" classname="Health Check" />
+    <testcase name="[#] Response should have body." time="0.000" classname="Health Check" />
+    <testcase name="Health response should contain status field." time="0.000" classname="Health Check" />
+  </testsuite>
+</testsuites>

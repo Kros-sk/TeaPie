@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -224,10 +224,24 @@
     <None Update="Demo\Variables\.placeholder">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Demo\Structure\SingleTpTest.tp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Structure\MultiTpTest.tp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Demo\Structure\HttpOnlyTpTest.tp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Integration\DemoProjectShould.ProduceExpectedReport.verified.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console.Testing" />
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Verify.Xunit" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using TeaPie.StructureExploration;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 using static Xunit.Assert;
 
 namespace TeaPie.Tests.StructureExploration;
@@ -108,6 +109,50 @@ public class TestCaseStructureExplorerShould
         Single(testCase.PostResponseScripts);
     }
 
+    [Fact]
+    public void AcceptTpFilePathAndCreateTestCases()
+    {
+        var tpFilePath = Path.Combine(
+            Environment.CurrentDirectory,
+            StructureExplorationIndex.RootFolderName,
+            StructureExplorationIndex.CollectionFolderName,
+            $"SingleTpTest{Constants.TestCaseFileExtension}");
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tpFilePath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
+
+        var structure = structureExplorer.Explore(new ApplicationContextBuilder().WithPath(tpFilePath).Build());
+
+        Single(structure.TestCases);
+        var testCase = structure.TestCases.First();
+        True(testCase.IsFromTpFile);
+        NotNull(testCase.TpDefinition);
+        Equal("Single Tp Test Case", testCase.Name);
+    }
+
+    [Fact]
+    public void CreateMultipleTestCasesFromTpFileWithMultipleTestCaseBlocks()
+    {
+        var tpFilePath = Path.Combine(
+            Environment.CurrentDirectory,
+            StructureExplorationIndex.RootFolderName,
+            StructureExplorationIndex.CollectionFolderName,
+            $"MultiTpTest{Constants.TestCaseFileExtension}");
+
+        var pathProvider = new PathProvider();
+        pathProvider.UpdatePaths(tpFilePath, Constants.SystemTemporaryFolderPath);
+        var structureExplorer = GetStructureExplorer(pathProvider);
+
+        var structure = structureExplorer.Explore(new ApplicationContextBuilder().WithPath(tpFilePath).Build());
+
+        Equal(2, structure.TestCases.Count);
+        var testCaseNames = structure.TestCases.Select(tc => tc.Name).ToList();
+        Contains("Multi Tp First Test Case", testCaseNames);
+        Contains("Multi Tp Second Test Case", testCaseNames);
+        True(structure.TestCases.All(tc => tc.IsFromTpFile));
+    }
+
     private static TestCaseStructureExplorer GetStructureExplorer(IPathProvider? pathProvider = null)
-        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>());
+        => new(pathProvider ?? Substitute.For<IPathProvider>(), Substitute.For<ILogger<TestCaseStructureExplorer>>(), new TpFileParser());
 }

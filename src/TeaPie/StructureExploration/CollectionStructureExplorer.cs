@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal partial class CollectionStructureExplorer(IPathProvider pathProvider, ILogger<CollectionStructureExplorer> logger)
-    : BaseStructureExplorer(pathProvider, logger)
+internal partial class CollectionStructureExplorer(
+    IPathProvider pathProvider, ILogger<CollectionStructureExplorer> logger, TpFileParser tpFileParser)
+    : BaseStructureExplorer(pathProvider, logger, tpFileParser)
 {
     protected override CollectionStructure ExploreStructure(ApplicationContext applicationContext)
     {
@@ -39,8 +41,8 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
     /// <summary>
     /// Recursive depth-first algorithm, which examines file system tree. Whole structure is gradually formed within
     /// <paramref name="collectionStructure"/> parameter in form of folders and test cases. Each folder can have sub-folders
-    /// and/or test cases. Test case is represented by <b>'.http'</b> file and possibly by other files
-    /// (e.g. script <b>'.csx'</b> files).
+    /// and/or test cases. Test case is represented by a <b>'.http'</b> file (with optional <b>'.csx'</b> scripts)
+    /// or by a <b>'.tp'</b> file (which may contain multiple test cases with inline sections).
     /// </summary>
     /// <param name="currentFolder">Folder to be explored.</param>
     /// <param name="collectionStructure">List of explored test cases.</param>
@@ -60,7 +62,7 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
         ExploreTestCases(collectionStructure, currentFolder, files);
     }
 
-    private static void ExploreTestCases(
+    private void ExploreTestCases(
         CollectionStructure collectionStructure,
         Folder currentFolder,
         IList<string> files)
@@ -70,6 +72,11 @@ internal partial class CollectionStructureExplorer(IPathProvider pathProvider, I
             var testCase = GetTestCase(currentFolder, out var fileName, out var relativePath, out var requestFileObj, reqFile);
 
             ExploreTestCase(testCase.RequestsFile.Path, collectionStructure, currentFolder, files);
+        }
+
+        foreach (var tpFile in files.Where(f => f.IsTpFile()).Order())
+        {
+            ExploreTpFile(tpFile, collectionStructure, currentFolder);
         }
     }
 
