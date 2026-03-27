@@ -110,7 +110,7 @@ If no `--- TESTCASE` marker is present, the file is treated as a single test cas
 - Markers are **case-insensitive** (`--- testcase`, `--- http`, etc.).
 - Use `--- END` to terminate each test case when defining multiple test cases.
 - HTTP content follows the same conventions as [Request File](request-file.md) (named requests, variables, etc.). The `###` request separator used in `.http` files works normally inside the `--- HTTP` section without any conflict.
-- For status code validation, use directives such as `## TEST-EXPECT-STATUS: [200, 201]` in the HTTP section rather than asserting in the TEST script. See [Directives](directives.md) for details.
+- For status code validation, use directives such as `## TEST-EXPECT-STATUS: [200, 201]` in the HTTP section rather than asserting in the TEST script. See [Directives](../directives.md) for details.
 
 ## When to Use `.tp` vs Multi-File
 
