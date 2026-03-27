@@ -9,7 +9,6 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>1.5.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
