@@ -1,4 +1,4 @@
-﻿namespace TeaPie.Tests.StructureExploration;
+namespace TeaPie.Tests.StructureExploration;
 
 internal static class StructureExplorationIndex
 {
@@ -22,7 +22,11 @@ internal static class StructureExplorationIndex
             $"ATest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
         Path.Combine(CollectionFolderName, $"AZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
         Path.Combine(CollectionFolderName, $"TheZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
-        Path.Combine(CollectionFolderName, $"ZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}")
+        Path.Combine(CollectionFolderName, $"ZeroLevelTest{Constants.RequestSuffix}{Constants.RequestFileExtension}"),
+        Path.Combine(CollectionFolderName, $"HttpOnlyTpTest{Constants.TestCaseFileExtension}"),
+        Path.Combine(CollectionFolderName, $"MultiTpTest{Constants.TestCaseFileExtension}"),
+        Path.Combine(CollectionFolderName, $"MultiTpTest{Constants.TestCaseFileExtension}"),
+        Path.Combine(CollectionFolderName, $"SingleTpTest{Constants.TestCaseFileExtension}")
     ];
 
     public static readonly Dictionary<string, (bool hasPreRequest, bool hasPostResponse)> TestCasesScriptsMap = new()
@@ -35,6 +39,23 @@ internal static class StructureExplorationIndex
         {TestCasesRelativePaths[5], (false, true)},
         {TestCasesRelativePaths[6], (true, true)},
         {TestCasesRelativePaths[7], (true, true)},
-        {TestCasesRelativePaths[8], (true, true)}
+        {TestCasesRelativePaths[8], (true, true)},
+        {TestCasesRelativePaths[9], (false, false)},
+        {TestCasesRelativePaths[12], (false, false)}
     };
+
+    public static (bool hasPreRequest, bool hasPostResponse) GetExpectedScripts(string relativePath)
+    {
+        if (TestCasesScriptsMap.TryGetValue(relativePath, out var result))
+        {
+            return result;
+        }
+
+        if (relativePath.EndsWith(Constants.TestCaseFileExtension, StringComparison.OrdinalIgnoreCase))
+        {
+            return (false, false);
+        }
+
+        throw new KeyNotFoundException($"No expected scripts entry for path: {relativePath}");
+    }
 }

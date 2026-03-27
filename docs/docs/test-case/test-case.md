@@ -2,7 +2,7 @@
 
 |   |   |
 |----------------------|----------------|
-| **Definition**       | The fundamental unit representing a single test scenario that can be executed independently. It consists of a `.http` file and optional supporting scripts that define setup, execution, and validation of API tests. Test cases can be grouped into a collection. |
+| **Definition**       | The fundamental unit representing a single test scenario that can be executed independently. It consists of either a `.http` file with optional supporting scripts (multi-file format) or a `.tp` file (single-file format) that define setup, execution, and validation of API tests. Test cases can be grouped into a collection. |
 | **Purpose**         | Encapsulates a single test scenario (not only) for isolated execution. |
 | **Example Usage**   | [Request File of a Complete Test Case](https://github.com/Kros-sk/TeaPie/blob/master/demo/Tests/002-Cars/001-Add-Car-req.http) |
 
@@ -27,6 +27,12 @@ When running a test case, you can also reference:
 - **[Environment File](../environments.md#environment-file)** – Defines environmental variables.
 - **[Initialization Script](../initialization-script.md)** – Runs before executing the test case.
 
+### Alternative: Single-File Format (`.tp`)
+
+TeaPie supports two equivalent ways to define test cases. Use whichever fits your project better.
+
+The [**Single-File Format (`.tp`)**](tp-file.md) combines HTTP requests and C# scripts in one file using section markers. It is an optional alternative to the multi-file format. Both formats are fully supported and can co-exist in the same project; choose based on test case complexity and how you prefer to structure tests.
+
 ## Running a Test Case
 
 To execute a test case, run:
@@ -36,10 +42,14 @@ teapie <path-to-request-file>
 ```
 
 To try it out, you can run a test case from the `demo` collection.
-The following test case is a good example as it demonstrates multiple features:
+The following examples demonstrate both formats:
 
 ```sh
+# Multi-file format
 teapie "./Tests/002-Cars/002-Edit-Car-req.http"
+
+# Single-file format (.tp)
+teapie "./Tests/002-Cars/004-Car-Operations.tp"
 ```
 
 For advanced usage, here’s the full command specification:
@@ -66,7 +76,7 @@ teapie generate <test-case-name> [path] [-i|--init|--pre-request] [-t|--test|--p
 
 > 💡 **Shortcut:** You can use aliases `gen` or `g` instead of `generate`.
 
-This command generates the following files in the specified path (or the current directory if no path is provided):
+This command generates the multi-file format in the specified path (or the current directory if no path is provided):
 
 - [**Pre-Request Script**](pre-request-script.md): `<test-case-name>-init.csx`
 - [**Request File**](request-file.md): `<test-case-name>-req.http`
@@ -74,12 +84,22 @@ This command generates the following files in the specified path (or the current
 
 To **disable pre-request or post-response script generation**, set the `-i` and `-t` options to `false`.
 
+To generate a **single-file test case (`.tp`)** instead, use the `--single-file` (or `-s`) flag:
+
+```sh
+teapie generate <test-case-name> [path] -s [-i] [-t]
+```
+
+This creates a `<test-case-name>.tp` file with `--- HTTP` section (and `--- INIT`/`--- TEST` if `-i`/`-t` are set). See [Single-File Format (`.tp`)](tp-file.md) for details.
+
 ## Exploring Test Case Structure
 
 To inspect the structure of a test case **without executing it**, run:
 
 ```sh
-teapie explore <path-to-request-file> [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [--env-file|--environment-file <path-to-environment-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
+teapie explore <path-to-test-case> [-d|--debug] [-v|--verbose] [-q|--quiet] [--log-level <minimal-log-level>] [--log-file <path-to-log-file>] [--log-file-log-level <minimal-log-level-for-log-file>] [--env-file|--environment-file <path-to-environment-file>] [-i|--init-script|--initialization-script <path-to-initialization-script>]
 ```
+
+The path can point to a request file (`.http`) or a single-file test case (`.tp`).
 
 > 💡 **Shortcut:** You can use aliases `exp` or `e` instead of `explore`.

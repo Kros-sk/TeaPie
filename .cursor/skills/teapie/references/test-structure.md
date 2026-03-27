@@ -4,14 +4,23 @@ Complete reference for TeaPie test case and collection structure.
 
 ## Test Case Structure
 
-### Required Files
+TeaPie supports two equivalent formats. Choose based on script complexity and structure preferences; both can coexist in the same collection.
+
+### Multi-File Format
+
+**Required:**
 
 - **`<name>-req.http`** - Request file containing HTTP request(s). Must follow Microsoft HTTP file conventions.
 
-### Optional Files
+**Optional:**
 
 - **`<name>-init.csx`** - Pre-request script for data setup and initialization
 - **`<name>-test.csx`** - Post-response script for validation and assertions
+
+### Single-File Format (`.tp`)
+
+- **`<name>.tp`** - All sections in one file using markers: `--- TESTCASE`, `--- INIT`, `--- HTTP`, `--- TEST`, `--- END`
+- Optional alternative to multi-file format; supports single or multiple test cases per file
 
 ### File Naming Convention
 
@@ -51,7 +60,8 @@ Tests/
 │   ├── 002-Edit-Car-test.csx
 │   ├── 003-Check-Car-init.csx
 │   ├── 003-Check-Car-req.http
-│   └── 003-Check-Car-test.csx
+│   ├── 003-Check-Car-test.csx
+│   └── 004-Car-Operations.tp   # Single-file format (optional alternative)
 └── 003-Car-Rentals/            # Another collection
     ├── 001-Rent-Car-init.csx
     ├── 001-Rent-Car-req.http
@@ -86,12 +96,12 @@ Collections can contain optional files:
 
 Test cases are executed in alphabetical order (ensured by numeric prefixes):
 
-1. Structure exploration - Scans for test cases and related files
+1. Structure exploration - Scans for test cases (`-req.http` files and `.tp` files) and related files
 2. Initialization script execution (if present)
 3. For each test case (in alphabetical order):
-   - Pre-request script execution (`-init.csx`)
-   - HTTP request(s) execution (`-req.http`)
-   - Post-response script execution (`-test.csx`)
+   - Pre-request script execution (`-init.csx` or `--- INIT` section in `.tp`)
+   - HTTP request(s) execution (`-req.http` or `--- HTTP` section in `.tp`)
+   - Post-response script execution (`-test.csx` or `--- TEST` section in `.tp`)
 
 ## .teapie Folder Structure
 
@@ -128,11 +138,12 @@ The `$teapie` wildcard resolves to the absolute path of the `.teapie` folder, av
 TeaPie discovers test cases by:
 
 1. Recursively scanning directories (depth-first)
-2. Finding all `.http` files ending with `-req.http`
-3. Matching associated scripts by name:
+2. Finding all `.http` files ending with `-req.http` and all `.tp` files
+3. For multi-file format: matching associated scripts by name:
    - `{test-case-name}-init.csx` for pre-request
    - `{test-case-name}-test.csx` for post-response
-4. Processing files in alphabetical order (ensured by numerical prefixes)
+4. For `.tp` format: parsing section markers within the file
+5. Processing files in alphabetical order (ensured by numerical prefixes)
 
 ## Best Practices
 
@@ -160,6 +171,7 @@ This ensures consistent ordering across all environments and prevents incorrect 
 - `001-Add-Customer-req.http` - Creates a new customer
 - `002-Edit-Customer-req.http` - Updates an existing customer
 - `003-Delete-Customer-req.http` - Deletes a customer
+- `004-Car-Operations.tp` - Single-file format with multiple test cases
 
 ### Multiple Requests in One File
 

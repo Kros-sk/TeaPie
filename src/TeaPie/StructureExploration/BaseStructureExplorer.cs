@@ -1,15 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger) : IStructureExplorer
+internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogger logger, TpFileParser tpFileParser) : IStructureExplorer
 {
     public const string RemoteFolderName = "~Remote";
     protected string _remoteFolderPath = string.Empty;
 
     protected readonly ILogger _logger = logger;
+    protected readonly TpFileParser _tpFileParser = tpFileParser;
     protected string? _environmentFileName;
     protected string? _initializationScriptName;
     protected IPathProvider _pathProvider = pathProvider;
@@ -82,6 +84,37 @@ internal abstract class BaseStructureExplorer(IPathProvider pathProvider, ILogge
         if (!collectionStructure.TryAddTestCase(testCase))
         {
             throw new InvalidOperationException($"Unable to register same test case twice. {testCase.RequestsFile.Path}");
+        }
+    }
+
+    protected void ExploreTpFile(
+        string tpFilePath,
+        CollectionStructure collectionStructure,
+        Folder currentFolder)
+    {
+        var content = System.IO.File.ReadAllText(tpFilePath);
+        var fallbackName = Path.GetFileNameWithoutExtension(tpFilePath);
+
+        var parsingContext = new TpParsingContext(content, fallbackName);
+        _tpFileParser.Parse(parsingContext);
+
+        var relativePath = GetRelativePath(currentFolder, Path.GetFileName(tpFilePath));
+
+        foreach (var definition in parsingContext.Definitions)
+        {
+            var requestFileObj = new InternalFile(tpFilePath, relativePath, currentFolder);
+            var testCase = new TestCase(requestFileObj)
+            {
+                Name = definition.Name,
+                IsFromTpFile = true,
+                TpDefinition = definition
+            };
+
+            if (!collectionStructure.TryAddTestCase(testCase))
+            {
+                throw new InvalidOperationException(
+                    $"Test case '{definition.Name}' from .tp file '{tpFilePath}' was already registered.");
+            }
         }
     }
 

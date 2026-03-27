@@ -1,9 +1,10 @@
-﻿namespace TeaPie;
+namespace TeaPie;
 
 internal static class Constants
 {
     public const string RequestFileExtension = ".http";
     public const string ScriptFileExtension = ".csx";
+    public const string TestCaseFileExtension = ".tp";
 
     public const string PreRequestSuffix = "-init";
     public const string RequestSuffix = "-req";
