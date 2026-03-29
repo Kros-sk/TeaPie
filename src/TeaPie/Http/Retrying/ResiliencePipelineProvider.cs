@@ -233,7 +233,7 @@ internal class ResiliencePipelineProvider(
         sb.AppendLine($"Backoff type: '{finalRetryStrategy.BackoffType.ToString()}'");
         sb.AppendLine($"Delay: {finalRetryStrategy.Delay.ToString()}");
         sb.AppendLine($"Maximal delay: {finalRetryStrategy.MaxDelay?.ToString()}");
-        sb.AppendLine($"Use jitter: {finalRetryStrategy.UseJitter}");
+        sb.Append($"Use jitter: {finalRetryStrategy.UseJitter}");
 
         return sb.ToString();
     }
