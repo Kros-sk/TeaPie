@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using TeaPie.StructureExploration.Paths;
+using TeaPie.TestCases;
 
 namespace TeaPie.StructureExploration;
 
-internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILogger<TestCaseStructureExplorer> logger)
-    : BaseStructureExplorer(pathProvider, logger)
+internal partial class TestCaseStructureExplorer(
+    IPathProvider pathProvider, ILogger<TestCaseStructureExplorer> logger, TpFileParser tpFileParser)
+    : BaseStructureExplorer(pathProvider, logger, tpFileParser)
 {
     protected override CollectionStructure ExploreStructure(ApplicationContext applicationContext)
     {
@@ -34,7 +36,15 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
         CollectionStructure collectionStructure)
     {
         ExploreTeaPieFolder(teaPieFolder, collectionStructure);
-        ExploreTestCase(testCasePath, rootFolder, collectionStructure);
+
+        if (testCasePath.IsTpFile())
+        {
+            ExploreTpFile(testCasePath, collectionStructure, rootFolder);
+        }
+        else
+        {
+            ExploreTestCase(testCasePath, rootFolder, collectionStructure);
+        }
 
         RegisterOptionalFilesIfNeeded(applicationContext, collectionStructure);
     }
@@ -71,21 +81,45 @@ internal partial class TestCaseStructureExplorer(IPathProvider pathProvider, ILo
 
     protected override void LogEnd(CollectionStructure collectionStructure, string duration)
     {
-        var testCase = collectionStructure.TestCases.First();
-        var tokens = new List<string>();
+        var testCases = collectionStructure.TestCases;
+        if (testCases.Count > 1)
+        {
+            LogEnd(duration, $"({testCases.Count} test cases from .tp file)");
+            return;
+        }
 
-        if (testCase.PreRequestScripts.Any())
+        var testCase = testCases.First();
+        var hasPreRequest = HasPreRequestScript(testCase);
+        var hasPostResponse = HasPostResponseScript(testCase);
+
+        var tokens = new List<string>();
+        if (hasPreRequest)
         {
             tokens.Add("pre-request script");
         }
 
-        if (testCase.PostResponseScripts.Any())
+        if (hasPostResponse)
         {
             tokens.Add("post-response script");
         }
 
-        LogEnd(duration, tokens.Count != 0 ? $"({string.Join(", ", tokens)})" : string.Empty);
+        if (tokens.Count == 0)
+        {
+            tokens.Add("HTTP only");
+        }
+
+        LogEnd(duration, $"({string.Join(", ", tokens)})");
     }
+
+    private static bool HasPreRequestScript(TestCase testCase)
+        => testCase.IsFromTpFile
+            ? !string.IsNullOrWhiteSpace(testCase.TpDefinition?.InitContent)
+            : testCase.PreRequestScripts.Any();
+
+    private static bool HasPostResponseScript(TestCase testCase)
+        => testCase.IsFromTpFile
+            ? !string.IsNullOrWhiteSpace(testCase.TpDefinition?.TestContent)
+            : testCase.PostResponseScripts.Any();
 
     [LoggerMessage("The test case explored in {duration} {foundArtifacts}.", Level = LogLevel.Information)]
     private partial void LogEnd(string duration, string foundArtifacts);

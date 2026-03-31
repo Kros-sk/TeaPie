@@ -25,7 +25,7 @@ teapie cache clear [-g|--glob|--global] [--no-logo]
 |   |   |
 |----------------------|----------------|
 | **Command name**     | `compile`, `comp`, or `c` |
-| **Purpose**          | Attempts to compile the script located at the specified path. |
+| **Purpose**          | Attempts to compile the script or test case located at the specified path. |
 
 **Full Syntax:**
 
@@ -35,7 +35,7 @@ teapie compile <path> [--log-file <file>] [--log-file-log-level <level>] [-l|--l
 
 | **Argument** | **Meaning** | **Mandatory** |
 |--------------|-------------|---------------|
-| `path`       | Path to the script that should be compiled. | `true` |
+| `path`       | Path to the script (`.csx`) or test case file (`.tp`) that should be compiled. For `.tp` files, INIT and TEST sections are compiled. | `true` |
 
 | **Option** | **Meaning** | **Default value** |
 |------------|-------------|-------------------|
@@ -53,7 +53,7 @@ teapie compile <path> [--log-file <file>] [--log-file-log-level <level>] [-l|--l
 |   |   |
 |----------------------|----------------|
 | **Command name**     | `explore`, `exp`, or `e` |
-| **Purpose**          | Explores the collection or test case located at the given path. |
+| **Purpose**          | Explores the collection or test case (`.http` or `.tp`) located at the given path. |
 
 **Full Syntax:**
 
@@ -63,7 +63,7 @@ teapie explore [path] [--log-file <file>] [--log-file-log-level <level>] [-l|--l
 
 | **Argument** | **Meaning** | **Mandatory** |
 |--------------|-------------|---------------|
-| `path`       | Path to the collection or test case to be explored. Defaults to the current directory. | `false` |
+| `path`       | Path to the collection, request file (`.http`), or single-file test case (`.tp`) to be explored. Defaults to the current directory. | `false` |
 
 | **Option** | **Meaning** | **Default value** |
 |------------|-------------|-------------------|
@@ -139,7 +139,7 @@ teapie test [path] [--temp-path <path>] [-e|--env <envName>] [--env-file <file>]
 
 | **Argument** | **Meaning** | **Mandatory** |
 |--------------|-------------|---------------|
-| `path`       | Path to the collection or test case which will be tested. Defaults to the current directory. | `false` |
+| `path`       | Path to the collection, test case (`.http`), or single-file test case (`.tp`) which will be tested. Defaults to the current directory. | `false` |
 
 | **Option** | **Meaning** | **Default value** |
 |------------|-------------|-------------------|

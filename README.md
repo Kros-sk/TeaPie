@@ -6,7 +6,7 @@
 
 ![Logo](logo.png)
 
-TeaPie is a **lightweight API testing framework** designed for **automation-friendly, scriptable API testing** with `.http` files.
+TeaPie is a **lightweight API testing framework** designed for **automation-friendly, scriptable API testing** with `.http` and `.tp` files.
 It provides **pre-request scripting, post-response validation, retry strategies, flexible authentication, environments support and custom test directives**.
 
 ## 📖 Documentation
@@ -16,6 +16,8 @@ It provides **pre-request scripting, post-response validation, retry strategies,
 ## 🚀 Features
 
 ✅ **Universal HTTP Requests Definition** – Define HTTP requests using `.http` files
+
+✅ **Flexible Test Structure** – Use multi-file (`.http` + `.csx`) or single-file (`.tp`) format based on your needs
 
 ✅ **Pre-Request & Post-Response Scripts** – Extend HTTP request with C# scripts for data
 
@@ -75,6 +77,12 @@ Execute a single test case:
 
 ```sh
 teapie test ".\demo\Tests\002-Cars\002-Edit-Car-req.http"
+```
+
+Or run a single-file test case (`.tp`):
+
+```sh
+teapie test ".\demo\Tests\002-Cars\004-Car-Operations.tp"
 ```
 
 For more usage details, visit the **[Wiki](https://kros-sk.github.io/TeaPie/docs/introduction.html)**.

@@ -1,4 +1,4 @@
-﻿namespace TeaPie.StructureExploration.Paths;
+namespace TeaPie.StructureExploration.Paths;
 
 public static class PathExtensions
 {
@@ -63,4 +63,7 @@ public static class PathExtensions
 
         throw new InvalidOperationException($"Provided path '{path}' does not exist.");
     }
+
+    internal static bool IsTpFile(this string path)
+        => path.EndsWith(global::TeaPie.Constants.TestCaseFileExtension, StringComparison.OrdinalIgnoreCase);
 }

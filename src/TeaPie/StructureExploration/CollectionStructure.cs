@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TeaPie.StructureExploration;
 
@@ -32,6 +32,8 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
     /// <summary>
     /// Try to add given test case to the structure. If parent folder is not in the structure yet,
     /// then attempt to add folder is done.
+    /// For <c>.tp</c> files that define multiple test cases, the key is <c>filePath#testCaseName</c>
+    /// to ensure uniqueness.
     /// </summary>
     /// <param name="testCase">Test case to be added to the structure.</param>
     public bool TryAddTestCase(TestCase testCase)
@@ -41,8 +43,14 @@ internal class CollectionStructure : IReadOnlyCollectionStructure
             TryAddFolder(testCase.ParentFolder);
         }
 
-        return _testCases.TryAdd(testCase.RequestsFile.Path, testCase);
+        var key = GetTestCaseKey(testCase);
+        return _testCases.TryAdd(key, testCase);
     }
+
+    private static string GetTestCaseKey(TestCase testCase)
+        => testCase.IsFromTpFile
+            ? $"{testCase.RequestsFile.Path}#{testCase.Name}"
+            : testCase.RequestsFile.Path;
     #endregion
 
     #region Environment File

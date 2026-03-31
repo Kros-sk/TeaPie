@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TeaPie.Http.Parsing;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using Timer = TeaPie.Logging.Timer;
 
@@ -26,11 +27,14 @@ internal class ParseHttpRequestStep(IRequestExecutionContextAccessor contextAcce
 
     private void Parse(ApplicationContext context, RequestExecutionContext requestExecutionContext)
     {
-        LogParsingStart(context, requestExecutionContext);
+        using (context.Logger.BeginTreeScope())
+        {
+            LogParsingStart(context, requestExecutionContext);
 
-        Timer.Execute(
-            () => _parser.Parse(requestExecutionContext),
-            elapsedTime => LogEndOfParsing(context, requestExecutionContext, elapsedTime));
+            Timer.Execute(
+                () => _parser.Parse(requestExecutionContext),
+                elapsedTime => LogEndOfParsing(context, requestExecutionContext, elapsedTime));
+        }
     }
 
     private static void LogParsingStart(ApplicationContext context, RequestExecutionContext requestExecutionContext)

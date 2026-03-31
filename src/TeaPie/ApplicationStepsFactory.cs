@@ -1,4 +1,5 @@
 ﻿using TeaPie.Environments;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
@@ -11,15 +12,31 @@ namespace TeaPie;
 internal static class ApplicationStepsFactory
 {
     public static IPipelineStep[] CreateDefaultPipelineSteps(IServiceProvider provider)
-        => [provider.GetStep<ResolvePathsStep>(),
+    {
+        IDisposable? initScope = null;
+
+        return [
+            new InlineStep((context, _) =>
+            {
+                initScope = context.Logger.BeginOuterTreeScope();
+                return Task.CompletedTask;
+            }),
+            provider.GetStep<ResolvePathsStep>(),
             provider.GetStep<ExploreStructureStep>(),
             provider.GetStep<TryLoadVariablesStep>(),
             provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<InitializeApplicationStep>(),
+            new InlineStep((_, _) =>
+            {
+                initScope?.Dispose();
+                initScope = null;
+                return Task.CompletedTask;
+            }),
             provider.GetStep<GenerateStepsForTestCasesStep>(),
             provider.GetStep<ReportTestResultsSummaryStep>(),
             provider.GetStep<SaveVariablesStep>()
         ];
+    }
 
     public static IPipelineStep[] CreateStructureExplorationSteps(IServiceProvider provider)
         => [provider.GetStep<ResolvePathsStep>(),

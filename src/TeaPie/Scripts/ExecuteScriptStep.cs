@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.Logging;
 using TeaPie.Logging;
+using TeaPie.Logging.Tree;
 using TeaPie.Pipelines;
 using Timer = TeaPie.Logging.Timer;
 
@@ -23,8 +24,11 @@ internal class ExecuteScriptStep(IScriptExecutionContextAccessor scriptExecution
         Script<object> script,
         CancellationToken cancellationToken)
     {
-        LogStartOfExecution(context, scriptExecutionContext);
-        await ExecuteAndLog(context, scriptExecutionContext, script, cancellationToken);
+        using (context.Logger.BeginTreeScope())
+        {
+            LogStartOfExecution(context, scriptExecutionContext);
+            await ExecuteAndLog(context, scriptExecutionContext, script, cancellationToken);
+        }
     }
 
     private static async Task ExecuteAndLog(

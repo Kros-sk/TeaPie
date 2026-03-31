@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TeaPie.Functions;
 using TeaPie.Http.Auth;
@@ -22,6 +22,7 @@ public sealed class ApplicationBuilder
     private string? _path;
     private string? _tempPath;
     private string? _scriptPath;
+    private string? _scriptContent;
 
     private string? _environment;
     private string? _environmentFilePath;
@@ -34,6 +35,7 @@ public sealed class ApplicationBuilder
     private string _pathToRequestsLogFile = string.Empty;
 
     private bool _variablesCaching = true;
+    private bool _useTreeLogging = false;
 
     private Func<IServiceProvider, IPipelineStep[]> _pipelineBuildFunction = ApplicationStepsFactory.CreateDefaultPipelineSteps;
 
@@ -61,12 +63,14 @@ public sealed class ApplicationBuilder
         LogLevel minimumLevel,
         string pathToLogFile = "",
         LogLevel minimumLevelForLogFile = LogLevel.None,
-        string pathToRequestsLogFile = "")
+        string pathToRequestsLogFile = "",
+        bool useTreeLogging = false)
     {
         _minimumLogLevel = minimumLevel;
         _pathToLogFile = pathToLogFile;
         _minimumLevelForLogFile = minimumLevelForLogFile;
         _pathToRequestsLogFile = pathToRequestsLogFile;
+        _useTreeLogging = useTreeLogging;
         return this;
     }
 
@@ -86,6 +90,12 @@ public sealed class ApplicationBuilder
     {
         _scriptPath = scriptPath;
         _pipelineBuildFunction = ApplicationStepsFactory.CreateScriptCompilationSteps;
+        return this;
+    }
+
+    public ApplicationBuilder WithScriptContent(string content)
+    {
+        _scriptContent = content;
         return this;
     }
 
@@ -156,7 +166,12 @@ public sealed class ApplicationBuilder
     private void ConfigureServices()
         => _services.AddTeaPie(
             _isCollectionRun,
-            () => _services.ConfigureLogging(_minimumLogLevel, _pathToLogFile, _minimumLevelForLogFile, _pathToRequestsLogFile));
+            () => _services.ConfigureLogging(
+                _minimumLogLevel,
+                _pathToLogFile,
+                _minimumLevelForLogFile,
+                _pathToRequestsLogFile,
+                _useTreeLogging));
 
     private static TeaPie CreateUserContext(IServiceProvider provider, ApplicationContext applicationContext)
         => TeaPie.Create(
@@ -187,6 +202,11 @@ public sealed class ApplicationBuilder
         var accessor = provider.GetRequiredService<IScriptExecutionContextAccessor>();
         accessor.Context = new ScriptExecutionContext(
             new StructureExploration.Script(new StructureExploration.File(_scriptPath!)));
+
+        if (_scriptContent is not null)
+        {
+            accessor.Context.RawContent = _scriptContent;
+        }
 
         return GetPipeline(provider);
     }

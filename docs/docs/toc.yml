@@ -12,6 +12,8 @@
      href: test-case/request-file.md
    - name: Post-Response Script
      href: test-case/post-response-script.md
+   - name: Single-File Format (.tp)
+     href: test-case/tp-file.md
 - name: Collection
   href: collection.md
 - name: How to Write Tests
@@ -37,7 +39,7 @@
   href: reporting.md
 - name: Logging
   href: logging.md
-  name: HTTP Requests Logging
+- name: HTTP Requests Logging
   href: requests-logging.md
 - name: JSON Handling
   href: json.md

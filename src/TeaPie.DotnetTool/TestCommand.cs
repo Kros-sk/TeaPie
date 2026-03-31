@@ -18,7 +18,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
         appBuilder
             .WithPath(path)
             .WithTemporaryPath(settings.TemporaryPath ?? string.Empty)
-            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, pathToRequestsLogFile)
+            .WithLogging(logLevel, pathToLogFile, settings.LogFileLogLevel, pathToRequestsLogFile, settings.UseTreeLogging)
             .WithEnvironment(settings.Environment ?? string.Empty)
             .WithEnvironmentFile(PathResolver.Resolve(settings.EnvironmentFilePath, string.Empty))
             .WithReportFile(PathResolver.Resolve(settings.ReportFilePath, string.Empty))
@@ -32,7 +32,7 @@ internal sealed class TestCommand : ApplicationCommandBase<TestCommand.Settings>
     public sealed class Settings : LoggingSettings
     {
         [CommandArgument(0, "[path]")]
-        [Description("Path to the collection or test case which will be tested. Defaults to the current directory.")]
+        [Description("Path to the collection, test case (.http) or single-file test case (.tp) which will be tested. Defaults to the current directory.")]
         public string? Path { get; init; }
 
         [CommandOption("--temp-path")]
