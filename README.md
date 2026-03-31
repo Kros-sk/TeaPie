@@ -47,6 +47,16 @@ To install the framework in your project:
 dotnet add package TeaPie
 ```
 
+## 🤖 AI Agent Skills
+
+TeaPie provides AI Agent Skills that help AI assistants work more effectively with your tests. If you already have TeaPie installed, add skills to your project using:
+
+```sh
+teapie install-skills
+```
+
+This will download skills into `.claude/skills/teapie/` in your project. For more details, see the [AI Agent Skills documentation](https://kros-sk.github.io/TeaPie/docs/ai-agent-skills.html).
+
 ## ⚡ Quick Start
 
 Create a new test case:

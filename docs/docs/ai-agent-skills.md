@@ -15,7 +15,7 @@ AI Agent Skills are specialized knowledge guides that help AI agents work more e
 
 ## 📖 Documentation
 
-For complete information about TeaPie AI Agent Skills, including how to download and use them in your projects, see the [TeaPie Skills README](https://github.com/Kros-sk/TeaPie/blob/master/.cursor/skills/README.md).
+For complete information about TeaPie AI Agent Skills, including how to download and use them in your projects, see the [TeaPie Skills README](https://github.com/Kros-sk/TeaPie/blob/master/.claude/skills/README.md).
 
 The README contains:
 
@@ -28,19 +28,22 @@ The README contains:
 
 ## 🚀 Quick Start
 
-To use the TeaPie skill in your project, copy and paste the following prompt to your AI agent:
+If you already have TeaPie installed, you can add skills to your project using the CLI command:
 
-```text
-Download the TeaPie skill from the GitHub repository into this project.
-
-The skill is located at: https://github.com/Kros-sk/TeaPie/tree/master/.cursor/skills/teapie/
-
-The agent should determine the target location based on the IDE it's working in:
-- For Cursor: .cursor/skills/teapie/
-- For VS Code: .github/skills/teapie/
-- For other IDEs: use standard conventions for that IDE
-
-Download the entire teapie directory (including SKILL.md and all subdirectories with their contents: references/, scripts/, templates/) from the GitHub repository and copy it to the correct target location in the project.
+```sh
+teapie install-skills
 ```
 
-The agent will automatically determine the correct location based on your IDE (e.g., `.cursor/skills/teapie/` for Cursor, `.github/skills/teapie/` for VS Code).
+This will download the skills into `.claude/skills/teapie/` in your project.
+
+You can also ask your AI agent to set everything up. Copy and paste the following prompt:
+
+```text
+Install TeaPie.Tool globally (if not already installed) and use the `teapie install-skills` command to download TeaPie skills into this project.
+
+1. Install TeaPie.Tool:
+   dotnet tool install -g TeaPie.Tool
+
+2. Download skills:
+   teapie install-skills
+```

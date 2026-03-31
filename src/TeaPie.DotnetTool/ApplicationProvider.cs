@@ -82,7 +82,7 @@ internal static class ApplicationProvider
             .WithAlias("skills")
             .WithDescription("Downloads the default set of TeaPie skills into the project.")
             .WithExample("install-skills")
-            .WithExample("install-skills", "--path", "\".cursor/skills/teapie\"")
+            .WithExample("install-skills", "--path", "\".claude/skills/teapie\"")
             .WithExample("install-skills", "--force");
 
     private static void ConfigureDebugIfNeeded(IConfigurator config)

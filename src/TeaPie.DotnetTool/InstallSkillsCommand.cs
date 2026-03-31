@@ -9,7 +9,7 @@ namespace TeaPie.DotnetTool;
 internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.Settings>
 {
     private const string DefaultTargetPath = ".claude/skills/teapie";
-    private const string SkillsSourcePath = ".cursor/skills/teapie";
+    private const string SkillsSourcePath = ".claude/skills/teapie";
     private const string GitHubApiBaseUrl = "https://api.github.com/repos/Kros-sk/TeaPie/contents/";
     private const string UserAgentValue = "TeaPie-CLI";
 
@@ -33,6 +33,18 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
         {
             AnsiConsole.MarkupLine(
                 $"[red]Failed to download skills from GitHub: {ex.Message.EscapeMarkup()}[/]");
+            return 1;
+        }
+        catch (IOException ex)
+        {
+            AnsiConsole.MarkupLine(
+                $"[red]Failed to write skill files: {ex.Message.EscapeMarkup()}[/]");
+            return 1;
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            AnsiConsole.MarkupLine(
+                $"[red]Access denied while writing skill files: {ex.Message.EscapeMarkup()}[/]");
             return 1;
         }
 
@@ -95,6 +107,12 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
         string sourceRootPath,
         bool force)
     {
+        if (!item.Path.StartsWith(sourceRootPath, StringComparison.Ordinal))
+        {
+            AnsiConsole.MarkupLine($"[yellow]Skipping unexpected path: '{item.Path.EscapeMarkup()}'.[/]");
+            return false;
+        }
+
         var relativePath = item.Path[sourceRootPath.Length..].TrimStart('/');
         var targetFilePath = Path.Combine(targetBasePath, relativePath);
 
