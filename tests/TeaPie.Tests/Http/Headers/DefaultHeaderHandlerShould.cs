@@ -14,7 +14,7 @@ public class DefaultHeaderHandlerShould
 
         _handler.SetHeader("value1", request);
 
-        request.Headers.GetValues("X-Custom").Should().ContainSingle("value1");
+        request.Headers.GetValues("X-Custom").Should().ContainSingle().Which.Should().Be("value1");
     }
 
     [Fact]
