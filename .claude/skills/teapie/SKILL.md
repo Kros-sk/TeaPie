@@ -280,6 +280,78 @@ teapie test -v ./Tests/002-Cars/001-Add-Car-req.http
 - Error stack traces
 - Test assertion details
 
+## Debugging Failed Tests
+
+When a test fails or execution errors occur, follow this escalating diagnostic workflow to understand the root cause, explain it clearly to the user, and suggest a fix.
+
+### Step 1: Re-run with Request/Response Logging
+
+Use `--requests-log-file` to capture full HTTP request and response details into a JSONL file:
+
+```bash
+teapie test ./path/to/failing-test -e <environment> --requests-log-file requests.json
+```
+
+Then read the `requests.json` file and examine:
+- **Request**: method, URL, headers, body — verify the request was constructed correctly
+- **Response**: status code, headers, body — check what the server actually returned
+- **Timing**: duration in milliseconds — identify timeouts or slow responses
+- **Errors**: any errors captured during the request
+
+This reveals mismatches between expected and actual HTTP traffic (wrong URL, missing headers, unexpected response body, auth failures, etc.).
+
+Reference: https://www.teapie.fun/docs/requests-logging.html
+
+### Step 2: Re-run with Debug/Verbose Logging
+
+If request/response data alone is insufficient, enable detailed framework logging:
+
+```bash
+# Debug-level logging to console
+teapie test ./path/to/failing-test -e <environment> -d
+
+# Maximum verbosity
+teapie test ./path/to/failing-test -e <environment> -v
+
+# Write debug logs to a file for analysis
+teapie test ./path/to/failing-test -e <environment> --log-file debug.log --log-file-log-level Debug
+```
+
+**CLI logging flags:**
+- `-d` / `--debug` — Activates detailed logging output
+- `-v` / `--verbose` — Most comprehensive logging (includes variable resolution, script execution, full stack traces)
+- `-q` / `--quiet` — Suppresses all output
+- `--log-level <level>` — Sets minimum log level for console
+- `--log-file <path>` — Writes logs to a file
+- `--log-file-log-level <level>` — Sets minimum log level for the log file
+
+Debug/verbose output helps diagnose:
+- Variable resolution failures (unresolved `{{variables}}`)
+- Script compilation or execution errors
+- Authentication provider issues
+- Pipeline step failures
+- Directive processing problems
+
+Reference: https://www.teapie.fun/docs/logging.html
+
+### Step 3: Analyze and Explain
+
+After collecting diagnostic data, you MUST:
+
+1. **Identify the root cause** — Pinpoint exactly what failed and why (e.g., "The server returned 401 because the auth token expired", "Variable `{{baseUrl}}` was not resolved because environment was not set")
+2. **Explain clearly to the user** — Provide a concise, non-technical-jargon explanation of what went wrong, referencing the specific request/response data or log entries
+3. **Suggest a fix** — If possible, propose concrete changes to the test files, scripts, environment config, or CLI invocation that would resolve the issue
+
+### Combined Diagnostic Command
+
+For maximum diagnostic information in a single run:
+
+```bash
+teapie test ./path/to/failing-test -e <environment> --requests-log-file requests.json --log-file debug.log --log-file-log-level Debug -v
+```
+
+This produces both the structured request/response log and detailed framework debug output, giving you everything needed for thorough analysis.
+
 ## Project Analysis
 
 Analyze TeaPie project structure to discover custom extensions, configurations, and shared resources.
