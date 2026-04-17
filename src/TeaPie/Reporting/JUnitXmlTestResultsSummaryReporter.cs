@@ -88,7 +88,9 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
             failedTest.Duration,
             false,
             failedTest.ErrorMessage,
-            stackTrace: failedTest.Exception?.StackTrace);
+            stackTrace: failedTest.Exception?.StackTrace,
+            sourceType: failedTest.SourceType,
+            requestName: failedTest.RequestName);
 
     private static void WriteSkippedTest(
         JUnitXmlWriter writer,
@@ -98,7 +100,9 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
             testCaseSummary.Name,
             skippedTest.TestName,
             0.0,
-            true);
+            true,
+            sourceType: skippedTest.SourceType,
+            requestName: skippedTest.RequestName);
 
     private static void WritePassedTest(
         JUnitXmlWriter writer,
@@ -108,5 +112,7 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
             testCaseSummary.Name,
             passedTest.TestName,
             passedTest.Duration,
-            false);
+            false,
+            sourceType: passedTest.SourceType,
+            requestName: passedTest.RequestName);
 }
