@@ -91,7 +91,7 @@ public class HeadersResolverShould
                 request.Content.Should().NotBeNull();
                 request.Content!.Headers.ContentDisposition.Should().NotBeNull();
                 request.Content.Headers.ContentDisposition!.DispositionType.Should().Be("attachment");
-                request.Content.Headers.ContentDisposition.FileName.Should().Be("\"example.txt\"");
+                request.Content.Headers.ContentDisposition.FileName.Should().Be("example.txt");
             })
         ];
 

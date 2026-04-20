@@ -11,8 +11,8 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
 
     public void Insert(IPipelineStep predecessor, IPipelineStep step)
     {
-        ArgumentNullException.ThrowIfNull(nameof(predecessor));
-        ArgumentNullException.ThrowIfNull(nameof(step));
+        ArgumentNullException.ThrowIfNull(predecessor);
+        ArgumentNullException.ThrowIfNull(step);
 
         if (_index.TryGetValue(predecessor, out var referenceNode))
         {
@@ -27,7 +27,7 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
 
     public void Add(IPipelineStep step)
     {
-        ArgumentNullException.ThrowIfNull(nameof(step));
+        ArgumentNullException.ThrowIfNull(step);
 
         var node = _steps.AddLast(step);
         _index.Add(step, node);
@@ -35,8 +35,8 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
 
     public void InsertRange(IPipelineStep predecessor, IEnumerable<IPipelineStep> steps)
     {
-        ArgumentNullException.ThrowIfNull(nameof(predecessor));
-        ArgumentNullException.ThrowIfNull(nameof(steps));
+        ArgumentNullException.ThrowIfNull(predecessor);
+        ArgumentNullException.ThrowIfNull(steps);
 
         if (_index.TryGetValue(predecessor, out var referenceNode))
         {
@@ -55,7 +55,7 @@ internal class StepsCollection : IEnumerable<IPipelineStep>
 
     public void AddRange(IEnumerable<IPipelineStep> steps)
     {
-        ArgumentNullException.ThrowIfNull(nameof(steps));
+        ArgumentNullException.ThrowIfNull(steps);
 
         foreach (var step in steps)
         {

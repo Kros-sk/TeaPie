@@ -17,3 +17,19 @@ await tp.Test("Customer should be created successfully.", async () =>
     // var body = tp.Request.GetBody().ToJson();
     // var id = (long)body["Id"];
 });
+
+await tp.Test("Customer data should be valid.", async () =>
+{
+    dynamic customer = await tp.Request.GetBodyAsExpandoAsync();
+
+    // TeaPie extends Xunit.Assert with additional assertion methods for more expressive tests.
+    // These are C# 14 extension members on Assert, callable via 'Assert.' prefix.
+    // Use NotNullOrEmpty to verify that a string value is present.
+    Assert.NotNullOrEmpty((string)customer.firstName);
+    Assert.NotNullOrEmpty((string)customer.lastName);
+    Assert.NotNullOrEmpty((string)customer.email);
+
+    // Use GreaterThan to verify that a numeric value exceeds a threshold.
+    // Following xUnit convention: first argument is the expected limit, second is the actual value.
+    Assert.GreaterThan(0L, (long)customer.id);
+});

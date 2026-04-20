@@ -53,3 +53,5 @@
   href: commands.md
 - name: Directives
   href: directives.md
+- name: Xunit.Assert Extensions
+  href: xunit-assert-extensions.md
