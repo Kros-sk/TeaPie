@@ -91,7 +91,10 @@ public class HeadersResolverShould
                 request.Content.Should().NotBeNull();
                 request.Content!.Headers.ContentDisposition.Should().NotBeNull();
                 request.Content.Headers.ContentDisposition!.DispositionType.Should().Be("attachment");
-                request.Content.Headers.ContentDisposition.FileName.Should().Be("\"example.txt\"");
+                // FileName quoting differs across runtimes: .NET 8 keeps the surrounding quotes
+                // ("\"example.txt\""), .NET 10 strips them ("example.txt"). Trim to assert the value
+                // TFM-agnostically.
+                request.Content.Headers.ContentDisposition.FileName!.Trim('"').Should().Be("example.txt");
             })
         ];
 
