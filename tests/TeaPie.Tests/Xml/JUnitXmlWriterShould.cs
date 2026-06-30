@@ -139,4 +139,61 @@ public class JUnitXmlWriterShould
         NotNull(suite);
         Contains(".", suite.Attribute("time")?.Value);
     }
+
+    [Fact]
+    public void WriteSourceAttributeWhenProvided()
+    {
+        using (var writer = new JUnitXmlWriter(TestFilePath))
+        {
+            writer.WriteTestSuitesRoot();
+            writer.WriteTestSuite("SuiteF", totalTests: 1, skipped: 0, failures: 0, timeMs: 100);
+            writer.WriteTestCase("Tests", "InlineTest", 50, skipped: false, sourceType: "inline", requestName: "MyRequest");
+            writer.EndTestSuite();
+            writer.EndTestSuitesRoot();
+        }
+
+        var doc = XDocument.Load(TestFilePath);
+        var testCase = doc.Descendants("testcase").First();
+
+        Equal("inline", testCase.Attribute("source")?.Value);
+        Equal("MyRequest", testCase.Attribute("request")?.Value);
+    }
+
+    [Fact]
+    public void WriteCsxSourceAttributeWithoutRequestAttribute()
+    {
+        using (var writer = new JUnitXmlWriter(TestFilePath))
+        {
+            writer.WriteTestSuitesRoot();
+            writer.WriteTestSuite("SuiteG", totalTests: 1, skipped: 0, failures: 0, timeMs: 100);
+            writer.WriteTestCase("Tests", "CsxTest", 50, skipped: false, sourceType: "csx");
+            writer.EndTestSuite();
+            writer.EndTestSuitesRoot();
+        }
+
+        var doc = XDocument.Load(TestFilePath);
+        var testCase = doc.Descendants("testcase").First();
+
+        Equal("csx", testCase.Attribute("source")?.Value);
+        Null(testCase.Attribute("request"));
+    }
+
+    [Fact]
+    public void OmitSourceAndRequestAttributesWhenNotProvided()
+    {
+        using (var writer = new JUnitXmlWriter(TestFilePath))
+        {
+            writer.WriteTestSuitesRoot();
+            writer.WriteTestSuite("SuiteH", totalTests: 1, skipped: 0, failures: 0, timeMs: 100);
+            writer.WriteTestCase("Tests", "PlainTest", 50, skipped: false);
+            writer.EndTestSuite();
+            writer.EndTestSuitesRoot();
+        }
+
+        var doc = XDocument.Load(TestFilePath);
+        var testCase = doc.Descendants("testcase").First();
+
+        Null(testCase.Attribute("source"));
+        Null(testCase.Attribute("request"));
+    }
 }

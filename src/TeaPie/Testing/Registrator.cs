@@ -30,7 +30,7 @@ internal class Registrator(ICurrentTestCaseExecutionContextAccessor accessor) : 
             testName,
             skipTest,
             testFunction,
-            new TestResult.NotRun() { TestName = testName, TestCasePath = testCase.RequestsFile.RelativePath },
+            new TestResult.NotRun() { TestName = testName, TestCasePath = testCase.RequestsFile.RelativePath, SourceType = "csx" },
             testCase);
 
         testCaseExecutionContext.RegisterTest(test);

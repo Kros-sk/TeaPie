@@ -33,12 +33,23 @@ internal class TestFactory : ITestFactory
     {
         CheckParameters(description, out var requestExecutionContext);
 
+        var requestName = !string.IsNullOrEmpty(requestExecutionContext.Name)
+            ? requestExecutionContext.Name
+            : null;
+
         return CreateTest(testDirective.TestNameGetter(description.Parameters),
             requestExecutionContext.TestCaseExecutionContext?.TestCase,
-            async () => await testDirective.TestFunction(requestExecutionContext.Response!, description.Parameters));
+            async () => await testDirective.TestFunction(requestExecutionContext.Response!, description.Parameters),
+            sourceType: "inline",
+            requestName: requestName);
     }
 
-    private static Test CreateTest(string testName, TestCase? testCase, Func<Task> testFunction)
+    private static Test CreateTest(
+        string testName,
+        TestCase? testCase,
+        Func<Task> testFunction,
+        string? sourceType = null,
+        string? requestName = null)
     {
         var test = new Test(
             $"[{_factoryCount}] {testName}",
@@ -47,7 +58,9 @@ internal class TestFactory : ITestFactory
             new TestResult.NotRun()
             {
                 TestName = testName,
-                TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty
+                TestCasePath = testCase?.RequestsFile.RelativePath ?? string.Empty,
+                SourceType = sourceType,
+                RequestName = requestName
             },
             testCase);
 

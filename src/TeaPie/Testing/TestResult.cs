@@ -12,4 +12,8 @@ public partial record TestResult
     public required string TestName { get; init; }
 
     public string TestCasePath { get; init; }
+
+    public string? SourceType { get; init; }
+
+    public string? RequestName { get; init; }
 }
