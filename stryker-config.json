@@ -1,0 +1,13 @@
+{
+  "stryker-config": {
+    "project": "TeaPie.csproj",
+    "test-projects": ["./tests/TeaPie.Tests/TeaPie.Tests.csproj"],
+    "solution": "./TeaPie.sln",
+    "reporters": ["html", "progress", "cleartext"],
+    "thresholds": {
+      "high": 80,
+      "low": 50,
+      "break": 37
+    }
+  }
+}

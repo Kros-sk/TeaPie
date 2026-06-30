@@ -401,6 +401,9 @@ FodyWeavers.xsd
 **/.teapie/cache/
 **/.teapie/reports/
 
+# Stryker mutation testing
+**/StrykerOutput/
+
 # User-defined
 *launchSettings*.json
 docs/_site
