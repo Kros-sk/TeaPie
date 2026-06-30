@@ -7,6 +7,7 @@ using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Telemetry;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
@@ -28,6 +29,7 @@ internal static class Setup
         services.AddTesting();
         services.AddPipelines();
         services.AddReporting();
+        services.AddTelemetry();
         services.AddLogging(loggingConfiguration);
 
         return services;

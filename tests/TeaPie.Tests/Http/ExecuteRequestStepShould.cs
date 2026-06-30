@@ -11,6 +11,7 @@ using TeaPie.Http.Parsing;
 using TeaPie.Http.Retrying;
 using TeaPie.Pipelines;
 using TeaPie.TestCases;
+using TeaPie.Telemetry;
 using TeaPie.Testing;
 using TeaPie.Variables;
 
@@ -110,7 +111,8 @@ public class ExecuteRequestStepShould
             Substitute.For<IHeadersHandler>(),
             Substitute.For<IAuthProviderAccessor>(),
             Substitute.For<ITestScheduler>(),
-            Substitute.For<IPipeline>());
+            Substitute.For<IPipeline>(),
+            Substitute.For<ITelemetryCollector>());
 
     private static CustomHttpMessageHandler CreateAndConfigureMessageHandler()
         => new(request =>
