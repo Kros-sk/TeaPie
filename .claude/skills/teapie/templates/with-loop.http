@@ -1,0 +1,11 @@
+{% for item in Items %}
+### Create item {{ forloop.index }}: {{ item.Name }}
+# @name CreateItem{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}/{{ResourcePath}}
+Content-Type: application/json
+
+{
+    "name": "{{ item.Name }}"
+}
+{% endfor %}

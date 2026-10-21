@@ -1,0 +1,12 @@
+// The templating loop below repeats the enclosed request block once per item in the collection
+// prepared in the pre-request script, producing one independent request per customer - each with its
+// own name, directives, and report entry - instead of copy-pasting the block by hand.
+{% for customer in NewCustomersBatch %}
+### Add customer #{{ forloop.index }}: {{ customer.FirstName }} {{ customer.LastName }}
+# @name AddCustomerBatch{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}{{ApiCustomersSection}}
+Content-Type: application/json
+
+{{ customer | json }}
+{% endfor %}

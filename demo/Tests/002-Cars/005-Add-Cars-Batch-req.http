@@ -1,0 +1,14 @@
+// The templating loop below repeats the enclosed request block once per item in the collection
+// prepared in the pre-request script, producing one independent request per car - each with its
+// own name, directives, and report entry - instead of copy-pasting the block by hand.
+// Including the per-iteration index in the request name keeps every iteration individually
+// addressable; without it, all iterations would share the same name (see Templating Loops docs).
+{% for car in NewCarsBatch %}
+### Add car #{{ forloop.index }}: {{ car.Brand }} {{ car.Model }}
+# @name AddCarBatch{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}{{ApiCarsSection}}
+Content-Type: application/json
+
+{{ car | json }}
+{% endfor %}

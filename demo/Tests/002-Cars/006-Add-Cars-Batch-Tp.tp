@@ -1,0 +1,37 @@
+// Demonstrates that the templating loop feature works the same way inside a .tp file's
+// '--- HTTP' section as it does in a plain .http file (compare with 005-Add-Cars-Batch).
+
+--- TESTCASE Add Cars Batch (Tp)
+
+--- INIT
+#load "$teapie/Definitions/GenerateNewCar.csx"
+
+var newCars = GenerateCars(3);
+tp.SetVariable("TpCarsBatch", newCars, "cars");
+tp.SetVariable("TpCarsBatchCount", newCars.Count, "cars");
+
+--- HTTP
+{% for car in TpCarsBatch %}
+### Add car #{{ forloop.index }}: {{ car.Brand }} {{ car.Model }}
+# @name AddTpCarBatch{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}{{ApiCarsSection}}
+Content-Type: application/json
+
+{{ car | json }}
+{% endfor %}
+
+--- TEST
+var count = tp.GetVariable<int>("TpCarsBatchCount");
+
+for (var i = 1; i <= count; i++)
+{
+    var name = $"AddTpCarBatch{i}";
+
+    await tp.Test($"Car #{i} added by the loop (via .tp file) should be created with status 201.", async () =>
+    {
+        Equal(201, tp.Responses[name].StatusCode());
+    });
+}
+
+--- END

@@ -17,7 +17,13 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
         ValidateContext(out var testCaseExecutionContext, out var content);
 
         var separatedRequests = RequestsSeparatorLineRegex().Split(content)
-            .Where(IsRequest);
+            .Where(IsRequest)
+            .ToList();
+
+        if (testCaseExecutionContext.AllowsDuplicateRequestNames)
+        {
+            LogDuplicateRequestNames(context, testCaseExecutionContext, separatedRequests);
+        }
 
         AddStepsForRequests(context, testCaseExecutionContext, separatedRequests);
 
@@ -27,10 +33,34 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
     private static bool IsRequest(string requestContent)
         => RequestMethodAndUriLineRegex().IsMatch(requestContent);
 
+    private static void LogDuplicateRequestNames(
+        ApplicationContext appContext, TestCaseExecutionContext testCaseExecutionContext, List<string> separatedRequests)
+    {
+        foreach (var (name, count) in FindDuplicateRequestNames(separatedRequests))
+        {
+            appContext.Logger.LogWarning(
+                "Requests file at '{Path}' contains {Count} requests named '{Name}' after template expansion. " +
+                "Only the last one will be resolvable by that name (e.g. via '<name>.response...'). Include a " +
+                "per-iteration value such as forloop.index in the name to keep it unique.",
+                testCaseExecutionContext.TestCase.RequestsFile.RelativePath,
+                count,
+                name);
+        }
+    }
+
+    internal static IEnumerable<(string Name, int Count)> FindDuplicateRequestNames(IEnumerable<string> separatedRequests)
+        => separatedRequests
+            .Select(requestContent => RequestNameRegex().Match(requestContent))
+            .Where(match => match.Success)
+            .Select(match => match.Groups[HttpFileParserConstants.RequestNameMetadataGroupName].Value)
+            .GroupBy(name => name, StringComparer.Ordinal)
+            .Where(group => group.Count() > 1)
+            .Select(group => (group.Key, group.Count()));
+
     private void AddStepsForRequests(
         ApplicationContext appContext,
         TestCaseExecutionContext testCaseExecutionContext,
-        IEnumerable<string> separatedRequests)
+        List<string> separatedRequests)
     {
         List<IPipelineStep> newSteps = [];
         RequestExecutionContext requestExecutionContext;
@@ -49,7 +79,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
         appContext.Logger.LogDebug(
             "Steps for all requests ({Count}) within the request file at '{Path}' have been scheduled in the pipeline.",
-            separatedRequests.Count(),
+            separatedRequests.Count,
             testCaseExecutionContext.TestCase.RequestsFile.RelativePath);
     }
 
@@ -66,4 +96,7 @@ internal partial class GenerateStepsForRequestsStep(ITestCaseExecutionContextAcc
 
     [GeneratedRegex(HttpFileParserConstants.RequestMethodAndUriLinePattern, RegexOptions.IgnoreCase)]
     private static partial Regex RequestMethodAndUriLineRegex();
+
+    [GeneratedRegex(HttpFileParserConstants.RequestNameMetadataPattern)]
+    private static partial Regex RequestNameRegex();
 }

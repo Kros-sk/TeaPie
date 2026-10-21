@@ -8,6 +8,8 @@ To get started, visit **[Getting Started](getting-started.md)**.
 
 ✅ **Universal HTTP Request Definition** – Define API tests using `.http` files.
 
+✅ **[Templating Loops](templating-loops.md)** – Expand a single request block into many independent requests with `{% for %}...{% endfor %}`, driven by a variable, inline list, or numeric range.
+
 ✅ **Flexible Test Structure** – Choose multi-file or single-file (`.tp`) format depending on test case complexity and structure preferences.
 
 ✅ **Pre-Request & Post-Response Scripts** – Extend test cases with C# scripts for data setup and validation.

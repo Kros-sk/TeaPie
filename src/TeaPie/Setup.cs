@@ -7,6 +7,7 @@ using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Templating;
 using TeaPie.TestCases;
 using TeaPie.Testing;
 using TeaPie.Variables;
@@ -24,6 +25,7 @@ internal static class Setup
         services.AddTestCases();
         services.AddScripts();
         services.AddVariables();
+        services.AddTemplating();
         services.AddFunctions();
         services.AddTesting();
         services.AddPipelines();

@@ -61,6 +61,8 @@ tp.RemoveVariablesWithTag("temp"); // Removes all variables with such a tag.
 
 Some of these methods belong to the [TeaPie](xref:TeaPie.TeaPie) class, while others are **extension methods** available in [TeaPie.Variables.TeaPieVariablesExtensions](xref:TeaPie.Variables.TeaPieVariablesExtensions).
 
+> A variable set to a list or array (e.g. via `tp.SetVariable("Partners", new[] { ... })`) can be expanded into many requests with a `{% for %}` loop in the request file — see [Templating Loops](templating-loops.md).
+
 ---
 
 ## Variable Tagging

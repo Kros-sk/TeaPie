@@ -46,6 +46,7 @@ Steps execute sequentially against an `ApplicationContext`. The pipeline support
 - **`Environments/`** — Environment configuration (env.json files, environment switching)
 - **`Reporting/`** — Test result reporters (console, JUnit XML, custom)
 - **`Functions/`** — Built-in functions available to scripts
+- **`Templating/`** — Expands Fluid (Liquid) templates (`{% for %}`, `{% if %}`, `{% assign %}`) in `.http`/`.tp` request content after the pre-request script and before requests are split into steps. Only files containing a supported tag are templated.
 
 ### Test Case Convention
 

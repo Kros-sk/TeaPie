@@ -1,0 +1,12 @@
+// This loop's source ('BatchCustomerBookings') was built in this test case's own pre-request
+// script from a collection created by an *earlier* test case's post-response script
+// (001-Customers/002-Add-Customers-Batch) - one loop's output feeding the next loop's input.
+{% for booking in BatchCustomerBookings %}
+### Rent car for batch customer #{{ forloop.index }} (id {{ booking.CustomerId }}): {{ booking.Car.Brand }} {{ booking.Car.Model }}
+# @name RentCarForBatchCustomer{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}{{ApiCarRentalSection}}
+Content-Type: application/json
+
+{ "CarId": {{ booking.Car.Id }}, "CustomerId": {{ booking.CustomerId }}, "RentalStart": "{{$now "yyyy-MM-dd"}}" }
+{% endfor %}

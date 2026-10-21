@@ -78,6 +78,12 @@ internal class ApplicationContextBuilder
         return this;
     }
 
+    public ApplicationContextBuilder WithExpandedContentDump(string dumpPath = "")
+    {
+        _optionsBuilder.SetExpandedContentDump(true, dumpPath);
+        return this;
+    }
+
     public ApplicationContext Build()
     {
         _serviceCollection.TryAddSingleton(_ =>
