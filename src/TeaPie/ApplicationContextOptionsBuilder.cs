@@ -8,6 +8,8 @@ internal class ApplicationContextOptionsBuilder
     private string _reportFilePath = string.Empty;
     private string _initializationScriptPath = string.Empty;
     private bool _variablesCaching = true;
+    private bool _dumpExpandedContent;
+    private string _expandedContentDumpPath = string.Empty;
 
     public ApplicationContextOptionsBuilder SetTempFolderPath(string? tempPath)
     {
@@ -45,6 +47,13 @@ internal class ApplicationContextOptionsBuilder
         return this;
     }
 
+    public ApplicationContextOptionsBuilder SetExpandedContentDump(bool dumpExpandedContent, string? dumpPath)
+    {
+        _dumpExpandedContent = dumpExpandedContent;
+        _expandedContentDumpPath = dumpPath ?? string.Empty;
+        return this;
+    }
+
     public ApplicationContextOptions Build()
     {
         return new ApplicationContextOptions(
@@ -53,7 +62,9 @@ internal class ApplicationContextOptionsBuilder
             _environmentFilePath,
             _reportFilePath,
             _initializationScriptPath,
-            _variablesCaching
+            _variablesCaching,
+            _dumpExpandedContent,
+            _expandedContentDumpPath
         );
     }
 }

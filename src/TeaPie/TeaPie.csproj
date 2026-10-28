@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dunet" />
+    <PackageReference Include="Fluid.Core" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />

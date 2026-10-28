@@ -21,6 +21,8 @@ It provides **pre-request scripting, post-response validation, retry strategies,
 
 ✅ **Pre-Request & Post-Response Scripts** – Extend HTTP request with C# scripts for data
 
+✅ **Templating Loops** – Repeat a request for every item of a collection with `{% for %}`, and use `{% if %}` / `{% assign %}` in `.http` and `.tp` files ([docs](https://www.teapie.fun/docs/templating-loops.html))
+
 ✅ **Custom Authentication Providers** – Supports OAuth2 & user-defined authentication providers
 
 ✅ **Retry Strategies** – Customize retry logic for API failures

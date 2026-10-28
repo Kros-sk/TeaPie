@@ -32,6 +32,8 @@ Directives in `.http` files can be divided scope-wise as follows:
 - [Retrying Directives](#retrying-directives)
 - [Testing Directives](#testing-directives)
 
+All of these directives continue to apply per-iteration when the request block they belong to is inside a `{% for %}...{% endfor %}` loop — see [Templating Loops](templating-loops.md).
+
 ### Authentication Directives
 
 #### `## AUTH-PROVIDER` Directive

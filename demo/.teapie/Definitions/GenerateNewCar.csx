@@ -8,3 +8,9 @@ public Car GenerateCar()
     return faker.Generate();
 }
 
+public List<Car> GenerateCars(int count)
+{
+    var faker = new CarFaker();
+    return faker.Generate(count);
+}
+

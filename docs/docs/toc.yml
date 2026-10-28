@@ -29,6 +29,8 @@
   href: variables.md
 - name: Functions
   href: functions.md
+- name: Templating Loops
+  href: templating-loops.md
 - name: Environments
   href: environments.md
 - name: Authentication

@@ -191,3 +191,5 @@ GET {{ApiBaseUrl}}{{ApiCarsSection}}/{{AddCarRequest.response.body.$.Id}}
 ```
 
 Use named requests (`# @name RequestName`) to reference data from previous requests.
+
+When the same request shape needs to be repeated once per item in a collection (seeding N entities, checking a list of inputs), use a [templating loop](templating-loops.md) (`{% for %}...{% endfor %}`) instead of hand-writing one `###` block per item.

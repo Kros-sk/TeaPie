@@ -19,6 +19,8 @@ tp.SetVariable("TimeOfExecution", DateTime.UtcNow);
 var time = tp.GetVariable("TimeOfExecution");
 ```
 
+If a variable set here holds a list of items, the request file can repeat a request block once per item with a `{% for %}` loop — see [Templating Loops](../templating-loops.md).
+
 ### Directives
 
 #### Load Directive

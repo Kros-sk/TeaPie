@@ -1,5 +1,6 @@
 ﻿using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Templating;
 using TeaPie.Testing;
 
 namespace TeaPie.TestCases;
@@ -13,6 +14,7 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
 
     public TestCase TestCase { get; } = testCase;
     public string? RequestsFileContent;
+    public TemplatedRequestNames? TemplatedRequestNames { get; set; }
 
     private readonly Dictionary<string, ScriptExecutionContext> _preRequestScripts = [];
     private readonly Dictionary<string, ScriptExecutionContext> _postResponseScripts = [];
@@ -45,7 +47,7 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
         Request = request;
         if (!name.Equals(string.Empty))
         {
-            _requests.Add(name, request);
+            Register(_requests, name, request);
         }
     }
 
@@ -54,8 +56,36 @@ internal class TestCaseExecutionContext(TestCase testCase) : IExecutionContextEx
         Response = response;
         if (!name.Equals(string.Empty))
         {
-            _responses.Add(name, response);
+            Register(_responses, name, response);
         }
+    }
+
+    private void Register<T>(Dictionary<string, T> registry, string name, T value)
+    {
+        if (TemplatedRequestNames is null)
+        {
+            registry.Add(name, value);
+        }
+        else if (TemplatedRequestNames.Repeatable.Contains(name))
+        {
+            registry[name] = value;
+        }
+        else if (!registry.TryAdd(name, value))
+        {
+            throw new InvalidOperationException(GetDuplicateRequestNameMessage(name, TemplatedRequestNames));
+        }
+    }
+
+    private string GetDuplicateRequestNameMessage(string name, TemplatedRequestNames templatedRequestNames)
+    {
+        var message = $"Requests file '{TestCase.RequestsFile.RelativePath}' contains more than one request named " +
+            $"'{name}' after template expansion. Request names must be unique.";
+
+        return templatedRequestNames.GeneratedByLoops.Contains(name)
+            ? message + " A name may repeat only when it is written at most once in each '{% for %}' loop body " +
+                "and nowhere outside loops. Include a per-iteration value such as {{ forloop.index }} in the name, " +
+                "or rename the other requests."
+            : message;
     }
 
     public void RegisterPreRequestScript(string key, ScriptExecutionContext scriptExecutionContext)

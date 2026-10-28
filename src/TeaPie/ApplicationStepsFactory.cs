@@ -4,6 +4,7 @@ using TeaPie.Pipelines;
 using TeaPie.Reporting;
 using TeaPie.Scripts;
 using TeaPie.StructureExploration;
+using TeaPie.Templating;
 using TeaPie.TestCases;
 using TeaPie.Variables;
 
@@ -23,6 +24,7 @@ internal static class ApplicationStepsFactory
             }),
             provider.GetStep<ResolvePathsStep>(),
             provider.GetStep<ExploreStructureStep>(),
+            provider.GetStep<CheckExpandedContentDumpStep>(),
             provider.GetStep<TryLoadVariablesStep>(),
             provider.GetStep<InitializeEnvironmentsStep>(),
             provider.GetStep<InitializeApplicationStep>(),

@@ -1,6 +1,6 @@
 ---
 name: teapie
-description: Comprehensive TeaPie framework expertise for API integration testing. Use when: (1) Working with TeaPie projects, API testing, .http files, .tp files, C# test scripts (.csx), test collections, directives, variables, functions, authentication, retrying, (2) Creating and scaffolding test cases using `teapie generate`, renumbering tests, initializing TeaPie projects, (3) Running tests with `teapie test`, finding tests for API endpoints, debugging test failures, generating reports, (4) Analyzing .teapie folder structure, discovering custom functions/directives/auth providers registered in init.csx, understanding project-specific configurations, or (5) When users need guidance on TeaPie CLI commands, test structure, framework capabilities, or test organization.
+description: Comprehensive TeaPie framework expertise for API integration testing. Use when: (1) Working with TeaPie projects, API testing, .http files, .tp files, C# test scripts (.csx), test collections, directives, variables, functions, authentication, retrying, templating loops (`{% for %}`/`{% endfor %}` data-driven request expansion), (2) Creating and scaffolding test cases using `teapie generate`, renumbering tests, initializing TeaPie projects, (3) Running tests with `teapie test`, finding tests for API endpoints, debugging test failures, generating reports, (4) Analyzing .teapie folder structure, discovering custom functions/directives/auth providers registered in init.csx, understanding project-specific configurations, or (5) When users need guidance on TeaPie CLI commands, test structure, framework capabilities, or test organization.
 ---
 
 # TeaPie Framework
@@ -111,6 +111,29 @@ Built-in functions:
 - `{{$randomInt min max}}` - Random integer [min, max)
 
 Custom functions can be registered in `init.csx`.
+
+### Templating Loops
+
+Expand a single request block into many independent requests, driven by a collection:
+
+```http
+{% for partner in Partners %}
+### Create partner {{ forloop.index }}: {{ partner.Name }}
+# @name CreatePartner{{ forloop.index }}
+POST {{ApiBaseUrl}}/partners
+Content-Type: application/json
+
+{ "name": "{{ partner.Name }}" }
+{% endfor %}
+```
+
+**Sources:** a variable set via `tp.SetVariable(...)` (most common), an inline literal list `("new", "used")`, or a numeric range `(1..5)`.
+
+**`forloop`:** `forloop.index` (1-based), `forloop.index0` (0-based), `forloop.first`, `forloop.last`.
+
+**Key rules:** every `# @name` in a file must be unique after expansion: put `{{ forloop.index }}` in each name inside a loop (in nested loops combine the outer and inner index, e.g. `CreateLicense{{ companyIndex }}_{{ forloop.index }}`), and don't repeat a name outside loops, within one loop body, or reuse it for a loop-generated one (each is an error; only a literal name written once per loop body and repeated by iterations is a warning); loops can be nested (capture an outer `forloop.index` via `{% assign x = forloop.index %}` before the inner loop, since the inner loop's `forloop` shadows the outer one); expansion is capped at 1000 requests per nesting-root loop; a missing, `null` or non-collection source (a string included) is always a hard error, for inner loops as well; an empty source is a hard error for a top-level loop. An inner loop whose source references an outer loop's variable (e.g. `company.Licenses`) may be empty for some outer items. Each such item gets a **Debug** log message, and a **Warning** is logged when the source is empty for every outer item.
+
+See [Templating Loops Reference](references/templating-loops.md) for full syntax, guards, and the nested-loop example.
 
 ## C# Scripting (.csx Files)
 
@@ -452,6 +475,7 @@ The `init.csx` script runs before the first test case. Use it to:
 - [CLI Commands Reference](references/cli-commands.md) - Complete command documentation
 - [Directives Reference](references/directives.md) - All directives with examples
 - [Variables & Functions Reference](references/variables-functions.md) - Variable system and functions
+- [Templating Loops Reference](references/templating-loops.md) - `{% for %}` request expansion, nesting, guards
 - [Test Structure Reference](references/test-structure.md) - Test case and collection structure
 - [OpenAPI to Tests Guide](references/openapi-to-tests.md) - Creating tests from OpenAPI specs
 - [Test Mapping Patterns](references/test-mapping-patterns.md) - API-to-test mapping strategies
@@ -474,3 +498,4 @@ The `init.csx` script runs before the first test case. Use it to:
 - `templates/basic-delete.http` - DELETE request template
 - `templates/with-auth.http` - Request with authentication
 - `templates/with-retry.http` - Request with retry strategy
+- `templates/with-loop.http` - Request block expanded via a `{% for %}` templating loop

@@ -37,6 +37,9 @@ public sealed class ApplicationBuilder
     private bool _variablesCaching = true;
     private bool _useTreeLogging = false;
 
+    private bool _dumpExpandedContent;
+    private string? _expandedContentDumpPath;
+
     private Func<IServiceProvider, IPipelineStep[]> _pipelineBuildFunction = ApplicationStepsFactory.CreateDefaultPipelineSteps;
 
     private ApplicationBuilder(IServiceCollection services, bool collectionRun)
@@ -129,6 +132,13 @@ public sealed class ApplicationBuilder
         return this;
     }
 
+    public ApplicationBuilder WithExpandedContentDump(string dumpDirectory = "")
+    {
+        _dumpExpandedContent = true;
+        _expandedContentDumpPath = dumpDirectory;
+        return this;
+    }
+
     public Application Build()
     {
         ConfigureServices();
@@ -152,6 +162,7 @@ public sealed class ApplicationBuilder
             .SetReportFilePath(_reportFilePath)
             .SetInitializationScriptPath(_initializationScriptPath)
             .SetVariablesCaching(_variablesCaching)
+            .SetExpandedContentDump(_dumpExpandedContent, _expandedContentDumpPath)
             .Build();
 
         return new ApplicationContext(

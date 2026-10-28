@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TeaPie.Http;
 using TeaPie.Pipelines;
+using TeaPie.Templating;
 
 namespace TeaPie.TestCases;
 
@@ -32,6 +33,7 @@ internal static class TestCaseStepsFactory
 
     private static IPipelineStep[] CreateStepsForRequestsWithinTestCase(IServiceProvider provider)
         => [provider.GetStep<ReadHttpFileStep>(),
+            provider.GetStep<ExpandTemplatesStep>(),
             provider.GetStep<GenerateStepsForRequestsStep>()];
 
     private static IPipelineStep[] CreateStepsForTestsCase(IServiceProvider provider)

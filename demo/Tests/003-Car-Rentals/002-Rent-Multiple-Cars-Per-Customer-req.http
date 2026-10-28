@@ -1,0 +1,15 @@
+// A nested loop rents one car per customer per iteration of the inner loop - here, every car
+// on a customer's wishlist. The 'assign' tag captures the outer loop's index so it can still
+// be used once the inner loop starts counting on its own.
+{% for customer in CustomersWithCarWishlist %}
+{% assign customerIndex = forloop.index %}
+{% for car in customer.Cars %}
+### Rent car {{ customerIndex }}.{{ forloop.index }} for {{ customer.Name }}: {{ car.Brand }} {{ car.Model }}
+# @name RentCar{{ customerIndex }}_{{ forloop.index }}
+## TEST-EXPECT-STATUS: [201]
+POST {{ApiBaseUrl}}{{ApiCarRentalSection}}
+Content-Type: application/json
+
+{ "CarId": {{ car.Id }}, "CustomerName": "{{ customer.Name }}", "RentalStart": "{{$now "yyyy-MM-dd"}}" }
+{% endfor %}
+{% endfor %}

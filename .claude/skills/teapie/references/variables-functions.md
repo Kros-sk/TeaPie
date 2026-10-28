@@ -50,6 +50,8 @@ tp.RemoveVariable("MyVariable");
 tp.RemoveVariablesWithTag("temp");
 ```
 
+A variable set to a list/array can drive a `{% for %}` [templating loop](templating-loops.md) in the request file, expanding one request block into one request per item.
+
 **Accessing at specific levels:**
 
 ```csharp

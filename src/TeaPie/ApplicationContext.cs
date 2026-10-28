@@ -27,6 +27,10 @@ internal class ApplicationContext(
 
     public bool CacheVariables = options.CacheVariables;
 
+    public readonly bool DumpExpandedContent = options.DumpExpandedContent;
+
+    public readonly string ExpandedContentDumpPath = options.ExpandedContentDumpPath;
+
     public string StructureName => System.IO.Path.GetFileNameWithoutExtension(Path).TrimSuffix(Constants.RequestSuffix);
 
     public string TeaPieFolderPath { get; internal set; } = string.Empty;
