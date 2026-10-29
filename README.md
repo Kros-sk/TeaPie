@@ -51,13 +51,23 @@ dotnet add package TeaPie
 
 ## 🤖 AI Agent Skills
 
-TeaPie provides AI Agent Skills that help AI assistants work more effectively with your tests. If you already have TeaPie installed, add skills to your project using:
+TeaPie provides AI Agent Skills that help AI assistants write, run and debug your tests.
+
+In **Claude Code**, install the TeaPie plugin:
+
+```text
+/plugin install teapie --marketplace Kros-sk/TeaPie
+```
+
+On older Claude Code versions, add the marketplace first with `/plugin marketplace add Kros-sk/TeaPie`, then run `/plugin install teapie@teapie`.
+
+For other agents, or to commit the skill into your repository, use the CLI:
 
 ```sh
 teapie install-skills
 ```
 
-This will download skills into `.claude/skills/teapie/` in your project. For more details, see the [AI Agent Skills documentation](https://kros-sk.github.io/TeaPie/docs/ai-agent-skills.html).
+This will download skills into `.claude/skills/teapie/` in your project. For more details, see the [AI Agent Skills documentation](https://kros-sk.github.io/TeaPie/docs/ai-agent-skills.html). Documentation for LLMs is available at [llms.txt](https://www.teapie.fun/llms.txt).
 
 ## ⚡ Quick Start
 
