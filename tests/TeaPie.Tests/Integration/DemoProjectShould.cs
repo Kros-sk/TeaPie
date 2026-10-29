@@ -25,8 +25,7 @@ public sealed class DemoProjectShould : IAsyncLifetime
 
         var mockoonConfigPath = Path.Combine(_solutionRoot, "demo", "server", "CarRentalServer.json");
 
-        _mockoonContainer = new ContainerBuilder()
-            .WithImage("mockoon/cli:latest")
+        _mockoonContainer = new ContainerBuilder("mockoon/cli:latest")
             .WithResourceMapping(mockoonConfigPath, "/data/")
             .WithEntrypoint("mockoon-cli")
             .WithCommand("start", "-X", "-d", "/data/CarRentalServer.json", "-p", "3001")

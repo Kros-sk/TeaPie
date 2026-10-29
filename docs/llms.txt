@@ -1,0 +1,50 @@
+# TeaPie
+
+> TeaPie is a lightweight CLI framework for API integration testing on .NET 8+. Tests are plain `.http` files (or single-file `.tp` files) with optional C# scripts (`.csx`) for pre-request setup and post-response assertions. It installs as a dotnet global tool (`dotnet tool install -g TeaPie.Tool`), runs with `teapie test`, and produces console and JUnit XML reports for CI.
+
+Because tests are plain text files that live next to the backend code, AI coding agents can generate, run and fix them, and the changes show up in pull requests. TeaPie ships an agent skill for this:
+
+- Claude Code: `/plugin marketplace add Kros-sk/TeaPie`, then `/plugin install teapie@teapie`
+- Any project: `teapie install-skills` (downloads the skill to `.claude/skills/teapie/`)
+
+Key conventions:
+
+- A test case is `{name}-req.http` with optional `{name}-init.csx` (runs before the request) and `{name}-test.csx` (runs after the response). A `{name}.tp` file holds all three in one file.
+- Simple assertions need no code: directive comments such as `## TEST-EXPECT-STATUS: [200]` in the `.http` file.
+- Shared configuration usually lives in the `.teapie/` folder at the repository root: `env.json` for environments, `init.csx` for registering custom functions, directives, auth providers and retry strategies.
+- Variables use `{{name}}` syntax and are shared between requests and scripts in a collection.
+
+## Docs
+
+- [Introduction](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/introduction.md): what TeaPie is and its main features
+- [Getting Started](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/getting-started.md): install the tool and run the first test
+- [Test Case](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/test-case/test-case.md): structure of a test case and naming conventions
+- [Request File](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/test-case/request-file.md): `.http` request syntax
+- [Pre-Request Script](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/test-case/pre-request-script.md): C# setup before a request
+- [Post-Response Script](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/test-case/post-response-script.md): C# assertions on the response
+- [Single-File Format (.tp)](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/test-case/tp-file.md): requests and scripts in one file
+- [Collection](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/collection.md): how test cases are discovered and ordered
+- [How to Write Tests](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/how-to-write-tests.md): directives and scripted tests
+- [Running Tests](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/running-tests.md): `teapie test` usage
+- [Directives](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/directives.md): all built-in `##` directives
+- [Commands](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/commands.md): full CLI reference
+
+## Features
+
+- [.teapie Folder](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/teapie-folder.md): project configuration folder
+- [Initialization Script](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/initialization-script.md): `init.csx` that runs before the collection
+- [Variables](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/variables.md): variable scopes and syntax
+- [Functions](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/functions.md): built-in and custom functions
+- [Environments](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/environments.md): `env.json` and switching environments
+- [Authentication](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/authentication.md): OAuth2 and custom auth providers
+- [Retrying](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/retrying.md): retry strategies and conditions
+- [Reporting](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/reporting.md): console, JUnit XML and custom reporters
+- [JSON Handling](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/json.md): working with JSON bodies in scripts
+- [AI Agent Skills](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/ai-agent-skills.md): installing the TeaPie skill for AI agents
+
+## Optional
+
+- [Logging](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/logging.md): log levels and output
+- [HTTP Requests Logging](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/requests-logging.md): logging requests and responses
+- [Common Mistakes](https://raw.githubusercontent.com/Kros-sk/TeaPie/master/docs/docs/common-mistakes.md): frequent pitfalls
+- [Repository](https://github.com/Kros-sk/TeaPie): source code and demo collections

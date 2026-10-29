@@ -28,6 +28,25 @@ The README contains:
 
 ## 🚀 Quick Start
 
+### Claude Code plugin
+
+In Claude Code, install the TeaPie plugin from the repository marketplace:
+
+```text
+/plugin install teapie --marketplace Kros-sk/TeaPie
+```
+
+On older Claude Code versions, add the marketplace first, then install the plugin:
+
+```text
+/plugin marketplace add Kros-sk/TeaPie
+/plugin install teapie@teapie
+```
+
+The plugin is updated together with the repository, so you don't need to download the skill again after a new release.
+
+### CLI command
+
 If you already have TeaPie installed, you can add skills to your project using the CLI command:
 
 ```sh
@@ -47,3 +66,7 @@ Install TeaPie.Tool globally (if not already installed) and use the `teapie inst
 2. Download skills:
    teapie install-skills
 ```
+
+## 📄 Documentation for LLMs
+
+The documentation is also published as [llms.txt](https://www.teapie.fun/llms.txt), a short index that AI agents can read to find the relevant pages without crawling the whole site.

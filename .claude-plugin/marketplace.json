@@ -1,0 +1,32 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "teapie",
+  "description": "TeaPie - API integration testing with .http files and C# scripts, ready for AI agents",
+  "owner": {
+    "name": "KROS a.s.",
+    "url": "https://github.com/Kros-sk"
+  },
+  "plugins": [
+    {
+      "name": "teapie",
+      "source": "./.claude/skills/teapie",
+      "description": "Lets AI agents write, run and debug TeaPie API integration tests (.http/.tp files with C# scripts)",
+      "author": {
+        "name": "KROS a.s.",
+        "url": "https://github.com/Kros-sk"
+      },
+      "homepage": "https://www.teapie.fun/",
+      "repository": "https://github.com/Kros-sk/TeaPie",
+      "license": "MIT",
+      "keywords": [
+        "api-testing",
+        "integration-testing",
+        "http",
+        "dotnet",
+        "csharp",
+        "teapie"
+      ],
+      "category": "testing"
+    }
+  ]
+}
