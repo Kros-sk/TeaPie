@@ -73,11 +73,11 @@ internal static partial class DefaultDirectivesProvider
     }
 
     // Content is never null in .NET 5+ (empty responses get EmptyContent), so the actual body length has to be checked.
-    // Reading as byte array buffers the content, so it remains readable by post-response scripts.
+    // Buffering keeps the content readable by post-response scripts and makes its length computable.
     private static async Task<bool> HasBody(HttpResponseMessage response)
     {
-        var body = await response.Content.ReadAsByteArrayAsync();
-        return body.Length > 0;
+        await response.Content.LoadIntoBufferAsync();
+        return response.Content.Headers.ContentLength > 0;
     }
 
     private static async Task GetHasHeaderTestFunction(

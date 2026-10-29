@@ -11,6 +11,10 @@ public class DefaultDirectivesProviderShould
     private static readonly TestDirective _hasBodyDirective = DefaultDirectivesProvider.GetDefaultTestDirectives()
         .Single(d => d.Name == TestDirectives.TestHasBodyDirectiveFullName);
 
+    private static readonly TestDirective _hasBodyNoParameterDirective =
+        DefaultDirectivesProvider.GetDefaultTestDirectives()
+            .Single(d => d.Name == TestDirectives.TestHasBodyNoParameterInternalDirectiveFullName);
+
     [Fact]
     public async Task PassHasBodyTestWhenResponseHasBody()
     {
@@ -56,6 +60,23 @@ public class DefaultDirectivesProviderShould
         using var response = CreateResponse(HttpStatusCode.OK, "{\"id\":1}");
 
         await ThrowsAnyAsync<XunitException>(() => _hasBodyDirective.TestFunction(response, HasBodyParameters(false)));
+    }
+
+    [Fact]
+    public async Task PassParameterlessHasBodyTestWhenResponseHasBody()
+    {
+        using var response = CreateResponse(HttpStatusCode.OK, "{\"id\":1}");
+
+        await _hasBodyNoParameterDirective.TestFunction(response, new Dictionary<string, string>());
+    }
+
+    [Fact]
+    public async Task FailParameterlessHasBodyTestWhenResponseHasNoBody()
+    {
+        using var response = CreateResponse(HttpStatusCode.NoContent, null);
+
+        await ThrowsAnyAsync<XunitException>(
+            () => _hasBodyNoParameterDirective.TestFunction(response, new Dictionary<string, string>()));
     }
 
     private static HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string? body)

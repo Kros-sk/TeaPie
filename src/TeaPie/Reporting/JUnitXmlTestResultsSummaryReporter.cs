@@ -9,12 +9,6 @@ internal class JUnitXmlTestResultsSummaryReporter(string reportFilePath) : IRepo
 
     public async Task Report(TestResultsSummary report)
     {
-        var directory = Path.GetDirectoryName(Path.GetFullPath(_reportFilePath));
-        if (!string.IsNullOrEmpty(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
         using var writer = new JUnitXmlWriter(_reportFilePath);
 
         if (report is CollectionTestResultsSummary collectionSummary)

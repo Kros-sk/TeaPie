@@ -17,6 +17,31 @@ public class JUnitXmlWriterShould
     }
 
     [Fact]
+    public void CreateMissingDirectoriesForFile()
+    {
+        var rootDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        var filePath = Path.Combine(rootDirectory, "nested", "results.xml");
+
+        try
+        {
+            using (var writer = new JUnitXmlWriter(filePath))
+            {
+                writer.WriteTestSuitesRoot();
+                writer.EndTestSuitesRoot();
+            }
+
+            True(File.Exists(filePath));
+        }
+        finally
+        {
+            if (Directory.Exists(rootDirectory))
+            {
+                Directory.Delete(rootDirectory, true);
+            }
+        }
+    }
+
+    [Fact]
     public void CreateValidXmlFile()
     {
         using (var writer = new JUnitXmlWriter(TestFilePath))
