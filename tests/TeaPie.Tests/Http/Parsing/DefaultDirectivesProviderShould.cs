@@ -55,6 +55,28 @@ public class DefaultDirectivesProviderShould
     }
 
     [Fact]
+    public async Task IgnoreContentLengthHeaderWhenResponseHasNoBody()
+    {
+        using var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent([]) };
+        response.Content.Headers.ContentLength = 10;
+
+        await _hasBodyDirective.TestFunction(response, HasBodyParameters(false));
+        await ThrowsAnyAsync<XunitException>(() => _hasBodyDirective.TestFunction(response, HasBodyParameters(true)));
+    }
+
+    [Fact]
+    public async Task KeepResponseStreamReadableAfterHasBodyTest()
+    {
+        const string body = "{\"id\":1}";
+        using var response = CreateResponse(HttpStatusCode.OK, body);
+
+        await _hasBodyDirective.TestFunction(response, HasBodyParameters(true));
+
+        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
+        Equal(body, await reader.ReadToEndAsync());
+    }
+
+    [Fact]
     public async Task FailNegatedHasBodyTestWhenResponseHasBody()
     {
         using var response = CreateResponse(HttpStatusCode.OK, "{\"id\":1}");
