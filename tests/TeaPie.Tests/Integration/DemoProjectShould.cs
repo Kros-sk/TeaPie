@@ -20,7 +20,8 @@ public sealed class DemoProjectShould : IAsyncLifetime
     public Task InitializeAsync()
     {
         _solutionRoot = FindSolutionRoot();
-        _demoTestsPath = Path.Combine(_solutionRoot, "demo", "Tests");
+        var demoCopyPath = CreateDemoCopy(Path.Combine(_solutionRoot, "demo"));
+        _demoTestsPath = Path.Combine(demoCopyPath, "Tests");
         _tempEnvFilePath = Path.GetTempFileName();
 
         var mockoonConfigPath = Path.Combine(_solutionRoot, "demo", "server", "CarRentalServer.json");
@@ -166,6 +167,44 @@ public sealed class DemoProjectShould : IAsyncLifetime
             @" in [^:]+src/TeaPie/Testing/(?:Registrator|Tester)\.cs",
             " in {SourcePath}");
         builder.Clear().Append(result);
+    }
+
+    // TeaPie keeps its temporary files in '.teapie/cache' and deletes them at the start of each run.
+    // Test runs for different target frameworks execute in parallel, so each one works on its own copy
+    // of the demo, otherwise they would delete each other's preprocessed scripts.
+    // The copy lives in the target framework's output folder and is not deleted after the test,
+    // because NuGet packages loaded from its cache stay referenced for the rest of the test process.
+    private static string CreateDemoCopy(string demoPath)
+    {
+        var copyPath = Path.Combine(AppContext.BaseDirectory, "DemoProject");
+        if (Directory.Exists(copyPath))
+        {
+            Directory.Delete(copyPath, true);
+        }
+
+        CopyDirectory(Path.Combine(demoPath, "Tests"), Path.Combine(copyPath, "Tests"));
+        CopyDirectory(Path.Combine(demoPath, ".teapie"), Path.Combine(copyPath, ".teapie"));
+
+        return copyPath;
+    }
+
+    private static void CopyDirectory(string sourcePath, string targetPath)
+    {
+        Directory.CreateDirectory(targetPath);
+
+        foreach (var file in Directory.GetFiles(sourcePath))
+        {
+            File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
+        }
+
+        foreach (var directory in Directory.GetDirectories(sourcePath))
+        {
+            var name = Path.GetFileName(directory);
+            if (!name.Equals("cache"))
+            {
+                CopyDirectory(directory, Path.Combine(targetPath, name));
+            }
+        }
     }
 
     private static string FindSolutionRoot()
