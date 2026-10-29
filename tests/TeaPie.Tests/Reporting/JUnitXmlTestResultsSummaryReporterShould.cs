@@ -124,6 +124,28 @@ public class JUnitXmlTestResultsSummaryReporterShould
         Contains(".", suite.Attribute("time")?.Value);
     }
 
+    [Fact]
+    public async Task CreateMissingDirectoriesForReportFile()
+    {
+        var rootDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        var reportFilePath = Path.Combine(rootDirectory, "nested", "report.xml");
+
+        try
+        {
+            var reporter = new JUnitXmlTestResultsSummaryReporter(reportFilePath);
+            await reporter.Report(CreateMockTestSummary());
+
+            True(File.Exists(reportFilePath));
+        }
+        finally
+        {
+            if (Directory.Exists(rootDirectory))
+            {
+                Directory.Delete(rootDirectory, true);
+            }
+        }
+    }
+
     private static CollectionTestResultsSummary CreateMockTestSummary()
     {
         var summary = new CollectionTestResultsSummary();

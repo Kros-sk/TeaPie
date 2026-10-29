@@ -60,17 +60,27 @@ internal static partial class DefaultDirectivesProvider
     private static async Task GetHasBodyTestFunction(HttpResponseMessage response, IReadOnlyDictionary<string, string> parameters)
     {
         var isTrue = GetBool(parameters);
+        var hasBody = await HasBody(response);
 
         if (isTrue)
         {
-            NotNull(response.Content);
+            True(hasBody, "Response should have body, but it is empty.");
         }
         else
         {
-            Null(response.Content);
+            False(hasBody, "Response should not have body, but it is not empty.");
         }
+    }
 
-        await Task.CompletedTask;
+    // Content is never null in .NET 5+ (empty responses get EmptyContent), so the actual body length has to be checked.
+    // Buffering keeps the content readable by post-response scripts. The length is taken from the buffered bytes,
+    // not from the Content-Length header, which servers send also for bodiless responses (e.g. HEAD or 304).
+    // The stream is cached by the content, so it must not be disposed here.
+    private static async Task<bool> HasBody(HttpResponseMessage response)
+    {
+        await response.Content.LoadIntoBufferAsync();
+        var body = await response.Content.ReadAsStreamAsync();
+        return body.Length > 0;
     }
 
     private static async Task GetHasHeaderTestFunction(

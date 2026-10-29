@@ -11,6 +11,12 @@ internal class JUnitXmlWriter : IDisposable
 
     public JUnitXmlWriter(string filePath)
     {
+        var directory = Path.GetDirectoryName(Path.GetFullPath(filePath));
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
         var settings = new XmlWriterSettings { Indent = true, Encoding = System.Text.Encoding.UTF8 };
         _writer = XmlWriter.Create(filePath, settings);
         _writer.WriteStartDocument();
