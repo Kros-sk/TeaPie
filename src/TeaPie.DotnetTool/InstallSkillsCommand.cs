@@ -13,6 +13,9 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
     private const string GitHubApiBaseUrl = "https://api.github.com/repos/Kros-sk/TeaPie/contents/";
     private const string UserAgentValue = "TeaPie-CLI";
 
+    // Files that only describe the Claude Code plugin and are not part of the skill itself.
+    private static readonly HashSet<string> PluginOnlyPaths = [".claude-plugin", "README.md", "icon.png"];
+
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         var targetPath = ResolveTargetPath(settings);
@@ -83,6 +86,11 @@ internal sealed class InstallSkillsCommand : AsyncCommand<InstallSkillsCommand.S
 
         foreach (var item in items)
         {
+            if (PluginOnlyPaths.Contains(item.Path[sourceRootPath.Length..].TrimStart('/')))
+            {
+                continue;
+            }
+
             if (item.Type == "file")
             {
                 var downloaded = await DownloadFileAsync(httpClient, item, targetPath, sourceRootPath, force);
