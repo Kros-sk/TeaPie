@@ -1,6 +1,7 @@
 # TeaPie - API Testing Framework
 
-[![NuGet](https://img.shields.io/nuget/v/TeaPie)](https://www.nuget.org/packages/TeaPie.Tool/)
+[![NuGet](https://img.shields.io/nuget/v/TeaPie.Tool)](https://www.nuget.org/packages/TeaPie.Tool/)
+[![NuGet downloads](https://img.shields.io/nuget/dt/TeaPie.Tool)](https://www.nuget.org/packages/TeaPie.Tool/)
 [![License](https://img.shields.io/github/license/Kros-sk/TeaPie)](LICENSE)
 [![Build](https://github.com/Kros-sk/TeaPie/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Kros-sk/TeaPie/actions)
 
@@ -8,6 +9,30 @@
 
 TeaPie is a **lightweight API testing framework** designed for **automation-friendly, scriptable API testing** with `.http` and `.tp` files.
 It provides **pre-request scripting, post-response validation, retry strategies, flexible authentication, environments support and custom test directives**.
+
+**Built for AI coding agents.** Tests are plain text files that live next to your backend code, so an agent like Claude Code can write them, run them with `teapie test`, read the failures and fix them, and every change shows up in your pull request. Install the [TeaPie plugin](#-ai-agent-skills) and ask your agent to cover an endpoint with integration tests.
+
+```http
+// add-car-req.http
+# @name AddCar
+## TEST-EXPECT-STATUS: [201]
+## TEST-HAS-BODY
+POST {{ApiBaseUrl}}/cars
+Content-Type: application/json
+
+{ "brand": "Skoda", "model": "Octavia", "year": 2024 }
+```
+
+Need more than status checks? Add a C# script next to the request and assert anything with xUnit:
+
+```csharp
+// add-car-test.csx
+await tp.Test("New car should be returned with an id.", async () =>
+{
+    dynamic car = await tp.Responses["AddCar"].GetBodyAsExpandoAsync();
+    NotNull(car.id);
+});
+```
 
 ## 📖 Documentation
 
