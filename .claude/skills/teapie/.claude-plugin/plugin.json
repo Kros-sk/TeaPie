@@ -1,0 +1,16 @@
+{
+  "name": "teapie",
+  "displayName": "TeaPie",
+  "description": "Write, run and debug API integration tests for .NET backends with TeaPie (.http/.tp files with C# scripts)",
+  "author": {
+    "name": "KROS a.s.",
+    "url": "https://github.com/Kros-sk"
+  },
+  "homepage": "https://www.teapie.fun/",
+  "repository": "https://github.com/Kros-sk/TeaPie",
+  "license": "MIT",
+  "keywords": ["api-testing", "integration-testing", "http", "dotnet", "csharp", "teapie"],
+  "icon": "./icon.png",
+  "documentationUrl": "https://www.teapie.fun/",
+  "supportUrl": "https://github.com/Kros-sk/TeaPie/issues"
+}
