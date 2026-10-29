@@ -11,9 +11,20 @@
     <PropertyGroup>
         <PackageProjectUrl>https://kros-sk.github.io/TeaPie/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Kros-sk/TeaPie</RepositoryUrl>
-        <PackageTags>api;testing;cli</PackageTags>
+        <PackageTags>api;testing;cli;http;integration-testing;dotnet-tool;ai-agents</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <PropertyGroup>
